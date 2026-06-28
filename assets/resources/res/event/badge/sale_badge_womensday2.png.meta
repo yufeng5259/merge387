@@ -1,0 +1,135 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "48b2db33-ca11-477c-9c5f-5ea9b750369d",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "48b2db33-ca11-477c-9c5f-5ea9b750369d@6c48a",
+      "displayName": "sale_badge_womensday2",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "imageUuidOrDatabaseUri": "48b2db33-ca11-477c-9c5f-5ea9b750369d",
+        "isUuid": true,
+        "visible": false,
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "48b2db33-ca11-477c-9c5f-5ea9b750369d@f9941",
+      "displayName": "sale_badge_womensday2",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "importer": "sprite-frame",
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": -1,
+        "trimX": 1,
+        "trimY": 2,
+        "width": 113,
+        "height": 108,
+        "rawWidth": 115,
+        "rawHeight": 110,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "imageUuidOrDatabaseUri": "48b2db33-ca11-477c-9c5f-5ea9b750369d@6c48a",
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -56.5,
+            -54,
+            0,
+            56.5,
+            -54,
+            0,
+            -56.5,
+            54,
+            0,
+            56.5,
+            54,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            1,
+            108,
+            114,
+            108,
+            1,
+            0,
+            114,
+            0
+          ],
+          "nuv": [
+            0.008695652173913044,
+            0,
+            0.991304347826087,
+            0,
+            0.008695652173913044,
+            0.9818181818181818,
+            0.991304347826087,
+            0.9818181818181818
+          ],
+          "minPos": [
+            -56.5,
+            -54,
+            0
+          ],
+          "maxPos": [
+            56.5,
+            54,
+            0
+          ]
+        },
+        "isUuid": true,
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "48b2db33-ca11-477c-9c5f-5ea9b750369d@6c48a",
+    "hasAlpha": true
+  }
+}

@@ -1,0 +1,39 @@
+
+#///////////////////////////
+# Cocos Creator 3D Project
+#///////////////////////////
+/library/
+/temp/
+/local/
+/build/
+/profiles/
+/native/
+/runtime/
+/jsb/
+/jsb-binary/
+/web-desktop/
+/web-mobile/
+/export/
+/publish/
+
+#///////////////////////////
+# Dependencies
+#///////////////////////////
+node_modules/
+
+#///////////////////////////
+# Local tools and editor state
+#///////////////////////////
+.omx/
+.cursor/
+.mcp.json
+.vscode/
+.idea/
+
+#///////////////////////////
+# Logs and OS files
+#///////////////////////////
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

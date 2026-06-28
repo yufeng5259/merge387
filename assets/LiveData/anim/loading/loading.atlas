@@ -1,0 +1,258 @@
+
+loading.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ban
+  rotate: false
+  xy: 2, 485
+  size: 835, 537
+  orig: 835, 537
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 2, 223
+  size: 566, 260
+  orig: 566, 260
+  offset: 0, 0
+  index: -1
+coins__00000
+  rotate: false
+  xy: 1970, 869
+  size: 67, 153
+  orig: 586, 279
+  offset: 9, 12
+  index: -1
+coins__00001
+  rotate: false
+  xy: 781, 77
+  size: 112, 191
+  orig: 586, 279
+  offset: 9, 10
+  index: -1
+coins__00002
+  rotate: false
+  xy: 1580, 266
+  size: 143, 206
+  orig: 586, 279
+  offset: 10, 10
+  index: -1
+coins__00003
+  rotate: true
+  xy: 570, 78
+  size: 190, 209
+  orig: 586, 279
+  offset: 25, 10
+  index: -1
+coins__00004
+  rotate: false
+  xy: 1766, 553
+  size: 202, 206
+  orig: 586, 279
+  offset: 58, 13
+  index: -1
+coins__00005
+  rotate: false
+  xy: 895, 66
+  size: 197, 205
+  orig: 586, 279
+  offset: 100, 13
+  index: -1
+coins__00006
+  rotate: true
+  xy: 1094, 70
+  size: 193, 204
+  orig: 586, 279
+  offset: 161, 11
+  index: -1
+coins__00007
+  rotate: true
+  xy: 1353, 265
+  size: 207, 225
+  orig: 586, 279
+  offset: 196, 10
+  index: -1
+coins__00008
+  rotate: true
+  xy: 1096, 265
+  size: 207, 255
+  orig: 586, 279
+  offset: 241, 10
+  index: -1
+coins__00009
+  rotate: true
+  xy: 833, 273
+  size: 199, 261
+  orig: 586, 279
+  offset: 297, 10
+  index: -1
+coins__00010
+  rotate: true
+  xy: 570, 270
+  size: 213, 261
+  orig: 586, 279
+  offset: 326, 10
+  index: -1
+coins__00011
+  rotate: false
+  xy: 1766, 761
+  size: 202, 261
+  orig: 586, 279
+  offset: 362, 10
+  index: -1
+coins__00012
+  rotate: true
+  xy: 1300, 121
+  size: 142, 200
+  orig: 586, 279
+  offset: 428, 12
+  index: -1
+coins__00013
+  rotate: true
+  xy: 2, 22
+  size: 77, 193
+  orig: 586, 279
+  offset: 497, 17
+  index: -1
+coins__00014
+  rotate: false
+  xy: 1970, 744
+  size: 52, 123
+  orig: 586, 279
+  offset: 522, 86
+  index: -1
+dai
+  rotate: true
+  xy: 1623, 520
+  size: 502, 141
+  orig: 502, 141
+  offset: 0, 0
+  index: -1
+guang
+  rotate: false
+  xy: 839, 474
+  size: 782, 548
+  orig: 782, 548
+  offset: 0, 0
+  index: -1
+king1__00000
+  rotate: true
+  xy: 1426, 44
+  size: 75, 72
+  orig: 471, 130
+  offset: 3, 8
+  index: -1
+king1__00001
+  rotate: false
+  xy: 369, 20
+  size: 96, 79
+  orig: 471, 130
+  offset: 6, 1
+  index: -1
+king1__00002
+  rotate: true
+  xy: 1891, 438
+  size: 113, 109
+  orig: 471, 130
+  offset: 22, 2
+  index: -1
+king1__00003
+  rotate: false
+  xy: 1728, 211
+  size: 101, 113
+  orig: 471, 130
+  offset: 64, 4
+  index: -1
+king1__00004
+  rotate: false
+  xy: 1766, 440
+  size: 123, 111
+  orig: 471, 130
+  offset: 72, 6
+  index: -1
+king1__00005
+  rotate: false
+  xy: 1300, 7
+  size: 124, 112
+  orig: 471, 130
+  offset: 96, 5
+  index: -1
+king1__00006
+  rotate: true
+  xy: 1617, 137
+  size: 127, 109
+  orig: 471, 130
+  offset: 127, 7
+  index: -1
+king1__00007
+  rotate: true
+  xy: 1617, 9
+  size: 126, 109
+  orig: 471, 130
+  offset: 160, 7
+  index: -1
+king1__00008
+  rotate: true
+  xy: 1502, 133
+  size: 130, 113
+  orig: 471, 130
+  offset: 188, 3
+  index: -1
+king1__00009
+  rotate: false
+  xy: 1725, 326
+  size: 121, 112
+  orig: 471, 130
+  offset: 225, 3
+  index: -1
+king1__00010
+  rotate: true
+  xy: 1502, 2
+  size: 129, 113
+  orig: 471, 130
+  offset: 249, 4
+  index: -1
+king1__00011
+  rotate: false
+  xy: 1848, 322
+  size: 116, 114
+  orig: 471, 130
+  offset: 283, 4
+  index: -1
+king1__00012
+  rotate: false
+  xy: 1728, 101
+  size: 104, 108
+  orig: 471, 130
+  offset: 308, 9
+  index: -1
+king1__00013
+  rotate: true
+  xy: 470, 111
+  size: 110, 95
+  orig: 471, 130
+  offset: 345, 23
+  index: -1
+king1__00014
+  rotate: true
+  xy: 197, 2
+  size: 97, 80
+  orig: 471, 130
+  offset: 369, 37
+  index: -1
+kings
+  rotate: false
+  xy: 2, 101
+  size: 466, 120
+  orig: 466, 120
+  offset: 0, 0
+  index: -1
+light
+  rotate: false
+  xy: 279, 11
+  size: 88, 88
+  orig: 88, 88
+  offset: 0, 0
+  index: -1

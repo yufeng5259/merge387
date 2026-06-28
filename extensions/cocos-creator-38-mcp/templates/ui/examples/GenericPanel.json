@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "name": "GenericPanel",
+  "description": "Neutral panel with title, content group, and confirm button.",
+  "prefabPath": "db://assets/mcp-generated/GenericPanel.prefab",
+  "resources": {
+    "panelBg": { "role": "panel_bg" },
+    "buttonBg": { "role": "default_button_bg" }
+  },
+  "root": {
+    "name": "GenericPanel",
+    "type": "panel",
+    "size": [560, 360],
+    "anchor": [0.5, 0.5],
+    "spriteFrame": { "role": "panel_bg" },
+    "children": [
+      {
+        "name": "Title",
+        "type": "label",
+        "position": [0, 130],
+        "size": [480, 56],
+        "text": "Generic Panel",
+        "fontSize": 36,
+        "color": "#FFFFFF"
+      },
+      {
+        "name": "Content",
+        "type": "group",
+        "position": [0, 20],
+        "size": [480, 140],
+        "children": [
+          {
+            "name": "Message",
+            "type": "label",
+            "size": [420, 48],
+            "text": "Neutral UI content",
+            "fontSize": 24,
+            "color": "#DDE6FF"
+          }
+        ]
+      },
+      {
+        "name": "ConfirmButton",
+        "type": "button",
+        "position": [0, -125],
+        "size": [220, 70],
+        "spriteFrame": { "role": "default_button_bg" },
+        "button": {
+          "label": "OK",
+          "normalSprite": { "role": "default_button_bg" }
+        },
+        "children": [
+          {
+            "name": "Label",
+            "type": "label",
+            "size": [190, 48],
+            "text": "OK",
+            "fontSize": 28,
+            "color": "#FFFFFF"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "description": "Default asset role map for cocos-creator-38-mcp. Project teams can add project-owned assets, but generic fallback roles should prefer db://internal resources before project placeholders.",
+  "roles": {
+    "default_sprite": {
+      "category": "generic",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#ffffff",
+      "notes": "Generic internal sprite fallback used when no visual asset is specified."
+    },
+    "default_button_bg": {
+      "category": "button",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#ffffff",
+      "suggestedPath": "db://assets/ui/buttons/default_button_bg.png"
+    },
+    "green_button_bg": {
+      "category": "button",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#38b26b",
+      "suggestedPath": "db://assets/ui/buttons/green_button_bg.png"
+    },
+    "panel_bg": {
+      "category": "panel",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#263247",
+      "suggestedPath": "db://assets/ui/panels/panel_bg.png"
+    },
+    "dialog_bg": {
+      "category": "panel",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#202636",
+      "suggestedPath": "db://assets/ui/panels/dialog_bg.png"
+    },
+    "item_card_bg": {
+      "category": "item",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#d8dce8",
+      "suggestedPath": "db://assets/ui/items/item_card_bg.png"
+    },
+    "item_icon": {
+      "category": "item",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#8ecae6",
+      "suggestedPath": "db://assets/ui/items/item_icon.png"
+    },
+    "secondary_item_icon": {
+      "category": "item",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#8ecae6",
+      "suggestedPath": "db://assets/ui/items/secondary_item_icon.png"
+    },
+    "rare_item_frame": {
+      "category": "item",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#9b5de5",
+      "suggestedPath": "db://assets/ui/items/rare_item_frame.png"
+    },
+    "status_icon": {
+      "category": "status",
+      "type": "sprite-frame",
+      "paths": [
+        "db://internal/image/default_sprite_splash.png/default_sprite_splash",
+        "db://internal/image/default_sprite_splash.png"
+      ],
+      "fallbackColor": "#f5c542",
+      "suggestedPath": "db://assets/ui/icons/status_icon.png"
+    },
+    "default_font": {
+      "category": "font",
+      "type": "font",
+      "paths": [
+        "db://assets/fonts/default.ttf"
+      ],
+      "suggestedPath": "db://assets/fonts/default.ttf"
+    },
+    "button_click_sfx": {
+      "category": "audio",
+      "type": "audio-clip",
+      "paths": [
+        "db://assets/audio/ui/button_click.mp3",
+        "db://assets/audio/ui/button_click.wav"
+      ],
+      "suggestedPath": "db://assets/audio/ui/button_click.mp3"
+    }
+  },
+  "conventions": {
+    "button": {
+      "directory": "db://assets/ui/buttons",
+      "namePattern": "^[a-z0-9_]+(_bg|_button_bg)\\.(png|jpg|jpeg|webp)$"
+    },
+    "status": {
+      "directory": "db://assets/ui/icons",
+      "namePattern": "^[a-z0-9_]+(_icon)?\\.(png|jpg|jpeg|webp)$"
+    },
+    "item": {
+      "directory": "db://assets/ui/items",
+      "namePattern": "^[a-z0-9_]+\\.(png|jpg|jpeg|webp)$"
+    },
+    "panel": {
+      "directory": "db://assets/ui/panels",
+      "namePattern": "^[a-z0-9_]+(_bg)?\\.(png|jpg|jpeg|webp)$"
+    },
+    "font": {
+      "directory": "db://assets/fonts",
+      "namePattern": "^[A-Za-z0-9_-]+\\.(ttf|otf|fnt)$"
+    },
+    "audio": {
+      "directory": "db://assets/audio",
+      "namePattern": "^[a-z0-9_]+\\.(mp3|ogg|wav)$"
+    }
+  }
+}

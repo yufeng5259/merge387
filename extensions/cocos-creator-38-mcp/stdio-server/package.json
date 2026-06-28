@@ -1,0 +1,22 @@
+{
+  "name": "cocos-mcp-stdio-server",
+  "version": "1.0.1",
+  "description": "MCP stdio server for Cocos Creator 3.8 - bridges AI tools to editor plugin via HTTP",
+  "main": "index.js",
+  "bin": {
+    "cocos-creator-38-mcp": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test:ping": "node -e \"fetch('http://127.0.0.1:6800/api/ping').then(r=>r.json()).then(console.log).catch(console.error)\""
+  },
+  "keywords": ["cocos", "cocos-creator", "mcp", "model-context-protocol", "ai", "editor"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.22.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

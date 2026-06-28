@@ -1,0 +1,104 @@
+
+xiaonvhai.png
+size: 298,109
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_hair1
+  rotate: true
+  xy: 232, 2
+  size: 34, 40
+  orig: 36, 40
+  offset: 2, 0
+  index: -1
+back_hair2
+  rotate: false
+  xy: 237, 72
+  size: 34, 35
+  orig: 34, 35
+  offset: 0, 0
+  index: -1
+eyebrow-l
+  rotate: false
+  xy: 2, 2
+  size: 21, 12
+  orig: 21, 12
+  offset: 0, 0
+  index: -1
+eyebrow-r
+  rotate: false
+  xy: 73, 4
+  size: 18, 10
+  orig: 18, 10
+  offset: 0, 0
+  index: -1
+eyelash-l
+  rotate: false
+  xy: 25, 4
+  size: 24, 10
+  orig: 24, 10
+  offset: 0, 0
+  index: -1
+eyelash-r
+  rotate: false
+  xy: 51, 3
+  size: 20, 11
+  orig: 20, 11
+  offset: 0, 0
+  index: -1
+front_hair
+  rotate: true
+  xy: 88, 17
+  size: 90, 68
+  orig: 90, 68
+  offset: 0, 0
+  index: -1
+front_hair3
+  rotate: false
+  xy: 274, 11
+  size: 22, 29
+  orig: 22, 31
+  offset: 0, 2
+  index: -1
+front_hair4
+  rotate: true
+  xy: 237, 42
+  size: 28, 36
+  orig: 28, 37
+  offset: 0, 1
+  index: -1
+handwear-l
+  rotate: true
+  xy: 158, 5
+  size: 29, 72
+  orig: 29, 73
+  offset: 0, 1
+  index: -1
+handwear-r
+  rotate: false
+  xy: 209, 38
+  size: 26, 69
+  orig: 26, 69
+  offset: 0, 0
+  index: -1
+mouth
+  rotate: true
+  xy: 273, 74
+  size: 33, 20
+  orig: 33, 20
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 158, 36
+  size: 49, 71
+  orig: 49, 72
+  offset: 0, 1
+  index: -1
+tou
+  rotate: true
+  xy: 2, 16
+  size: 91, 84
+  orig: 91, 88
+  offset: 0, 1
+  index: -1

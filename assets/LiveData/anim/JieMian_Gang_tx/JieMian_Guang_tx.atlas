@@ -1,0 +1,55 @@
+
+JieMian_Guang_tx.png
+size: 231,264
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CFXM_T_WhiteCircleSmall
+  rotate: false
+  xy: 128, 12
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+Ellipse_Rotate
+  rotate: false
+  xy: 140, 174
+  size: 88, 88
+  orig: 88, 88
+  offset: 0, 0
+  index: -1
+glow
+  rotate: false
+  xy: 2, 126
+  size: 136, 136
+  orig: 136, 136
+  offset: 0, 0
+  index: -1
+glow_ray
+  rotate: false
+  xy: 2, 2
+  size: 124, 122
+  orig: 124, 122
+  offset: 0, 0
+  index: -1
+grab
+  rotate: false
+  xy: 140, 91
+  size: 81, 81
+  orig: 81, 81
+  offset: 0, 0
+  index: -1
+sparkle
+  rotate: false
+  xy: 128, 18
+  size: 71, 71
+  orig: 71, 71
+  offset: 0, 0
+  index: -1
+star_effect
+  rotate: false
+  xy: 201, 59
+  size: 28, 30
+  orig: 52, 52
+  offset: 12, 11
+  index: -1

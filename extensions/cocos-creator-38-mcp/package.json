@@ -1,0 +1,134 @@
+{
+  "package_version": 2,
+  "version": "1.0.151",
+  "mcpToolsUpdatedAt": "2026-06-24T17:47:00+08:00",
+  "name": "cocos-creator-38-mcp",
+  "displayName": "cocos-creator-38-mcp",
+  "mcpPackageName": "cocos-creator-38-mcp",
+  "description": "Cocos Creator 3.8 MCP Editor Plugin HTTP bridge for MCP stdio server",
+  "author": "cocos-mcp",
+  "editor": ">=3.8.0",
+  "main": "./main.js",
+  "panels": {
+    "default": {
+      "title": "MCP Server",
+      "type": "dockable",
+      "main": "./panel/index.js",
+      "size": {
+        "min-width": 360,
+        "width": 480,
+        "height": 640
+      }
+    }
+  },
+  "contributions": {
+    "profile": {
+      "project": {
+        "port": {
+          "default": 6800,
+          "label": "Server Port"
+        },
+        "autoStart": {
+          "default": true,
+          "label": "Auto Start"
+        },
+        "platform": {
+          "default": "codex",
+          "label": "Platform"
+        }
+      }
+    },
+    "scene": {
+      "script": "./scene-script.js"
+    },
+    "menu": [
+      {
+        "path": "i18n:cocos-creator-38-mcp.MAIN_MENU.mcp",
+        "label": "i18n:cocos-creator-38-mcp.MAIN_MENU.start",
+        "message": "start"
+      },
+      {
+        "path": "i18n:cocos-creator-38-mcp.MAIN_MENU.mcp",
+        "label": "i18n:cocos-creator-38-mcp.MAIN_MENU.stop",
+        "message": "stop"
+      },
+      {
+        "path": "i18n:cocos-creator-38-mcp.MAIN_MENU.mcp",
+        "label": "i18n:cocos-creator-38-mcp.MAIN_MENU.restart",
+        "message": "restart"
+      },
+      {
+        "path": "i18n:cocos-creator-38-mcp.MAIN_MENU.mcp",
+        "label": "i18n:cocos-creator-38-mcp.MAIN_MENU.panel",
+        "message": "open-panel"
+      }
+    ],
+    "messages": {
+      "start": {
+        "methods": [
+          "start"
+        ]
+      },
+      "stop": {
+        "methods": [
+          "stop"
+        ]
+      },
+      "restart": {
+        "methods": [
+          "restart"
+        ]
+      },
+      "open-panel": {
+        "methods": [
+          "openPanel"
+        ]
+      },
+      "get-status": {
+        "methods": [
+          "getStatus"
+        ]
+      },
+      "get-logs": {
+        "methods": [
+          "getLogs"
+        ]
+      },
+      "clear-logs": {
+        "methods": [
+          "clearLogs"
+        ]
+      },
+      "set-config": {
+        "methods": [
+          "setConfig"
+        ]
+      },
+      "build-install-package": {
+        "methods": [
+          "buildInstallPackage"
+        ]
+      },
+      "select-cocos-engine-source": {
+        "methods": [
+          "selectCocosEngineSource"
+        ]
+      },
+      "get-log-files-status": {
+        "methods": [
+          "getLogFilesStatus"
+        ]
+      },
+      "clear-log-files": {
+        "methods": [
+          "clearLogFiles"
+        ]
+      },
+      "panel-status-poll": {
+        "methods": [
+          "getStatus"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+
+squirrel.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arml
+  rotate: false
+  xy: 1106, 130
+  size: 94, 114
+  orig: 94, 114
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 42
+  size: 291, 202
+  orig: 291, 202
+  offset: 0, 0
+  index: -1
+gift1
+  rotate: false
+  xy: 464, 86
+  size: 90, 84
+  orig: 90, 84
+  offset: 0, 0
+  index: -1
+gift2
+  rotate: false
+  xy: 1202, 139
+  size: 97, 105
+  orig: 97, 105
+  offset: 0, 0
+  index: -1
+gift3
+  rotate: false
+  xy: 1301, 139
+  size: 97, 105
+  orig: 97, 105
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 940, 74
+  size: 164, 170
+  orig: 164, 170
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 295, 172
+  size: 411, 72
+  orig: 411, 72
+  offset: 0, 0
+  index: -1
+stars
+  rotate: false
+  xy: 295, 64
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+tail
+  rotate: true
+  xy: 295, 85
+  size: 85, 167
+  orig: 85, 167
+  offset: 0, 0
+  index: -1
+tv
+  rotate: true
+  xy: 708, 17
+  size: 227, 230
+  orig: 227, 230
+  offset: 0, 0
+  index: -1
+xian1
+  rotate: true
+  xy: 940, 18
+  size: 54, 65
+  orig: 54, 65
+  offset: 0, 0
+  index: -1
+xian2
+  rotate: true
+  xy: 2, 2
+  size: 38, 60
+  orig: 38, 60
+  offset: 0, 0
+  index: -1

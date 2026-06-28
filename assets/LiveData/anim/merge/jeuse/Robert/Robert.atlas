@@ -1,0 +1,125 @@
+
+Robert.png
+size: 330,215
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ears-l
+  rotate: false
+  xy: 317, 185
+  size: 11, 28
+  orig: 11, 28
+  offset: 0, 0
+  index: -1
+ears-r
+  rotate: false
+  xy: 284, 30
+  size: 21, 30
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+eyebrow-l
+  rotate: false
+  xy: 224, 58
+  size: 18, 12
+  orig: 18, 12
+  offset: 0, 0
+  index: -1
+eyebrow-r
+  rotate: true
+  xy: 209, 56
+  size: 26, 13
+  orig: 26, 13
+  offset: 0, 0
+  index: -1
+eyelash-l
+  rotate: false
+  xy: 226, 101
+  size: 89, 112
+  orig: 89, 112
+  offset: 0, 0
+  index: -1
+eyewear
+  rotate: false
+  xy: 205, 25
+  size: 77, 29
+  orig: 77, 29
+  offset: 0, 0
+  index: -1
+eyewear1
+  rotate: true
+  xy: 317, 119
+  size: 15, 7
+  orig: 15, 7
+  offset: 0, 0
+  index: -1
+eyewhite-r
+  rotate: false
+  xy: 266, 77
+  size: 53, 22
+  orig: 53, 22
+  offset: 0, 0
+  index: -1
+handwear-l
+  rotate: true
+  xy: 2, 2
+  size: 52, 201
+  orig: 52, 201
+  offset: 0, 0
+  index: -1
+handwear-r
+  rotate: true
+  xy: 2, 56
+  size: 46, 205
+  orig: 46, 205
+  offset: 0, 0
+  index: -1
+irides-l
+  rotate: false
+  xy: 317, 172
+  size: 10, 11
+  orig: 10, 11
+  offset: 0, 0
+  index: -1
+irides-r
+  rotate: false
+  xy: 244, 59
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+kaixinzui
+  rotate: false
+  xy: 226, 72
+  size: 38, 27
+  orig: 38, 27
+  offset: 0, 0
+  index: -1
+mouth
+  rotate: true
+  xy: 317, 136
+  size: 34, 9
+  orig: 34, 9
+  offset: 0, 0
+  index: -1
+topwear
+  rotate: true
+  xy: 2, 104
+  size: 109, 222
+  orig: 109, 222
+  offset: 0, 0
+  index: -1
+youbiyan
+  rotate: false
+  xy: 266, 62
+  size: 20, 13
+  orig: 20, 13
+  offset: 0, 0
+  index: -1
+zyobiyan
+  rotate: true
+  xy: 209, 84
+  size: 18, 15
+  orig: 18, 15
+  offset: 0, 0
+  index: -1

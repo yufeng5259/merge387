@@ -1,0 +1,159 @@
+
+kuang.png
+size: 1001,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kuang
+  rotate: false
+  xy: 2, 663
+  size: 263, 359
+  orig: 263, 359
+  offset: 0, 0
+  index: -1
+sg
+  rotate: false
+  xy: 2, 18
+  size: 117, 74
+  orig: 118, 82
+  offset: 0, 4
+  index: -1
+sg_00000
+  rotate: true
+  xy: 600, 401
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00001
+  rotate: false
+  xy: 403, 104
+  size: 197, 270
+  orig: 225, 300
+  offset: 13, 14
+  index: -1
+sg_00002
+  rotate: false
+  xy: 267, 744
+  size: 203, 278
+  orig: 225, 300
+  offset: 11, 10
+  index: -1
+sg_00003
+  rotate: false
+  xy: 2, 94
+  size: 206, 281
+  orig: 225, 300
+  offset: 10, 9
+  index: -1
+sg_00004
+  rotate: false
+  xy: 2, 377
+  size: 206, 284
+  orig: 225, 300
+  offset: 10, 7
+  index: -1
+sg_00005
+  rotate: false
+  xy: 210, 376
+  size: 201, 285
+  orig: 225, 300
+  offset: 16, 6
+  index: -1
+sg_00006
+  rotate: false
+  xy: 210, 92
+  size: 191, 282
+  orig: 225, 300
+  offset: 26, 6
+  index: -1
+sg_00007
+  rotate: false
+  xy: 413, 495
+  size: 185, 247
+  orig: 225, 300
+  offset: 26, 10
+  index: -1
+sg_00008
+  rotate: false
+  xy: 472, 800
+  size: 174, 222
+  orig: 225, 300
+  offset: 26, 36
+  index: -1
+sg_00009
+  rotate: false
+  xy: 600, 576
+  size: 174, 222
+  orig: 225, 300
+  offset: 26, 36
+  index: -1
+sg_00010
+  rotate: false
+  xy: 648, 800
+  size: 174, 222
+  orig: 225, 300
+  offset: 26, 36
+  index: -1
+sg_00011
+  rotate: false
+  xy: 776, 576
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00012
+  rotate: true
+  xy: 777, 178
+  size: 172, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00014
+  rotate: false
+  xy: 824, 800
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00015
+  rotate: false
+  xy: 824, 352
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00016
+  rotate: false
+  xy: 602, 177
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+sg_00017
+  rotate: true
+  xy: 602, 2
+  size: 173, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1
+win_x
+  rotate: true
+  xy: 121, 17
+  size: 75, 61
+  orig: 75, 75
+  offset: 0, 11
+  index: -1
+
+kuang2.png
+size: 176,226
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sg_00013
+  rotate: false
+  xy: 2, 2
+  size: 172, 222
+  orig: 225, 300
+  offset: 27, 36
+  index: -1

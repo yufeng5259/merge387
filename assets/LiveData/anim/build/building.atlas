@@ -1,0 +1,27 @@
+
+building.png
+size: 341,184
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hammer
+  rotate: true
+  xy: 234, 49
+  size: 133, 105
+  orig: 133, 105
+  offset: 0, 0
+  index: -1
+saw
+  rotate: true
+  xy: 2, 2
+  size: 180, 68
+  orig: 180, 68
+  offset: 0, 0
+  index: -1
+smoke particle
+  rotate: true
+  xy: 72, 13
+  size: 169, 160
+  orig: 169, 160
+  offset: 0, 0
+  index: -1

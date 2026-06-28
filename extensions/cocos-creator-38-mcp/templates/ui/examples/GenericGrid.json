@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "name": "GenericGrid",
+  "description": "Neutral grid container with repeated generic cells.",
+  "prefabPath": "db://assets/mcp-generated/GenericGrid.prefab",
+  "resources": {
+    "cellBg": { "role": "container_bg" },
+    "icon": { "role": "default_icon" }
+  },
+  "root": {
+    "name": "GenericGrid",
+    "type": "grid",
+    "size": [600, 420],
+    "grid": {
+      "columns": 3,
+      "cellSize": [160, 160],
+      "spacing": [24, 24]
+    },
+    "children": [
+      {
+        "name": "Cell_01",
+        "type": "panel",
+        "size": [160, 160],
+        "spriteFrame": { "role": "container_bg" },
+        "children": [
+          {
+            "name": "Icon",
+            "type": "sprite",
+            "position": [0, 24],
+            "size": [80, 80],
+            "spriteFrame": { "role": "default_icon" }
+          },
+          {
+            "name": "Label",
+            "type": "label",
+            "position": [0, -48],
+            "size": [130, 28],
+            "text": "Cell",
+            "fontSize": 20,
+            "color": "#FFFFFF"
+          }
+        ]
+      }
+    ]
+  }
+}

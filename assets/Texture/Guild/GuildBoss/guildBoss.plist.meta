@@ -1,0 +1,64 @@
+{
+  "ver": "1.0.8",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "72ee1": {
+      "importer": "sprite-frame",
+      "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84@72ee1",
+      "displayName": "",
+      "id": "72ee1",
+      "name": "bossyucha",
+      "userData": {
+        "importer": "sprite-frame",
+        "atlasUuid": "f565a190-7744-4b84-baee-1df1c9b0dc84",
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 39,
+        "height": 53,
+        "rawWidth": 39,
+        "rawHeight": 53,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "guildBossRes.png",
+    "format": 2,
+    "textureUuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
+    "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84"
+  }
+}

@@ -1,0 +1,111 @@
+
+bg_fire.png
+size: 768,645
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fire0001
+  rotate: false
+  xy: 2, 204
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+fire0002
+  rotate: false
+  xy: 2, 2
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+fire0003
+  rotate: false
+  xy: 204, 204
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+fire0004
+  rotate: false
+  xy: 204, 2
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+fire0005
+  rotate: false
+  xy: 241, 443
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+fire0006
+  rotate: false
+  xy: 406, 241
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+gy
+  rotate: false
+  xy: 2, 406
+  size: 237, 237
+  orig: 237, 237
+  offset: 0, 0
+  index: -1
+h1
+  rotate: true
+  xy: 443, 460
+  size: 183, 170
+  orig: 183, 170
+  offset: 0, 0
+  index: -1
+h2
+  rotate: true
+  xy: 615, 460
+  size: 183, 150
+  orig: 183, 150
+  offset: 0, 0
+  index: -1
+h3
+  rotate: true
+  xy: 608, 274
+  size: 184, 158
+  orig: 184, 158
+  offset: 0, 0
+  index: -1
+h4
+  rotate: false
+  xy: 406, 72
+  size: 183, 167
+  orig: 183, 167
+  offset: 0, 0
+  index: -1
+x1
+  rotate: false
+  xy: 275, 417
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+x2
+  rotate: false
+  xy: 241, 409
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+yan
+  rotate: false
+  xy: 608, 145
+  size: 132, 127
+  orig: 132, 127
+  offset: 0, 0
+  index: -1
+yan1
+  rotate: false
+  xy: 591, 15
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1

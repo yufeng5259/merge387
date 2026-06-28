@@ -1,0 +1,61 @@
+jinbi4.png
+size: 491, 127
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+coins_0
+  rotate: false
+  xy: 101, 1
+  size: 98, 97
+  orig: 98, 97
+  offset: 0, 0
+  index: -1
+coins_1
+  rotate: false
+  xy: 1, 1
+  size: 98, 98
+  orig: 98, 98
+  offset: 0, 0
+  index: -1
+coins_2
+  rotate: false
+  xy: 201, 1
+  size: 90, 97
+  orig: 90, 97
+  offset: 0, 0
+  index: -1
+coins_3
+  rotate: true
+  xy: 293, 1
+  size: 73, 98
+  orig: 73, 98
+  offset: 0, 0
+  index: -1
+coins_4
+  rotate: true
+  xy: 293, 76
+  size: 50, 97
+  orig: 50, 97
+  offset: 0, 0
+  index: -1
+coins_5
+  rotate: true
+  xy: 1, 101
+  size: 20, 97
+  orig: 20, 97
+  offset: 0, 0
+  index: -1
+coins_6
+  rotate: true
+  xy: 392, 76
+  size: 50, 97
+  orig: 50, 97
+  offset: 0, 0
+  index: -1
+coins_7
+  rotate: true
+  xy: 393, 1
+  size: 73, 97
+  orig: 73, 97
+  offset: 0, 0
+  index: -1

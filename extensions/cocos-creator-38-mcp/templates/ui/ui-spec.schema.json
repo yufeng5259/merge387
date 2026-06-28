@@ -1,0 +1,325 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cocos-mcp.local/schemas/ui-spec.schema.json",
+  "title": "Cocos MCP UI Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "name", "prefabPath", "root"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "name": {
+      "$ref": "#/definitions/name"
+    },
+    "description": {
+      "type": "string"
+    },
+    "prefabPath": {
+      "type": "string",
+      "pattern": "^db://assets/.+\\.prefab$"
+    },
+    "authoringMode": {
+      "type": "string",
+      "enum": ["source-node-create-prefab", "prefab-edit-context"],
+      "description": "Optional MCP authoring flow. Production UI prefab authoring should use prefab-edit-context when supported."
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/resourceRef"
+      }
+    },
+    "root": {
+      "$ref": "#/definitions/node"
+    }
+  },
+  "definitions": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "not": {
+        "pattern": "[/\\\\]"
+      }
+    },
+    "vec2": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number"
+      }
+    },
+    "colorObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["r", "g", "b"],
+      "properties": {
+        "r": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "g": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "b": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "a": { "type": "integer", "minimum": 0, "maximum": 255, "default": 255 }
+      }
+    },
+    "color": {
+      "oneOf": [
+        { "type": "string", "pattern": "^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$" },
+        { "$ref": "#/definitions/colorObject" }
+      ]
+    },
+    "resourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "pattern": "^db://(assets|internal)/.+" },
+        "uuid": { "type": "string", "minLength": 1 }
+      }
+    },
+    "textStyle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "font": { "$ref": "#/definitions/resourceRef" },
+        "fontSize": { "type": "number", "minimum": 1 },
+        "lineHeight": { "type": "number", "minimum": 1 },
+        "color": { "$ref": "#/definitions/color" },
+        "horizontalAlign": { "type": "string", "enum": ["left", "center", "right"] },
+        "verticalAlign": { "type": "string", "enum": ["top", "center", "bottom"] }
+      }
+    },
+    "gridLayout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["columns"],
+      "properties": {
+        "type": { "type": "string", "enum": ["vertical", "horizontal", "grid"] },
+        "columns": { "type": "integer", "minimum": 1 },
+        "rows": { "type": "integer", "minimum": 1 },
+        "cellSize": { "$ref": "#/definitions/vec2" },
+        "spacing": { "$ref": "#/definitions/vec2" },
+        "resizeMode": { "type": "number" },
+        "startAxis": { "type": "number" },
+        "affectedByScale": { "type": "boolean" },
+        "expectedChildCount": { "type": "integer", "minimum": 0 },
+        "padding": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "left": { "type": "number" },
+            "right": { "type": "number" },
+            "top": { "type": "number" },
+            "bottom": { "type": "number" }
+          }
+        }
+      }
+    },
+    "widget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "alignMode": { "type": "number" },
+        "isAlignTop": { "type": "boolean" },
+        "isAlignBottom": { "type": "boolean" },
+        "isAlignLeft": { "type": "boolean" },
+        "isAlignRight": { "type": "boolean" },
+        "isAlignHorizontalCenter": { "type": "boolean" },
+        "isAlignVerticalCenter": { "type": "boolean" },
+        "top": { "type": "number" },
+        "bottom": { "type": "number" },
+        "left": { "type": "number" },
+        "right": { "type": "number" },
+        "horizontalCenter": { "type": "number" },
+        "verticalCenter": { "type": "number" },
+        "target": { "type": ["string", "null"] }
+      }
+    },
+    "scrollViewSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction", "contentSize", "layout", "items"],
+      "properties": {
+        "direction": { "type": "string", "enum": ["vertical", "horizontal", "both"] },
+        "contentSize": { "$ref": "#/definitions/vec2" },
+        "layout": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": { "type": "string", "enum": ["vertical", "horizontal", "grid"] },
+            "spacing": { "$ref": "#/definitions/vec2" },
+            "resizeMode": { "type": "number" },
+            "startAxis": { "type": "number" },
+            "affectedByScale": { "type": "boolean" },
+            "padding": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "left": { "type": "number" },
+                "right": { "type": "number" },
+                "top": { "type": "number" },
+                "bottom": { "type": "number" }
+              }
+            },
+            "cellSize": { "$ref": "#/definitions/vec2" }
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/node" }
+        }
+      }
+    },
+    "toggleSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "isChecked": { "type": "boolean" },
+        "checkMarkNode": { "type": "string" },
+        "targetNode": { "type": "string" },
+        "normalSprite": { "$ref": "#/definitions/resourceRef" },
+        "pressedSprite": { "$ref": "#/definitions/resourceRef" },
+        "hoverSprite": { "$ref": "#/definitions/resourceRef" },
+        "disabledSprite": { "$ref": "#/definitions/resourceRef" },
+        "backgroundSprite": { "$ref": "#/definitions/resourceRef" },
+        "checkMarkSprite": { "$ref": "#/definitions/resourceRef" }
+      }
+    },
+    "progressBarSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "barNode": { "type": "string" },
+        "progress": { "type": "number", "minimum": 0, "maximum": 1 },
+        "mode": { "type": "number" },
+        "totalLength": { "type": "number", "minimum": 0 },
+        "reverse": { "type": "boolean" },
+        "backgroundSprite": { "$ref": "#/definitions/resourceRef" },
+        "barSpriteFrame": { "$ref": "#/definitions/resourceRef" }
+      }
+    },
+    "richTextSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "string": { "type": "string" },
+        "fontSize": { "type": "number", "minimum": 1 },
+        "lineHeight": { "type": "number", "minimum": 1 },
+        "maxWidth": { "type": "number", "minimum": 0 },
+        "horizontalAlign": { "type": "number" },
+        "handleTouchEvent": { "type": "boolean" }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type"],
+      "properties": {
+        "name": { "$ref": "#/definitions/name" },
+        "type": { "type": "string", "enum": ["group", "sprite", "label", "button", "toggle", "progressbar", "progressBar", "progress", "richtext", "richText", "grid", "panel", "scrollview", "empty", "prefab"] },
+        "active": { "type": "boolean", "default": true },
+        "position": { "$ref": "#/definitions/vec2" },
+        "size": { "$ref": "#/definitions/vec2" },
+        "anchor": { "$ref": "#/definitions/vec2" },
+        "scale": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "euler": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "eulerAngles": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "rotation": { "type": "number" },
+        "siblingIndex": { "type": "integer", "minimum": 0 },
+        "mixedLayout": { "type": "boolean" },
+        "requiredText": { "type": "boolean" },
+        "widget": { "$ref": "#/definitions/widget" },
+        "color": { "$ref": "#/definitions/color" },
+        "opacity": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "spriteFrame": { "$ref": "#/definitions/resourceRef" },
+        "prefabPath": { "type": "string", "pattern": "^db://assets/.+\\.prefab$" },
+        "text": { "type": "string" },
+        "string": { "type": "string" },
+        "font": { "$ref": "#/definitions/resourceRef" },
+        "fontSize": { "type": "number", "minimum": 1 },
+        "lineHeight": { "type": "number", "minimum": 1 },
+        "maxWidth": { "type": "number", "minimum": 0 },
+        "horizontalAlign": { "type": "number" },
+        "handleTouchEvent": { "type": "boolean" },
+        "textStyle": { "$ref": "#/definitions/textStyle" },
+        "grid": { "$ref": "#/definitions/gridLayout" },
+        "scrollView": { "$ref": "#/definitions/scrollViewSpec" },
+        "toggle": { "$ref": "#/definitions/toggleSpec" },
+        "progressBar": { "$ref": "#/definitions/progressBarSpec" },
+        "richText": { "$ref": "#/definitions/richTextSpec" },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string", "minLength": 1 },
+              "properties": { "type": "object" }
+            }
+          }
+        },
+        "skipDefaultLabel": { "type": "boolean" },
+        "button": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "label": { "type": "string" },
+            "normalSprite": { "$ref": "#/definitions/resourceRef" },
+            "pressedSprite": { "$ref": "#/definitions/resourceRef" },
+            "disabledSprite": { "$ref": "#/definitions/resourceRef" },
+            "skipDefaultLabel": { "type": "boolean" }
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/node" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "label" } } },
+          "then": { "required": ["text"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "grid" } } },
+          "then": { "required": ["grid"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "scrollview" } } },
+          "then": { "required": ["scrollView"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "toggle" } } },
+          "then": { "required": ["toggle"] }
+        },
+        {
+          "if": { "properties": { "type": { "enum": ["progressbar", "progressBar", "progress"] } } },
+          "then": { "required": ["progressBar"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "prefab" } } },
+          "then": { "required": ["prefabPath"] }
+        }
+      ]
+    }
+  }
+}

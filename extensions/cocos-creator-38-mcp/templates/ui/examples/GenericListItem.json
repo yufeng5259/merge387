@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "name": "GenericListItem",
+  "description": "Neutral list item with icon placeholder, title, subtitle, and action button.",
+  "prefabPath": "db://assets/mcp-generated/GenericListItem.prefab",
+  "resources": {
+    "itemBg": { "role": "container_bg" },
+    "icon": { "role": "default_icon" },
+    "buttonBg": { "role": "default_button_bg" }
+  },
+  "root": {
+    "name": "GenericListItem",
+    "type": "panel",
+    "size": [520, 120],
+    "spriteFrame": { "role": "container_bg" },
+    "children": [
+      {
+        "name": "Icon",
+        "type": "sprite",
+        "position": [-205, 0],
+        "size": [72, 72],
+        "spriteFrame": { "role": "default_icon" }
+      },
+      {
+        "name": "Title",
+        "type": "label",
+        "position": [-80, 24],
+        "size": [240, 32],
+        "text": "List Item",
+        "fontSize": 24,
+        "color": "#FFFFFF"
+      },
+      {
+        "name": "Subtitle",
+        "type": "label",
+        "position": [-80, -20],
+        "size": [240, 28],
+        "text": "Secondary text",
+        "fontSize": 20,
+        "color": "#AFC0D8"
+      },
+      {
+        "name": "ActionButton",
+        "type": "button",
+        "position": [190, 0],
+        "size": [120, 54],
+        "spriteFrame": { "role": "default_button_bg" },
+        "button": { "label": "Go", "normalSprite": { "role": "default_button_bg" } }
+      }
+    ]
+  }
+}

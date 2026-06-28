@@ -1,0 +1,264 @@
+
+title.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+coin 2_00004
+  rotate: true
+  xy: 2, 4
+  size: 106, 166
+  orig: 453, 284
+  offset: 42, 61
+  index: -1
+coin 2_00005
+  rotate: false
+  xy: 715, 600
+  size: 130, 183
+  orig: 453, 284
+  offset: 42, 44
+  index: -1
+coin 2_00006
+  rotate: false
+  xy: 377, 555
+  size: 160, 184
+  orig: 453, 284
+  offset: 47, 42
+  index: -1
+coin 2_00007
+  rotate: false
+  xy: 353, 368
+  size: 174, 185
+  orig: 453, 284
+  offset: 63, 42
+  index: -1
+coin 2_00008
+  rotate: false
+  xy: 539, 596
+  size: 174, 185
+  orig: 453, 284
+  offset: 92, 42
+  index: -1
+coin 2_00009
+  rotate: false
+  xy: 847, 634
+  size: 175, 182
+  orig: 453, 284
+  offset: 122, 43
+  index: -1
+coin 2_00010
+  rotate: true
+  xy: 353, 201
+  size: 165, 182
+  orig: 453, 284
+  offset: 154, 43
+  index: -1
+coin 2_00011
+  rotate: true
+  xy: 343, 25
+  size: 174, 183
+  orig: 453, 284
+  offset: 183, 42
+  index: -1
+coin 2_00012
+  rotate: true
+  xy: 539, 426
+  size: 168, 183
+  orig: 453, 284
+  offset: 213, 42
+  index: -1
+coin 2_00013
+  rotate: false
+  xy: 724, 416
+  size: 139, 182
+  orig: 453, 284
+  offset: 243, 42
+  index: -1
+coin 2_00014
+  rotate: true
+  xy: 537, 137
+  size: 120, 170
+  orig: 453, 284
+  offset: 272, 43
+  index: -1
+coin 2_00015
+  rotate: true
+  xy: 528, 24
+  size: 111, 116
+  orig: 453, 284
+  offset: 302, 44
+  index: -1
+coin 2_00017
+  rotate: false
+  xy: 812, 8
+  size: 53, 74
+  orig: 453, 284
+  offset: 363, 42
+  index: -1
+coin 2_00018
+  rotate: false
+  xy: 998, 993
+  size: 24, 29
+  orig: 453, 284
+  offset: 392, 43
+  index: -1
+logo1
+  rotate: false
+  xy: 2, 555
+  size: 373, 184
+  orig: 373, 184
+  offset: 0, 0
+  index: -1
+logo2
+  rotate: false
+  xy: 2, 741
+  size: 469, 281
+  orig: 469, 281
+  offset: 0, 0
+  index: -1
+shield 1_00002
+  rotate: false
+  xy: 646, 55
+  size: 57, 80
+  orig: 469, 281
+  offset: 74, 173
+  index: -1
+shield 1_00003
+  rotate: true
+  xy: 875, 41
+  size: 86, 114
+  orig: 469, 281
+  offset: 74, 149
+  index: -1
+shield 1_00004
+  rotate: true
+  xy: 190, 2
+  size: 113, 142
+  orig: 469, 281
+  offset: 74, 126
+  index: -1
+shield 1_00005
+  rotate: false
+  xy: 875, 298
+  size: 133, 164
+  orig: 469, 281
+  offset: 78, 106
+  index: -1
+shield 1_00006
+  rotate: false
+  xy: 865, 464
+  size: 149, 168
+  orig: 469, 281
+  offset: 85, 102
+  index: -1
+shield 1_00007
+  rotate: false
+  xy: 710, 246
+  size: 163, 168
+  orig: 469, 281
+  offset: 92, 102
+  index: -1
+shield 1_00008
+  rotate: false
+  xy: 537, 259
+  size: 171, 165
+  orig: 469, 281
+  offset: 105, 105
+  index: -1
+shield 1_00009
+  rotate: false
+  xy: 709, 84
+  size: 164, 160
+  orig: 469, 281
+  offset: 131, 110
+  index: -1
+shield 1_00010
+  rotate: false
+  xy: 190, 321
+  size: 161, 232
+  orig: 469, 281
+  offset: 153, 35
+  index: -1
+shield 1_00011
+  rotate: false
+  xy: 656, 785
+  size: 168, 237
+  orig: 469, 281
+  offset: 153, 26
+  index: -1
+shield 1_00012
+  rotate: false
+  xy: 473, 783
+  size: 181, 239
+  orig: 469, 281
+  offset: 153, 18
+  index: -1
+shield 1_00013
+  rotate: false
+  xy: 2, 325
+  size: 186, 228
+  orig: 469, 281
+  offset: 168, 12
+  index: -1
+shield 1_00014
+  rotate: false
+  xy: 2, 112
+  size: 186, 211
+  orig: 469, 281
+  offset: 185, 11
+  index: -1
+shield 1_00015
+  rotate: false
+  xy: 826, 818
+  size: 170, 204
+  orig: 469, 281
+  offset: 203, 11
+  index: -1
+shield 1_00016
+  rotate: false
+  xy: 190, 117
+  size: 151, 202
+  orig: 469, 281
+  offset: 222, 11
+  index: -1
+shield 1_00017
+  rotate: false
+  xy: 875, 129
+  size: 122, 167
+  orig: 469, 281
+  offset: 251, 20
+  index: -1
+shield 1_00018
+  rotate: true
+  xy: 705, 6
+  size: 76, 105
+  orig: 469, 281
+  offset: 288, 38
+  index: -1
+
+title2.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+2_00000
+  rotate: false
+  xy: 2, 96
+  size: 142, 142
+  orig: 150, 150
+  offset: 3, 5
+  index: -1
+coin 2_00016
+  rotate: false
+  xy: 146, 149
+  size: 83, 89
+  orig: 453, 284
+  offset: 333, 42
+  index: -1
+hockey_guang4
+  rotate: false
+  xy: 2, 2
+  size: 81, 92
+  orig: 150, 150
+  offset: 34, 34
+  index: -1
