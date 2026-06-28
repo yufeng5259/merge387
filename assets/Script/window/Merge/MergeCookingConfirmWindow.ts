@@ -5,7 +5,7 @@ import { MergeContentUtil } from '../../game/merge/MergeContentUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('MergeCookingConfirmWindow')
-export class MergeCookingConfirmWindow extends UIWindow {
+export default class MergeCookingConfirmWindow extends UIWindow {
     @property
     public toolContent = 'ContentModel';
     @property
@@ -141,8 +141,8 @@ export class MergeCookingConfirmWindow extends UIWindow {
 
 }
 
-
-module.exports = MergeCookingConfirmWindow
+// (global as any).MergeCookingConfirmWindow = MergeCookingConfirmWindow;
+// (window as any).MergeCookingConfirmWindow = MergeCookingConfirmWindow;
 /**
  * Note: The original script has been commented out, due to the large number of changes in the script, there may be missing in the conversion, you need to convert it manually
  */

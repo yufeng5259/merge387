@@ -1,6 +1,7 @@
 import { Asset, assetManager, ImageAsset, native, resources, SpriteFrame } from 'cc';
 import type { Constructor } from 'cc';
 import { DEV, JSB } from 'cc/env';
+import { cce } from '../../LegacyGlobals';
 
 type AssetType<T extends Asset = Asset> = Constructor<T> | null;
 type LoadCallback<T extends Asset = Asset> = (err: Error | null, asset: T | null) => void;

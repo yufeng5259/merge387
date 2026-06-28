@@ -1,4 +1,7 @@
 import '../LegacyGlobals';
+import './extentions/ccExtention';
+import './extentions/CCEaseTypes';
+import './extentions/CCActionExtention';
 import NetRequest from './../Web/NetRequest';
 import ServerRequest from './../Web/ServerRequest';
 import BatchRequest from './../Web/BatchRequest';

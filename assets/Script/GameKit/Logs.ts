@@ -43,4 +43,4 @@ Logs.Error = function(...values) {
   AppMain.instance.logerror({msg:"".concat(...values), url:"", line:""})
 }
 
-global.Logs = Logs;
+globalThis.Logs = Logs;

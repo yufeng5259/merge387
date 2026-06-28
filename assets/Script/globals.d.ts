@@ -10,7 +10,7 @@ declare const UIRoot: any;
 declare const DialogWindow: any;
 declare const nullFunction: any;
 declare const BigNumber: any;
-declare const cce: any;
+declare var cce: any;
 declare const addFunction: any;
 declare const ChangeSceneManager: any;
 declare const global: any;
@@ -51,6 +51,8 @@ interface Array<T> {
     indexesOf(item: T): number[];
 }
 interface Window {
+    cce: any;
+    __errorHandler?: (url: any, line: any, msg: any, stack: any) => void;
     timeouts: Record<string, Array<ReturnType<typeof setTimeout>>>;
     intervals: Record<string, Array<ReturnType<typeof setInterval>>>;
     osetTimeout: typeof setTimeout;

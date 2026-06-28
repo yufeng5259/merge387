@@ -1,4 +1,5 @@
 import { Node, Size, Sprite, TweenAction, UITransform } from 'cc';
+import { cce } from '../../LegacyGlobals';
 
 type SizeLike = Size | { x?: number; y?: number; width?: number; height?: number } | number;
 type UpdateCallback = (delta: number, ratio: number) => void;

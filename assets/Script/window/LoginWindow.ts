@@ -102,8 +102,7 @@ export default class LoginWindow extends UIWindow {
                 let budleID = AppKit.NativeWrap.getBudleID();
                 if (budleID === DESIGN_APP_BUDLE_ID) {
                     // 新游�?beachcoin
-                    var result = (jsb as any).reflection.callStaticMethod(AppKit.NativeWrap.getAndroidBundleCall() + "SDKHandleClass", "GetVersion", "(Ljava/lang/String;)Ljava/lang/String;", "{}");
-                    var version = JSON.parse(result).value;
+                    var version = AppKit.NativeWrap.getVersion();
                     if (GameKit.StringUtil.VersionOver(version, "0.0.0") < 0) {
                         // 强制更新
                         let isForce = true;

@@ -1,5 +1,6 @@
 import { Enum, easing } from 'cc';
 import type { TweenEasing } from 'cc';
+import { cce } from '../../LegacyGlobals';
 
 const DEFAULT_RATE = 2;
 const DEFAULT_ELASTIC_PERIOD = 0.3;

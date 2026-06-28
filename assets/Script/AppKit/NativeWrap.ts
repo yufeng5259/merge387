@@ -1,12 +1,12 @@
 //原生方法
-import { sys } from 'cc';
-import { JSB } from 'cc/env';
+import { native, sys } from 'cc';
+import { NATIVE } from 'cc/env';
 
 type NativeCallback = ((param: any) => void) | null | undefined;
 type NativeParam = Record<string, any>;
-type NativeBridge = typeof jsb & {
+type NativeBridge = typeof native & {
     reflection: {
-        callStaticMethod(className: string, methodName: string, signatureOrParam?: string, param?: string): string | void;
+        callStaticMethod(className: string, methodName: string, signatureOrParam: string, ...params: any[]): any;
     };
 };
 type NativeWindow = Window & { nativeClientCall?: (paramStr: string) => void };
@@ -20,7 +20,7 @@ type NativeWrapper = Record<string, any> & {
 };
 
 function getNativeBridge(): NativeBridge | null {
-    return JSB && typeof jsb !== 'undefined' ? jsb as NativeBridge : null;
+    return NATIVE ? native as NativeBridge : null;
 }
 
 var NativeWrap: NativeWrapper = {callbacks: {}, timeoutIds: {}, index: 0, budleID: "",budleCall: "", noIndexCall: []}

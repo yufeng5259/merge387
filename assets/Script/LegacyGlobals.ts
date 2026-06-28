@@ -7,6 +7,7 @@ export type LegacyGlobals = {
     GameKit: LegacyRoot;
     AppKit: LegacyRoot;
     G: LegacyRoot;
+    cce: LegacyRoot;
 };
 
 function getRoot(): LegacyRoot {
@@ -30,6 +31,7 @@ export function ensureLegacyGlobals(): LegacyGlobals {
     const GameKit = (root.GameKit || windowRoot?.GameKit || globalRoot?.GameKit || {}) as LegacyRoot;
     const AppKit = (root.AppKit || windowRoot?.AppKit || globalRoot?.AppKit || {}) as LegacyRoot;
     const G = (root.G || windowRoot?.G || globalRoot?.G || {}) as LegacyRoot;
+    const cce = (root.cce || windowRoot?.cce || globalRoot?.cce || {}) as LegacyRoot;
 
     attachAlias(root, 'Game', Game);
     attachAlias(root, 'Meta', Meta);
@@ -37,6 +39,7 @@ export function ensureLegacyGlobals(): LegacyGlobals {
     attachAlias(root, 'GameKit', GameKit);
     attachAlias(root, 'AppKit', AppKit);
     attachAlias(root, 'G', G);
+    attachAlias(root, 'cce', cce);
 
     if (windowRoot) {
         attachAlias(windowRoot, 'Game', Game);
@@ -45,6 +48,7 @@ export function ensureLegacyGlobals(): LegacyGlobals {
         attachAlias(windowRoot, 'GameKit', GameKit);
         attachAlias(windowRoot, 'AppKit', AppKit);
         attachAlias(windowRoot, 'G', G);
+        attachAlias(windowRoot, 'cce', cce);
     }
 
     if (globalRoot) {
@@ -54,13 +58,14 @@ export function ensureLegacyGlobals(): LegacyGlobals {
         attachAlias(globalRoot, 'GameKit', GameKit);
         attachAlias(globalRoot, 'AppKit', AppKit);
         attachAlias(globalRoot, 'G', G);
+        attachAlias(globalRoot, 'cce', cce);
     }
 
     if (!globalRoot) {
         attachAlias(root, 'global', root);
     }
 
-    return { Game, Meta, SR, GameKit, AppKit, G };
+    return { Game, Meta, SR, GameKit, AppKit, G, cce };
 }
 
 const legacyGlobals = ensureLegacyGlobals();
@@ -71,5 +76,6 @@ export const SR = legacyGlobals.SR;
 export const GameKit = legacyGlobals.GameKit;
 export const AppKit = legacyGlobals.AppKit;
 export const G = legacyGlobals.G;
+export const cce = legacyGlobals.cce;
 
 export default legacyGlobals;
