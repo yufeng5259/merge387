@@ -346,6 +346,7 @@ export class MergeUI extends Component {
     }
 
     onClickOpenVillage () {
+        console.log('onClickOpenVillage');
         SR.SRMerge.AutoSendSaveMapLite();
         GamePlay.instance.changeScene(GamePlay.Scenes.Village);
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {

@@ -8,7 +8,21 @@ export class SetZIndex extends Component {
     public zAdd = 0;
 
     start(): void {
-        this.node.setSiblingIndex(this.zAdd);
+        this.updateSiblingIndex();
+    }
+
+    lateUpdate(): void {
+        this.updateSiblingIndex();
+    }
+
+    private updateSiblingIndex(): void {
+        const parent = this.node.parent;
+        if (!parent) return;
+
+        const targetIndex = Math.min(this.zAdd, parent.children.length - 1);
+        if (this.node.getSiblingIndex() !== targetIndex) {
+            this.node.setSiblingIndex(targetIndex);
+        }
     }
 }
 

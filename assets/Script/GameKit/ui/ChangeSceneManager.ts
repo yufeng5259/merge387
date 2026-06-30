@@ -23,7 +23,23 @@ export class ChangeSceneManager extends Component {
     start() {
     }
 
+    private bringToTop() {
+        const root = typeof UIRoot !== 'undefined' && UIRoot.instance ? UIRoot.instance.node : null;
+        let target = this.node;
+
+        if (root) {
+            while (target.parent && target.parent !== root) {
+                target = target.parent;
+            }
+        }
+
+        const parent = target.parent;
+        if (!parent) return;
+        target.setSiblingIndex(parent.children.length - 1);
+    }
+
     show(callback?: () => void) {
+        this.bringToTop();
         UIRoot.instance.ShowCantClick(true);
         EnterCloseAnim.playEnter(this.node);
         this.scheduleOnce(() => {

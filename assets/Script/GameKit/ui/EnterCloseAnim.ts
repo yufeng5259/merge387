@@ -15,6 +15,7 @@ import {
 } from 'cc';
 import { CCEaseType, GetEasing } from '../extentions/CCEaseTypes';
 import type { CCEasing } from '../extentions/CCEaseTypes';
+import CCTools from '../extentions/CCTools';
 
 const { ccclass, executionOrder, property, requireComponent } = _decorator;
 
@@ -408,6 +409,7 @@ export class EnterCloseAnim extends Component {
 
     init() {
         if (this.inited) return;
+        CCTools.WidgetsUpdateAlignment(this.node);
         this.st_opacity = this.opacity.opacity;
         this.st_scale = this.node.scale.clone();
         this.st_pos = this.node.position.clone();
@@ -485,6 +487,7 @@ export class EnterCloseAnim extends Component {
 
     static playEnterImmediately(node: Node) {
         if (!node) return;
+        CCTools.WidgetsUpdateAlignment(node);
         node.getComponentsInChildren(EnterCloseAnim).forEach((x2) => {
             if (x2.enabled && x2.node.active) {
                 x2.init();
@@ -506,6 +509,7 @@ export class EnterCloseAnim extends Component {
 
     static playCloseImmediately(node: Node) {
         if (!node) return;
+        CCTools.WidgetsUpdateAlignment(node);
         node.getComponentsInChildren(EnterCloseAnim).forEach((x2) => {
             if (x2.enabled && x2.node.active) {
                 x2.init();
