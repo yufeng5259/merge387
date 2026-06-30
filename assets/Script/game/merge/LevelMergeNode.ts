@@ -168,7 +168,8 @@ export class LevelMergeNode extends Component {
                 if (!dataStr) continue
 
                 let childNode = this.getItem()
-                childNode.setPosition(GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout()))
+                const childPos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
+                childNode.setPosition(childPos.x, childPos.y, 0)
                 childNode.parent = this.node
                 let mergeItem = childNode.getComponent(MergeItem)
                 mergeItem.InitMergeItem(tx, ty, Game.SUserMerge.ParseMergeMapData(dataStr))
@@ -1042,14 +1043,14 @@ export class LevelMergeNode extends Component {
                                         cellNode.parent = this.node
                                     }
                                     Tween.stopAllByTarget(cellNode)
-                                    cellNode.setPosition(cutOriginPos)
+                                    cellNode.setPosition(cutOriginPos.x, cutOriginPos.y, 0)
                                     let mi = cellNode.getComponent(MergeItem)
                                     if (mi) mi.InitMergeItem(tx, ty, cutPiece.pieceData)
                                     let dx = toPos.x - cutOriginPos.x
                                     let dy = toPos.y - cutOriginPos.y
                                     let dist = Math.sqrt(dx * dx + dy * dy)
                                     if (dist < 2) {
-                                        cellNode.setPosition(toPos)
+                                        cellNode.setPosition(toPos.x, toPos.y, 0)
                                         playCutPieceShake(cellNode)
                                         maxCutPieceAnimEnd = Math.max(maxCutPieceAnimEnd, cutPieceShakeEnterTime)
                                     } else {
@@ -1092,7 +1093,7 @@ export class LevelMergeNode extends Component {
                                     if (degFlyTm < 0.08) degFlyTm = 0.08
                                     scheduleTwoCanMergeHintAfterCut(degFlyTm)
                                     this._flyback(degPos, startMergeItem.node, degFlyTm, () => {
-                                        startMergeItem.node.setPosition(degPos)
+                                        startMergeItem.node.setPosition(degPos.x, degPos.y, 0)
                                         startMergeItem.InitMergeItem(tx, ty, degradedScissors.pieceData)
                                         finishScissorsMergeUI()
                                     })
@@ -1269,7 +1270,7 @@ export class LevelMergeNode extends Component {
      * 落回起点的点击 / 短距移动：双击意图、更新 last 选中。
      */
     _touchEndSameCellTap(touch1?: any, endPos?: any, endPosName?: any, startMergeItem?: any, dropMergeItem?: any, dropNode?: any) {
-        this.touchStartNode.setPosition(endPos)
+        this.touchStartNode.setPosition(endPos.x, endPos.y, 0)
         let dist1 = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
         if (dist1 < 40) {
             // this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
@@ -1509,7 +1510,7 @@ export class LevelMergeNode extends Component {
         let toPos = GameKit.MergeUtil.tile2px(tx2, ty2, boardLayout)
         let fakeNode = this.getItem()
         fakeNode.name = cellKey2
-        fakeNode.setPosition(fromPos)
+        fakeNode.setPosition(fromPos.x, fromPos.y, 0)
         fakeNode.parent = this.node
         fakeNode.setSiblingIndex(this.node.children.length)
 
@@ -2024,7 +2025,7 @@ export class LevelMergeNode extends Component {
 
         let child = this.getItem()
         let pos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
-        child.setPosition(pos)
+        child.setPosition(pos.x, pos.y, 0)
         child.parent = this.node
         let mergeItem = child.getComponent(MergeItem)
 
@@ -2037,7 +2038,7 @@ export class LevelMergeNode extends Component {
         this.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.UNDO, forceSend: true }).then(() => {
             let child = this.getItem()
             let pos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
-            child.setPosition(pos)
+            child.setPosition(pos.x, pos.y, 0)
             child.parent = this.node
             child.setScale(0, 0, 0);
             let mergeItem = child.getComponent(MergeItem)
@@ -2269,7 +2270,7 @@ export class LevelMergeNode extends Component {
         let pos = GameKit.MergeUtil.tile2px(generateTilePos.x, generateTilePos.y, boardLayout)
         let newNode = this.getItem();
         this.node.addChild(newNode);
-        newNode.setPosition(frompos)
+        newNode.setPosition(frompos.x, frompos.y, 0)
         let item = newNode.getComponent(MergeItem);
         item.InitMergeItem(generateTilePos.x, generateTilePos.y, mergeDataStr)
         this.playItemJumpAnim(newNode, frompos, pos, {}, cb);
