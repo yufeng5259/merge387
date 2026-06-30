@@ -2,9 +2,10 @@ import '../../LegacyGlobals';
 
 //slot数据
 
-class UserSlot {
+export class UserSlot {
+    public data: any;
 
-    constructor (userId) {
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -101,5 +102,3 @@ class UserSlot {
         return goldCount <= 0
     }
 }
-
-global.Game.UserSlot = UserSlot

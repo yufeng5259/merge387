@@ -1,8 +1,9 @@
+import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import List from '../../GameKit/ui/list/List';
 import StoreItem from '../../game/merge/StoreItem';
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 /**
  * Store界面
  * - 包含各类按钮的点击事件处理
@@ -15,13 +16,14 @@ class StoreWindow extends UIWindow {
     static windowPath = "Merge/StoreWindow"
     @property(List)
     list = null
-    @property(cc.Node)
+    @property(Node)
     listBg = null
     @property(StoreItem)
     storeItemTemplete = null
     // id:-1 为添加格子 -2为空格 -3为锁定格子 >0为合并格子
     storeItems = []
     storeItemGroupSize = 4
+    tempPutbackMergeData: any[] = []
     
 
     onShow(showParams) {
@@ -53,7 +55,7 @@ class StoreWindow extends UIWindow {
         })
         this.list.numItems = Math.ceil(this.storeItems.length / this.storeItemGroupSize)
         let row=this.list.numItems
-        this.listBg.height = row*115
+        this.listBg.getComponent(UITransform).height = row*115
     }
 
 
@@ -83,13 +85,13 @@ class StoreWindow extends UIWindow {
         }
         for (let i = this.storeItemGroupSize; i < container.children.length; i++) {
             container.children[i].active = false
-            container.children[i].off(cc.Node.EventType.TOUCH_END)
+            container.children[i].off(Node.EventType.TOUCH_END)
         }
     }
 
     ensureStoreItemCount(container) {
         while (container.children.length < this.storeItemGroupSize && this.storeItemTemplete && this.storeItemTemplete.node) {
-            let itemNode = cc.instantiate(this.storeItemTemplete.node)
+            let itemNode = instantiate(this.storeItemTemplete.node)
             itemNode.parent = container
         }
     }
@@ -98,7 +100,7 @@ class StoreWindow extends UIWindow {
         if (!node) {
             return
         }
-        node.off(cc.Node.EventType.TOUCH_END)
+        node.off(Node.EventType.TOUCH_END)
         if (index >= this.storeItems.length) {
             node.active = false
             return
@@ -145,7 +147,7 @@ class StoreWindow extends UIWindow {
             addGrid.active = false
             icon.spriteFrame = GamePlay.instance.mergeRoot.mergeLevelNode.GetSpriteFrameByMergeId(mergeId);
         }
-        node.on(cc.Node.EventType.TOUCH_END, () => {
+        node.on(Node.EventType.TOUCH_END, () => {
             if (addGrid.active) {
                 let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeWharehouse, index + 1)
                 if (!meta) {
@@ -181,7 +183,6 @@ class StoreWindow extends UIWindow {
         })
     }
     update(){
-        // this.listBg.height = this.list.content.node.height
-        this.listBg.y=this.list.content.node.y
+        this.listBg.setPosition(this.listBg.position.x, this.list.content.node.position.y, this.listBg.position.z)
     }
 }

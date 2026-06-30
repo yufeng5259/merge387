@@ -1,9 +1,11 @@
+import { _decorator, Button, instantiate, Label, Node, ParticleSystem, Sprite, SpriteFrame, tween, Tween, UIOpacity, Vec3 } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import SpriteGray from '../../../GameKit/render/SpriteGray';
 import ContentModel from '../../../game/items/ContentModel';
 import GiftData from './GiftData';
 
-const { ccclass, property } = cc._decorator
+import { UserItems } from '../../../game/items/UserItems';
+const { ccclass, property } = _decorator
 
 const tipPosY=[ -156,-429,-210]
 const arrowY=[295,295,-38]
@@ -13,21 +15,23 @@ export default class GiftMainWindow extends UIWindow {
 
     static windowPath = "Activity/gift/GiftMainWindow";
     
+    meta = null
+    leftTime = null
+    showNextAnim = false
 
-    /** @type {cc.Label} */
-    @property({ tooltip: "", type: cc.Label })
+
+    @property({ tooltip: "", type: Label })
     labelTimer = null
 
-    @property(cc.SpriteFrame)
+    @property([SpriteFrame])
     mysprites=[]
 
-    @property(cc.Node)
+    @property([Node])
     items=[]
 
-    // @property(cc.Node)
     // desItems=[]
 
-    @property(cc.Node)
+    @property(Node)
     giftDes=null
 
     onShow(params) {
@@ -58,29 +62,34 @@ export default class GiftMainWindow extends UIWindow {
             
             //n.parent = this.buy_item.parent
             n.active = true
-            // n.y = ItemYs[i]
             let data = {
                 node: n,
                 reward_layout: GameKit.ControllerTable.GetNode(n, "reward-layout"),
                 reward_item: GameKit.ControllerTable.GetNode(n, "reward-item"),
-                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(cc.Label),
-                label_buy_count: GameKit.ControllerTable.GetNode(n, "label-buy-count").getComponent(cc.Label),
+                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(Label),
+                label_buy_count: GameKit.ControllerTable.GetNode(n, "label-buy-count").getComponent(Label),
                 buy_lock: GameKit.ControllerTable.GetNode(n, "buy-lock"),
                 buy_use_coin: GameKit.ControllerTable.GetNode(n, "buy-use-coin"),
-                bkg2: GameKit.ControllerTable.GetNode(n, "bkg2").getComponent(cc.Sprite),
-                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(cc.Button),
+                bkg2: GameKit.ControllerTable.GetNode(n, "bkg2").getComponent(Sprite),
+                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(Button),
                 cannot_buy: GameKit.ControllerTable.GetNode(n, "cannot-buy"),
                 arrow: GameKit.ControllerTable.GetNode(n, "arrow"),
-                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(cc.ParticleSystem),
+                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem),
             }
             if(i==5){
                 data.arrow.active=false
             }
             data.buy_lock_particle.node.active=false
             data.reward_item.active=false;
-            let seq=cc.repeatForever(cc.sequence(cc.scaleTo(1,1.5,1),cc.scaleTo(1,1,1)));
             if(data.arrow&&data.arrow.active){
-                data.arrow.runAction(seq)
+                Tween.stopAllByTarget(data.arrow)
+                tween(data.arrow)
+                    .repeatForever(
+                        tween()
+                            .to(1, { scale: new Vec3(1.5, 1, 1) })
+                            .to(1, { scale: new Vec3(1, 1, 1) })
+                    )
+                    .start()
             }
             // data.bkg2.active=false
             this.buy_item_list.push(data)
@@ -91,7 +100,7 @@ export default class GiftMainWindow extends UIWindow {
     }
     // 已经购买的按钮隐藏，底背景置灰,箭头隐藏
     hasBuyItem(data,i){
-        SpriteGray.SetGray(data.node.getComponent(cc.Sprite), true)
+        SpriteGray.SetGray(data.node.getComponent(Sprite), true)
         data.btn_buy.node.active=false
         data.btn_buy.interactable=false
         data.buy_lock.active=false
@@ -101,7 +110,7 @@ export default class GiftMainWindow extends UIWindow {
     }
     //可以购买的对象，免费则隐藏锁，表面背景隐藏，显示底背景，按钮可以点击
     curBuyItem(data,i){
-        SpriteGray.SetGray(data.node.getComponent(cc.Sprite), false)
+        SpriteGray.SetGray(data.node.getComponent(Sprite), false)
         data.btn_buy.interactable=true
         data.btn_buy.node.active=true
         data.bkg2.node.active=false
@@ -121,7 +130,7 @@ export default class GiftMainWindow extends UIWindow {
     }
     //没有购买则显示bkg2
     noBuyItem(data,i){
-        SpriteGray.SetGray(data.node.getComponent(cc.Sprite), false)
+        SpriteGray.SetGray(data.node.getComponent(Sprite), false)
         data.bkg2.node.active=true
         data.btn_buy.interactable=false
         data.buy_lock.active=true
@@ -158,11 +167,10 @@ export default class GiftMainWindow extends UIWindow {
             let currentGet = Game.Content.FromStrings(Meta.packrewardMeta.GetValue(packItem.bounce.id).Item())
             // console.log(data.node,currentGet);
             currentGet.forEach((reward,idx) => {
-                let reward_node = cc.instantiate(data.reward_item)
+                let reward_node = instantiate(data.reward_item)
                 reward_node.parent = data.reward_layout
                 reward_node.active = true
                 reward_node.getComponent(ContentModel).show(reward)
-                // reward_node.getComponent(cc.Button).clickEvents[0].customEventData = `reward||${i}_${idx}`
                 reward_node.name="item_"+(i)+"_"+idx
                 if(reward.type== Game.Content.Types.RandomPack||reward.type==Game.Content.Types.Gift){
                     reward_node.getChildByName("info").active=true
@@ -311,28 +319,35 @@ export default class GiftMainWindow extends UIWindow {
         let self=this
         data.buy_lock_particle.node.active=true
         data.buy_lock_particle.resetSystem()
-        data.buy_lock_particle.node.runAction(cc.sequence(cc.delayTime(2),cc.callFunc(()=>{
+        this.scheduleOnce(() => {
             data.buy_lock_particle.node.active=false
-        })))
+        }, 2)
         this.alphaNode(data.buy_lock,0.5,0,()=>{
             self.curBuyItem(data,index)
         })
     }
     alphaNode(node,time,alpha,callback){
-        let req=cc.sequence(cc.fadeTo(time,alpha).easing(cce.CCEaseTypes.GetEasing(cce.CCEaseTypes.Types.easeInOut)),cc.callFunc(()=>{
-            if(callback){
-                callback()
-            }
-        }))
-        node.runAction(req)
+        let opacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity)
+        Tween.stopAllByTarget(opacity)
+        tween(opacity)
+            .to(time, { opacity: alpha }, { easing: 'quadInOut' })
+            .call(() => {
+                if(callback){
+                    callback()
+                }
+            })
+            .start()
     }
     scaleNode(node,time,scaleX,scaleY,callback){
-        let req=cc.sequence(cc.scaleTo(time, scaleX, scaleY).easing(cce.CCEaseTypes.GetEasing(cce.CCEaseTypes.Types.easeInOut)),cc.callFunc(()=>{
-            if(callback){
-                callback()
-            }
-        }))
-        node.runAction(req)
+        Tween.stopAllByTarget(node)
+        tween(node)
+            .to(time, { scale: new Vec3(scaleX, scaleY, node.scale.z) }, { easing: 'quadInOut' })
+            .call(() => {
+                if(callback){
+                    callback()
+                }
+            })
+            .start()
     }
     // 该物品已经获取则按钮隐藏动画，背景显示为灰色
     //如存在下一个对象则下一个对象背景为金黄色，如是免费则动画隐藏锁
@@ -340,7 +355,7 @@ export default class GiftMainWindow extends UIWindow {
     showNext(type,rewards) {
         for (let index = 0; index < rewards.length; index++) {
             const reward = rewards[index];
-            if(reward.ContentId()==Game.UserItems.ToolType.GoldEgg){
+            if(reward.ContentId()==UserItems.ToolType.GoldEgg){
                 Game.ActivityManager.AddLocalDymicActiveToolList()
                 this.nextStep()
                 return
@@ -356,7 +371,7 @@ export default class GiftMainWindow extends UIWindow {
         //     this.showNextAnim=true
         //     this.playCurrentItemAni()
         // }else{
-        //     if(contentId==Game.UserItems.ToolType.GoldEgg){
+        //     if(contentId==UserItems.ToolType.GoldEgg){
         //         //金蛋
         //         this.closeAnim(()=>{
         //             if(GamePlay.instance.currentScene!=GamePlay.Scenes.Slot){

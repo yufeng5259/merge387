@@ -1,6 +1,7 @@
 import { _decorator, Button, Component, find, instantiate, isValid, Label, Node, RichText, UITransform, Vec3 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 
+import { UserMap } from '../../game/map/UserMap';
 const { ccclass } = _decorator;
 
 @ccclass('MapBuyBuildWindow')
@@ -134,7 +135,7 @@ export default class MapBuyBuildWindow extends UIWindow {
 
     updateButton(price: any) {
         if (!this.btnLevelUp) return;
-        const canAction = this.context ? this.context.canAction : this.state !== Game.UserMap.ElementState.LevelLocked && Game.SUser.Coin() >= price;
+        const canAction = this.context ? this.context.canAction : this.state !== UserMap.ElementState.LevelLocked && Game.SUser.Coin() >= price;
         this.btnLevelUp.interactable = canAction;
         (this.btnLevelUp as any).enableAutoGrayEffect = !canAction;
     }

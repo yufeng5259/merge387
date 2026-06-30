@@ -1,126 +1,71 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Color, Component, instantiate, Label, Node, Prefab } from 'cc';
+import { StoryRole } from './StoryRole';
+
 const { ccclass, property } = _decorator;
 
 @ccclass('ChapterTalkNode')
 export class ChapterTalkNode extends Component {
     @property(Node)
-    public msgLbl = null;
+    public msgLbl: Node | Label | null = null;
 
-    start () {
-        // this.init(); 
+    public nameLbl: Label | null = null;
+    public userNode: Node | null = null;
+    public bgsp: Node | null = null;
+    public colorList: Color[] = [new Color().fromHEX('#D55482'), new Color().fromHEX('#349DE7'), new Color().fromHEX('#7D6FE3')];
+    public storyMeta: any = null;
+    public eid: any = null;
+    public roleMeta: any = null;
+
+    public start() {
+        this.init();
     }
 
-    init () {
-        // this.msgLbl = GameKit.ControllerTable.GetNode(this.node, "msgLbl").getComponent(cc.Label); 
-        // this.nameLbl = GameKit.ControllerTable.GetNode(this.node, "nameLbl").getComponent(cc.Label); 
-        // this.userNode =GameKit.ControllerTable.GetNode(this.node, "userNode"); 
-        // this.bgsp =GameKit.ControllerTable.GetNode(this.node, "bgNode"); 
-        // this.userNode.removeAllChildren(); 
-        // this.colorList = ["#D55482","#349DE7","#7D6FE3"] 
+    public init() {
+        this.msgLbl = GameKit.ControllerTable.GetNode(this.node, 'msgLbl').getComponent(Label);
+        this.nameLbl = GameKit.ControllerTable.GetNode(this.node, 'nameLbl').getComponent(Label);
+        this.userNode = GameKit.ControllerTable.GetNode(this.node, 'userNode');
+        this.bgsp = GameKit.ControllerTable.GetNode(this.node, 'bgNode');
+        this.userNode.removeAllChildren();
+        this.colorList = [new Color().fromHEX('#D55482'), new Color().fromHEX('#349DE7'), new Color().fromHEX('#7D6FE3')];
     }
 
-    showInfo (data: any) {
-        // this.init(); 
-        // this.storyMeta = data; 
-        // this.eid = this.storyMeta.EId(); 
-        // this.roleMeta = this.storyMeta.GetRoleMeata(this.eid); 
-        // this.bgsp.getChildByName("bg0").node.active = false; 
-        // this.bgsp.getChildByName("bg1").node.active = false; 
-        // this.bgsp.getChildByName("bg2").node.active = false; 
-        // this.bgsp.getChildByName("bg"+this.roleMeta.Sex()).node.active = true; 
-        // this.msgLbl.color =  this.colorList[this.roleMeta.Sex()]; 
-        // this.nameLbl.string = GameKit.i18n.sel(this.roleMeta.Name()); 
-        // this.msgLbl.string = GameKit.i18n.sel(this.storyMeta.StoryContent()); 
-        // this.loadUrlPrefab(); 
+    public showInfo(data: any) {
+        this.init();
+        this.storyMeta = data;
+        this.eid = this.storyMeta.EId();
+        this.roleMeta = this.storyMeta.GetRoleMeata(this.eid);
+
+        this.bgsp.getChildByName('bg0').active = false;
+        this.bgsp.getChildByName('bg1').active = false;
+        this.bgsp.getChildByName('bg2').active = false;
+        this.bgsp.getChildByName('bg' + this.roleMeta.Sex()).active = true;
+
+        const msgLabel = this.msgLbl as Label;
+        msgLabel.color = this.colorList[this.roleMeta.Sex()];
+        this.nameLbl.string = GameKit.i18n.sel(this.roleMeta.Name());
+        msgLabel.string = GameKit.i18n.sel(this.storyMeta.StoryContent());
+        this.loadUrlPrefab();
     }
 
-    loadUrlPrefab () {
-        // let self = this; 
-        // let resName='res/Story/role/'+this.roleMeta.ResName(); 
-        // cce.loadRes(resName, cc.Prefab, function (err, vPre) { 
-            // if (err || vPre == null) { 
-                // if (CC_DEV) { 
-                    // global.loadEditorTemp = true 
-                    // return 
-                // } 
-                // DialogWindow.Show(String.format(GameKit.i18n.t("loadResError"), villageName), function() { 
-                // }.bind(this)) 
-                // return; 
-            // } 
-            // this.scheduleOnce(function() { 
-                // let roleNode = cc.instantiate(vPre); 
-                // roleNode.parent = self.userNode; 
-                // let StoryRole=roleNode.getComponent("StoryRole"); 
-                // roleNode.x=roleNode.y=0; 
-                // StoryRole.showInfo(self.storyMeta); 
-            // },0.1) 
-        // }.bind(this)); 
+    public loadUrlPrefab() {
+        const resName = 'res/Story/role/' + this.roleMeta.ResName();
+        cce.loadRes(resName, Prefab, (err: any, vPre: Prefab | null) => {
+            if (err || vPre == null) {
+                if (CC_DEV) {
+                    global.loadEditorTemp = true;
+                    return;
+                }
+                DialogWindow.Show((String as any).format(GameKit.i18n.t('loadResError'), resName), () => {
+                });
+                return;
+            }
+            this.scheduleOnce(() => {
+                const roleNode = instantiate(vPre);
+                roleNode.parent = this.userNode;
+                const storyRole = roleNode.getComponent(StoryRole);
+                roleNode.setPosition(0, 0, roleNode.position.z);
+                storyRole.showInfo(this.storyMeta);
+            }, 0.1);
+        });
     }
-
 }
-
-
-/**
- * Note: The original script has been commented out, due to the large number of changes in the script, there may be missing in the conversion, you need to convert it manually
- */
-// cc.Class({
-//     extends: cc.Component,
-// 
-//     properties: {
-//         msgLbl:cc.Node,
-//     },
-// 
-// 
-//     start () {
-//         this.init();
-//     },
-//     init(){
-//         this.msgLbl = GameKit.ControllerTable.GetNode(this.node, "msgLbl").getComponent(cc.Label);
-//         this.nameLbl = GameKit.ControllerTable.GetNode(this.node, "nameLbl").getComponent(cc.Label);
-//         this.userNode =GameKit.ControllerTable.GetNode(this.node, "userNode");
-//         this.bgsp =GameKit.ControllerTable.GetNode(this.node, "bgNode");
-//         this.userNode.removeAllChildren();
-//         this.colorList = ["#D55482","#349DE7","#7D6FE3"]
-//     },
-// 
-//     showInfo(data){
-//         this.init();
-//         this.storyMeta = data;
-//         this.eid = this.storyMeta.EId();
-//         this.roleMeta = this.storyMeta.GetRoleMeata(this.eid);
-//         this.bgsp.getChildByName("bg0").node.active = false;
-//         this.bgsp.getChildByName("bg1").node.active = false;
-//         this.bgsp.getChildByName("bg2").node.active = false;
-//         this.bgsp.getChildByName("bg"+this.roleMeta.Sex()).node.active = true;
-//         this.msgLbl.color =  this.colorList[this.roleMeta.Sex()];
-//         this.nameLbl.string = GameKit.i18n.sel(this.roleMeta.Name());
-//         this.msgLbl.string = GameKit.i18n.sel(this.storyMeta.StoryContent());
-//         this.loadUrlPrefab();
-// 
-//     },
-//     loadUrlPrefab(){
-//         let self = this;
-//         let resName='res/Story/role/'+this.roleMeta.ResName();
-//         cce.loadRes(resName, cc.Prefab, function (err, vPre) {
-//             
-//             if (err || vPre == null) {
-//                 if (CC_DEV) {
-//                     global.loadEditorTemp = true
-//                     return
-//                 }
-//                 DialogWindow.Show(String.format(GameKit.i18n.t("loadResError"), villageName), function() {
-// 
-//                 }.bind(this))
-//                 return;
-//             }
-//             this.scheduleOnce(function() {
-//                 let roleNode = cc.instantiate(vPre);
-//                 roleNode.parent = self.userNode;
-//                 let StoryRole=roleNode.getComponent("StoryRole");
-//                 roleNode.x=roleNode.y=0;
-//                 StoryRole.showInfo(self.storyMeta);
-//             },0.1)
-//             
-//         }.bind(this));
-//     },
-// });

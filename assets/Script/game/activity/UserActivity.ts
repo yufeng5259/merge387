@@ -1,67 +1,70 @@
-import '../../LegacyGlobals';
-//用户活动
+type UserActivityData = {
+    userId: any;
+    activityData: Record<string, any>;
+    symbolRankData: any;
+    collectFlagData: any;
+    passportCollectFlagData?: any;
+    [key: string]: any;
+};
 
-class UserActivity {
+export class UserActivity {
+    public data: UserActivityData;
 
-    constructor (userId) {
+    constructor(userId?: any) {
         this.data = {
-            userId: userId,
+            userId,
             activityData: {},
             symbolRankData: {},
             collectFlagData: {},
+        };
+    }
+
+    public updateData(data: Record<string, any>) {
+        for (const key in data) {
+            this.data[key] = data[key];
         }
+        return this;
     }
 
-    //更新数据
-    updateData(data) {
-        for (var key in data) {
-            this.data[key] = data[key]
+    public getData() {
+        const data: Record<string, any> = {};
+        for (const key in this.data) {
+            data[key] = this.data[key];
         }
-        return this
+        return data;
     }
 
-    //获得数据
-    getData() {
-        let data = {}
-        for (var key in this.data) {
-            data[key] = this.data[key]
-        }
-        return data
+    public setData(key: string, value: any) {
+        this.data[key] = value;
     }
 
-    //设置某项数据
-    setData(key, value) {
-        this.data[key] = value
+    public UserId() {
+        return this.data.userId;
     }
 
-    UserId() {
-        return this.data.userId
+    public GetActivityData(activityId: any) {
+        return this.data.activityData[activityId] || {};
     }
 
-    GetActivityData(activityId) {
-        return this.data.activityData[activityId] || {}
+    public GetSymbolRankData() {
+        return this.data.symbolRankData || {};
     }
 
-    GetSymbolRankData() {
-        return this.data.symbolRankData || {}
+    public GetCollectFlagData() {
+        return this.data.collectFlagData || {};
     }
 
-    GetCollectFlagData() {
-        return this.data.collectFlagData || {}
+    public GetPassportCollectFlagData() {
+        return this.data.passportCollectFlagData || {};
     }
 
-    GetPassportCollectFlagData() {
-        return this.data.passportCollectFlagData || {}
+    public GetGameActivityBadgeState() {
+        return false;
     }
 
-    GetGameActivityBadgeState() {
-        return false
-    }
-    GetGameActivityBadgeStateByType(type) {
-        let activityMeta = Game.ActivityManager.GetActiveGameActivityByType(type)
-        if (!activityMeta) return false
-        return false
+    public GetGameActivityBadgeStateByType(type: any) {
+        const activityMeta = Game.ActivityManager.GetActiveGameActivityByType(type);
+        if (!activityMeta) return false;
+        return false;
     }
 }
-
-global.Game.UserActivity = UserActivity

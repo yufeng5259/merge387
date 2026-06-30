@@ -1,7 +1,8 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 /** @author fengyong-2019-6-3 */
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     TIME: 0.3,
 }
@@ -20,12 +21,12 @@ export default class CardInfoWindow extends UIWindow {
         })
     }
 
-    /** @type {cc.Node[]} */
-    @property(cc.Node)
+    /** @type {Node[]} */
+    @property(Node)
     page_list = []
 
-    /** @type {cc.Node[]} */
-    @property(cc.Node)
+    /** @type {Node[]} */
+    @property(Node)
     page_dot_list = []
 
     /** 当前page */

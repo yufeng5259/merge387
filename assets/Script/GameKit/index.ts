@@ -18,7 +18,6 @@ import MergeUtil from '../game/merge/MergeUtil';
 import BackKeyManager from './BackKeyManager';
 import SoundManager from './SoundManager';
 import ControllerTable from './ui/ControllerTable';
-import ChildWindowChain from './ui/ChildWindowChain';
 import AutoWindowQueue from './ui/AutoWindowQueue';
 
 const existingGameKit = typeof global !== 'undefined' && global.GameKit ? global.GameKit : {};
@@ -44,7 +43,6 @@ GameKit.BackKeyManager = BackKeyManager;
 GameKit.SoundManager = SoundManager;
 
 GameKit.ControllerTable = ControllerTable;
-GameKit.ChildWindowChain = ChildWindowChain;
 GameKit.AutoWindowQueue = AutoWindowQueue;
 
 global.GameKit = GameKit;

@@ -1,6 +1,7 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import FriendsModel from '../Common/FriendsModel';
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 @ccclass
 export default class CardSelectFriendWindow extends UIWindow {
 
@@ -36,7 +37,7 @@ export default class CardSelectFriendWindow extends UIWindow {
     type;
     /** @type {CardMeta} */
     card_meta;
-    /** @type {cc.Node[]} */
+    /** @type {Node[]} */
     dot_list = []
     /** 当前选择的friend-userid */
     selected_friend_userid = null
@@ -45,8 +46,8 @@ export default class CardSelectFriendWindow extends UIWindow {
     @property(FriendsModel)
     friends_model = null
 
-    /** @type {cc.Button} */
-    @property(cc.Button)
+    /** @type {Button} */
+    @property(Button)
     btn_select = null
 
     /** 隐藏所有的choose-dot */

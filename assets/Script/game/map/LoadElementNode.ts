@@ -21,7 +21,7 @@ declare const Editor: any;
 const RES_BUILD_BASE = 'res/village/buildPrefabs';
 const RES_TEX_LOCK_CLOUD = 'res/village/texture/lockbuilding';
 const RES_TEX_LOCK_BG = 'res/village/texture/lockBG';
-const FONT_RES_PATH = 'LiveData/COMICZ';
+const FONT_RES_PATH = 'LiveData/PoetsenOne-Regular';
 
 function setNodeSize (node: Node, width: number, height: number) {
     const transform = node.getComponent(UITransform) || node.addComponent(UITransform);
@@ -159,7 +159,7 @@ export default class LoadElementNode extends Component {
     private loadFont (): Promise<Font | null> {
         return new Promise((resolve) => {
             if (CC_EDITOR && typeof Editor !== 'undefined' && Editor.assetdb && Editor.assetdb.remote) {
-                const uuid = Editor.assetdb.remote.urlToUuid('db://assets/LiveData/COMICZ.TTF');
+                const uuid = Editor.assetdb.remote.urlToUuid('db://assets/LiveData/PoetsenOne-Regular.ttf');
                 if (!uuid) {
                     resolve(null);
                     return;

@@ -1,238 +1,129 @@
-import { _decorator, Component, Node, SpriteFrame, Sprite, Label, instantiate } from 'cc';
-import { ContentModel } from '../../game/items/ContentModel';
+import { _decorator, Component, instantiate, Label, Node, Prefab, Sprite, SpriteFrame, UITransform, Vec3 } from 'cc';
+import ContentModel from '../../game/items/ContentModel';
+import { fitByHeight } from '../../GameKit/render/fixedSizeRatio';
+import { EnterCloseAnim } from '../../GameKit/ui/EnterCloseAnim';
+
+import { UserItems } from '../../game/items/UserItems';
 const { ccclass, property } = _decorator;
 
-let width3 = 450
-let width4 = 586
-let heightHave = 330
-let heightNo = 224
-let bgY = 19
+const width4 = 586;
+const bgY = 19;
+
 @ccclass('GiftContentDesWindow')
 export class GiftContentDesWindow extends Component {
     @property(Node)
-    public bg = null;
+    public bg: Node = null;
     @property(Node)
-    public arrow = null;
+    public arrow: Node = null;
     @property([SpriteFrame])
-    public bgsSpriteFrames = [];
+    public bgsSpriteFrames: SpriteFrame[] = [];
     @property(Node)
-    public reward_layout = null;
+    public reward_layout: Node = null;
     @property(Node)
-    public item = null;
+    public item: Node = null;
     @property(Sprite)
-    public bg1 = null;
+    public bg1: Sprite = null;
     @property(Node)
-    public boomCards = null;
+    public boomCards: Node = null;
     @property(Label)
-    public boomCardsLabel = null;
+    public boomCardsLabel: Label = null;
 
-    show (reward: any) {
-        // let contents=[] 
-        // this.reward_layout.destroyAllChildren() 
-        // this.bg1.node.active=true 
-        // if(reward.ContentId()==Game.UserItems.ToolType.ShiChui){ 
-            // contents=Game.Content.FromStrings(Meta.BuildingItemPackMeta.GetValueByLevel(Game.SUserVillage.MapId()).reward) 
-        // }else if(reward.ContentId()==Game.UserItems.ToolType.CardsBoom){ 
-            // this.bg1.node.active=false 
-            // if(this.boomCards){ 
-                // this.boomCards.active=true 
-            // } 
-            // let str=this.boomCardsLabel.string 
-            // this.boomCardsLabel.string = str.format(reward.Count()*5+"min") 
-        // } 
-        // if(this.bg1.node.active){ 
-            // this.bg1.spriteFrame=this.bgsSpriteFrames[reward.ContentId()-1] 
-        // } 
-        // let height=this.bg1.node.height 
-        // require("fixedSizeRatio").fitByHeight(this.bg1, height) 
-        // for (let i = 0; i < contents.length; i++) { 
-            // let content = Game.Content.FromContent(contents[i]) 
-            // let newItem = cc.instantiate(this.item) 
-            // newItem.parent = this.reward_layout 
-            // newItem.y=0 
-            // newItem.active = true 
-            // newItem.getComponent(ContentModel).show(content) 
-        // } 
-        // let itemsCount=contents.length; 
-        // let maxW = 180 
-        // if (itemsCount >= 4) { 
-            // this.bg.width = width4 
-            // maxW = 250 
-        // } 
-        // let px = 0 
-        // let nx = this.node.getWorldPosition().x 
-        // if (nx > maxW) px = nx - maxW 
-        // else if (nx < -maxW) px = nx + maxW 
-        // this.bg.node.setWorldPosition(cc.v2(px, 0)) 
-        // this.bg.node.y = bgY 
-        // if (this.node.getWorldPosition().y + bgY + this.bg.height - 20 > UIRoot.instance.winSize.height / 2) { 
-            // this.arrow.scaleY = -1 
-            // this.arrow.y = -this.arrow.y 
-            // this.bg.node.y = -this.bg.node.y - this.bg.node.height 
-            // this.node.y -= this.pheight + this.pheight / 5 
-        // } 
-        // this.scheduleOnce(() => { 
-            // this.callClose(); 
-        // }, 5) 
+    public pheight = 0;
+    private closing = false;
+
+    show(reward: any) {
+        let contents: any[] = [];
+        this.reward_layout.destroyAllChildren();
+        this.bg1.node.active = true;
+
+        if (reward.ContentId() === UserItems.ToolType.ShiChui) {
+            contents = Game.Content.FromStrings(Meta.BuildingItemPackMeta.GetValueByLevel(Game.SUserVillage.MapId()).reward);
+        } else if (reward.ContentId() === UserItems.ToolType.CardsBoom) {
+            this.bg1.node.active = false;
+            if (this.boomCards) this.boomCards.active = true;
+            const str = this.boomCardsLabel.string;
+            this.boomCardsLabel.string = str.format(reward.Count() * 5 + 'min');
+        }
+
+        if (this.bg1.node.active) {
+            this.bg1.spriteFrame = this.bgsSpriteFrames[reward.ContentId() - 1];
+        }
+
+        const height = this.bg1.node.getComponent(UITransform).height;
+        fitByHeight(this.bg1, height);
+
+        for (let i = 0; i < contents.length; i++) {
+            const content = Game.Content.FromContent(contents[i]);
+            const newItem = instantiate(this.item);
+            newItem.parent = this.reward_layout;
+            newItem.setPosition(newItem.position.x, 0, newItem.position.z);
+            newItem.active = true;
+            newItem.getComponent(ContentModel).show(content);
+        }
+
+        const itemsCount = contents.length;
+        let maxW = 180;
+        if (itemsCount >= 4) {
+            this.bg.getComponent(UITransform).width = width4;
+            maxW = 250;
+        }
+
+        let px = 0;
+        const nx = this.node.getWorldPosition().x;
+        if (nx > maxW) px = nx - maxW;
+        else if (nx < -maxW) px = nx + maxW;
+
+        this.bg.setWorldPosition(new Vec3(px, 0, this.bg.worldPosition.z));
+        this.bg.setPosition(this.bg.position.x, bgY, this.bg.position.z);
+
+        const bgTransform = this.bg.getComponent(UITransform);
+        if (this.node.getWorldPosition().y + bgY + bgTransform.height - 20 > UIRoot.instance.winSize.height / 2) {
+            this.arrow.setScale(this.arrow.scale.x, -this.arrow.scale.y, this.arrow.scale.z);
+            this.arrow.setPosition(this.arrow.position.x, -this.arrow.position.y, this.arrow.position.z);
+            this.bg.setPosition(this.bg.position.x, -this.bg.position.y - bgTransform.height, this.bg.position.z);
+            this.node.setPosition(this.node.position.x, this.node.position.y - this.pheight - this.pheight / 5, this.node.position.z);
+        }
+
+        this.scheduleOnce(() => {
+            this.callClose();
+        }, 5);
     }
 
-    callClose () {
-        // if (this.closing) return 
-        // this.closing = true 
-        // require("EnterCloseAnim").playClose(this.node) 
-        // this.scheduleOnce(() => { 
-            // this.node.destroy() 
-        // }, 0.5) 
+    callClose() {
+        if (this.closing) return;
+        this.closing = true;
+        EnterCloseAnim.playClose(this.node);
+        this.scheduleOnce(() => {
+            this.node.destroy();
+        }, 0.5);
     }
 
+    static Show(content: any, params: any, x?: any, y?: any) {
+        UIRoot.instance.ShowCantClick();
+        const resName = 'window/Item/GiftContentDesWindow';
+        cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
+            if (err) {
+                Logs.Error('openModelWindow windowPath:' + resName + (err.message || err));
+                DialogWindow.Show(GameKit.i18n.t('loadResError'), () => {
+                    GiftContentDesWindow.Show(content, params, x, y);
+                }, nullFunction);
+                UIRoot.instance.CloseCantClick();
+                return;
+            }
+            if (winPre == null) {
+                UIRoot.instance.CloseCantClick();
+                return;
+            }
+
+            const wnd = instantiate(winPre);
+            wnd.parent = params.parent;
+            wnd.setPosition(params.pos.x, params.pos.y + params.height / 2 + params.height / 10, wnd.position.z);
+            const panel = wnd.getComponent(GiftContentDesWindow);
+            panel.pheight = params.height;
+            panel.show(content);
+            UIRoot.instance.CloseCantClick();
+        });
+    }
 }
 
-
-GiftContentDesWindow.Show = function(content, params, x, y) {
-    UIRoot.instance.ShowCantClick()
-    let resName = "window/Item/GiftContentDesWindow"
-    cce.loadRes(resName, cc.Prefab, function (err, winPre) {
-        if (err) {
-            Logs.Error("openModelWindow windowPath:" + resName + (err.message || err));
-            DialogWindow.Show(GameKit.i18n.t("loadResError"), function() {
-                GiftContentDesWindow.Show(content, parent, x, y)
-            }.bind(this), nullFunction)
-            UIRoot.instance.CloseCantClick()
-            return;
-        }
-        if (winPre == null) {
-            UIRoot.instance.CloseCantClick()
-            return
-        }
-        let wnd = cc.instantiate(winPre)
-        wnd.parent = params.parent
-        wnd.x = params.pos.x
-        wnd.y = params.pos.y + params.height / 2 + params.height / 10
-        let panel = wnd.getComponent(GiftContentDesWindow)
-        panel.pheight = params.height
-        panel.show(content)
-        UIRoot.instance.CloseCantClick()
-    }.bind(this))
-}
-/**
- * Note: The original script has been commented out, due to the large number of changes in the script, there may be missing in the conversion, you need to convert it manually
- */
-// var width3 = 450
-// var width4 = 586
-// var heightHave = 330
-// var heightNo = 224
-// var bgY = 19
-// const ContentModel = require("ContentModel")
-// var GiftContentDesWindow = cc.Class({
-//     extends: cc.Component,
-// 
-//     properties: {
-//         bg:cc.Node,
-//         arrow: cc.Node,
-//         bgsSpriteFrames:[cc.SpriteFrame],
-//         reward_layout:cc.Node,
-//         item:cc.Node,
-//         bg1:cc.Sprite,
-//         boomCards:cc.Node,
-//         boomCardsLabel:cc.Label,
-//     },
-// 
-//     show (reward) {
-//         let contents=[]
-//         this.reward_layout.destroyAllChildren()
-//         this.bg1.node.active=true
-//         if(reward.ContentId()==Game.UserItems.ToolType.ShiChui){
-//             contents=Game.Content.FromStrings(Meta.BuildingItemPackMeta.GetValueByLevel(Game.SUserVillage.MapId()).reward)
-//         }else if(reward.ContentId()==Game.UserItems.ToolType.CardsBoom){
-//             this.bg1.node.active=false
-//             if(this.boomCards){
-//                 this.boomCards.active=true
-//             }
-//             let str=this.boomCardsLabel.string
-//             this.boomCardsLabel.string = str.format(reward.Count()*5+"min")
-//         }
-// 
-// 
-//         
-//         if(this.bg1.node.active){
-//             this.bg1.spriteFrame=this.bgsSpriteFrames[reward.ContentId()-1]
-//         }
-// 
-//         let height=this.bg1.node.height
-//         require("fixedSizeRatio").fitByHeight(this.bg1, height)
-// 
-//         for (let i = 0; i < contents.length; i++) {
-//             let content = Game.Content.FromContent(contents[i])
-//             let newItem = cc.instantiate(this.item)
-//             newItem.parent = this.reward_layout
-//             newItem.y=0
-//             // newItem.x = poses[count][i]
-//             newItem.active = true
-//             newItem.getComponent(ContentModel).show(content)
-//         }
-//         let itemsCount=contents.length;
-// 
-//         let maxW = 180
-//         if (itemsCount >= 4) {
-//             this.bg.width = width4
-//             maxW = 250
-//         }
-// 
-//         let px = 0
-//         let nx = this.node.getWorldPosition().x
-//         if (nx > maxW) px = nx - maxW
-//         else if (nx < -maxW) px = nx + maxW
-//         this.bg.node.setWorldPosition(cc.v2(px, 0))
-//         this.bg.node.y = bgY
-// 
-//         if (this.node.getWorldPosition().y + bgY + this.bg.height - 20 > UIRoot.instance.winSize.height / 2) {
-//             this.arrow.scaleY = -1
-//             this.arrow.y = -this.arrow.y
-//             this.bg.node.y = -this.bg.node.y - this.bg.node.height
-//             this.node.y -= this.pheight + this.pheight / 5
-//         }
-// 
-//         this.scheduleOnce(() => {
-//             this.callClose();
-//         }, 5)
-//     },
-// 
-//     callClose() {
-//         if (this.closing) return
-//         this.closing = true
-//         require("EnterCloseAnim").playClose(this.node)
-//         this.scheduleOnce(() => {
-//             this.node.destroy()
-//         }, 0.5)
-//     }
-// 
-// });
-// 
-// GiftContentDesWindow.Show = function(content, params, x, y) {
-//     UIRoot.instance.ShowCantClick()
-//     let resName = "window/Item/GiftContentDesWindow"
-//     cce.loadRes(resName, cc.Prefab, function (err, winPre) {
-//                 
-//         if (err) {
-//             Logs.Error("openModelWindow windowPath:" + resName + (err.message || err));
-//             DialogWindow.Show(GameKit.i18n.t("loadResError"), function() {
-//                 GiftContentDesWindow.Show(content, parent, x, y)
-//             }.bind(this), nullFunction)
-//             UIRoot.instance.CloseCantClick()
-//             return;
-//         }
-//         if (winPre == null) {
-//             UIRoot.instance.CloseCantClick()
-//             return
-//         }
-// 
-//         let wnd = cc.instantiate(winPre)
-//         wnd.parent = params.parent
-//         wnd.x = params.pos.x
-//         wnd.y = params.pos.y + params.height / 2 + params.height / 10
-//         let panel = wnd.getComponent(GiftContentDesWindow)
-//         panel.pheight = params.height
-//         panel.show(content)
-//         UIRoot.instance.CloseCantClick()
-//     }.bind(this))
-// }
+export default GiftContentDesWindow;

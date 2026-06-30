@@ -1,10 +1,11 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 // fengyong-2019-6-24
 //// @ts-check
 
 import CardModel from "./CardModel";
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
 
 }
@@ -14,20 +15,23 @@ export default class CardCollectWindow extends UIWindow {
 
     static windowPath = "Card/CardCollectWindow";
 
+    id: any = null
+    meta: any = null
+
     /** @type {CardModel} */
     @property(CardModel)
     card_model = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     label_des = null
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     btn_go = null
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     sp_vip = null
     
     onShow(showParams) {

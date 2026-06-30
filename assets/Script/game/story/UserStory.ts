@@ -1,7 +1,7 @@
 import '../../LegacyGlobals';
 import { TextAsset } from 'cc';
 
-class UserStory {
+export default class UserStory {
     public data: any;
     private _talkData: any;
 
@@ -186,7 +186,3 @@ class UserStory {
             portal.indexOf('//localhost') >= 0;
     }
 }
-
-global.Game.UserStory = UserStory;
-
-export default UserStory;

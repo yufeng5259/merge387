@@ -1,15 +1,15 @@
-import { sp } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import BadgeItem from '../../GameKit/Editor/BadgeItem';
 import { UserInfoModel } from '../UserInfoModel';
 import VillageNewsWindow from './VillageNewsWindow';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
+import Guild from '../../game/guild/Guild';
 /**
  * @author fengyong
  * @version 2018-8-7
  */
 
-let UIRoot = window.UIRoot
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -34,8 +34,15 @@ class MenuWindow extends UIWindow {
 
     static windowPath = "Menu/MenuWindow"
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    _shopFreeBadgeReqPending = false
+    _shopFreeBadgeReqing = false
+    _shopBadgeNode: Node = null
+    _shopBadgeLabel: Label = null
+    _menuBadgeItems: any[] = []
+    is_back_click: any = undefined
+
+    /** @type {Node} */
+    @property(Node)
     btn_back = null
 
     @property(BadgeItem)
@@ -45,17 +52,17 @@ class MenuWindow extends UIWindow {
     @property(BadgeItem)
     badge_gifts = null
     
-    @property([cc.Node])
+    @property([Node])
     purchaseItems = []
-    @property([cc.Node])
+    @property([Node])
     dailyItems = []
-    @property([cc.Node])
+    @property([Node])
     shareItems = []
 
-    @property([cc.Node])
+    @property([Node])
     giftsItems = []
 
-    @property(cc.Node)
+    @property(Node)
     bindItem = null
     @property(UserInfoModel)
     userinfo = null
@@ -67,16 +74,13 @@ class MenuWindow extends UIWindow {
     /** UIWindow.unShow() */
     onShow() {
         this.userinfo.show(Game.SUser)
-        this.node.position = cc.Vec2.ZERO
+        this.node.setPosition(Vec3.ZERO)
         this.btn_back.active = true
         this.update_badge_array()
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, "MenuWindow", function() {
             this.request_shop_free_badge_count()
         }.bind(this))
-        //let action = cc.moveBy(C.IN_ANIMATION_TIME, 450, 0)
-        //UIRoot.instance.mainCamera.node.stopAllActions() // 停止所有动画
-        //UIRoot.instance.mainCamera.node.runAction(action).easing(cc.easeBackOut(1.4))
-        //this.node.once(cc.Node.EventType.TOUCH_START, () => {
+        //this.node.once(Node.EventType.TOUCH_START, () => {
         //this.bg.active = false
         //this.event_back()
         //})
@@ -94,14 +98,12 @@ class MenuWindow extends UIWindow {
             this.purchaseItems.forEach(x => {x.active = false})
             this.dailyItems.forEach(x => {x.active = false})
         }
-        //require("GameMainWindow").instance.hideUI()
     }
 
     onClose() {
         GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, "MenuWindow")
         this._shopFreeBadgeReqPending = false
         this.stop_all_main_button2a_badges()
-        //require("GameMainWindow").instance.showUI()
     }
 
     /** 更新所有的badge
@@ -209,7 +211,7 @@ class MenuWindow extends UIWindow {
     get_shop_badge_node() {
         if (this._shopBadgeNode && this._shopBadgeNode.isValid) return this._shopBadgeNode
 
-        this._shopBadgeNode = cc.find("content_window/line_layout/line_buy/badge", this.node)
+        this._shopBadgeNode = find("content_window/line_layout/line_buy/badge", this.node)
         return this._shopBadgeNode
     }
 
@@ -218,7 +220,7 @@ class MenuWindow extends UIWindow {
 
         let badge = this.get_shop_badge_node()
         let labelNode = badge ? badge.getChildByName("badge_number") : null
-        this._shopBadgeLabel = labelNode ? labelNode.getComponent(cc.Label) : null
+        this._shopBadgeLabel = labelNode ? labelNode.getComponent(Label) : null
         return this._shopBadgeLabel
     }
 
@@ -228,7 +230,7 @@ class MenuWindow extends UIWindow {
             return this._menuBadgeItems
         }
 
-        let lineLayout = cc.find("content_window/line_layout", this.node)
+        let lineLayout = find("content_window/line_layout", this.node)
         this._menuBadgeItems = []
         if (!lineLayout) return this._menuBadgeItems
 
@@ -237,7 +239,7 @@ class MenuWindow extends UIWindow {
             let labelNode = badge ? badge.getChildByName("badge_number") : null
             if (!badge || !labelNode) return
 
-            let label = labelNode.getComponent(cc.Label)
+            let label = labelNode.getComponent(Label)
             if (!label) return
 
             this._menuBadgeItems.push({
@@ -288,7 +290,7 @@ class MenuWindow extends UIWindow {
             skeleton: null,
             bone: null,
             attachNode: null,
-            originalSprite: badgeNode.getComponent(cc.Sprite),
+            originalSprite: badgeNode.getComponent(Sprite),
             delayCallback: null,
             idleFallbackCallback: null,
             playToken: 0,
@@ -316,9 +318,9 @@ class MenuWindow extends UIWindow {
 
         let spineNode = state.spineNode
         if (!spineNode || !spineNode.isValid) {
-            spineNode = new cc.Node("main_button2a")
+            spineNode = new Node("main_button2a")
             spineNode.parent = state.badgeNode
-            spineNode.setPosition(cc.Vec2.ZERO)
+            spineNode.setPosition(Vec3.ZERO)
             state.spineNode = spineNode
         }
         spineNode.active = true
@@ -329,8 +331,9 @@ class MenuWindow extends UIWindow {
         skeleton.loop = true
         skeleton.premultipliedAlpha = false
 
-        let baseSize = Math.max(state.badgeNode.width || 30, state.badgeNode.height || 30)
-        spineNode.scale = baseSize / 30
+        let badgeTransform = state.badgeNode.getComponent(UITransform)
+        let baseSize = Math.max(badgeTransform ? badgeTransform.width : 30, badgeTransform ? badgeTransform.height : 30)
+        spineNode.setScale(baseSize / 30, baseSize / 30, spineNode.scale.z)
 
         state.skeleton = skeleton
         state.bone = this.find_main_button2a_bone(skeleton)
@@ -447,9 +450,9 @@ class MenuWindow extends UIWindow {
             state.skeleton.updateWorldTransform()
         }
 
-        let bonePos = cc.v2(state.bone.worldX || 0, state.bone.worldY || 0)
-        let worldPos = state.spineNode.convertToWorldSpaceAR(bonePos)
-        let localPos = state.attachNode.parent.convertToNodeSpaceAR(worldPos)
+        let bonePos = new Vec3(state.bone.worldX || 0, state.bone.worldY || 0, 0)
+        let worldPos = state.spineNode.getComponent(UITransform)!.convertToWorldSpaceAR(bonePos, new Vec3())
+        let localPos = state.attachNode.parent.getComponent(UITransform)!.convertToNodeSpaceAR(worldPos, new Vec3())
         state.attachNode.setPosition(localPos)
     }
 
@@ -467,21 +470,18 @@ class MenuWindow extends UIWindow {
     }
 
     set_node_top_sibling(node) {
-        if (!node || !node.isValid || !node.parent || !node.setSiblingIndex) return
+        if (!node || !node.isValid || !node.parent) return
         node.setSiblingIndex(node.parent.childrenCount - 1)
     }
 
     set_node_bottom_sibling(node) {
-        if (!node || !node.isValid || !node.setSiblingIndex) return
+        if (!node || !node.isValid) return
         node.setSiblingIndex(0)
     }
 
-    event_back(e, cb) {
+    event_back(e, cb, delayTime = 0) {
         if (this.is_back_click !== undefined) { return }
         this.is_back_click = 0
-        //let action = cc.moveTo(C.IN_ANIMATION_TIME, 0, 0)
-        //UIRoot.instance.mainCamera.node.stopAllActions() // 停止所有动画
-        //UIRoot.instance.mainCamera.node.runAction(action).easing(cc.easeBackIn(1.4))
         this.closeAnim(cb)
     }
 
@@ -566,7 +566,7 @@ class MenuWindow extends UIWindow {
                 let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
                 req.SetCallBack(function(res) {
                     // console.log("进入我的军团",res);
-                    Game.Guild.askList={};
+                    Guild.askList={};
                     res.user.forEach((ele)=>{
                         Game.SGuild.guildInfo[ele.userId] = ele;
                     })

@@ -1,3 +1,4 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import PlayAudio from '../../GameKit/Editor/PlayAudio';
@@ -9,7 +10,7 @@ import { CardSubjectSet } from './CardSubjectSet';
 /**
  * @author fengyong 2019-5-14
  */
- const { ccclass, property } = cc._decorator
+ const { ccclass, property } = _decorator
  const C = {
      BASE_PATH: "Card",      // set-icon的基础path
      SET_ICON_FILENAME: "set-icon",
@@ -22,32 +23,39 @@ import { CardSubjectSet } from './CardSubjectSet';
  export default class CardAllSetWindow extends UIWindow {
 
     static windowPath = "Card/CardAllSetWindow"
-    /** @type {cc.Button} */
-    @property(cc.Button)
+    /** @type {Button} */
+    @property(Button)
     btnButtonChang = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     ChangLabel = null
 
-    /** @type {cc.node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     btnButtonShop = null
     
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     btnWatchFree = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     labelFree = null
 
-    @property(cc.Node)
+    @property(Node)
     subjectContent=null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     CardThemeLbl = null
+
+    CardThemeMeta: any = null
+    Card_issue: any = null
+    leftTime: any = null
+    subjectItem: Node = null
+    subjectMeta: any = null
+    activityBadgeData: any = null
     
     onLoad(){
     if(AppKit.NativeWrap.isNewApp())
@@ -111,7 +119,7 @@ import { CardSubjectSet } from './CardSubjectSet';
         this.subjectContent.active=false
         //------------------------------
         for (let index in this.svt.items) {
-            let sp = GameKit.ControllerTable.GetComponent(this.svt.items[index], "icon", cc.Sprite)
+            let sp = GameKit.ControllerTable.GetComponent(this.svt.items[index], "icon", Sprite)
             cce.releaseSpriteFrame(sp)
         }
 
@@ -162,19 +170,19 @@ import { CardSubjectSet } from './CardSubjectSet';
         }
         this.svt.setItem(id_list, (index, id, node) => {
             // 获取子节点
-            let sp_icon = GameKit.ControllerTable.GetNode(node, "icon").getComponent(cc.Sprite)
-            let label_set_name = GameKit.ControllerTable.GetNode(node, "label-set-name").getComponent(cc.Label)
-            let pb = GameKit.ControllerTable.GetNode(node, "progress").getComponent(cc.ProgressBar)
-            let label_pb = GameKit.ControllerTable.GetNode(node, "label-progress").getComponent(cc.Label)
+            let sp_icon = GameKit.ControllerTable.GetNode(node, "icon").getComponent(Sprite)
+            let label_set_name = GameKit.ControllerTable.GetNode(node, "label-set-name").getComponent(Label)
+            let pb = GameKit.ControllerTable.GetNode(node, "progress").getComponent(ProgressBar)
+            let label_pb = GameKit.ControllerTable.GetNode(node, "label-progress").getComponent(Label)
             let completed = GameKit.ControllerTable.GetNode(node, "label-completed")
-            let sp_lock = GameKit.ControllerTable.GetNode(node, "lock").getComponent(cc.Sprite)
-            let label_lock = GameKit.ControllerTable.GetNode(node, "label-lock").getComponent(cc.Label)
+            let sp_lock = GameKit.ControllerTable.GetNode(node, "lock").getComponent(Sprite)
+            let label_lock = GameKit.ControllerTable.GetNode(node, "label-lock").getComponent(Label)
             // 获取单个数据
             let meta = this.subject_allMeta[id]
             // 根据数据修改子节点样式
             //label_set_name.string = id.toString() + "." + meta.Name();
             label_set_name.string = meta.Name();
-            cce.loadRes(`${C.BASE_PATH}/${meta.Res()}/${C.SET_ICON_FILENAME}`, cc.SpriteFrame, (err, res) => {
+            cce.loadRes(`${C.BASE_PATH}/${meta.Res()}/${C.SET_ICON_FILENAME}`, SpriteFrame, (err, res) => {
                 if (!err && sp_icon) {
                     sp_icon.spriteFrame = res
                     fitByHeight(sp_icon, 183)
@@ -190,9 +198,9 @@ import { CardSubjectSet } from './CardSubjectSet';
             label_lock.string = String.format(GameKit.i18n.t("CardAllSetWindowLock"), meta.MinVillage())
             let flag_lock = Game.SUserVillage.MapId() < meta.MinVillage() && count <= 0 // true表示被lock
             sp_lock.node.active = flag_lock
-            node.getComponent(cc.Button).interactable = !flag_lock
+            node.getComponent(Button).interactable = !flag_lock
             SpriteGray.SetGray(sp_icon, flag_lock)
-            sp_icon.node.color = flag_lock ? cc.color(50, 50, 50) : cc.Color.WHITE
+            sp_icon.node.color = flag_lock ? new Color(50, 50, 50) : Color.WHITE
             label_set_name.node.active = !flag_lock
             // 点击事件跳转
             node.on("click", () => {
@@ -203,10 +211,10 @@ import { CardSubjectSet } from './CardSubjectSet';
 
         this.subjectMeta=Game.ActivityManager.GetActiveActivity(Meta.ActivityMeta.Types.Pay,Meta.ActivityMeta.SubTypes.SubjectCard)
         if(this.subjectMeta){
-            this.subjectContent.height=300
+            this.subjectContent.getComponent(UITransform).height=300
             this.subjectContent.parent=this.svt.itemsContent
             this.svt.itemsContent.insertChild(this.subjectContent,0)
-            this.subjectContent.y=0
+            this.subjectContent.setPosition(this.subjectContent.position.x, 0, this.subjectContent.position.z)
             this.subjectContent.active=true
             
             UIRoot.instance.ShowCantClick(true)
@@ -218,16 +226,16 @@ import { CardSubjectSet } from './CardSubjectSet';
                         this.subjectItem.destroy()
                         this.subjectItem=null
                     }
-                    this.subjectItem=cc.instantiate(CommonAssets.instance.subjectPrefab)
-                    this.subjectItem.x=this.subjectItem.y=0
+                    this.subjectItem=instantiate(CommonAssets.instance.subjectPrefab)
+                    this.subjectItem.setPosition(0, 0, this.subjectItem.position.z)
                     this.subjectItem.parent=this.subjectContent
                     this.subjectItem.getComponent(CardSubjectSet).createActivityCard(this.subject_allMeta)
                 }else{
                     if(!this.subjectItem){
-                        this.subjectItem=cc.instantiate(CommonAssets.instance.subjectPrefab)
-                        this.subjectItem.x=this.subjectItem.y=0
+                        this.subjectItem=instantiate(CommonAssets.instance.subjectPrefab)
+                        this.subjectItem.setPosition(0, 0, this.subjectItem.position.z)
                         this.subjectItem.parent=this.subjectContent
-                        this.subjectItem.getComponent(("CardSubjectSet")).createActivityCard(this.subject_allMeta)
+                        this.subjectItem.getComponent(CardSubjectSet).createActivityCard(this.subject_allMeta)
                     }
                 }
                
@@ -255,10 +263,10 @@ import { CardSubjectSet } from './CardSubjectSet';
         for (let id in this.all_set_meta) {
             let obj=this.all_set_meta[id]
             if(!obj.IsActivityCard()){
-                let iid =id-(15*(this.Card_issue-1))-1;
+                let iid = Number(id)-(15*(this.Card_issue-1))-1;
                 let node = this.svt.items[iid];
                 let meta = this.all_set_meta[id];
-                let pb = GameKit.ControllerTable.GetNode(node, "progress").getComponent(cc.ProgressBar)
+                let pb = GameKit.ControllerTable.GetNode(node, "progress").getComponent(ProgressBar)
                 let completed = GameKit.ControllerTable.GetNode(node, "label-completed")
                 let is_get_reward = Game.SUserCard.HasgotSetsReward(meta.Id())
                 pb.node.active = !is_get_reward
@@ -310,8 +318,8 @@ import { CardSubjectSet } from './CardSubjectSet';
         }, "freeChest")
     }
     
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     activityLeft = null
 
     SetActivityLeft() {
@@ -330,9 +338,9 @@ import { CardSubjectSet } from './CardSubjectSet';
             if (badgeName) {
                 if (badgeName.startsWith("http")) {
                     let resName = 'res/Activity/badge/ActivityDaysSaleBadge'
-                    cce.loadRes(resName, cc.Prefab, (err, winPre) => {
+                    cce.loadRes(resName, Prefab, (err, winPre) => {
                         if (err || !winPre) return
-                        let wnd = cc.instantiate(winPre)
+                        let wnd = instantiate(winPre)
                         let badge = wnd.getComponent("ActivityBadge")
                         badge.setMeta(meta, () => {
                             this.SetActivityBadge(badge)
@@ -340,9 +348,9 @@ import { CardSubjectSet } from './CardSubjectSet';
                     })
                 } else {
                     let resName = 'res/Activity/badge/' + badgeName
-                    cce.loadRes(resName, cc.Prefab, (err, winPre) => {
+                    cce.loadRes(resName, Prefab, (err, winPre) => {
                         if (err || !winPre) return
-                        let wnd = cc.instantiate(winPre)
+                        let wnd = instantiate(winPre)
                         let badge = wnd.getComponent("ActivityBadge")
                         badge.setMeta(meta)
                         this.SetActivityBadge(badge)
@@ -359,9 +367,10 @@ import { CardSubjectSet } from './CardSubjectSet';
         let isleft = badge.isleft
         this.activityBadgeData[badge.meta.Id()] = badge
         badge.node.parent = this.activityLeft
-        badge.node.x = 0
+        badge.node.setPosition(0, badge.node.position.y, badge.node.position.z)
         if (!isleft) {
-            badge.node.children[0].x = -badge.node.children[0].x
+            let child = badge.node.children[0]
+            child.setPosition(-child.position.x, child.position.y, child.position.z)
         }
     }
     update(){

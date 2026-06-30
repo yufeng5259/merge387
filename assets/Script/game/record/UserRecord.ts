@@ -1,9 +1,10 @@
 import '../../LegacyGlobals';
 //用户金币
 
-class UserRecord {
+export class UserRecord {
+    public data: any;
 
-    constructor (userId) {
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -85,5 +86,3 @@ class UserRecord {
         return this.data.adTimes
     }
 }
-
-global.Game.UserRecord = UserRecord

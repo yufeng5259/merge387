@@ -1,6 +1,7 @@
 import '../../LegacyGlobals';
 import { find, Node, Sprite, UITransform, Vec3 } from 'cc';
 
+import { UserMap } from './UserMap';
 const TownUpgradeFlow: any = {}
 
 TownUpgradeFlow._running = false
@@ -117,7 +118,7 @@ TownUpgradeFlow._getEventUnlockedBuildID = function(data) {
 }
 
 TownUpgradeFlow._getNewUnlockedBuildID = function(mapID, oldUserLevel) {
-    if (typeof Meta === "undefined" || !Meta.MetaManager || !Meta.MapMeta || !Game.SUserMap || !Game.UserMap) return null
+    if (typeof Meta === "undefined" || !Meta.MetaManager || !Meta.MapMeta || !Game.SUserMap || !UserMap) return null
     var metas = Meta.MetaManager.GetMetas(Meta.MetaType.Map)
     if (!metas) return null
     var list = []
@@ -126,7 +127,7 @@ TownUpgradeFlow._getNewUnlockedBuildID = function(mapID, oldUserLevel) {
         var meta = metas[key]
         if (!meta || meta.MapId() !== mapID) continue
         if (meta.LimitLv() <= oldUserLevel || meta.LimitLv() > Game.SUser.Level()) continue
-        if (Game.SUserMap.GetElementState(meta.MBId()) !== Game.UserMap.ElementState.UnlockedNotBought) continue
+        if (Game.SUserMap.GetElementState(meta.MBId()) !== UserMap.ElementState.UnlockedNotBought) continue
         list.push(meta)
     }
     if (list.length <= 0) return null

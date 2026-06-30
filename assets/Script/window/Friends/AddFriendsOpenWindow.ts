@@ -1,6 +1,7 @@
 import { _decorator } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 
+import Guild from '../../game/guild/Guild';
 const { ccclass } = _decorator;
 
 @ccclass('AddFriendsOpenWindow')
@@ -29,9 +30,6 @@ export default class AddFriendsOpenWindow extends UIWindow {
     event_back(e: any, cb: any, delay?: any) {
         if (this.is_back_click !== undefined) { return; }
         this.is_back_click = 0;
-        // let action = moveTo(C.IN_ANIMATION_TIME, 0, 0)
-        // UIRoot.instance.mainCamera.node.stopAllActions()
-        // UIRoot.instance.mainCamera.node.runAction(action).easing(easeBackIn(1.4))
         this.closeAnim(cb);
     }
 
@@ -43,7 +41,7 @@ export default class AddFriendsOpenWindow extends UIWindow {
                     if (res.legionId > 0) {
                         let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
                         req.SetCallBack(function (res: any) {
-                            Game.Guild.askList = {};
+                            Guild.askList = {};
                             res.user.forEach((ele: any) => {
                                 Game.SGuild.guildInfo[ele.userId] = ele;
                             });

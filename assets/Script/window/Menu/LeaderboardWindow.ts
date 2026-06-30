@@ -2,14 +2,14 @@ import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import { UITabContainer } from '../../GameKit/ui/UITabContainer';
 import { UserInfoModel } from '../UserInfoModel';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
+import { User } from '../../game/user/User';
 /**
  * @author fengyong
  * @version 2018-8-9
  */
 
-const UIRoot = window.UIRoot
-
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -39,20 +39,25 @@ class LeaderboardWindow extends UIWindow {
 
     static windowPath = "Menu/LeaderboardWindow"
 
-    /** @type {cc.SpriteFrame} 选中的时候的图标 */
-    @property(cc.SpriteFrame)
+    choose_tab: any = null
+    data_array_friends: any = null
+    data_array_country: any = null
+    data_array_global: any = null
+
+    /** @type {SpriteFrame} 选中的时候的图标 */
+    @property(SpriteFrame)
     choose_sf = null
 
-    /** @type {cc.SpriteFrame} 未选中的时候的图标 */
-    @property(cc.SpriteFrame)
+    /** @type {SpriteFrame} 未选中的时候的图标 */
+    @property(SpriteFrame)
     unchoose_sf = null
 
-    /** @type {cc.SpriteFrame} 默认头像 */
-    @property(cc.SpriteFrame)
+    /** @type {SpriteFrame} 默认头像 */
+    @property(SpriteFrame)
     default_avatar_sf = null
 
-    /** @type {[cc.Sprite]} cup sf数组 */
-    @property(cc.SpriteFrame)
+    /** @type {[Sprite]} cup sf数组 */
+    @property(SpriteFrame)
     cup_sf_array = []
 
     /** @type {UITabContainer} tab node数组 */
@@ -63,17 +68,15 @@ class LeaderboardWindow extends UIWindow {
     @property(ScrollViewTool)
     svt = null
 
-    /** @type {cc.Node} 加载数据的动画圈 */
-    @property(cc.Node)
+    /** @type {Node} 加载数据的动画圈 */
+    @property(Node)
     loading_circle = null
 
-    /** @type {[cc.Node]}  */
-    @property(cc.Node)
+    /** @type {[Node]}  */
+    @property(Node)
     itemsfirst = []
 
     onShow() {
-        //require("setAliasTexParameters").setSpriteFrame(this.choose_sf)
-        //require("setAliasTexParameters").setSpriteFrame(this.unchoose_sf)
         
         this.tab_node_array.onShow((index, tab, first) => {
             if (first) {
@@ -91,7 +94,6 @@ class LeaderboardWindow extends UIWindow {
 
     /**
      * 点击事件：修改language
-     * @param {cc.EventTouch} e EventTouch
      * @param {number} index CustomEventData 需要在编辑器中指定
      */
     event_change_to_tab(index = 0) {
@@ -145,18 +147,14 @@ class LeaderboardWindow extends UIWindow {
             let n = this.tab_node_array[i]
             if (i === choose_tab) {
                 // 选中
-                //n.getComponent(cc.Sprite).spriteFrame = this.choose_sf
-                n.getComponent(cc.Sprite).enabled = true
+                //n.getComponent(Sprite).spriteFrame = this.choose_sf
+                n.getComponent(Sprite).enabled = true
             } else {
                 // 未选中
-                //n.getComponent(cc.Sprite).spriteFrame = null // this.unchoose_sf
-                n.getComponent(cc.Sprite).enabled = false
+                //n.getComponent(Sprite).spriteFrame = null // this.unchoose_sf
+                n.getComponent(Sprite).enabled = false
             }
         }*/
-        //// 特别注意
-        // 逻辑上应当使用node.zIndex来修改渲染顺序达到功能
-        // zIndex目前有以下缺陷，无法实现功能。一是zIndex为负数时，则不可被点击事件监控到；二是zIndex只能修改同级的渲染次序
-        // 因此目前的实现方法是在面板bg下面重新创建一组unchoose的tab，当检测为未选中是，则置当前tab的sf为null，显示出底部的unchoose_sf
     }
 
     /** 刷新所有的item
@@ -181,20 +179,20 @@ class LeaderboardWindow extends UIWindow {
         this.svt.setItem(
             ranks,
             /**
-             * @param {cc.Node} itemHandle item节点
+             * @param {Node} itemHandle item节点
              */
             (_index, id, itemHandle) => {
                 // 获取对应组件（node）
                 // 注意各个子节点的名称正确
                 // 注意要把对应的节点拖入ControllerTables下面
                 let userinfo = GameKit.ControllerTable.GetNode(itemHandle, "userinfo").getComponent(UserInfoModel)
-                let cup = GameKit.ControllerTable.GetNode(itemHandle, "cup").getComponent(cc.Sprite)
-                let index_label = GameKit.ControllerTable.GetNode(itemHandle, "index_label").getComponent(cc.Label)
-                let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(cc.Sprite)
-                let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(cc.Label)
-                let level_label = GameKit.ControllerTable.GetNode(itemHandle, "level_label").getComponent(cc.Label)
+                let cup = GameKit.ControllerTable.GetNode(itemHandle, "cup").getComponent(Sprite)
+                let index_label = GameKit.ControllerTable.GetNode(itemHandle, "index_label").getComponent(Label)
+                let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(Sprite)
+                let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(Label)
+                let level_label = GameKit.ControllerTable.GetNode(itemHandle, "level_label").getComponent(Label)
                 let invite = GameKit.ControllerTable.GetNode(itemHandle, "btn_invite")
-                let invite_add = GameKit.ControllerTable.GetNode(itemHandle, "icon_label").getComponent(cc.Label)
+                let invite_add = GameKit.ControllerTable.GetNode(itemHandle, "icon_label").getComponent(Label)
                 let bgSelf = GameKit.ControllerTable.GetNode(itemHandle, "bgSelf")
                 let btn_bg = GameKit.ControllerTable.GetNode(itemHandle, "btn_bg")
                 btn_bg.vdata = null;
@@ -246,7 +244,7 @@ class LeaderboardWindow extends UIWindow {
                 }
                 if (btn_bg) {
                     btn_bg.vdata = data;
-                    btn_bg.node.on(cc.Node.EventType.TOUCH_END,function() {
+                    btn_bg.node.on(Node.EventType.TOUCH_END,function() {
                         if(this.svt.scrollView.isScrolling()){
                             // console.log("???");
                             return;
@@ -265,9 +263,9 @@ class LeaderboardWindow extends UIWindow {
         // let execFirst = (index) => {
         //     let itemHandle = this.itemsfirst[index]
         //     let userinfo = GameKit.ControllerTable.GetNode(itemHandle, "userinfo").getComponent(UserInfoModel)
-        //     let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(cc.Sprite)
-        //     let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(cc.Label)
-        //     let level_label = GameKit.ControllerTable.GetNode(itemHandle, "level_label").getComponent(cc.Label)
+        //     let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(Sprite)
+        //     let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(Label)
+        //     let level_label = GameKit.ControllerTable.GetNode(itemHandle, "level_label").getComponent(Label)
         //     avatar.spriteFrame = this.default_avatar_sf
         //     name.string = ""
         //     level_label.string = "0"
@@ -280,7 +278,7 @@ class LeaderboardWindow extends UIWindow {
         //         name.string = `${index + 1}.${data.Name()}`
         //         level_label.string = data.Star();
         //         avatar.node.resumeSystemEvents(true);
-        //         avatar.node.on(cc.Node.EventType.TOUCH_END,function(){
+        //         avatar.node.on(Node.EventType.TOUCH_END,function(){
         //             if(data){
         //                 //  console.log("click:="+avatar.vdata);
         //                  UIRoot.instance.openChildWindow("OtherPlayerWindow",avatar.vdata);
@@ -301,7 +299,7 @@ class LeaderboardWindow extends UIWindow {
      * - 包括自身数据Game.SUser
      */
     get_friends_data() {
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             if (this.data_array_friends != null) {
                 resolve(this.data_array_friends)
                 return
@@ -349,7 +347,7 @@ class LeaderboardWindow extends UIWindow {
 
     /** 获取country的排行榜数据 */
     get_county_data() {
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             if (this.data_array_country != null) {
                 resolve(this.data_array_country)
                 return
@@ -360,7 +358,7 @@ class LeaderboardWindow extends UIWindow {
                 let data = res.list
 
                 for (let i = 0; i < data.length; i++) {
-                    list.push(new Game.User().updateData(data[i]))
+                    list.push(new User().updateData(data[i]))
                 }
 
                 list.sort(function(a, b) {
@@ -380,7 +378,7 @@ class LeaderboardWindow extends UIWindow {
 
     /** 获取global的排行榜数据 */
     get_global_data() {
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             if (this.data_array_global != null) {
                 resolve(this.data_array_global)
                 return
@@ -391,7 +389,7 @@ class LeaderboardWindow extends UIWindow {
                 let data = res.list
 
                 for (let i = 0; i < data.length; i++) {
-                    list.push(new Game.User().updateData(data[i]))
+                    list.push(new User().updateData(data[i]))
                 }
 
                 list.sort(function(a, b) {
@@ -429,16 +427,16 @@ class LeaderboardWindow extends UIWindow {
 
     /** 打开loading动画 */
     open_loading_anima() {
-        /*if (this.loading_anima === undefined) {
-            this.loading_anima = cc.rotateBy(C.LOADING_ROTATION_TIME, 360).repeatForever()
-            this.loading_circle.active = true
-            this.loading_circle.runAction(this.loading_anima)
-        }*/
+        Tween.stopAllByTarget(this.loading_circle)
         this.loading_circle.active = true
+        tween(this.loading_circle)
+            .repeatForever(tween<Node>().by(C.LOADING_ROTATION_TIME, { angle: 360 }))
+            .start()
     }
 
     /** 关闭loading动画 */
     close_loading_anima() {
+        Tween.stopAllByTarget(this.loading_circle)
         this.loading_circle.active = false
     }
 }

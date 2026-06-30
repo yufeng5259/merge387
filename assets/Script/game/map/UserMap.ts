@@ -1,8 +1,9 @@
 import '../../LegacyGlobals';
 //大地图数据管�?
-class UserMap {
+export class UserMap {
+    public data: any;
 
-    constructor (userId) {
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -155,180 +156,177 @@ class UserMap {
         return false;
     }
 
-}
+    public static ElementState = {
+        LevelLocked: "levelLocked",
+        UnlockedNotBought: "unlockedNotBought",
+        Bought: "bought",
+        Full: "full",
+    };
 
-UserMap.ElementState = {
-    LevelLocked: "levelLocked",
-    UnlockedNotBought: "unlockedNotBought",
-    Bought: "bought",
-    Full: "full",
-}
-
-UserMap.prototype.IsLevelUnlocked = function(sid) {
-    let element = this.initElement(sid)
-    let meta = Meta.MapMeta.GetMetaById(element.mapID, element.id)
-    if (!meta) return false
-    return Game.SUser.Level() >= meta.LimitLv()
-}
-
-UserMap.prototype.IsBought = function(sid) {
-    let element = this.getElement(sid)
-    if (!element) return false
-    if (element.activated != null) return !!element.activated
-    return !!(element.unlocked && element.level > 0)
-}
-
-UserMap.prototype.IsUnlockedNotBought = function(sid) {
-    let element = this.initElement(sid)
-    return this.IsLevelUnlocked(sid) && !this.IsBought(sid) && element.level < element.maxLv
-}
-
-UserMap.prototype.GetElementState = function(sid) {
-    let element = this.initElement(sid)
-    if (!this.IsLevelUnlocked(sid)) {
-        return UserMap.ElementState.LevelLocked
+    IsLevelUnlocked(sid: any) {
+        let element = this.initElement(sid);
+        let meta = Meta.MapMeta.GetMetaById(element.mapID, element.id);
+        if (!meta) return false;
+        return Game.SUser.Level() >= meta.LimitLv();
     }
-    if (!this.IsBought(sid)) {
-        return UserMap.ElementState.UnlockedNotBought
+
+    IsBought(sid: any) {
+        let element = this.getElement(sid);
+        if (!element) return false;
+        if (element.activated != null) return !!element.activated;
+        return !!(element.unlocked && element.level > 0);
     }
-    if (element.level >= element.maxLv) {
-        return UserMap.ElementState.Full
+
+    IsUnlockedNotBought(sid: any) {
+        let element = this.initElement(sid);
+        return this.IsLevelUnlocked(sid) && !this.IsBought(sid) && element.level < element.maxLv;
     }
-    return UserMap.ElementState.Bought
-}
 
-UserMap.prototype.CanBuy = function(sid) {
-    let context = this.GetBuildActionContext(sid)
-    return !!(context && context.state === UserMap.ElementState.UnlockedNotBought && Game.SUser.Coin() >= context.price)
-}
-
-UserMap.prototype.CanUpgrade = function(sid) {
-    let context = this.GetBuildActionContext(sid)
-    return !!(context && context.state === UserMap.ElementState.Bought && Game.SUser.Coin() >= context.price)
-}
-
-UserMap.prototype.GetNextActionLevel = function(sid) {
-    let element = this.initElement(sid)
-    return this.IsBought(sid) ? element.level : 0
-}
-
-UserMap.prototype.GetStagePriceIndex = function(element, priceList) {
-    let stage = element && element.stage != null ? Number(element.stage) : 0
-    if (isNaN(stage) || stage < 0) stage = 0
-    if (!Array.isArray(priceList) || priceList.length <= 0) return 0
-    return Math.min(stage, priceList.length - 1)
-}
-
-UserMap.prototype.GetCurrentStage = function(element, priceList) {
-    let stage = element && element.stage != null ? Number(element.stage) : 0
-    if (isNaN(stage) || stage < 0) stage = 0
-    if (!Array.isArray(priceList) || priceList.length <= 0) return stage
-    return Math.min(stage, priceList.length)
-}
-
-UserMap.prototype.SumStagePrice = function(priceList, count) {
-    if (!Array.isArray(priceList)) return 0
-    let total = 0
-    count = Math.max(0, Math.min(count, priceList.length))
-    for (let i = 0; i < count; i++) {
-        total += Number(priceList[i]) || 0
+    GetElementState(sid: any) {
+        let element = this.initElement(sid);
+        if (!this.IsLevelUnlocked(sid)) {
+            return UserMap.ElementState.LevelLocked;
+        }
+        if (!this.IsBought(sid)) {
+            return UserMap.ElementState.UnlockedNotBought;
+        }
+        if (element.level >= element.maxLv) {
+            return UserMap.ElementState.Full;
+        }
+        return UserMap.ElementState.Bought;
     }
-    return total
-}
 
-UserMap.prototype.ParseStageReward = function(rewardStr) {
-    let rewards = []
-    if (!rewardStr) return rewards
-    let parts = String(rewardStr).split("_")
-    for (let i = 0; i < parts.length; i++) {
-        if (!parts[i]) continue
-        let content = Game.Content.FromString(parts[i])
-        if (content) rewards.push(content)
+    CanBuy(sid: any) {
+        let context = this.GetBuildActionContext(sid);
+        return !!(context && context.state === UserMap.ElementState.UnlockedNotBought && Game.SUser.Coin() >= context.price);
     }
-    return rewards
-}
 
-UserMap.prototype.ParseStageRewardGroups = function(rewardStr) {
-    if (!rewardStr) return []
-    let stages = String(rewardStr).split(";")
-    let groups = []
-    for (let i = 0; i < stages.length; i++) {
-        groups.push(this.ParseStageReward(stages[i]))
+    CanUpgrade(sid: any) {
+        let context = this.GetBuildActionContext(sid);
+        return !!(context && context.state === UserMap.ElementState.Bought && Game.SUser.Coin() >= context.price);
     }
-    return groups
-}
 
-UserMap.prototype.GetStageRewards = function(rewardStr, stage, maxStage) {
-    let groups = this.ParseStageRewardGroups(rewardStr)
-    if (groups.length <= 0) return []
-    stage = Number(stage)
-    if (isNaN(stage) || stage < 0) stage = 0
-    if (maxStage > 0) stage = Math.min(stage, maxStage - 1)
-    stage = Math.min(stage, groups.length - 1)
-    return groups[stage] || []
-}
-
-UserMap.prototype.GetStageBigReward = function(rewardStr) {
-    let groups = this.ParseStageRewardGroups(rewardStr)
-    for (let i = groups.length - 1; i >= 0; i--) {
-        let rewards = groups[i]
-        if (rewards && rewards.length > 0) return rewards[rewards.length - 1]
+    GetNextActionLevel(sid: any) {
+        let element = this.initElement(sid);
+        return this.IsBought(sid) ? element.level : 0;
     }
-    return null
-}
 
-UserMap.prototype.GetBuildActionContext = function(sid, actionLevelOverride) {
-    let element = this.initElement(sid)
-    let meta = Meta.MapMeta.GetMetaById(element.mapID, element.id)
-    let state = this.GetElementState(sid)
-    let actionLevel = actionLevelOverride != null ? actionLevelOverride : this.GetNextActionLevel(sid)
-    let rawPrice = meta ? meta.Price(actionLevel) : 0
-    let priceList = Array.isArray(rawPrice) ? rawPrice : []
-    let isStageUpgrade = priceList.length > 1
-    let maxStage = isStageUpgrade ? priceList.length : 1
-    let stageIndex = this.GetStagePriceIndex(element, priceList)
-    let currentStage = this.GetCurrentStage(element, priceList)
-    let price = isStageUpgrade ? (Number(priceList[stageIndex]) || 0) : (meta ? meta.ActionPrice(actionLevel, 0) : 0)
-    let rewardStr = meta ? meta.Reward(actionLevel) : ""
-    let displayRewards = isStageUpgrade
-        ? this.GetStageRewards(rewardStr, stageIndex, maxStage)
-        : Game.Content.Merge(Game.Content.FromStrings(rewardStr))
-    let rewards = Game.Content.Merge(displayRewards)
-    let bigReward = isStageUpgrade ? this.GetStageBigReward(rewardStr) : null
-    let windowName = null
+    GetStagePriceIndex(element: any, priceList: any[]) {
+        let stage = element && element.stage != null ? Number(element.stage) : 0;
+        if (isNaN(stage) || stage < 0) stage = 0;
+        if (!Array.isArray(priceList) || priceList.length <= 0) return 0;
+        return Math.min(stage, priceList.length - 1);
+    }
 
-    if (state === UserMap.ElementState.UnlockedNotBought) windowName = "MapBuyBuildWindow"
-    else if (state === UserMap.ElementState.Full) windowName = "MapBuildMaxLevelWindow"
-    else if (state === UserMap.ElementState.Bought) windowName = isStageUpgrade ? "MapBuildStageUpgradeWindow" : "MapBuildUpgradeWindow"
+    GetCurrentStage(element: any, priceList: any[]) {
+        let stage = element && element.stage != null ? Number(element.stage) : 0;
+        if (isNaN(stage) || stage < 0) stage = 0;
+        if (!Array.isArray(priceList) || priceList.length <= 0) return stage;
+        return Math.min(stage, priceList.length);
+    }
 
-    return {
-        sid: sid,
-        mapID: element.mapID,
-        buildID: element.id,
-        meta: meta,
-        element: element,
-        state: state,
-        actionLevel: actionLevel,
-        rawPrice: rawPrice,
-        priceList: priceList,
-        price: price,
-        stage: element.stage,
-        currentStage: currentStage,
-        stageIndex: stageIndex,
-        maxStage: maxStage,
-        isStageUpgrade: isStageUpgrade,
-        isLocked: state === UserMap.ElementState.LevelLocked,
-        isFull: state === UserMap.ElementState.Full,
-        isBought: this.IsBought(sid),
-        displayRewards: displayRewards,
-        rewards: rewards,
-        rewardStr: rewardStr,
-        bigReward: bigReward,
-        stagePaidPrice: this.SumStagePrice(priceList, currentStage),
-        stageTotalPrice: this.SumStagePrice(priceList, priceList.length),
-        canAction: state !== UserMap.ElementState.LevelLocked && state !== UserMap.ElementState.Full && Game.SUser.Coin() >= price,
-        windowName: windowName,
+    SumStagePrice(priceList: any[], count: number) {
+        if (!Array.isArray(priceList)) return 0;
+        let total = 0;
+        count = Math.max(0, Math.min(count, priceList.length));
+        for (let i = 0; i < count; i++) {
+            total += Number(priceList[i]) || 0;
+        }
+        return total;
+    }
+
+    ParseStageReward(rewardStr: any) {
+        let rewards: any[] = [];
+        if (!rewardStr) return rewards;
+        let parts = String(rewardStr).split("_");
+        for (let i = 0; i < parts.length; i++) {
+            if (!parts[i]) continue;
+            let content = Game.Content.FromString(parts[i]);
+            if (content) rewards.push(content);
+        }
+        return rewards;
+    }
+
+    ParseStageRewardGroups(rewardStr: any) {
+        if (!rewardStr) return [];
+        let stages = String(rewardStr).split(";");
+        let groups: any[] = [];
+        for (let i = 0; i < stages.length; i++) {
+            groups.push(this.ParseStageReward(stages[i]));
+        }
+        return groups;
+    }
+
+    GetStageRewards(rewardStr: any, stage: any, maxStage: number) {
+        let groups = this.ParseStageRewardGroups(rewardStr);
+        if (groups.length <= 0) return [];
+        stage = Number(stage);
+        if (isNaN(stage) || stage < 0) stage = 0;
+        if (maxStage > 0) stage = Math.min(stage, maxStage - 1);
+        stage = Math.min(stage, groups.length - 1);
+        return groups[stage] || [];
+    }
+
+    GetStageBigReward(rewardStr: any) {
+        let groups = this.ParseStageRewardGroups(rewardStr);
+        for (let i = groups.length - 1; i >= 0; i--) {
+            let rewards = groups[i];
+            if (rewards && rewards.length > 0) return rewards[rewards.length - 1];
+        }
+        return null;
+    }
+
+    GetBuildActionContext(sid: any, actionLevelOverride?: any) {
+        let element = this.initElement(sid);
+        let meta = Meta.MapMeta.GetMetaById(element.mapID, element.id);
+        let state = this.GetElementState(sid);
+        let actionLevel = actionLevelOverride != null ? actionLevelOverride : this.GetNextActionLevel(sid);
+        let rawPrice = meta ? meta.Price(actionLevel) : 0;
+        let priceList = Array.isArray(rawPrice) ? rawPrice : [];
+        let isStageUpgrade = priceList.length > 1;
+        let maxStage = isStageUpgrade ? priceList.length : 1;
+        let stageIndex = this.GetStagePriceIndex(element, priceList);
+        let currentStage = this.GetCurrentStage(element, priceList);
+        let price = isStageUpgrade ? (Number(priceList[stageIndex]) || 0) : (meta ? meta.ActionPrice(actionLevel, 0) : 0);
+        let rewardStr = meta ? meta.Reward(actionLevel) : "";
+        let displayRewards = isStageUpgrade
+            ? this.GetStageRewards(rewardStr, stageIndex, maxStage)
+            : Game.Content.Merge(Game.Content.FromStrings(rewardStr));
+        let rewards = Game.Content.Merge(displayRewards);
+        let bigReward = isStageUpgrade ? this.GetStageBigReward(rewardStr) : null;
+        let windowName = null;
+
+        if (state === UserMap.ElementState.UnlockedNotBought) windowName = "MapBuyBuildWindow";
+        else if (state === UserMap.ElementState.Full) windowName = "MapBuildMaxLevelWindow";
+        else if (state === UserMap.ElementState.Bought) windowName = isStageUpgrade ? "MapBuildStageUpgradeWindow" : "MapBuildUpgradeWindow";
+
+        return {
+            sid: sid,
+            mapID: element.mapID,
+            buildID: element.id,
+            meta: meta,
+            element: element,
+            state: state,
+            actionLevel: actionLevel,
+            rawPrice: rawPrice,
+            priceList: priceList,
+            price: price,
+            stage: element.stage,
+            currentStage: currentStage,
+            stageIndex: stageIndex,
+            maxStage: maxStage,
+            isStageUpgrade: isStageUpgrade,
+            isLocked: state === UserMap.ElementState.LevelLocked,
+            isFull: state === UserMap.ElementState.Full,
+            isBought: this.IsBought(sid),
+            displayRewards: displayRewards,
+            rewards: rewards,
+            rewardStr: rewardStr,
+            bigReward: bigReward,
+            stagePaidPrice: this.SumStagePrice(priceList, currentStage),
+            stageTotalPrice: this.SumStagePrice(priceList, priceList.length),
+            canAction: state !== UserMap.ElementState.LevelLocked && state !== UserMap.ElementState.Full && Game.SUser.Coin() >= price,
+            windowName: windowName,
+        };
     }
 }
-
-global.Game.UserMap = UserMap

@@ -15,7 +15,7 @@
 // - 当前有子窗口打开时会等待，避免自动奖励弹窗打断玩家正在操作的窗口。
 // - 队列会根据 windowOrder 表里的 priority 排序，数字越小越先弹。
 // - UIWindow.close() 后会调用 drainLater()，继续尝试弹出下一个自动窗口。
-let AutoWindowQueue = {
+let AutoWindowQueue: any = {
     // 待弹出的自动窗口列表
     pending: [],
     // 当前是否正在展示由本队列打开的窗口

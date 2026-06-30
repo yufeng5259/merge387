@@ -2,6 +2,7 @@ import { _decorator, Label, Node } from 'cc';
 import { UIWindow } from "../../GameKit/ui/UIWindow";
 import { UserInfoModel } from "../UserInfoModel";
 
+import { UserVillage } from '../../game/village/UserVillage';
 const { ccclass, property, executeInEditMode } = _decorator
 @ccclass('OtherPlayerWindow')
 export default class OtherPlayerWindow extends UIWindow{
@@ -34,7 +35,7 @@ export default class OtherPlayerWindow extends UIWindow{
         var uid = this.userInfo.UserId()
         var req = SR.SRVillage.getPeopleUserVillage(uid);
         req.SetCallBack((res) => {
-            let vil = new Game.UserVillage(uid);
+            let vil = new UserVillage(uid);
             vil.updateData(res.userVillage);
             this.userInfo.updateData({star: res.star});
 

@@ -26,7 +26,7 @@ export class MapPathManager extends Component {
     public pathNodes: Node[] = [];
     @property
     public showDebugGrid = false;
-    @property(Color)
+    @property
     public debugGridColor = Color.WHITE.clone();
 
     private gridData: GridData | null = null;

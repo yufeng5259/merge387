@@ -1,11 +1,12 @@
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import ContentModel from '../../../game/items/ContentModel';
+import { _decorator, Button, Color, instantiate, Label, Node, tween, Tween, UIOpacity, Vec3 } from 'cc';
 // fengyong-2019-9-5
 // @ts-check
 
 import HeistData from "./HeistData";
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const ItemYs = [280, 0, -280, -560]
 
 @ccclass
@@ -13,8 +14,9 @@ export default class CastleGardenMainWindow extends UIWindow {
 
     static windowPath = "Activity/heist/CastleGardenMainWindow";
 
-    /** @type {cc.Label} */
-    @property({ tooltip: "", type: cc.Label })
+    leftTime = null
+
+    @property({ tooltip: "", type: Label })
     labelTimer = null
 
     onShow(params) {
@@ -65,23 +67,26 @@ export default class CastleGardenMainWindow extends UIWindow {
         //GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.ActivityEvent, "HeistMainWindow")
     }
 
-    update_ui(isAnim, skipReward) {
+    update_ui(isAnim = false, skipReward = false) {
         this.buy_item_list.forEach((v, i) => {
             v.btn_buy.interactable = HeistData.get_buy_state(i) === "able-to-buy" || HeistData.get_buy_state(i) === "no-able-to-buy"
             v.buy_lock.active = HeistData.get_buy_state(i) === "buy-enough" || HeistData.get_buy_state(i) === "no-able-to-buy"
             v.bkg2.active = HeistData.get_buy_state(i) === "buy-enough" || HeistData.get_buy_state(i) === "no-able-to-buy"
             if (!v.bkg2.active && isAnim) {
                 v.bkg2.active = true
-                v.bkg2.runAction(cc.sequence(cc.fadeOut(0.3), cc.callFunc(() => {
-                    v.bkg2.opacity = 255
+                let opacity = v.bkg2.getComponent(UIOpacity) || v.bkg2.addComponent(UIOpacity)
+                opacity.opacity = 255
+                Tween.stopAllByTarget(opacity)
+                tween(opacity).to(0.3, { opacity: 0 }).call(() => {
+                    opacity.opacity = 255
                     v.bkg2.active = false
-                })))
+                }).start()
             }
 
             if (!skipReward) {
                 v.reward_layout.destroyAllChildren()
                 HeistData.get_buy_item_reward_list(i).forEach(reward => {
-                    let reward_node = cc.instantiate(v.reward_item)
+                    let reward_node = instantiate(v.reward_item)
                     reward_node.parent = v.reward_layout
                     reward_node.active = true
                     reward_node.getComponent(ContentModel).show(reward)
@@ -90,17 +95,15 @@ export default class CastleGardenMainWindow extends UIWindow {
             }
 
             v.label_buy_cost.string = HeistData.get_buy_item_price_str(i)
-            v.label_buy_cost.node.color = v.btn_buy.interactable?cc.color(255, 255, 255):cc.color(226, 226, 226)
-            v.label_buy_cost.node.x = (HeistData.get_buy_item_type(i) === "coin") ? 20 : 0
+            v.label_buy_cost.color = v.btn_buy.interactable ? new Color(255, 255, 255) : new Color(226, 226, 226)
+            v.label_buy_cost.node.setPosition((HeistData.get_buy_item_type(i) === "coin") ? 20 : 0, v.label_buy_cost.node.position.y, v.label_buy_cost.node.position.z)
             v.buy_use_coin.active = HeistData.get_buy_item_type(i) === "coin"
         })
     }
 
-    /** @type {cc.Node[]} */
-    @property({ tooltip: "单个购买项目的item", type: cc.Node })
+    @property({ tooltip: "单个购买项目的item", type: [Node] })
     buy_item = []
 
-    /** @type {{ reward_layout: cc.Node; reward_item: cc.Node; label_buy_cost: cc.Label; label_buy_count: cc.Label; buy_lock: cc.Node; buy_use_coin: cc.Node; bkg2: cc.Node; btn_buy: cc.Button; cannot_buy: cc.Node; }[]} */
     buy_item_list = []
 
     /** 创建所有的购买项目(一般是3个) */
@@ -111,17 +114,17 @@ export default class CastleGardenMainWindow extends UIWindow {
             let n = this.buy_item[i]
             //n.parent = this.buy_item.parent
             n.active = true
-            n.y = ItemYs[i]
+            n.setPosition(n.position.x, ItemYs[i], n.position.z)
             let data = {
                 node: n,
                 reward_layout: GameKit.ControllerTable.GetNode(n, "reward-layout"),
                 reward_item: GameKit.ControllerTable.GetNode(n, "reward-item"),
-                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(cc.Label),
-                label_buy_count: GameKit.ControllerTable.GetNode(n, "label-buy-count").getComponent(cc.Label),
+                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(Label),
+                label_buy_count: GameKit.ControllerTable.GetNode(n, "label-buy-count").getComponent(Label),
                 buy_lock: GameKit.ControllerTable.GetNode(n, "buy-lock"),
                 buy_use_coin: GameKit.ControllerTable.GetNode(n, "buy-use-coin"),
                 bkg2: GameKit.ControllerTable.GetNode(n, "bkg2"),
-                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(cc.Button),
+                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(Button),
                 cannot_buy: GameKit.ControllerTable.GetNode(n, "cannot-buy"),
             }
             this.buy_item_list.push(data)
@@ -130,12 +133,11 @@ export default class CastleGardenMainWindow extends UIWindow {
         }
     }
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    @property(Node)
     touch_area = null
 
     init() {
-        this.touch_area.on(cc.Node.EventType.TOUCH_START, () => {
+        this.touch_area.on(Node.EventType.TOUCH_START, () => {
             this.buy_item_list.forEach(v => v.cannot_buy.active = false)
             this.touch_area.active = false
         })
@@ -216,17 +218,21 @@ export default class CastleGardenMainWindow extends UIWindow {
             this.update_ui(true, true)
             return
         }
-        this.buy_item[0].runAction(cc.sequence(cc.scaleTo(0.3, 0), cc.callFunc(() => {
-            this.buy_item[0].scale = 1
-            this.buy_item[0].y = ItemYs[1]
-            this.buy_item[1].y = ItemYs[2]
-            this.buy_item[2].y = ItemYs[3]
+        Tween.stopAllByTarget(this.buy_item[0])
+        tween(this.buy_item[0]).to(0.3, { scale: new Vec3(0, 0, this.buy_item[0].scale.z) }).call(() => {
+            this.buy_item[0].setScale(1, 1, this.buy_item[0].scale.z)
+            this.buy_item[0].setPosition(this.buy_item[0].position.x, ItemYs[1], this.buy_item[0].position.z)
+            this.buy_item[1].setPosition(this.buy_item[1].position.x, ItemYs[2], this.buy_item[1].position.z)
+            this.buy_item[2].setPosition(this.buy_item[2].position.x, ItemYs[3], this.buy_item[2].position.z)
             this.update_ui(true)
 
-            this.buy_item[0].runAction(cc.moveTo(0.3, 0, ItemYs[0]))
-            this.buy_item[1].runAction(cc.moveTo(0.3, 0, ItemYs[1]))
-            this.buy_item[2].runAction(cc.moveTo(0.3, 0, ItemYs[2]))
-        })))
+            Tween.stopAllByTarget(this.buy_item[0])
+            Tween.stopAllByTarget(this.buy_item[1])
+            Tween.stopAllByTarget(this.buy_item[2])
+            tween(this.buy_item[0]).to(0.3, { position: new Vec3(0, ItemYs[0], this.buy_item[0].position.z) }).start()
+            tween(this.buy_item[1]).to(0.3, { position: new Vec3(0, ItemYs[1], this.buy_item[1].position.z) }).start()
+            tween(this.buy_item[2]).to(0.3, { position: new Vec3(0, ItemYs[2], this.buy_item[2].position.z) }).start()
+        }).start()
     }
 
 }

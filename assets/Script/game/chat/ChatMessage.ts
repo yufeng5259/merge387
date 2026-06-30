@@ -1,7 +1,10 @@
 import '../../LegacyGlobals';
+import { User } from '../user/User';
 //用户信息�?
 
 class ChatMessage {
+    public data: any;
+    public user: any;
 
     constructor () {
         this.data = {
@@ -18,7 +21,7 @@ class ChatMessage {
         for (let key in data) {
             this.data[key] = data[key]
         }
-        this.user = new Game.User().updateData(this.data.userInfo)
+        this.user = new User().updateData(this.data.userInfo)
         return this
     }
 

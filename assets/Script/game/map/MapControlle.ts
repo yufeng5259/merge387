@@ -124,8 +124,9 @@ export class MapControlle extends Component {
         }
         const scale = this.getCameraZoomRatio() - event.getScrollY() / this.increaseRate * -1;
         const screenPos = event.getLocation();
-        const realPos = this.getScreenToWorldPoint(screenPos);
-        const targetPos = this.convertToNodeSpaceAR(this.camera.node.parent, new Vec3(realPos.x, realPos.y, 0));
+        const realPos = new Vec3();
+        this.camera.screenToWorld(new Vec3(screenPos.x, screenPos.y, 0), realPos);
+        const targetPos = this.camera.node.parent.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(realPos.x, realPos.y, 0));
         this.smoothOperate(this.camera, targetPos, scale);
         event.stopPropagation();
     }
@@ -194,8 +195,8 @@ export class MapControlle extends Component {
             const touch2 = touches[1];
             const delta1 = new Vec2(touch1.getDelta().x, touch1.getDelta().y);
             const delta2 = new Vec2(touch2.getDelta().x, touch2.getDelta().y);
-            const touchPoint1 = this.convertToNodeSpaceAR(this.camera.node, new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0));
-            const touchPoint2 = this.convertToNodeSpaceAR(this.camera.node, new Vec3(touch2.getLocation().x, touch2.getLocation().y, 0));
+            const touchPoint1 = this.camera.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0));
+            const touchPoint2 = this.camera.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch2.getLocation().x, touch2.getLocation().y, 0));
             const distance = touchPoint1.clone().subtract(touchPoint2.clone());
             const delta = this.multiplyScalar(delta1.subtract(delta2), this.fingerIncreaseRate);
             const currentZoom = this.getCameraZoomRatio();
@@ -208,8 +209,9 @@ export class MapControlle extends Component {
 
             const centerX = (touch1.getLocation().x + touch2.getLocation().x) / 2;
             const centerY = (touch1.getLocation().y + touch2.getLocation().y) / 2;
-            const realPos = this.getScreenToWorldPoint(new Vec3(centerX, centerY, 0));
-            const targetPos = this.convertToNodeSpaceAR(this.camera.node.parent, new Vec3(realPos.x, realPos.y, 0));
+            const realPos = new Vec3();
+            this.camera.screenToWorld(new Vec3(centerX, centerY, 0), realPos);
+            const targetPos = this.camera.node.parent.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(realPos.x, realPos.y, 0));
             this.smoothOperate(this.camera, targetPos, targetScale);
         }
         event.stopPropagation();
@@ -295,8 +297,9 @@ export class MapControlle extends Component {
         if (!this.clickEffectTemplate || !this.clickEffectParent || !this.camera) {
             return;
         }
-        const worldPos = this.getScreenToWorldPoint(new Vec3(screenPos.x, screenPos.y, 0));
-        const localPos = this.convertToNodeSpaceAR(this.clickEffectParent, new Vec3(worldPos.x, worldPos.y, 0));
+        const worldPos = new Vec3();
+        this.camera.screenToWorld(new Vec3(screenPos.x, screenPos.y, 0), worldPos);
+        const localPos = this.clickEffectParent.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(worldPos.x, worldPos.y, 0));
         const effectNode = this.getClickEffectNode();
         if (!effectNode) {
             return;
@@ -389,24 +392,6 @@ export class MapControlle extends Component {
             }
         }
         return defaultDuration;
-    }
-
-    getScreenToWorldPoint(screenPos: any) {
-        const realPos = new Vec3(0, 0, 0);
-        if (!this.camera) {
-            return realPos;
-        }
-        const camera = this.camera as any;
-        if (camera.screenToWorld) {
-            return camera.screenToWorld(screenPos, realPos) || realPos;
-        }
-        if (camera.getScreenToWorldPoint) {
-            return camera.getScreenToWorldPoint(screenPos, realPos) || realPos;
-        }
-        if (camera.getCameraToWorldPoint) {
-            camera.getCameraToWorldPoint(screenPos, realPos);
-        }
-        return realPos;
     }
 
     smoothOperate(camera: Camera & { zoomRatio?: number }, targetPos: Vec3, targetScale: number) {
@@ -571,11 +556,4 @@ export class MapControlle extends Component {
         }
     }
 
-    private convertToNodeSpaceAR(node: Node | null, worldPosition: Vec3) {
-        if (!node) {
-            return worldPosition;
-        }
-        const transform = node.getComponent(UITransform);
-        return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition;
-    }
 }

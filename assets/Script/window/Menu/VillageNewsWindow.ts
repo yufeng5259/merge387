@@ -2,12 +2,14 @@ import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import { UITabContainer } from '../../GameKit/ui/UITabContainer';
 import { UserInfoModel } from '../UserInfoModel';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
+import { User } from '../../game/user/User';
 /**
  * @author fengyong
  * @version 2018-8-14
  */
 
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -41,31 +43,31 @@ const C = {
 export default class VillageNewsWindow extends UIWindow {
 
     static windowPath = "Menu/VillageNewsWindow"
+    static getPresentNum: () => number
 
-    /** @type {cc.SpriteFrame} 默认头像 */
-    @property(cc.SpriteFrame)
+    kingdomMessageLoaded = false
+    mailMessageLoaded = false
+    data_array: any = null
+    presentList: any = null
+
+    /** @type {SpriteFrame} 默认头像 */
+    @property(SpriteFrame)
     default_avatar_sf = null
 
-    /** @type {cc.spriteFrame} type_icon:锤子 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_hammer = null
 
-    /** @type {cc.spriteFrame} type_icon:盾牌 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_sheild = null
 
-    /** @type {cc.spriteFrame} type_icon:猪 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_pig = null
 
-    /** @type {cc.spriteFrame} type_icon:邀请 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_invite = null
-    /** @type {cc.spriteFrame} type_icon:随从 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_supershield = null
-    /** @type {cc.spriteFrame} type_icon:随从 */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     type_icon_supershieldGold = null
 
     /** @type {UITabContainer} tab node数组 */
@@ -78,12 +80,12 @@ export default class VillageNewsWindow extends UIWindow {
     /** @type {ScrollViewTool} ScrollViewTool组件 */
     @property(ScrollViewTool)
     svtMail = null
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     mailBadge = null
 
-    /** @type {cc.Node} 加载数据的动画圈 */
-    @property(cc.Node)
+    /** @type {Node} 加载数据的动画圈 */
+    @property(Node)
     loading_circle = null
 
     onShow(showParams) {
@@ -142,17 +144,17 @@ export default class VillageNewsWindow extends UIWindow {
         this.svt.setItem(
             ranks,
             /**
-             * @param {cc.Node} itemHandle item节点
+             * @param {Node} itemHandle item节点
              */
             (index, id, itemHandle) => {
                 // 获取对应组件（node）
                 // 注意各个子节点的名称正确
                 // 注意要把对应的节点拖入ControllerTables下面
                 let userinfo = GameKit.ControllerTable.GetNode(itemHandle, "userinfo").getComponent(UserInfoModel)
-                let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(cc.Sprite)
-                let log = GameKit.ControllerTable.GetNode(itemHandle, "log").getComponent(cc.RichText)
-                let type_icon = GameKit.ControllerTable.GetNode(itemHandle, "type_icon").getComponent(cc.Sprite)
-                let time = GameKit.ControllerTable.GetNode(itemHandle, "time").getComponent(cc.Label)
+                let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(Sprite)
+                let log = GameKit.ControllerTable.GetNode(itemHandle, "log").getComponent(RichText)
+                let type_icon = GameKit.ControllerTable.GetNode(itemHandle, "type_icon").getComponent(Sprite)
+                let time = GameKit.ControllerTable.GetNode(itemHandle, "time").getComponent(Label)
                 let vip_nameIcon = GameKit.ControllerTable.GetNode(itemHandle, "vip_nameIcon")
                 // 根据数据写入
                 let data = data_array[index] ///? index?id?
@@ -161,7 +163,7 @@ export default class VillageNewsWindow extends UIWindow {
                     // 本界面内，无数据则不显示
                 } else {
                     // 有数据
-                    userinfo.show(new Game.User().updateData(data["user"]))
+                    userinfo.show(new User().updateData(data["user"]))
                     // 不同界面的信息域内容不同，因此要根据界面调整User信息域与界面信息的处理
                     // avatar.spriteFrame = this.default_avatar_sf
                     let isVip = data["user"]["isVip"] && !G.GameConfig.closeVIP && AppKit.SdkManager.IsNative()
@@ -213,7 +215,7 @@ export default class VillageNewsWindow extends UIWindow {
 
     /** 获取village_news的数据 */
     get_news_data() {
-        return new Promise((resolve, reject) => {
+        return new Promise<any[]>((resolve, reject) => {
             let sr = SR.SRVillage.getVillageNews()
             sr.SetSilence(true)
             sr.SetCallBack(res => {
@@ -297,34 +299,34 @@ export default class VillageNewsWindow extends UIWindow {
         this.svtMail.setItem(
             ranks,
             /**
-             * @param {cc.Node} itemHandle item节点
+             * @param {Node} itemHandle item节点
              */
             (index, id, itemHandle) => {
                 let present = data_array[id]
-                let title = GameKit.ControllerTable.GetComponent(itemHandle, "title", cc.Label)
+                let title = GameKit.ControllerTable.GetComponent(itemHandle, "title", Label)
                 let reward = GameKit.ControllerTable.GetNode(itemHandle, "reward")
                 let rewardParent = GameKit.ControllerTable.GetNode(itemHandle, "rewardParent")
-                let btnCollect = GameKit.ControllerTable.GetComponent(itemHandle, "btnCollect", cc.Button)
+                let btnCollect = GameKit.ControllerTable.GetComponent(itemHandle, "btnCollect", Button)
                 let btnCollectLabel = GameKit.ControllerTable.GetNode(itemHandle, "btnCollectLabel")
-                let time = GameKit.ControllerTable.GetComponent(itemHandle, "time", cc.Label)
+                let time = GameKit.ControllerTable.GetComponent(itemHandle, "time", Label)
                 let spCongrats = GameKit.ControllerTable.GetNode(itemHandle, "spCongrats")
 
                 title.string = present.title
 
                 rewardParent.destroyAllChildren()
                 Game.Content.FromStrings(present.rewards).forEach(content => {
-                    let rewardIns = cc.instantiate(reward)
+                    let rewardIns = instantiate(reward)
                     rewardIns.parent = rewardParent
                     rewardIns.active = true
                     rewardIns.getComponent("ContentModel").show(content)
                 })
 
                 btnCollect.node.targetOff(this)
-                btnCollectLabel.color = cc.color(6,92,17)
+                btnCollectLabel.color = new Color(6, 92, 17)
                 if (present.received) {
                     btnCollect.interactable = false
                     btnCollect.inScrollView = true
-                    btnCollectLabel.color = cc.color(88,88,88)
+                    btnCollectLabel.color = new Color(88, 88, 88)
                 } else {
                     setTimeout(()=>{btnCollect.inScrollView = false}, 100)
                     btnCollect.interactable = true
@@ -334,7 +336,7 @@ export default class VillageNewsWindow extends UIWindow {
                             present.received = true
                             btnCollect.interactable = false
                             btnCollect.inScrollView = true
-                            btnCollectLabel.color = cc.color(88,88,88)
+                            btnCollectLabel.color = new Color(88, 88, 88)
 
                             this.updateMailBadge()
                         }.bind(this))
@@ -357,7 +359,7 @@ export default class VillageNewsWindow extends UIWindow {
 
     /** 获取village_news的数据 */
     get_mail_data() {
-        return new Promise((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
             let presentList = GameKit.DataCache.GetData("UserPresentList")
             if (presentList) {
                 let currentTime = GameKit.TimeUtil.getCurrentTime()
@@ -389,16 +391,16 @@ export default class VillageNewsWindow extends UIWindow {
 
     /** 打开loading动画 */
     open_loading_anima() {
-        /*if (this.loading_anima === undefined) {
-            this.loading_anima = cc.rotateBy(C.LOADING_ROTATION_TIME, 360).repeatForever()
-            this.loading_circle.active = true
-            this.loading_circle.runAction(this.loading_anima)
-        }*/
+        Tween.stopAllByTarget(this.loading_circle)
         this.loading_circle.active = true
+        tween(this.loading_circle)
+            .repeatForever(tween<Node>().by(C.LOADING_ROTATION_TIME, { angle: 360 }))
+            .start()
     }
 
     /** 关闭loading动画 */
     close_loading_anima() {
+        Tween.stopAllByTarget(this.loading_circle)
         this.loading_circle.active = false
     }
 }

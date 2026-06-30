@@ -1,6 +1,7 @@
 import { _decorator, Component, Label, Node, RichText, Sprite, SpriteFrame, tween, UITransform, Vec3 } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 
+import { User } from '../../../game/user/User';
 const { ccclass, property } = _decorator;
 
 function fitByHeight(sprite: Sprite, height?: number) {
@@ -172,7 +173,7 @@ export default class ActivitySlotSymbolRankWindow extends UIWindow {
         let data = this.data.rank[id];
 
         if (id == Game.SUser.UserId()) userinfo.show(Game.SUser);
-        else userinfo.show(new Game.User().updateData(data));
+        else userinfo.show(new User().updateData(data));
 
         if (rank < 4) {
             cup.node.active = true;

@@ -15,6 +15,7 @@ import {
     Vec2,
     Vec3,
 } from 'cc';
+import { UserMap } from './UserMap';
 const { ccclass, property } = _decorator;
 
 type LevelNodeView = {
@@ -29,11 +30,6 @@ function getNodeTarget(target: any): Node | null {
 
 function getOrAddOpacity(node: Node) {
     return node.getComponent(UIOpacity) || node.addComponent(UIOpacity);
-}
-
-function convertToNodeSpaceAR(node: Node, worldPosition: Vec3) {
-    const transform = node.getComponent(UITransform);
-    return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition;
 }
 
 function pointInPolygon(point: Vec2 | Vec3, polygon: Vec2[]) {
@@ -222,15 +218,15 @@ export class MapElementNode extends Component {
         this.stage = element.stage;
         const bought = Game.SUserMap.IsBought(this.mbid);
         const state = !this.unlocked
-            ? Game.UserMap.ElementState.LevelLocked
+            ? UserMap.ElementState.LevelLocked
             : (!bought
-                ? Game.UserMap.ElementState.UnlockedNotBought
-                : (this.level >= this.maxLevel ? Game.UserMap.ElementState.Full : Game.UserMap.ElementState.Bought));
+                ? UserMap.ElementState.UnlockedNotBought
+                : (this.level >= this.maxLevel ? UserMap.ElementState.Full : UserMap.ElementState.Bought));
 
         this.setNodeActive(this._costBarRoot, false);
-        this.setNodeActive(this._coinBarNode, this.unlocked && state !== Game.UserMap.ElementState.Full);
+        this.setNodeActive(this._coinBarNode, this.unlocked && state !== UserMap.ElementState.Full);
         let pricePre = 0;
-        if (state !== Game.UserMap.ElementState.Full) {
+        if (state !== UserMap.ElementState.Full) {
             const actionLevel = bought ? this.level : 0;
             pricePre = this.getActionPricePre(actionLevel, element, userCoin);
             const pricePreText = Math.floor(pricePre * 1000) / 10 + '%';
@@ -352,14 +348,9 @@ export class MapElementNode extends Component {
             const screenPos = e.getLocation();
             let cameraPos = new Vec3(screenPos.x, screenPos.y, 0);
             if (this.camera) {
-                const camera = this.camera as any;
-                if (camera.screenToWorld) {
-                    cameraPos = camera.screenToWorld(cameraPos, new Vec3()) || cameraPos;
-                } else if (camera.getScreenToWorldPoint) {
-                    cameraPos = camera.getScreenToWorldPoint(cameraPos, new Vec3()) || cameraPos;
-                }
+                cameraPos = this.camera.screenToWorld(cameraPos, new Vec3());
             }
-            const localPos = convertToNodeSpaceAR(this.node, cameraPos);
+            const localPos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(cameraPos);
             if (!pointInPolygon(localPos, collider.points)) {
                 return;
             }

@@ -2,9 +2,10 @@ import '../../LegacyGlobals';
 
 //村庄数据
 
-class UserVillage {
+export class UserVillage {
+    public data: any;
 
-    constructor (userId) {
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -80,5 +81,3 @@ class UserVillage {
         return 1;
     }
 }
-
-global.Game.UserVillage = UserVillage

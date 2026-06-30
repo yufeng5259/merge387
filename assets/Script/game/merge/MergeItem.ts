@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Sprite, sp, CCInteger, Label, ProgressBar, Tween, isValid, UIOpacity, Vec3 } from 'cc';
+import { _decorator, Component, Node, Sprite, sp, CCInteger, Label, ProgressBar, Tween, isValid, UIOpacity } from 'cc';
 import MergeTypes from './MergeTypes';
 import MergeTileFunctionUtil from './MergeTileFunctionUtil';
 import MergeTileCapabilityKeys from './capabilities/MergeTileCapabilityKeys';
@@ -11,39 +11,39 @@ export class MergeItem extends Component {
     @property
     public mergeId = 0;
     @property(Node)
-    public bottomRect: Node | null = null;
+    public bottomRect: Node = null!;
     @property(Sprite)
-    public icon: Sprite | null = null;
+    public icon: Sprite = null!;
     @property(sp.Skeleton)
-    public bubble_anim: sp.Skeleton | null = null;
+    public bubble_anim: sp.Skeleton = null!;
     @property(Sprite)
-    public icon_bubble_anim: Sprite | null = null;
+    public icon_bubble_anim: Sprite = null!;
     @property(sp.Skeleton)
-    public iconAnim: sp.Skeleton | null = null;
+    public iconAnim: sp.Skeleton = null!;
     @property(CCInteger)
     public envStatus = 0;
     @property(Sprite)
-    public envIcon: Sprite | null = null;
+    public envIcon: Sprite = null!;
     @property(CCInteger)
     public addtionId = -1;
     @property(Sprite)
-    public additionIcon: Sprite | null = null;
+    public additionIcon: Sprite = null!;
     @property(Label)
-    public additionLabel: Label | null = null;
+    public additionLabel: Label = null!;
     @property(Sprite)
-    public okIcon: Sprite | null = null;
+    public okIcon: Sprite = null!;
     @property(Sprite)
-    public energyicon: Sprite | null = null;
+    public energyicon: Sprite = null!;
     @property(Sprite)
-    public icon_lock: Sprite | null = null;
+    public icon_lock: Sprite = null!;
     @property(Node)
-    public hg: Node | null = null;
+    public hg: Node = null!;
     @property(ProgressBar)
-    public clock: ProgressBar | null = null;
+    public clock: ProgressBar = null!;
     @property(sp.Skeleton)
-    public shiningAnim: sp.Skeleton | null = null;
+    public shiningAnim: sp.Skeleton = null!;
     @property(Node)
-    public cooking: Node | null = null;
+    public cooking: Node = null!;
 
     public BASE_ANIM_URL = 'res/merge/anim/';
     public tx = -1;
@@ -63,7 +63,7 @@ export class MergeItem extends Component {
         this.hideIconAnim();
         this.tx = -1;
         this.ty = -1;
-        this.initAdditionX = this.additionIcon && this.additionIcon.node ? this.additionIcon.node.position.x : 0;
+        this.initAdditionX = this.additionIcon.node.position.x;
         this.HideShiningAnim();
         if (this.okIcon) this.okIcon.node.active = false;
         if (this.energyicon) this.energyicon.node.active = false;
@@ -71,7 +71,7 @@ export class MergeItem extends Component {
         if (this.hg) this.hg.active = false;
         if (this.cooking) this.cooking.active = false;
         this.hideBubbleAnim();
-        if (this.bottomRect) this.bottomRect.active = false;
+        this.bottomRect.active = false;
 
         this._capabilities = {};
         this._registerCapability(new MergeGeneratorCapability());
@@ -226,11 +226,11 @@ export class MergeItem extends Component {
     }
 
     GetMergeStageId() {
-        return this.envIcon && this.envIcon.node.active ? null : this.mergeId;
+        return this.envIcon.node.active ? null : this.mergeId;
     }
 
     StopAllActions() {
-        if (this.icon && this.icon.node) Tween.stopAllByTarget(this.icon.node);
+        Tween.stopAllByTarget(this.icon.node);
     }
 
     hideIconAnim() {
@@ -261,7 +261,6 @@ export class MergeItem extends Component {
                 }
                 return;
             }
-            if (!this.iconAnim) return;
             this.iconAnim.skeletonData = skeletonData;
             this.iconAnim.node.active = true;
             if (this.icon && this.icon.node) {
@@ -283,7 +282,7 @@ export class MergeItem extends Component {
 
     PlayIconAnim(animName: string, loop = false) {
         if (!this.iconAnim || !this.iconAnim.node || !this.iconAnim.skeletonData || !animName) return false;
-        if ((this.iconAnim as any).findAnimation && !(this.iconAnim as any).findAnimation(animName)) return false;
+        if (!this.iconAnim.findAnimation(animName)) return false;
         this.iconAnim.node.active = true;
         if (this.icon && this.icon.node) {
             this.icon.node.active = false;
@@ -306,39 +305,32 @@ export class MergeItem extends Component {
 
         this.SetMergeData(mergeDataStr);
         let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, this.mergeId);
-        if (this.icon && meta) {
-            this.icon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIcon, meta.Icon());
-        }
-        if (this.icon_bubble_anim && this.icon) this.icon_bubble_anim.spriteFrame = this.icon.spriteFrame;
-        if (this.icon && this.icon.node) {
-            this.icon.node.setPosition(0, 0);
-            this.icon.node.setScale(1, 1);
-            this.icon.node.active = this.mergeId > 0 && !isBubble;
-        }
+        this.icon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIcon, meta.Icon());
+        this.icon_bubble_anim.spriteFrame = this.icon.spriteFrame;
+        this.icon.node.setPosition(0, 0);
+        this.icon.node.setScale(1, 1, 1);
+        this.icon.node.active = this.mergeId > 0 && !isBubble;
         this.tryShowIconAnim(meta);
 
         let bgMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeBgElements, this.envStatus);
         if (bgMeta) {
-            if (this.envIcon) {
-                this.envIcon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIconBg, bgMeta.Icon());
-                this.envIcon.node.active = true;
-            }
+            this.envIcon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIconBg, bgMeta.Icon());
+            this.envIcon.node.active = true;
+
             let additionMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, this.addtionId);
             if (additionMeta && !bgMeta.IsHalfSand()) {
-                if (this.additionIcon) {
-                    this.additionIcon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIcon, additionMeta.Icon());
-                    this.additionIcon.node.active = true;
-                }
-            } else if (this.additionIcon) {
+                this.additionIcon.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIcon, additionMeta.Icon());
+                this.additionIcon.node.active = true;
+            } else {
                 this.additionIcon.node.active = false;
             }
         } else {
-            if (this.envIcon) this.envIcon.node.active = false;
-            if (this.additionIcon) this.additionIcon.node.active = false;
+            this.envIcon.node.active = false;
+            this.additionIcon.node.active = false;
         }
 
-        if (this.icon_lock && this.additionIcon) this.icon_lock.node.active = this.additionIcon.node.active;
-        if (this.hg && meta) this.hg.active = this.envStatus === -1 && (meta.IsMaxLevel() || meta.PrevId() !== -1 && meta.NextId() == -1);
+        this.icon_lock.node.active = this.additionIcon.node.active;
+        this.hg.active = this.envStatus === -1 && (meta.IsMaxLevel() || meta.PrevId() !== -1 && meta.NextId() == -1);
 
         this.HideShiningAnim();
         this.refreshCapabilities();
@@ -346,11 +338,11 @@ export class MergeItem extends Component {
     }
 
     HalfTransparent() {
-        this.setIconOpacity(128);
+        this.icon.node.getComponent(UIOpacity)!.opacity = 128;
     }
 
     RestoreTransparent() {
-        this.setIconOpacity(255);
+        this.icon.node.getComponent(UIOpacity)!.opacity = 255;
     }
 
     InitGenerator() {
@@ -403,7 +395,7 @@ export class MergeItem extends Component {
     }
 
     IfHasAddition() {
-        return !!(this.additionIcon && this.additionIcon.node.active);
+        return this.additionIcon.node.active;
     }
 
     IsHalfSand() {
@@ -413,11 +405,11 @@ export class MergeItem extends Component {
 
     IsFullSand() {
         let bgMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeBgElements, this.envStatus);
-        return this.envStatus > -1 && bgMeta && !bgMeta.IsHalfSand();
+        return this.envStatus > -1 && !bgMeta.IsHalfSand();
     }
 
     setItem(id: any, tx: number, ty: number, spriteFrame: any) {
-        this.setIcon(spriteFrame, id);
+        this.setIcon(spriteFrame);
         this.setTilePos(tx, ty);
     }
 
@@ -425,10 +417,10 @@ export class MergeItem extends Component {
         completeIds = completeIds || [];
         completeOrderIds = completeOrderIds || [];
         let canUse = this.envStatus === -1 && this.IsBubble() == false;
-        let done = completeIds.indexOf(this.mergeId) >= 0 && canUse;
-        let inCompleteOrder = completeOrderIds.indexOf(this.mergeId) >= 0 && canUse;
-        if (this.okIcon) this.okIcon.node.active = done;
-        if (this.bottomRect) this.bottomRect.active = inCompleteOrder;
+        let done = completeIds.includes(this.mergeId) && canUse;
+        let inCompleteOrder = completeOrderIds.includes(this.mergeId) && canUse;
+        this.okIcon.node.active = done;
+        this.bottomRect.active = inCompleteOrder;
     }
 
     ShowShiningAnim() {
@@ -443,28 +435,18 @@ export class MergeItem extends Component {
 
     hideBubbleAnim() {
         if (!this.bubble_anim || !this.bubble_anim.node) return;
-        if ((this.bubble_anim as any).setCompleteListener) {
-            (this.bubble_anim as any).setCompleteListener(null);
-        }
-        if (this.bubble_anim.clearTracks) {
-            this.bubble_anim.clearTracks();
-        }
+        this.bubble_anim.setCompleteListener(null);
+        this.bubble_anim.clearTracks();
         this.bubble_anim.node.active = false;
     }
 
     showBubbleIdle() {
         if (!this.bubble_anim || !this.bubble_anim.node) return false;
         this.bubble_anim.node.active = true;
-        if ((this.bubble_anim as any).setCompleteListener) {
-            (this.bubble_anim as any).setCompleteListener(null);
-        }
-        if (this.bubble_anim.clearTracks) {
-            this.bubble_anim.clearTracks();
-        }
-        if (this.bubble_anim.setToSetupPose) {
-            this.bubble_anim.setToSetupPose();
-        }
-        if ((this.bubble_anim as any).findAnimation && !(this.bubble_anim as any).findAnimation('idle')) return false;
+        this.bubble_anim.setCompleteListener(null);
+        this.bubble_anim.clearTracks();
+        this.bubble_anim.setToSetupPose();
+        if (!this.bubble_anim.findAnimation('idle')) return false;
         this.bubble_anim.setAnimation(0, 'idle', true);
         return true;
     }
@@ -474,47 +456,33 @@ export class MergeItem extends Component {
             if (cb) cb();
             return false;
         }
-        if ((this.bubble_anim as any).findAnimation && !(this.bubble_anim as any).findAnimation('broken')) {
+        if (!this.bubble_anim.findAnimation('broken')) {
             this.hideBubbleAnim();
             if (cb) cb();
             return false;
         }
         this.bubble_anim.node.active = true;
-        if ((this.bubble_anim as any).setCompleteListener) {
-            (this.bubble_anim as any).setCompleteListener(null);
-        }
-        if (this.bubble_anim.clearTracks) {
-            this.bubble_anim.clearTracks();
-        }
-        if (this.bubble_anim.setToSetupPose) {
-            this.bubble_anim.setToSetupPose();
-        }
+        this.bubble_anim.setCompleteListener(null);
+        this.bubble_anim.clearTracks();
+        this.bubble_anim.setToSetupPose();
 
         let finished = false;
         let finish = () => {
             if (finished) return;
             finished = true;
-            if (this.bubble_anim && (this.bubble_anim as any).setCompleteListener) {
-                (this.bubble_anim as any).setCompleteListener(null);
-            }
+            this.bubble_anim.setCompleteListener(null);
             this.hideBubbleAnim();
             if (cb) cb();
         };
         let trackEntry = this.bubble_anim.setAnimation(0, 'broken', false);
-        if ((this.bubble_anim as any).setTrackCompleteListener && trackEntry) {
-            (this.bubble_anim as any).setTrackCompleteListener(trackEntry, finish);
-        } else if ((this.bubble_anim as any).setCompleteListener) {
-            (this.bubble_anim as any).setCompleteListener(finish);
-        } else {
-            this.scheduleOnce(finish, 0.5);
-        }
+        this.bubble_anim.setTrackCompleteListener(trackEntry, finish);
         return true;
     }
 
     setIcon(spriteFrame: any, mergeId?: any) {
-        if (this.icon) this.icon.spriteFrame = spriteFrame;
+        this.icon.spriteFrame = spriteFrame;
         if (mergeId !== undefined) this.mergeId = mergeId;
-        if (this.icon && this.icon.node) this.icon.node.active = this.mergeId > 0 && !this.IsBubble();
+        this.icon.node.active = this.mergeId > 0 && !this.IsBubble();
         let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, this.mergeId);
         this.tryShowIconAnim(meta);
     }
@@ -526,20 +494,14 @@ export class MergeItem extends Component {
 
     hideIcon() {
         Tween.stopAllByTarget(this.node);
-        this.node.setScale(Vec3.ONE);
+        this.node.setScale(1, 1, 1);
         this.tx = -1;
         this.ty = -1;
         this._iconAnimLoadKey = (this._iconAnimLoadKey || 0) + 1;
         this.hideIconAnim();
         this.hideBubbleAnim();
-        if (this.icon) this.icon.spriteFrame = null;
+        this.icon.spriteFrame = null;
         if (this.cooking) this.cooking.active = false;
-    }
-
-    private setIconOpacity(opacity: number) {
-        if (!this.icon || !this.icon.node) return;
-        let uiOpacity = this.icon.node.getComponent(UIOpacity) || this.icon.node.addComponent(UIOpacity);
-        uiOpacity.opacity = opacity;
     }
 }
 

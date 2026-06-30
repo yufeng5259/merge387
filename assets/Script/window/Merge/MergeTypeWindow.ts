@@ -1,8 +1,9 @@
+import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import List from '../../GameKit/ui/list/List';
 import StoreItem from '../../game/merge/StoreItem';
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 
 let MergeItemType = {
@@ -22,31 +23,33 @@ let MergeItemType = {
 class MergeTypeWindow extends UIWindow {
 
     static windowPath = "Merge/MergeTypeWindow"
-    @property(cc.ScrollView)
+    @property(ScrollView)
     baseScrollView=null
-    @property(cc.Label)
+    @property(Label)
     nameLabel = null
     /**type列表 */
-    @property(cc.Node)
+    @property(Node)
     layoutbase = null
     /**产自from列表 */
-    @property(cc.Node)
+    @property(Node)
     layoutfrom = null
     /**可生成列表 */
-    @property(cc.Node)
+    @property(Node)
     layoutcangenerate = null
     /**可制作列表 */
-    @property(cc.Node)
+    @property(Node)
     layoutcanbuild = null
     /**下一等级额外产出物品列表 */
-    @property(cc.Node)
+    @property(Node)
     layoutadditional = null
     /**复制节点 */
-    @property(cc.Node)
+    @property(Node)
     baseNodeItem = null
+    baseItemNodePool = new NodePool()
+    mergeId: any = null
 
     onLoad() {
-        this.baseItemNodePool=new cc.NodePool();
+        this.baseItemNodePool=new NodePool();
         
         let baseContent=GameKit.ControllerTable.GetNode(this.layoutbase, "content")
         while(baseContent.children.length>0){
@@ -56,7 +59,7 @@ class MergeTypeWindow extends UIWindow {
     }
 
     onShow(showParams) {
-        this.baseItemNodePool=new cc.NodePool();
+        this.baseItemNodePool=new NodePool();
         let mergeId=showParams.mergeId;
         this.mergeId=mergeId;
         //当前选中物品meta
@@ -83,7 +86,7 @@ class MergeTypeWindow extends UIWindow {
      */
     initBaseLayout(typeMeta,mergeId,showBgIndex=2) {
         let baseContent=GameKit.ControllerTable.GetNode(this.layoutbase, "content")
-        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutbase, "title",cc.Label);
+        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutbase, "title",Label);
         // 先清理旧的节点
         while(baseContent.children.length>0){
             let child=baseContent.children[0];
@@ -119,7 +122,7 @@ class MergeTypeWindow extends UIWindow {
        }  
 
        let baseContent=GameKit.ControllerTable.GetNode(this.layoutcangenerate, "content")
-        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutcangenerate, "title",cc.Label);
+        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutcangenerate, "title",Label);
         // 先清理旧的节点
         while(baseContent.children.length>0){
             let child=baseContent.children[0]
@@ -162,7 +165,7 @@ class MergeTypeWindow extends UIWindow {
             return;
         }
         let baseContent=GameKit.ControllerTable.GetNode(this.layoutcanbuild, "content")
-        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutcanbuild, "title",cc.Label);
+        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutcanbuild, "title",Label);
         // 先清理旧的节点
         while(baseContent.children.length>0){
             let child=baseContent.children[0];
@@ -209,7 +212,7 @@ class MergeTypeWindow extends UIWindow {
         }
         this.layoutadditional.active=true;
         let baseContent=GameKit.ControllerTable.GetNode(this.layoutadditional, "content")
-        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutadditional, "title",cc.Label);
+        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutadditional, "title",Label);
         // 先清理旧的节点
         while(baseContent.children.length>0){
             let child=baseContent.children[0];
@@ -231,7 +234,7 @@ class MergeTypeWindow extends UIWindow {
      */
     initlayoutfrom(mergeId,typeMeta,generateMeta,showBgIndex){
         let baseContent=GameKit.ControllerTable.GetNode(this.layoutfrom, "content")
-        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutfrom, "title",cc.Label);
+        let titleLabel=GameKit.ControllerTable.GetComponent(this.layoutfrom, "title",Label);
         // 先清理旧的节点
         while(baseContent.children.length>0){
             let child=baseContent.children[0];
@@ -273,7 +276,7 @@ class MergeTypeWindow extends UIWindow {
      * 批量创建节点，支持分帧加载优化
      * @param {Array} items - 要创建的数据数组
      * @param {Number} selectIndex - 选中的索引
-     * @param {cc.Node} baseContent - 父容器节点
+     * @param {Node} baseContent - 父容器节点
      * @param {Number} threshold - 直接创建的阈值，默认10
      * @param {Number} batchSize - 每帧创建的节点数，默认5
      */
@@ -288,7 +291,7 @@ class MergeTypeWindow extends UIWindow {
             }
             // 延迟更新布局，避免卡顿
             this.scheduleOnce(() => {
-                baseContent.getComponent(cc.Layout).updateLayout();
+                baseContent.getComponent(Layout).updateLayout();
                 this.updateBaseScrollViewHeight(baseContent);
                 // console.log(baseContent.children.length,"baseContent.children.length");
             }, 0);
@@ -314,7 +317,7 @@ class MergeTypeWindow extends UIWindow {
                     // 所有节点创建完成，更新布局
                     // console.log("所有节点创建完成，当前索引:", currentIndex, "总数量:", itemsLength);
                     this.scheduleOnce(() => {
-                        baseContent.getComponent(cc.Layout).updateLayout();
+                        baseContent.getComponent(Layout).updateLayout();
                         this.updateBaseScrollViewHeight(baseContent);
                         // console.log(baseContent.children.length,"baseContent.children.length");
                     }, 0);
@@ -326,12 +329,12 @@ class MergeTypeWindow extends UIWindow {
 
     updateBaseScrollViewHeight(baseContent) {
         if(baseContent){
-            let innerLayout = baseContent.getComponent(cc.Layout);
+            let innerLayout = baseContent.getComponent(Layout);
             if(innerLayout){
                 this.updateSingleRowBaseContentPadding(baseContent, innerLayout);
                 innerLayout.updateLayout();
             }
-            let sectionLayout = baseContent.parent && baseContent.parent.getComponent(cc.Layout);
+            let sectionLayout = baseContent.parent && baseContent.parent.getComponent(Layout);
             if(sectionLayout){
                 sectionLayout.updateLayout();
             }
@@ -340,7 +343,7 @@ class MergeTypeWindow extends UIWindow {
             return;
         }
         let scrollContent = this.baseScrollView.content;
-        let contentLayout = scrollContent.getComponent(cc.Layout);
+        let contentLayout = scrollContent.getComponent(Layout);
         if(contentLayout){
             contentLayout.updateLayout();
         }
@@ -348,21 +351,23 @@ class MergeTypeWindow extends UIWindow {
         let scrollNode = this.baseScrollView.node;
         let viewNode = scrollNode.getChildByName("view");
         let bgNode = scrollNode.getChildByName("bg");
-        let screenHeight = UIRoot.instance && UIRoot.instance.winSize ? UIRoot.instance.winSize.height : cc.winSize.height;
+        let screenHeight = UIRoot.instance && UIRoot.instance.winSize ? UIRoot.instance.winSize.height : view.getVisibleSize().height;
         let maxHeight = Math.max(0, screenHeight - 160);
         let scrollHeight = Math.min(scrollContent.height + 100, maxHeight);
 
-        scrollNode.height = scrollHeight;
-        scrollNode.y = (scrollNode.anchorY - 0.5) * scrollHeight - 40;
+        let scrollTransform = scrollNode.getComponent(UITransform)
+        scrollTransform.height = scrollHeight;
+        scrollNode.setPosition(scrollNode.position.x, (scrollTransform.anchorY - 0.5) * scrollHeight - 40, scrollNode.position.z);
         if(viewNode){
-            let viewWidget = viewNode.getComponent(cc.Widget);
+            let viewWidget = viewNode.getComponent(Widget);
             if(viewWidget){
                 viewWidget.updateAlignment();
             }
         }
         if(bgNode){
-            bgNode.height = scrollHeight;
-            bgNode.y = (bgNode.anchorY - scrollNode.anchorY) * scrollHeight;
+            let bgTransform = bgNode.getComponent(UITransform)
+            bgTransform.height = scrollHeight;
+            bgNode.setPosition(bgNode.position.x, (bgTransform.anchorY - scrollTransform.anchorY) * scrollHeight, bgNode.position.z);
         }
     }
 
@@ -383,14 +388,14 @@ class MergeTypeWindow extends UIWindow {
         }
 
         let firstChild = children[0];
-        let itemWidth = firstChild.width * Math.abs(firstChild.scaleX || 1);
+        let itemWidth = firstChild.getComponent(UITransform).width * Math.abs(firstChild.scale.x || 1);
         if(itemWidth <= 0){
             return;
         }
 
         let paddingRight = innerLayout.paddingRight || 0;
         let spacingX = innerLayout.spacingX || 0;
-        let availableWidth = baseContent.width - originPaddingLeft - paddingRight;
+        let availableWidth = baseContent.getComponent(UITransform).width - originPaddingLeft - paddingRight;
         let maxCountInRow = Math.max(1, Math.floor((availableWidth + spacingX) / (itemWidth + spacingX)));
         if(children.length > maxCountInRow){
             return;
@@ -398,7 +403,7 @@ class MergeTypeWindow extends UIWindow {
 
         let rowWidth = 0;
         children.forEach((child, index) => {
-            rowWidth += child.width * Math.abs(child.scaleX || 1);
+            rowWidth += child.getComponent(UITransform).width * Math.abs(child.scale.x || 1);
             if(index > 0){
                 rowWidth += spacingX;
             }
@@ -416,11 +421,9 @@ class MergeTypeWindow extends UIWindow {
         let meta=Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements,id);
         // console.log(meta,"meta",id);
         
-        // let icon=GameKit.ControllerTable.GetComponent(node, "icon",cc.Sprite);
-        // icon.node.active=false;
         let rewardNode=GameKit.ControllerTable.GetNode(node, "reward");
         let content=Game.Content.FromString(Game.Content.Types.MergeIcon+"=+"+id+"=1");
-        let contentParams={
+        let contentParams: any={
             
         }
         if(listType == MergeItemType.GENERATE_FROM){
@@ -464,7 +467,7 @@ class MergeTypeWindow extends UIWindow {
             icon_up.active = listType == MergeItemType.ADDITIONAL && rewardNode.active;
         }
         let countNode=GameKit.ControllerTable.GetNode(node, "countNode");
-        let countLabel=GameKit.ControllerTable.GetNode(node, "countLabel").getComponent(cc.Label);
+        let countLabel=GameKit.ControllerTable.GetNode(node, "countLabel").getComponent(Label);
         bg1.active=bg2.active=bg3.active=false;
         let realBgIndex = hasGotItem ? showBgIndex : 1;
         let bgNode=GameKit.ControllerTable.GetNode(node, "bg"+realBgIndex);
@@ -493,7 +496,7 @@ class MergeTypeWindow extends UIWindow {
         }
 
         let helpNode=GameKit.ControllerTable.GetNode(node,"help");
-        let perLabel=GameKit.ControllerTable.GetComponent(node,"per_Label",cc.Label);//百分比标签
+        let perLabel=GameKit.ControllerTable.GetComponent(node,"per_Label",Label);//百分比标签
         // if(index<=selectIndex){
         //     icon.node.active=true;
         //     helpNode.active=false
@@ -609,7 +612,7 @@ class MergeTypeWindow extends UIWindow {
         if(this.baseItemNodePool.size()>0){
             return this.baseItemNodePool.get();
         }
-        return cc.instantiate(this.baseNodeItem);   
+        return instantiate(this.baseNodeItem);
     }
     /**将基础物品节点放回对象池 */
     putBaseItemNode(node) {

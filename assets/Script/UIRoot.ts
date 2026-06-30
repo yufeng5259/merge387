@@ -1,40 +1,7 @@
-﻿import { _decorator, Camera, Canvas, Component, Node, Prefab, Rect, UITransform, instantiate, isValid, view } from 'cc';
+﻿import { _decorator, Camera, Canvas, Component, Node, Prefab, Rect, UITransform, instantiate, isValid, js, view } from 'cc';
 const { ccclass, property } = _decorator;
 
 let canMultiWindow = ["DialogWindow", "GetRewardWindow", "SimpleRewardWindow", "MergeTypeWindow"];
-
-type WindowComponent = any;
-
-function getGlobalWindowClass(windowName: string): any {
-    return (global as any)[windowName] || (window as any)[windowName];
-}
-
-function getWindowPath(windowName: string): string {
-    const windowClass = getGlobalWindowClass(windowName);
-    return windowClass && windowClass.windowPath ? windowClass.windowPath : windowName;
-}
-
-function applyWindowSkin(windowName: string, showParams: any) {
-    if (!showParams || !showParams.meta) return;
-    try {
-        const windowClass = getGlobalWindowClass(windowName);
-        if (windowClass && typeof windowClass.SetSkin === 'function') {
-            windowClass.SetSkin(showParams.meta);
-        }
-    } catch (error) {
-    }
-}
-
-function setNodeSize(node: Node, width: number, height: number) {
-    const transform = node.getComponent(UITransform) || node.addComponent(UITransform);
-    transform.setContentSize(width, height);
-}
-
-function getNodeSize(node: Node) {
-    const transform = node.getComponent(UITransform);
-    if (transform) return transform.contentSize;
-    return { width: 0, height: 0 };
-}
 
 @ccclass('UIRoot')
 export class UIRoot extends Component {
@@ -64,35 +31,33 @@ export class UIRoot extends Component {
     public winSize: Rect = new Rect();
     public loadOver = false;
     public winPres: Record<string, Prefab> = {};
-    public windowInstance: Record<string, WindowComponent> = {};
-    public toastInstance: Record<string, WindowComponent> = {};
+    public windowInstance: Record<string, any> = {};
+    public toastInstance: Record<string, any> = {};
     public currentWindowName = '';
-    public currentWindow: WindowComponent = null;
+    public currentWindow: any = null;
     public stopShowWindow = false;
 
     onLoad() {
         const ssize = view.getVisibleSize();
         this.winSize = new Rect(0, 0, ssize.width, ssize.height);
         const canvas = this.node.getComponent(Canvas);
-        const transform = this.node.getComponent(UITransform);
+        const transform = this.node.getComponent(UITransform)!;
 
         if (ssize.height / ssize.width > 1136 / 640) {
             if (canvas) {
                 (canvas as any).fitHeight = false;
                 (canvas as any).fitWidth = true;
             }
-            const nodeSize = getNodeSize(this.node);
-            this.winSize = new Rect(this.node.position.x, this.node.position.y, nodeSize.width, nodeSize.height);
+            this.winSize = new Rect(this.node.position.x, this.node.position.y, transform.contentSize.width, transform.contentSize.height);
             if (ssize.height / ssize.width > 1386 / 640) {
                 this.winSize.height = 1386 * ssize.width / 640;
             }
         } else if (ssize.height / ssize.width < 1136 / 640) {
-            const nodeSize = getNodeSize(this.node);
-            this.winSize = new Rect(this.node.position.x, this.node.position.y, nodeSize.width, nodeSize.height);
+            this.winSize = new Rect(this.node.position.x, this.node.position.y, transform.contentSize.width, transform.contentSize.height);
             if (ssize.height / ssize.width < 1136 / 852) {
                 this.winSize.width = 852 * ssize.height / 1136;
             }
-        } else if (transform) {
+        } else {
             this.winSize = new Rect(this.node.position.x, this.node.position.y, transform.contentSize.width, transform.contentSize.height);
         }
 
@@ -127,27 +92,26 @@ export class UIRoot extends Component {
     start() {
     }
 
-    getOrAddWindowComponent(wnd: Node, windowName: string) {
-        const windowClass = getGlobalWindowClass(windowName);
-        let windowC: any = null;
-        if (windowClass) {
-            windowC = wnd.getComponent(windowClass);
-            if (!windowC) windowC = wnd.addComponent(windowClass);
-        }
-        if (!windowC) windowC = wnd.getComponent(windowName) || wnd.addComponent(windowName as any);
+    getOrAddWindowComponent(wnd: Node, windowName: string): any {
+        const windowClass = js.getClassByName(windowName) as any;
+        let windowC = windowClass ? wnd.getComponent(windowClass) : null;
+        if (!windowC) windowC = wnd.getComponent(windowName);
+        if (!windowC && windowClass) windowC = wnd.addComponent(windowClass);
         return windowC;
     }
 
     preloadWindow(windowName: string, callback: Function | null = null) {
         if (AppKit.SdkManager.IsNative()) return;
-        const windowPath = getWindowPath(windowName);
+        const windowClass = js.getClassByName(windowName) as any;
+        let windowPath = windowName;
+        if (windowClass && windowClass.windowPath) windowPath = windowClass.windowPath;
         const resName = 'window/' + windowPath;
         cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
             if (err || !winPre) return;
             const wnd = instantiate(winPre);
             wnd.parent = this.node;
             wnd.setPosition(3000, 3000);
-            setNodeSize(wnd, 2, 2);
+            wnd.getComponent(UITransform)!.setContentSize(2, 2);
             wnd.active = true;
             AppMain.instance.scheduleOnce(() => {
                 wnd.active = false;
@@ -183,7 +147,7 @@ export class UIRoot extends Component {
             this.currentWindow = windowC;
             this.windowInstance[this.currentWindowName] = windowC;
             wnd.parent = this.node;
-            setNodeSize(wnd, this.winSize.width, this.winSize.height);
+            wnd.getComponent(UITransform)!.setContentSize(this.winSize.width, this.winSize.height);
             windowC._windowName = this.currentWindowName;
             wnd.active = true;
             windowC._onWindowShow(showParams);
@@ -195,8 +159,18 @@ export class UIRoot extends Component {
         if (this.winPres.hasOwnProperty(windowName)) {
             showWindow(this.winPres[windowName]);
         } else {
-            applyWindowSkin(windowName, showParams);
-            const windowPath = getWindowPath(windowName);
+            let windowPath = windowName;
+            if (showParams.meta) {
+                try {
+                    const windowClass = js.getClassByName(windowName) as any;
+                    if (windowClass && typeof windowClass.SetSkin === 'function') {
+                        windowClass.SetSkin(showParams.meta);
+                    }
+                } catch (error) {
+                }
+            }
+            const windowClass = js.getClassByName(windowName) as any;
+            if (windowClass && windowClass.windowPath) windowPath = windowClass.windowPath;
             const resName = 'window/' + windowPath;
             cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
                 if (err) {
@@ -242,7 +216,7 @@ export class UIRoot extends Component {
             this.windowInstance[windowName] = windowC;
             if (this.currentWindow && this.currentWindow._onAddChildWindow) this.currentWindow._onAddChildWindow(windowC);
             wnd.parent = this.node;
-            setNodeSize(wnd, this.winSize.width, this.winSize.height);
+            wnd.getComponent(UITransform)!.setContentSize(this.winSize.width, this.winSize.height);
             windowC._windowName = windowName;
             windowC.isChild = true;
             windowC.parentWindow = this.currentWindow;
@@ -256,8 +230,18 @@ export class UIRoot extends Component {
         if (this.winPres.hasOwnProperty(windowName)) {
             showWindow(this.winPres[windowName]);
         } else {
-            applyWindowSkin(windowName, showParams);
-            const windowPath = getWindowPath(windowName);
+            let windowPath = windowName;
+            if (showParams.meta) {
+                try {
+                    const windowClass = js.getClassByName(windowName) as any;
+                    if (windowClass && typeof windowClass.SetSkin === 'function') {
+                        windowClass.SetSkin(showParams.meta);
+                    }
+                } catch (error) {
+                }
+            }
+            const windowClass = js.getClassByName(windowName) as any;
+            if (windowClass && windowClass.windowPath) windowPath = windowClass.windowPath;
             const resName = 'window/' + windowPath;
             cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
                 if (err) {
@@ -302,7 +286,7 @@ export class UIRoot extends Component {
             const windowC = this.getOrAddWindowComponent(wnd, windowName);
             this.windowInstance[windowName] = windowC;
             wnd.parent = this.node;
-            setNodeSize(wnd, this.winSize.width, this.winSize.height);
+            wnd.getComponent(UITransform)!.setContentSize(this.winSize.width, this.winSize.height);
             windowC._windowName = windowName;
             windowC.isChild = true;
             wnd.active = true;
@@ -315,7 +299,9 @@ export class UIRoot extends Component {
         if (this.winPres.hasOwnProperty(windowName)) {
             showWindow(this.winPres[windowName]);
         } else {
-            const windowPath = getWindowPath(windowName);
+            let windowPath = windowName;
+            const windowClass = js.getClassByName(windowName) as any;
+            if (windowClass && windowClass.windowPath) windowPath = windowClass.windowPath;
             const resName = 'window/' + windowPath;
             cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
                 if (err) {
@@ -375,15 +361,14 @@ export class UIRoot extends Component {
             return existing;
         }
 
-        const ToastCls = getGlobalWindowClass(windowName);
+        const ToastCls = js.getClassByName(windowName) as any;
         const resName = ToastCls && ToastCls.prefabResPath ? ToastCls.prefabResPath : 'toast/ToastWindow';
         const mountAndShow = (winPre: Prefab) => {
             const wnd = instantiate(winPre);
             wnd.parent = this.node;
-            setNodeSize(wnd, this.winSize.width, this.winSize.height);
+            wnd.getComponent(UITransform)!.setContentSize(this.winSize.width, this.winSize.height);
             let comp: any = ToastCls ? wnd.getComponent(ToastCls) : null;
             if (!comp) comp = wnd.getComponent('ToastWindow');
-            if (!comp && ToastCls) comp = wnd.addComponent(ToastCls);
             if (!comp) {
                 wnd.destroy();
                 return;

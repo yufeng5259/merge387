@@ -1,5 +1,5 @@
 import '../../LegacyGlobals';
-class Guild {
+export default class Guild {
     public static TEAMTYPE = {
         OPEN: 0,
         CLOSED: 1,
@@ -113,7 +113,3 @@ class Guild {
         return this.data.legionBoss ? this.data.legionBoss.bossRank : [];
     }
 }
-
-global.Game.Guild = Guild;
-
-export default Guild;

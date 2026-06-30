@@ -6,20 +6,6 @@ import { MergeCookingDes } from './MergeCookingDes';
 
 const { ccclass, property } = _decorator;
 
-function setActive (node: Node | null, active: boolean) {
-    if (node) node.active = active;
-}
-
-function getSize (node: Node | null) {
-    const transform = node && node.getComponent(UITransform);
-    return transform ? { width: transform.width, height: transform.height } : { width: 0, height: 0 };
-}
-
-function getAnchor (node: Node | null) {
-    const transform = node && node.getComponent(UITransform);
-    return transform ? transform.anchorPoint : { x: 0.5, y: 0.5 };
-}
-
 @ccclass('MergeDes')
 export class MergeDes extends Component {
     @property(RichText)
@@ -64,9 +50,9 @@ export class MergeDes extends Component {
     public remainingCount: any = null;
 
     onLoad () {
-        setActive(this.mergeElementBack, false);
-        setActive(this.contentDesNode, false);
-        setActive(this.defaultDesNode, true);
+        this.mergeElementBack.active = false;
+        this.contentDesNode.active = false;
+        this.defaultDesNode.active = true;
         if (this.cookingDes && this.cookingDes.node) this.cookingDes.node.active = false;
         if (this.bubbleDesNode && this.bubbleDesNode.node) this.bubbleDesNode.node.active = false;
         this._lastShowKey = null;
@@ -75,9 +61,9 @@ export class MergeDes extends Component {
     Show (meta: any, mergeItem: any) {
         if (!meta) {
             this._lastShowKey = null;
-            setActive(this.contentDesNode, false);
-            setActive(this.defaultDesNode, true);
-            setActive(this.mergeElementBack, false);
+            this.contentDesNode.active = false;
+            this.defaultDesNode.active = true;
+            this.mergeElementBack.active = false;
             if (this.cookingDes && this.cookingDes.node) this.cookingDes.node.active = false;
             if (this.bubbleDesNode && this.bubbleDesNode.node) this.bubbleDesNode.node.active = false;
             return;
@@ -114,9 +100,9 @@ export class MergeDes extends Component {
         this.ty = mergeItem.ty;
 
         const canDrag = mergeItem.IfCanDrag();
-        setActive(this.contentDesNode, true);
-        setActive(this.defaultDesNode, false);
-        setActive(this.mergeElementBack, false);
+        this.contentDesNode.active = true;
+        this.defaultDesNode.active = false;
+        this.mergeElementBack.active = false;
         if (this.cookingDes && this.cookingDes.node) this.cookingDes.node.active = false;
         if (this.bubbleDesNode && this.bubbleDesNode.node) this.bubbleDesNode.node.active = false;
         if (this.desLabel) {
@@ -132,9 +118,9 @@ export class MergeDes extends Component {
         }
 
         if (isBubble) {
-            setActive(this.sellButton, false);
-            setActive(this.deleteButton, false);
-            setActive(this.openButton, false);
+            this.sellButton.active = false;
+            this.deleteButton.active = false;
+            this.openButton.active = false;
             if (this.bubbleDesNode && this.bubbleDesNode.node) {
                 this.bubbleDesNode.node.active = true;
                 this.bubbleDesNode.ShowDes(meta, this.tx, this.ty);
@@ -144,9 +130,9 @@ export class MergeDes extends Component {
         }
 
         if (this.isHighestGeneratorInType(meta.Id())) {
-            setActive(this.sellButton, false);
-            setActive(this.deleteButton, false);
-            setActive(this.openButton, false);
+            this.sellButton.active = false;
+            this.deleteButton.active = false;
+            this.openButton.active = false;
         } else if (meta.IfCanSell()) {
             if (canDrag) {
                 if (meta.SellType() === MergeTypes.MergeActionType.SELL) {
@@ -154,36 +140,36 @@ export class MergeDes extends Component {
                         ? GameKit.ControllerTable.GetComponent(this.sellButton, 'itemModel', ContentModel) as ContentModel | null
                         : null;
                     if (itemModel) itemModel.show(Game.Content.FromString(meta.SellPrice()));
-                    setActive(this.sellButton, true);
-                    setActive(this.deleteButton, false);
-                    setActive(this.openButton, false);
+                    this.sellButton.active = true;
+                    this.deleteButton.active = false;
+                    this.openButton.active = false;
                 } else if (meta.SellType() === MergeTypes.MergeActionType.DELETE) {
-                    setActive(this.sellButton, false);
-                    setActive(this.deleteButton, true);
-                    setActive(this.openButton, false);
+                    this.sellButton.active = false;
+                    this.deleteButton.active = true;
+                    this.openButton.active = false;
                 } else {
-                    setActive(this.sellButton, false);
-                    setActive(this.deleteButton, false);
-                    setActive(this.openButton, false);
+                    this.sellButton.active = false;
+                    this.deleteButton.active = false;
+                    this.openButton.active = false;
                 }
             } else {
-                setActive(this.deleteButton, false);
-                setActive(this.sellButton, false);
-                setActive(this.openButton, false);
+                this.deleteButton.active = false;
+                this.sellButton.active = false;
+                this.openButton.active = false;
             }
         } else if (meta.SellType() === MergeTypes.MergeActionType.OPEN) {
             if (mergeItem.IfNeedOpen()) {
-                setActive(this.sellButton, false);
-                setActive(this.deleteButton, false);
-                setActive(this.openButton, true);
+                this.sellButton.active = false;
+                this.deleteButton.active = false;
+                this.openButton.active = true;
                 const timeLabel = this.openButton
                     ? GameKit.ControllerTable.GetComponent(this.openButton, 'label_time', Label) as Label | null
                     : null;
                 if (timeLabel) timeLabel.string = mergeItem.GetOpenTime();
             } else {
-                setActive(this.sellButton, false);
-                setActive(this.deleteButton, false);
-                setActive(this.openButton, false);
+                this.sellButton.active = false;
+                this.deleteButton.active = false;
+                this.openButton.active = false;
             }
         } else {
             if (meta.FunctionType() === MergeTypes.MergeFunctionType.COOKING) {
@@ -213,9 +199,9 @@ export class MergeDes extends Component {
                     }
                 }
             }
-            setActive(this.deleteButton, false);
-            setActive(this.sellButton, false);
-            setActive(this.openButton, false);
+            this.deleteButton.active = false;
+            this.sellButton.active = false;
+            this.openButton.active = false;
         }
         this.refreshDesLabelLayout();
     }
@@ -226,10 +212,11 @@ export class MergeDes extends Component {
 
         const bg = this.contentDesNode.getChildByName('bg');
         if (!bg) return;
-        const bgSize = getSize(bg);
-        const bgAnchor = getAnchor(bg);
-        let left = bg.position.x - bgAnchor.x * bgSize.width + 5;
-        let right = bg.position.x + (1 - bgAnchor.x) * bgSize.width - 5;
+        const bgTransform = bg.getComponent(UITransform);
+        if (!bgTransform) return;
+        const bgAnchor = bgTransform.anchorPoint;
+        let left = bg.position.x - bgAnchor.x * bgTransform.width + 5;
+        let right = bg.position.x + (1 - bgAnchor.x) * bgTransform.width - 5;
 
         const blockNodes = this.getDesRightBlockNodes();
         for (let i = 0; i < blockNodes.length; i++) {
@@ -379,9 +366,9 @@ export class MergeDes extends Component {
 
     onClickReset () {
         GamePlay.instance.mergeRoot.mergeLevelNode.UndoItemFromUI(this.tx + '_' + this.ty, this.mergeDataStr, () => {
-            setActive(this.defaultDesNode, true);
-            setActive(this.mergeElementBack, false);
-            setActive(this.contentDesNode, false);
+            this.defaultDesNode.active = true;
+            this.mergeElementBack.active = false;
+            this.contentDesNode.active = false;
         });
     }
 
@@ -391,9 +378,9 @@ export class MergeDes extends Component {
         this.onetimeDestroy = onetimeDestroy;
         this.remainingCount = remainingCount;
         GamePlay.instance.mergeRoot.mergeLevelNode.OpenGenerator(this.mergeId, this.instanceId, this.onetimeDestroy, this.remainingCount, this.tx + '_' + this.ty, this.generateNode, () => {
-            setActive(this.defaultDesNode, true);
-            setActive(this.mergeElementBack, false);
-            setActive(this.contentDesNode, false);
+            this.defaultDesNode.active = true;
+            this.mergeElementBack.active = false;
+            this.contentDesNode.active = false;
         });
     }
 }

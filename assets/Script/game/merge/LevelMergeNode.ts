@@ -9,114 +9,24 @@ const { ccclass, property } = _decorator;
 type AnyRecord = Record<string, any>;
 type Callback = () => void;
 
-function toVec3(value?: any): Vec3 {
-    if (!value) return new Vec3();
-    return new Vec3(value.x || 0, value.y || 0, value.z || 0);
-}
-
-function toScaleVec(value: any): Vec3 {
-    if (value instanceof Vec3) return value;
-    if (value && typeof value === 'object' && 'x' in value) return new Vec3(value.x || 0, value.y || value.x || 0, value.z || value.x || 0);
-    const n = Number(value);
-    return new Vec3(n, n, n);
-}
-
-function setLegacyScale(node: Node | null, value: any): void {
-    if (!node) return;
-    node.setScale(toScaleVec(value));
-}
-
-function getLegacyScale(node: Node | null): number {
-    if (!node) return 1;
-    return node.scale ? node.scale.x : 1;
-}
-
-function toWorldSpace(node: Node | null, local?: any): Vec3 {
-    if (!node) return toVec3(local);
-    const transform = node.getComponent(UITransform);
-    return transform ? transform.convertToWorldSpaceAR(toVec3(local), new Vec3()) : node.worldPosition.clone();
-}
-
-function toNodeSpace(node: Node | null, world?: any): Vec3 {
-    if (!node) return toVec3(world);
-    const transform = node.getComponent(UITransform);
-    return transform ? transform.convertToNodeSpaceAR(toVec3(world), new Vec3()) : toVec3(world);
-}
-
-function distance2D(a: any, b: any): number {
-    const dx = (a ? a.x : 0) - (b ? b.x : 0);
-    const dy = (a ? a.y : 0) - (b ? b.y : 0);
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
-function normalize2D(from: any, to: any): Vec3 {
-    const dx = (to ? to.x : 0) - (from ? from.x : 0);
-    const dy = (to ? to.y : 0) - (from ? from.y : 0);
-    const len = Math.sqrt(dx * dx + dy * dy) || 1;
-    return new Vec3(dx / len, dy / len, 0);
-}
-
-function jumpPoint(from: any, near: any, height: number, ratio: number): Vec3 {
-    const x = from.x + (near.x - from.x) * ratio;
-    const y = from.y + (near.y - from.y) * ratio + Math.sin(Math.PI * ratio) * height;
-    return new Vec3(x, y, 0);
-}
-
-function vecDistance(a: any, b: any): number {
-    return distance2D(a, b);
-}
-
-function vecSub(a: any, b: any): Vec3 {
-    return new Vec3((a ? a.x : 0) - (b ? b.x : 0), (a ? a.y : 0) - (b ? b.y : 0), (a ? a.z || 0 : 0) - (b ? b.z || 0 : 0));
-}
-
-function vecAdd(a: any, b: any): Vec3 {
-    return new Vec3((a ? a.x : 0) + (b ? b.x : 0), (a ? a.y : 0) + (b ? b.y : 0), (a ? a.z || 0 : 0) + (b ? b.z || 0 : 0));
-}
-
-function vecMul(v: any, scalar: number): Vec3 {
-    return new Vec3((v ? v.x : 0) * scalar, (v ? v.y : 0) * scalar, (v ? v.z || 0 : 0) * scalar);
-}
-
-function moveNode(node: Node | null, duration: number, position: any, cb?: Callback): void {
-    if (!node) {
-        if (cb) cb();
-        return;
-    }
-    Tween.stopAllByTarget(node);
-    tween(node)
-        .to(Math.max(0, duration || 0), { position: toVec3(position) }, { easing: 'quadOut' })
-        .call(() => {
-            if (cb) cb();
-        })
-        .start();
-}
-
-function emitMergeTutorial(eventName: string, payload?: AnyRecord): void {
-    const manager: AnyRecord | null = Game && Game.MergeTutorialManager ? Game.MergeTutorialManager : null;
-    if (manager && typeof manager.Emit === 'function') {
-        manager.Emit(eventName, payload);
-    }
-}
-
 @ccclass('LevelMergeNode')
 export class LevelMergeNode extends Component {
-    @property(Vec2)
+    @property
     public gridSize = MergeUtil.DEFAULT_GRID_SIZE.clone();
-    @property(Vec2)
+    @property
     public mergeBoardNodeSize = MergeUtil.DEFAULT_BOARD_LAYOUT.nodeSize.clone();
-    @property(Vec2)
+    @property
     public mergeBoardItemSize = MergeUtil.DEFAULT_BOARD_LAYOUT.itemSize.clone();
     @property
     public mergeBoardCellOffset = MergeUtil.DEFAULT_BOARD_LAYOUT.offset;
     @property(Prefab)
-    public itemTemple: Prefab | null = null;
+    public itemTemple: Prefab = null!;
     @property(Node)
-    public picFrame: Node | null = null;
+    public picFrame: Node = null!;
     @property(SpriteAtlas)
-    public iconAtlas: SpriteAtlas | null = null;
+    public iconAtlas: SpriteAtlas = null!;
     @property(SpriteAtlas)
-    public envIconAtlas: SpriteAtlas | null = null;
+    public envIconAtlas: SpriteAtlas = null!;
 
     public itemPool = new NodePool();
     public touchStartNode: Node | null = null;
@@ -126,7 +36,7 @@ export class LevelMergeNode extends Component {
     public waitCreateAnimItemsTilePos: Vec2[] = [];
     public selectMergeId = -1;
     public itemCanDrag = false;
-    public pressPosStart: Vec3 | null = null;
+    public pressPosStart: Vec2 | null = null;
     private _mergeTouchEffectCellKey: string | null = null;
     private _isNetRunning = false;
     private _breakingBubbleByCellKey: AnyRecord = {};
@@ -222,11 +132,6 @@ export class LevelMergeNode extends Component {
         }
     }
 
-    /** @deprecated 兼容旧名，内部转调 _syncMergeMapsFromSceneChildren */
-    merge_check() {
-        this._syncMergeMapsFromSceneChildren()
-    }
-
     /** @param {string} posName "tx_ty" */
     _parseTileKey(posName?: any) {
         let arr = posName.split('_')
@@ -320,7 +225,7 @@ export class LevelMergeNode extends Component {
         let self = GamePlay.instance.mergeRoot.mergeLevelNode
 
         let storeBtnGlobalPos = GamePlay.instance.mergeRoot.mergeNodeUI.GetStoreButtonGlobalPos()
-        let storeBtnLocalPos = toNodeSpace(self.node, storeBtnGlobalPos)
+        let storeBtnLocalPos = self.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(storeBtnGlobalPos.x, storeBtnGlobalPos.y, storeBtnGlobalPos.z || 0), new Vec3())
         let matchNodes = []
         let mergeDataStr, itemNode
         const warehouseMergeData = Array.isArray(storeDataStrArr) ? storeDataStrArr : []
@@ -451,7 +356,7 @@ export class LevelMergeNode extends Component {
                 return
             }
             let startPos = itemNode.position.clone()
-            let endPos = toNodeSpace(self.node, globalPos)
+            let endPos = self.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(globalPos.x, globalPos.y, globalPos.z || 0), new Vec3())
             let dx = endPos.x - startPos.x
             let dy = endPos.y - startPos.y
             let dist = Math.sqrt(dx * dx + dy * dy)
@@ -492,8 +397,8 @@ export class LevelMergeNode extends Component {
                 itemNode.setPosition(startPos)
                 tween(itemNode)
                     .to(tm, {
-                        position: new Vec2(endPos.x, endPos.y),
-                        scale: 0.6,
+                        position: new Vec3(endPos.x, endPos.y, endPos.z || 0),
+                        scale: new Vec3(0.6, 0.6, 0.6),
                     }, { easing: 'quartInOut' })
                     .call(() => {
                         cleanupAfterFly(pname, itemNode)
@@ -562,7 +467,7 @@ export class LevelMergeNode extends Component {
         } else {
             node = instantiate(this.itemTemple)
         }
-        setLegacyScale(node, 1);
+        node!.setScale(1, 1, 1);
         return node
     }
 
@@ -828,7 +733,7 @@ export class LevelMergeNode extends Component {
                 return true
             case MergeTypes.MergeDoubleTapIntent.COLLECT_SELL: {
                 //收集出售
-                let globalFromPos = toWorldSpace(startMergeItem.node, new Vec2(0, 0))
+                let globalFromPos = startMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
                 this.DeleteSelectMergeItem(null, null, true, { actionType: MergeTypes.MergeActionType.COLLECT, cellKey: tapResult.cellKey, forceSend: true }, () => {
                     let textures = []
                     for (let i = 0; i < 5; i++) {
@@ -905,7 +810,7 @@ export class LevelMergeNode extends Component {
         this._mergeTouchEffectCellKey = endPosName
         let mergeNodeUI = this._getMergeNodeUI()
         if (mergeNodeUI && mergeNodeUI.PlayHeChengShiEnter) {
-            mergeNodeUI.PlayHeChengShiEnter(toWorldSpace(dropMergeItem.node, new Vec2(0, 0)))
+            mergeNodeUI.PlayHeChengShiEnter(dropMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3()))
         }
     }
 
@@ -921,7 +826,7 @@ export class LevelMergeNode extends Component {
         if (touches.length == 1) {
             //
             var touch1 = touches[0]
-            var touchPoint1 = toNodeSpace(this.node, touch1.getLocation());
+            var touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3());
             let tp = GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, this.getMergeBoardLayout())
             let pname = tp.x + '_' + tp.y;
 
@@ -987,7 +892,7 @@ export class LevelMergeNode extends Component {
         var touches = e.getTouches();
         if (touches.length == 1) {
             var touch1 = touches[0]
-            var screenDist = this.pressPosStart ? vecDistance(this.pressPosStart, touch1.getLocation()) : 0
+            var screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
             if (screenDist < 15) return
             if (this._isTutorialClickGeneratorOnlyRule()) {
                 this.itemCanDrag = false
@@ -995,7 +900,7 @@ export class LevelMergeNode extends Component {
                 return
             }
             this.picFrame.active = false;
-            var touchPoint1 = toNodeSpace(this.node, touch1.getLocation());
+            var touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3());
             if (this.touchStartNode) {
             this.touchStartNode.setPosition(touchPoint1)
             }
@@ -1016,9 +921,9 @@ export class LevelMergeNode extends Component {
         if (touches.length !== 1) return
 
         let touch1 = touches[0]
-        let touchPoint1 = toNodeSpace(this.node, touch1.getLocation())
+        let touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3())
         let boardLayout = this.getMergeBoardLayout()
-        let screenDist = this.pressPosStart ? vecDistance(this.pressPosStart, touch1.getLocation()) : 0
+        let screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
         let isTap = screenDist < 40
 
         let tp = GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, boardLayout)
@@ -1038,12 +943,12 @@ export class LevelMergeNode extends Component {
         let endPos = GameKit.MergeUtil.tile2px(tp.x, tp.y, boardLayout)
         let startMergeItem = this.touchStartNode.getComponent(MergeItem)
         let dropMergeItem = dropNode ? dropNode.getComponent(MergeItem) : null
-        let tmToEnd = vecDistance(touchPoint1, endPos) / 300 * 0.1
+        let tmToEnd = Vec3.distance(touchPoint1, new Vec3(endPos.x, endPos.y, 0)) / 300 * 0.1
         let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, startMergeItem.mergeId)
 
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.activeTriggerStepMeta) {
             let triggerCompleteType = Game.MergeTutorialManager.activeTriggerStepMeta.CompleteType ? Game.MergeTutorialManager.activeTriggerStepMeta.CompleteType() : ''
-            if (triggerCompleteType === 'drag_to_backpack' && GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(this.touchStartNode.node)) {
+            if (triggerCompleteType === 'drag_to_backpack' && GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(this.touchStartNode)) {
                 this._touchEndOutsideGrid(startPos, startMergeItem, tmToEnd)
                 return
             }
@@ -1054,7 +959,7 @@ export class LevelMergeNode extends Component {
                 this.showRec(startMergeItem, startPos, this.touchStartPosName, true)
                 return
             }
-            let tmFly = vecDistance(touchPoint1, startPos) / 300 * 0.1
+            let tmFly = Vec3.distance(touchPoint1, new Vec3(startPos.x, startPos.y, 0)) / 300 * 0.1
             this._touchEndOutsideGrid(startPos, startMergeItem, tmFly)
             return
         }
@@ -1137,9 +1042,6 @@ export class LevelMergeNode extends Component {
                                         cellNode.parent = this.node
                                     }
                                     Tween.stopAllByTarget(cellNode)
-                                    if (Tween.stopAllByTarget) {
-                    Tween.stopAllByTarget(cellNode)
-                }
                                     cellNode.setPosition(cutOriginPos)
                                     let mi = cellNode.getComponent(MergeItem)
                                     if (mi) mi.InitMergeItem(tx, ty, cutPiece.pieceData)
@@ -1154,9 +1056,12 @@ export class LevelMergeNode extends Component {
                                         let tm = dist / 300 * 0.20
                                         if (tm < 0.20) tm = 0.20
                                         maxCutPieceAnimEnd = Math.max(maxCutPieceAnimEnd, tm + cutPieceShakeEnterTime)
-                                        moveNode(cellNode, tm, toPos, () => {
-                                            playCutPieceShake(cellNode)
-                                        })
+                                        tween(cellNode)
+                                            .to(tm, { position: new Vec3(toPos.x, toPos.y, 0) }, { easing: 'quadOut' })
+                                            .call(() => {
+                                                playCutPieceShake(cellNode)
+                                            })
+                                            .start()
                                     }
                                 }
                                 let scheduleTwoCanMergeHintAfterCut = (degradedFlyTm) => {
@@ -1281,20 +1186,22 @@ export class LevelMergeNode extends Component {
      */
     _touchEndOutsideGrid(startPos?: any, startMergeItem?: any, flyDuration?: any) {
         let dragNode = this.touchStartNode
-        if (GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(dragNode.node)) {
+        if (GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(dragNode)) {
             //拖到仓库按钮上
             if (Game.SUserMerge.GetStoreCanPut()) {
                 //如果可以放入仓库，则放入仓库
                 Promise.resolve(SR.SRMerge.AutoSendSaveMapLite()).then(() => {
                     let req = SR.SRMerge.MovePieceFromGridToWarehouse(this.touchStartPosName)
                     req.SetCallBack(() => {
-                        emitMergeTutorial('drag_to_backpack', {
-                            success: true,
-                            from: this.touchStartPosName,
-                            targetKey: 'highest_normal',
-                            mergeId: startMergeItem.GetMergeId ? startMergeItem.GetMergeId() : null,
-                        })
-                        this.DeleteSelectMergeItem(dragNode.node, this.touchStartPosName, false, {})
+                        if (Game.MergeTutorialManager && Game.MergeTutorialManager.Emit) {
+                            Game.MergeTutorialManager.Emit('drag_to_backpack', {
+                                success: true,
+                                from: this.touchStartPosName,
+                                targetKey: 'highest_normal',
+                                mergeId: startMergeItem.GetMergeId ? startMergeItem.GetMergeId() : null,
+                            })
+                        }
+                        this.DeleteSelectMergeItem(dragNode, this.touchStartPosName, false, {})
                         this.updateOrderStatus()
                     })
                     req.Send()
@@ -1336,12 +1243,15 @@ export class LevelMergeNode extends Component {
         let { tx, ty } = this._parseTileKey(endPosName)
         let tutorialFromKey = this.touchStartPosName
 
-        Tween.stopAllByTarget(dragNode.node)
-        moveNode(dragNode.node, moveDuration, endPos, () => {
-this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
+        Tween.stopAllByTarget(dragNode)
+        tween(dragNode)
+            .to(Math.max(0, moveDuration || 0), { position: new Vec3(endPos.x, endPos.y, 0) }, { easing: 'quadOut' })
+            .call(() => {
+                this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
                 this.touchStartNode = null
                 this.touchStartPosName = null
-        })
+            })
+            .start()
         this.lastSelectMergeItem = startMergeItem
         this.lastTouchStartPosName = endPosName
         this.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.MOVE, fromKey: this.touchStartPosName, toKey: endPosName }).then((result) => {
@@ -1360,14 +1270,14 @@ this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
      */
     _touchEndSameCellTap(touch1?: any, endPos?: any, endPosName?: any, startMergeItem?: any, dropMergeItem?: any, dropNode?: any) {
         this.touchStartNode.setPosition(endPos)
-        let dist1 = vecDistance(this.pressPosStart, touch1.getLocation())
+        let dist1 = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
         if (dist1 < 40) {
             // this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
             if (this.lastSelectMergeItem && this.lastSelectMergeItem.node == dropNode) {
                 //双击意图
                 let doubleTapCtx = {
                     endPosName: endPosName,
-                    getEmptyTilePos: () => this.getEmptyTilePosByOrder(toWorldSpace(startMergeItem.node, new Vec2(0, 0))),
+                    getEmptyTilePos: () => this.getEmptyTilePosByOrder(startMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())),
                 }
                 let tapResult = startMergeItem.resolveSameCellDoubleTap(doubleTapCtx)
                 let intent = tapResult.intent
@@ -1388,11 +1298,13 @@ this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
         this.lastTouchStartPosName = endPosName
     }
     _flyback(pos?: any, nod?: any, tm?: any, cb?: any) {
-        moveNode(nod, tm, pos, () => {
-if (cb) {
-                cb();
-            }
-        })
+        Tween.stopAllByTarget(nod)
+        tween(nod)
+            .to(Math.max(0, tm || 0), { position: new Vec3(pos.x, pos.y, pos.z || 0) }, { easing: 'quadOut' })
+            .call(() => {
+                if (cb) cb();
+            })
+            .start()
     }
 
     /**
@@ -1407,8 +1319,8 @@ if (cb) {
         if (GameKit.MergeUtil.CheckIfCanMerge(dropMergeItem, startMergeItem, meta)) {
             
             //如果可以合并，则升级+爆沙+MERGE
-            if (dragNode && dragNode.node && isValid(dragNode.node)) {
-                Tween.stopAllByTarget(dragNode.node)
+            if (dragNode && isValid(dragNode)) {
+                Tween.stopAllByTarget(dragNode)
                 let dragMi = dragNode.getComponent(MergeItem)
                 if (dragMi && dragMi.icon && dragMi.icon.node && isValid(dragMi.icon.node)) {
                     Tween.stopAllByTarget(dragMi.icon.node)
@@ -1455,7 +1367,7 @@ if (cb) {
                 let breakSandToHalf = (mergeItem, tx, ty, addtionId) => {
                     let newMergeData = mergeItem.mergeId + '_' + halfId + '_' + addtionId
                     if (GamePlay.instance.mergeRoot.mergeNodeUI && GamePlay.instance.mergeRoot.mergeNodeUI.PlayShaGePoSuiEnter) {
-                        let globalPos = toWorldSpace(mergeItem.node, new Vec2(0, 0))
+                        let globalPos = mergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
                         GamePlay.instance.mergeRoot.mergeNodeUI.PlayShaGePoSuiEnter(globalPos)
                     }
                     mergeItem.InitMergeItem(tx, ty, newMergeData)
@@ -1472,7 +1384,7 @@ if (cb) {
                         if (addtionId > -1) {
                             let tempDataStr = addtionId + '_-1_-1'
                             let tempSpf = this.iconAtlas.getSpriteFrame(Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, addtionId).Icon())
-                            let globalPos = toWorldSpace(aroundMergeItem.node, new Vec2(0, 0))
+                            let globalPos = aroundMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
                             let additionMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, addtionId)
                             additionGroupMeta.push(additionMeta)
                             additionGroup.push({ tempDataStr: tempDataStr, tempSpf: tempSpf, globalPos: globalPos, mergeItem: aroundMergeItem })
@@ -1507,7 +1419,7 @@ if (cb) {
                 dropMergeItem.InitMergeItem(dropMergeItem.tx, dropMergeItem.ty, tempDataStr)
                 let mergeUI = GamePlay.instance.mergeRoot.mergeNodeUI
                 if (mergeUI && mergeUI.PlayQiZiHeChengEnter && mergeEffectFromLevel >= 3) {
-                    mergeUI.PlayQiZiHeChengEnter(toWorldSpace(dropMergeItem.node, new Vec2(0, 0)), {
+                    mergeUI.PlayQiZiHeChengEnter(dropMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3()), {
                         fromLevel: mergeEffectFromLevel,
                         toLevel: mergeEffectToLevel
                     })
@@ -1532,9 +1444,11 @@ if (cb) {
                 this.touchStartPosName = null
                 this.itemCanDrag = false
 
-                this.updateOrderStatus(toWorldSpace(dropMergeItem.node, new Vec2(0, 0)))
+                this.updateOrderStatus(dropMergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3()))
                 this._tryCompleteMergeTutorialStep(cellKey2, cellKey1)
-                emitMergeTutorial('merge_drag', { from: cellKey2, to: cellKey1 })
+                if (Game.MergeTutorialManager) {
+                    Game.MergeTutorialManager.Emit('merge_drag', { from: cellKey2, to: cellKey1 })
+                }
                 GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated)
             }).catch((err) => {
                 console.error(err, "updateMergeMapEvent_MergeOrSwap");
@@ -1564,13 +1478,19 @@ if (cb) {
             startMergeItem.InitMergeItem(endTx, endTy, mergeData2)
             this.updateOrderStatus()
         })
-        let swapTm = vecDistance(touchPoint1, startPos) / 300 * 0.1
+        let swapTm = Vec3.distance(touchPoint1, new Vec3(startPos.x, startPos.y, 0)) / 300 * 0.1
         this.scheduleOnce(() => {
-            Tween.stopAllByTarget(dragNode.node)
-            moveNode(dragNode.node, swapTm, endPos, () => {
-this.showRec(startMergeItem, endPos, endPosName, true)
-            })
-            moveNode(dropMergeItem.node, swapTm, startPos)
+            Tween.stopAllByTarget(dragNode)
+            tween(dragNode)
+                .to(Math.max(0, swapTm || 0), { position: new Vec3(endPos.x, endPos.y, 0) }, { easing: 'quadOut' })
+                .call(() => {
+                    this.showRec(startMergeItem, endPos, endPosName, true)
+                })
+                .start()
+            Tween.stopAllByTarget(dropMergeItem.node)
+            tween(dropMergeItem.node)
+                .to(Math.max(0, swapTm || 0), { position: new Vec3(startPos.x, startPos.y, 0) }, { easing: 'quadOut' })
+                .start()
         })
         this.lastSelectMergeItem = startMergeItem
         this.lastTouchStartPosName = endPosName
@@ -1691,7 +1611,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
      * @returns {Vec2|null} tile 坐标，无空格返回 null
      */
     getEmptyTilePosByOrder(globalPos?: any) {
-        let nodePos = toNodeSpace(this.node, globalPos);
+        let nodePos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(globalPos.x, globalPos.y, globalPos.z || 0), new Vec3());
         let centerTile = GameKit.MergeUtil.px2tile(nodePos.x, nodePos.y, this.getMergeBoardLayout())
         let cx = centerTile.x;
         let cy = centerTile.y;
@@ -1765,7 +1685,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
             return emptyTiles[0];
         }
 
-        let nodePos = toNodeSpace(this.node, globalPos);
+        let nodePos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(globalPos.x, globalPos.y, globalPos.z || 0), new Vec3());
         let centerTile = GameKit.MergeUtil.px2tile(nodePos.x, nodePos.y, this.getMergeBoardLayout())
 
         let nearestTile = null;
@@ -1807,7 +1727,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
             return;
         }
 
-        this.picFrame.position = pos;
+        this.picFrame.setPosition(pos.x, pos.y, pos.z || 0);
         this.picFrame.active = true;
         this.bringPicFrameToTop()
         let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, id)
@@ -1871,20 +1791,25 @@ this.showRec(startMergeItem, endPos, endPosName, true)
                 { node: icon2, scale: scale2, position: pos2.clone() }
             ]
 
-            let wp1 = toWorldSpace(icon1, new Vec2(0, 0))
-            let wp2 = toWorldSpace(icon2, new Vec2(0, 0))
-            let dir = normalize2D(wp1, wp2)
-            let distance = vecDistance(wp1, wp2)
+            let wp1 = icon1.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
+            let wp2 = icon2.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
+            let dir = new Vec3(wp2.x - wp1.x, wp2.y - wp1.y, 0)
+            dir.normalize()
+            let distance = Vec3.distance(wp1, wp2)
 
             let offsetDist = 10
             let delta1 = new Vec3(0, 0, 0)
             let delta2 = new Vec3(0, 0, 0)
             if (distance >= 88) {
                 if (mi1.GetEnvStatus() != 4) {
-                    delta1 = vecSub(toNodeSpace(icon1.parent, vecAdd(wp1, vecMul(dir, offsetDist))), pos1)
+                    let targetWorldPos1 = new Vec3(wp1.x + dir.x * offsetDist, wp1.y + dir.y * offsetDist, 0)
+                    let targetLocalPos1 = icon1.parent!.getComponent(UITransform)!.convertToNodeSpaceAR(targetWorldPos1, new Vec3())
+                    delta1 = new Vec3(targetLocalPos1.x - pos1.x, targetLocalPos1.y - pos1.y, targetLocalPos1.z - pos1.z)
                 }
                 if (mi2.GetEnvStatus() != 4) {
-                    delta2 = vecSub(toNodeSpace(icon2.parent, vecAdd(wp2, vecMul(dir, -offsetDist))), pos2)
+                    let targetWorldPos2 = new Vec3(wp2.x - dir.x * offsetDist, wp2.y - dir.y * offsetDist, 0)
+                    let targetLocalPos2 = icon2.parent!.getComponent(UITransform)!.convertToNodeSpaceAR(targetWorldPos2, new Vec3())
+                    delta2 = new Vec3(targetLocalPos2.x - pos2.x, targetLocalPos2.y - pos2.y, targetLocalPos2.z - pos2.z)
                 }
             }
 
@@ -1893,9 +1818,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
             let breatheCount = 3
             let pauseTime = 1.5
             let createLoopTween = (node: Node, origPos: Vec3, origScale: Vec3, delta: Vec3) => {
-                if (Tween.stopAllByTarget) {
-                    Tween.stopAllByTarget(node)
-                }
+                Tween.stopAllByTarget(node)
                 node.setScale(origScale)
                 node.setPosition(origPos)
 
@@ -1903,7 +1826,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
                 for (let i = 0; i < breatheCount; i++) {
                     loopTween
                         .to(dur, {
-                            scale: toScaleVec(origScale.x * scaleUp),
+                            scale: new Vec3(origScale.x * scaleUp, origScale.y * scaleUp, origScale.z * scaleUp),
                             position: new Vec3(origPos.x + delta.x, origPos.y + delta.y, origPos.z + delta.z)
                         }, { easing: 'sineOut' })
                         .to(dur, {
@@ -1969,10 +1892,9 @@ this.showRec(startMergeItem, endPos, endPosName, true)
         let lastNode = node || this.lastSelectMergeItem.node;
         let posName = pName || this.lastTouchStartPosName;
         Tween.stopAllByTarget(lastNode);
-        Tween.stopAllByTarget(lastNode);
         if (args.showAnim) {
             tween(lastNode)
-                .to(0.3, { scale: toScaleVec(0) })
+                .to(0.3, { scale: new Vec3(0, 0, 0) })
                 .call(() => {
                     this.putItem(lastNode);
                 })
@@ -2017,7 +1939,9 @@ this.showRec(startMergeItem, endPos, endPosName, true)
      * @param {number} options.delay 延迟时间，默认0.1
      */
     playItemJumpAnim(node?: any, fromPos?: any, toPos?: any, options: AnyRecord = {}, cb?: any) {
-        let dist = vecDistance(fromPos, toPos);
+        let fromVec = new Vec3(fromPos.x, fromPos.y, fromPos.z || 0);
+        let toVec = new Vec3(toPos.x, toPos.y, toPos.z || 0);
+        let dist = Vec3.distance(fromVec, toVec);
         let tm = dist / 300 * 0.5;
         tm = Math.max(tm / 1.2, 0.3);
 
@@ -2032,7 +1956,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
         let delay = options.delay !== undefined ? options.delay : 0.1;
 
         let originalScale = 1;
-        setLegacyScale(node, startScale);
+        node.setScale(startScale, startScale, startScale);
 
         this.scheduleOnce(() => {
             if (!node || !isValid(node)) {
@@ -2043,15 +1967,15 @@ this.showRec(startMergeItem, endPos, endPosName, true)
 
             // 计算接近目标位置（在目标位置之前一点，用于跳跃落地）
             let slideDistance = Math.min(dist * slideDistanceRatio, 30);
-            let moveDirection = normalize2D(fromPos, toPos);
-            let nearPos = vecSub(toPos, vecMul(moveDirection, slideDistance));
+            let moveDirection = new Vec3(toVec.x - fromVec.x, toVec.y - fromVec.y, 0);
+            moveDirection.normalize();
+            let nearPos = new Vec3(toVec.x - moveDirection.x * slideDistance, toVec.y - moveDirection.y * slideDistance, 0);
 
             // 计算跳跃高度（根据距离动态调整）
             let jumpHeight = Math.min(dist * jumpHeightRatio, 100);
 
             // 保存原始缩放
             // let originalScale = node.scale;
-            // setLegacyScale(node, startScale);
 
             // 跳跃动画：跳到接近目标位置
             const jumpState = { ratio: 0 };
@@ -2060,28 +1984,33 @@ this.showRec(startMergeItem, endPos, endPosName, true)
                 .to(tm, { ratio: 1 }, {
                     easing: 'quadOut',
                     onUpdate: () => {
-                        node.setPosition(jumpPoint(fromPos, nearPos, jumpHeight, jumpState.ratio));
+                        let ratio = jumpState.ratio;
+                        node.setPosition(
+                            fromVec.x + (nearPos.x - fromVec.x) * ratio,
+                            fromVec.y + (nearPos.y - fromVec.y) * ratio + Math.sin(Math.PI * ratio) * jumpHeight,
+                            0
+                        );
                     },
                 })
                 .to(slideTime, { ratio: 1 }, {
                     easing: 'quadOut',
                     onUpdate: () => {
-                        node.setPosition(toVec3(toPos));
+                        node.setPosition(toVec);
                     },
                 })
                 .call(() => {
-                    node.setPosition(toVec3(toPos));
+                    node.setPosition(toVec);
                     if (cb) cb();
                 })
                 .start();
             tween(scaleState)
                 .to(scaleUpTime, { value: originalScale * maxScale }, {
                     easing: 'quadOut',
-                    onUpdate: () => setLegacyScale(node, scaleState.value),
+                    onUpdate: () => node.setScale(scaleState.value, scaleState.value, scaleState.value),
                 })
                 .to(scaleDownTime, { value: originalScale * endScale }, {
                     easing: 'quadOut',
-                    onUpdate: () => setLegacyScale(node, scaleState.value),
+                    onUpdate: () => node.setScale(scaleState.value, scaleState.value, scaleState.value),
                 })
                 .start()
         }, delay)
@@ -2110,12 +2039,12 @@ this.showRec(startMergeItem, endPos, endPosName, true)
             let pos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
             child.setPosition(pos)
             child.parent = this.node
-            setLegacyScale(child, 0);
+            child.setScale(0, 0, 0);
             let mergeItem = child.getComponent(MergeItem)
             mergeItem.InitMergeItem(tx, ty, mergeDataStr)
 
             tween(child)
-                .to(0.3, { scale: toScaleVec(1 ) })
+                .to(0.3, { scale: new Vec3(1, 1, 1) })
                 .call(() => {
 
                 })
@@ -2378,7 +2307,9 @@ this.showRec(startMergeItem, endPos, endPosName, true)
                     this.applyBubbleCreatedResult(resultCellKey, result.bubbleCreated)
                 }
                 this.updateOrderStatus()
-                emitMergeTutorial('generator_click', { tile: fromtilepos.x + '_' + fromtilepos.y })
+                if (Game.MergeTutorialManager) {
+                    Game.MergeTutorialManager.Emit('generator_click', { tile: fromtilepos.x + '_' + fromtilepos.y })
+                }
             } else {
                 console.warn("one-time generator entered cooldown", onetimeDestroy);
             }
@@ -2410,7 +2341,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
         let boardLayout = this.getMergeBoardLayout()
         let frompos = GameKit.MergeUtil.tile2px(tx, ty, boardLayout)
         let toolNode = this.node.getChildByName(toolCellKey)
-        let generateTilePos = toolNode ? this.getEmptyTilePosByOrder(toWorldSpace(toolNode, new Vec2(0, 0))) : this.getEmptyTilePos()
+        let generateTilePos = toolNode ? this.getEmptyTilePosByOrder(toolNode.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())) : this.getEmptyTilePos()
         if (!generateTilePos) {
             this._vibrate(160)
             if (toolNode) GameKit.ShakeAnimTool.Shake(toolNode, 3)
@@ -2463,7 +2394,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
         let cellKey = tx + '_' + ty
 
         let mergeNode = this.getItem();
-        let localPos = toNodeSpace(this.node, globalPos)
+        let localPos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(globalPos.x, globalPos.y, globalPos.z || 0), new Vec3())
         mergeNode.setPosition(localPos)
         this.node.addChild(mergeNode)
         let mergeItem = mergeNode.getComponent(MergeItem);
@@ -2486,7 +2417,7 @@ this.showRec(startMergeItem, endPos, endPosName, true)
             () => {
                 let mergeNodeUI = GamePlay.instance.mergeRoot.mergeNodeUI
                 if (mergeNodeUI && mergeNodeUI.PlayQiZiLuoDiEnter && isValid(mergeItem.node)) {
-                    let worldPos = toWorldSpace(mergeItem.node, new Vec2(0, 0))
+                    let worldPos = mergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
                     mergeNodeUI.PlayQiZiLuoDiEnter(worldPos)
                 }
                 if (cb) cb()

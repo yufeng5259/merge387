@@ -1,11 +1,11 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-8
  */
 
-const UIRoot = window.UIRoot
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -23,71 +23,71 @@ class SettingWindow extends UIWindow {
 
     static windowPath = "Menu/SettingWindow"
 
-    /** @type {cc.SpriteFrame} 开关开状态 */
-    @property(cc.SpriteFrame)
+    /** @type {SpriteFrame} 开关开状态 */
+    @property(SpriteFrame)
     on_sf = null
 
-    /** @type {cc.SpriteFrame} 开关关状态 */
-    @property(cc.SpriteFrame)
+    /** @type {SpriteFrame} 开关关状态 */
+    @property(SpriteFrame)
     off_sf = null
 
-    /** @type {cc.Sprite} 开关-sound */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-sound */
+    @property(Sprite)
     switch_sound = null
 
-    /** @type {cc.Sprite} 开关-music */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-music */
+    @property(Sprite)
     switch_music = null
     
-    /** @type {cc.Sprite} 开关-lingsheng */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-lingsheng */
+    @property(Sprite)
     switch_lingsheng = null
     
-    /** @type {cc.Sprite} 开关-tixing */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-tixing */
+    @property(Sprite)
     switch_tixing = null
     
-    /** @type {cc.Sprite} 开关-zhendong */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-zhendong */
+    @property(Sprite)
     switch_zhendong = null
 
-    /** @type {cc.Sprite} 开关-raid */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-raid */
+    @property(Sprite)
     switch_raid = null
 
-    /** @type {cc.Sprite} 开关-general */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-general */
+    @property(Sprite)
     switch_general = null
 
-    /** @type {cc.Label} userId */
-    @property(cc.Label)
+    /** @type {Label} userId */
+    @property(Label)
     label_userId = null
 
-    /** @type {cc.Label} version */
-    @property(cc.Label)
+    /** @type {Label} version */
+    @property(Label)
     label_version = null
 
-    /** @type {cc.Label} currentLanguage */
-    @property(cc.Label)
+    /** @type {Label} currentLanguage */
+    @property(Label)
     label_currentLanguage = null
 
-    /** @type {cc.Node} LowBattery */
-    @property(cc.Node)
+    /** @type {Node} LowBattery */
+    @property(Node)
     spLowBattery = null
-    /** @type {cc.Sprite} 开关-LowBattery */
-    @property(cc.Sprite)
+    /** @type {Sprite} 开关-LowBattery */
+    @property(Sprite)
     switch_LowBattery = null
 
-    /** @type {cc.Node} btn_restore */
-    @property(cc.Node)
+    /** @type {Node} btn_restore */
+    @property(Node)
     btn_restore = null
 
-    /** @type {cc.Node} btn_delete删除账号 */
-    @property(cc.Node)
+    /** @type {Node} btn_delete删除账号 */
+    @property(Node)
     btn_delete = null
 
     //默认隐藏，显示服务器地址，app版本，game版本
-    @property(cc.Label)
+    @property(Label)
     label_dev = null
 
     onShow() {
@@ -172,13 +172,13 @@ class SettingWindow extends UIWindow {
     }
     
     static getSettingSwitch = function(key) {
-        let sw = cc.sys.localStorage.getItem(key)
+        let sw = sys.localStorage.getItem(key)
         if (sw == null) return true
         return sw == "true" || sw > 0
     }
 
     static setSettingSwitch = function(key, value) {
-        cc.sys.localStorage.setItem(key, value ? 1 : 0)
+        sys.localStorage.setItem(key, value ? 1 : 0)
     }
 
     static getLingshengSwitch = function() {
@@ -209,7 +209,7 @@ class SettingWindow extends UIWindow {
     }
 
     static getLowBatterySwitch = function() {
-        let sw = cc.sys.localStorage.getItem("LowBatterySwitch")
+        let sw = sys.localStorage.getItem("LowBatterySwitch")
         if (sw == null) sw = false
         else {
             if (sw == "false") sw = false
@@ -221,15 +221,15 @@ class SettingWindow extends UIWindow {
         let sw = SettingWindow.getLowBatterySwitch()
 
         sw = !sw
-        cc.sys.localStorage.setItem("LowBatterySwitch", sw)
+        sys.localStorage.setItem("LowBatterySwitch", sw)
         if (sw) { this.switch_LowBattery.spriteFrame = this.on_sf } else { this.switch_LowBattery.spriteFrame = this.off_sf }
         if (sw && !GameKit.PlayerPrefs.GetBool("LowBatteryTip", false)) {
             GameKit.PlayerPrefs.SetBool("LowBatteryTip", true)
             DialogWindow.Show(GameKit.i18n.t("setting_lowbattery_tip"))
         }
         
-        if (sw) cc.game.setFrameRate(30) 
-        else cc.game.setFrameRate(60)
+        if (sw) game.setFrameRate(30)
+        else game.setFrameRate(60)
     }
 
     /** 更新4个位置的选中状态 */
@@ -276,7 +276,7 @@ class SettingWindow extends UIWindow {
                 })
             }
         } else if (AppKit.SdkManager.IsNative()) {
-            cc.sys.openURL("mailto:coingangster@163.com?subject=Help&body=uid:" + Game.SUser.UserId())
+            sys.openURL("mailto:coingangster@163.com?subject=Help&body=uid:" + Game.SUser.UserId())
         } else {
             if (window.open) window.open("https://getcoingang.com/");
         }
@@ -288,7 +288,7 @@ class SettingWindow extends UIWindow {
 
     on_click_privacyPolicy() {
         if (AppKit.SdkManager.IsNative()) {
-            cc.sys.openURL("https://getcoingang.com/privacy.html")
+            sys.openURL("https://getcoingang.com/privacy.html")
         } else if (window.open) window.open("https://getcoingang.com/privacy.html");
     }
 

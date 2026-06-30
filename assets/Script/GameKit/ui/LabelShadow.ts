@@ -17,7 +17,7 @@ function opacityToAlpha(value: number): number {
 @ccclass('LabelShadowEx')
 @executeInEditMode
 export class LabelShadowEx extends Component {
-    @property({ type: Color, visible: false })
+    @property({ visible: false })
     private _N$color = defaultShadowColor();
 
     @property({ visible: false })
@@ -29,7 +29,7 @@ export class LabelShadowEx extends Component {
     @property({ visible: false })
     private _N$dy = 0;
 
-    @property({ type: Color })
+    @property
     get color(): Color {
         return this._N$color;
     }

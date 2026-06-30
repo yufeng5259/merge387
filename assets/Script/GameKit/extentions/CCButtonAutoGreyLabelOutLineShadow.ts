@@ -16,19 +16,19 @@ export class CCButtonAutoGreyLabelOutLineShadow extends Component {
     @property
     public useInOutLine = true;
 
-    @property(Color)
+    @property
     public outlineColorEnable = new Color();
 
-    @property(Color)
+    @property
     public outlineColorDisable = new Color();
 
     @property
     public useInShadow = true;
 
-    @property(Color)
+    @property
     public shadowColorEnable = new Color();
 
-    @property(Color)
+    @property
     public shadowColorDisable = new Color();
 
     private button: ButtonWithAutoGray | null = null;

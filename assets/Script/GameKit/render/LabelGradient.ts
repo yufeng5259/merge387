@@ -14,16 +14,16 @@ function cloneColor(value: Readonly<Color> | null | undefined): Color {
 @executeInEditMode
 @requireComponent(Label)
 export class LabelGradient extends Component {
-    @property({ type: Color, visible: false })
+    @property({ visible: false })
     private _colorFrom = createDefaultColor();
 
-    @property({ type: Color, visible: false })
+    @property({ visible: false })
     private _colorTo = createDefaultColor();
 
     @property({ visible: false })
     private _horizontal = false;
 
-    @property({ type: Color })
+    @property
     get colorFrom(): Color {
         return this._colorFrom;
     }
@@ -33,7 +33,7 @@ export class LabelGradient extends Component {
         this._updateRenderData();
     }
 
-    @property({ type: Color })
+    @property
     get colorTo(): Color {
         return this._colorTo;
     }

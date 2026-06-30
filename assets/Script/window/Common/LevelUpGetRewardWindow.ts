@@ -49,16 +49,6 @@ export default class LevelUpGetRewardWindow extends UIWindow {
         transform.setContentSize(rect.width * height / rect.height, height);
     }
 
-    private convertToWorldSpaceAR(node: Node, localPosition: Vec3) {
-        const transform = node.getComponent(UITransform);
-        return transform ? transform.convertToWorldSpaceAR(localPosition) : localPosition;
-    }
-
-    private convertToNodeSpaceAR(node: Node, worldPosition: Vec3) {
-        const transform = node.getComponent(UITransform);
-        return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition;
-    }
-
     private updateSkeletonWorldTransform(skeleton: sp.Skeleton | null) {
         const runtimeSkeleton: any = skeleton;
         if (runtimeSkeleton && runtimeSkeleton.updateWorldTransform) {
@@ -235,7 +225,7 @@ export default class LevelUpGetRewardWindow extends UIWindow {
     }
 
     getSpinePlayTokenKey(spineNode: Node) {
-        return spineNode.uuid || (spineNode as any)._id || spineNode.name;
+        return spineNode.uuid || spineNode.name;
     }
 
     playSpineIdle(skeleton: sp.Skeleton | null) {
@@ -280,8 +270,8 @@ export default class LevelUpGetRewardWindow extends UIWindow {
         this.updateSkeletonWorldTransform(this._levelBoneSkeleton);
 
         let bonePos = new Vec3(this._levelBone.worldX || 0, this._levelBone.worldY || 0, 0);
-        let worldPos = this.convertToWorldSpaceAR(this.SpineBg, bonePos);
-        let localPos = this.convertToNodeSpaceAR(this._levelBoneLabelNode.parent, worldPos);
+        let worldPos = this.SpineBg.getComponent(UITransform)!.convertToWorldSpaceAR(bonePos);
+        let localPos = this._levelBoneLabelNode.parent.getComponent(UITransform)!.convertToNodeSpaceAR(worldPos);
         this._levelBoneLabelNode.setPosition(localPos);
     }
 

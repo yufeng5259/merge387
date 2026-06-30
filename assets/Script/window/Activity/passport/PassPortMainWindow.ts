@@ -73,16 +73,6 @@ export default class PassPortMainWindow extends UIWindow {
         if (transform) transform.setContentSize(transform.width, height);
     }
 
-    private convertToWorldSpaceAR(node: Node, localPosition: Vec3) {
-        const transform = this.getTransform(node);
-        return transform ? transform.convertToWorldSpaceAR(localPosition) : localPosition;
-    }
-
-    private convertToNodeSpaceAR(node: Node, worldPosition: Vec3) {
-        const transform = this.getTransform(node);
-        return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition;
-    }
-
     onShow(showParams: any) {
         this.activityMeta=showParams.meta
 
@@ -98,7 +88,7 @@ export default class PassPortMainWindow extends UIWindow {
 
         this.quest_progress.node.on(Node.EventType.TOUCH_END, (e: any) => {
             let parent = this.quest_progress.node.parent
-            let dpos = this.convertToNodeSpaceAR(this.node, this.convertToWorldSpaceAR(parent, Vec3.ZERO))
+            let dpos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO))
             PassPortDesWindow.Show(this.content, {parent:this.node, pos:dpos, height:this.getNodeHeight(parent)})
             e.stopPropagation()
         
@@ -157,8 +147,8 @@ export default class PassPortMainWindow extends UIWindow {
     }
     updateLine(){
         let ity=this.svt_reward.startPos - (this.curLv+1) * this.svt_reward.itemSize
-        let p1=this.convertToWorldSpaceAR(this.svt_reward.itemsContent, new Vec3(0,ity,0))
-        let p2=this.convertToNodeSpaceAR(this.hoverLine.parent, p1)
+        let p1=this.svt_reward.itemsContent.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0,ity,0))
+        let p2=this.hoverLine.parent.getComponent(UITransform)!.convertToNodeSpaceAR(p1)
         this.hoverLine.setPosition(this.hoverLine.position.x, p2.y, this.hoverLine.position.z)
 
         if(!this.checkInView(this.hoverLine)){
@@ -166,13 +156,13 @@ export default class PassPortMainWindow extends UIWindow {
                 this.setNodeHeight(this.hoverBg, 100)
                 return
             }else{
-                p1=this.convertToWorldSpaceAR(this.svt_reward.itemsContent.parent.parent, Vec3.ZERO)
+                p1=this.svt_reward.itemsContent.parent.parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO)
             }
         }
-        let p3=this.convertToNodeSpaceAR(this.hoverBg.parent, Vec3.ZERO)
+        let p3=this.hoverBg.parent.getComponent(UITransform)!.convertToNodeSpaceAR(Vec3.ZERO)
         this.hoverBg.setPosition(this.hoverBg.position.x, p3.y, this.hoverBg.position.z)
         
-        let p4=this.convertToWorldSpaceAR(this.hoverBg.parent, this.hoverBg.position)
+        let p4=this.hoverBg.parent.getComponent(UITransform)!.convertToWorldSpaceAR(this.hoverBg.position)
         let dist = this.getDistance(p1,p4)
         this.setNodeHeight(this.hoverBg, dist)
     }
@@ -181,8 +171,8 @@ export default class PassPortMainWindow extends UIWindow {
         let max = -offset.y
         let min = -offset.y - this.getNodeHeight(this.svt_reward.scrollView.node)
 
-        let p1=this.convertToWorldSpaceAR(n.parent, n.position)
-        let p2=this.convertToNodeSpaceAR(this.svt_reward.itemsContent, p1)
+        let p1=n.parent.getComponent(UITransform)!.convertToWorldSpaceAR(n.position)
+        let p2=this.svt_reward.itemsContent.getComponent(UITransform)!.convertToNodeSpaceAR(p1)
         let itemMax=p2.y
         let itemMin = itemMax - 0
 
@@ -196,8 +186,8 @@ export default class PassPortMainWindow extends UIWindow {
         let max = -offset.y
         let min = -offset.y - this.getNodeHeight(this.svt_reward.scrollView.node)
 
-        let p1=this.convertToWorldSpaceAR(n.parent, n.position)
-        let p2=this.convertToNodeSpaceAR(this.svt_reward.itemsContent, p1)
+        let p1=n.parent.getComponent(UITransform)!.convertToWorldSpaceAR(n.position)
+        let p2=this.svt_reward.itemsContent.getComponent(UITransform)!.convertToNodeSpaceAR(p1)
         let itemMax=p2.y
         let itemMin = itemMax - 0
 

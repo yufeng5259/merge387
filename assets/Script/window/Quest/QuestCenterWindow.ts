@@ -3,9 +3,10 @@ import { UITabContainer } from '../../GameKit/ui/UITabContainer';
 import QuestCheckPage from './QuestCheckPage';
 import QuestDailyPage from './QuestDailyPage';
 import QuestInvitePage from './QuestInvitePage';
+import { _decorator, Node } from 'cc';
 /** @author fengyong-2019-2-18 */
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     DEFAULT_INDEX: 0,
 }
@@ -27,12 +28,10 @@ class QuestCenterWindow extends UIWindow {
     @property('QuestCheckPage')
     check_page = null
 
-    /** @type {cc.Node} 签到红点 */
-    @property(cc.Node)
+    @property(Node)
     signBadge = null
 
-    /** @type {cc.Node} 任务红点 */
-    @property(cc.Node)
+    @property(Node)
     taskBadge = null
 
     onShow() {

@@ -1,330 +1,160 @@
-import { _decorator, Component, Sprite, Label, Node } from 'cc';
+import { _decorator, Component, Label, Node, Sprite } from 'cc';
+import ContentModel from '../../game/items/ContentModel';
+
 const { ccclass, property } = _decorator;
 
 @ccclass('ShopSaleItem')
 export class ShopSaleItem extends Component {
     @property(Sprite)
-    public spinIcon = null;
+    public spinIcon: Sprite = null;
     @property(Label)
-    public spinNum = null;
+    public spinNum: Label = null;
     @property(Label)
-    public spinNumAdd = null;
+    public spinNumAdd: Label = null;
     @property(Node)
-    public popularIcon = null;
+    public popularIcon: Node = null;
     @property(Node)
-    public bestValueIcon = null;
+    public bestValueIcon: Node = null;
     @property(Node)
-    public offNode = null;
+    public offNode: Node = null;
     @property(Label)
-    public offText = null;
+    public offText: Label = null;
     @property(Label)
-    public oldText = null;
-    @property
-    public contentM = 'require(ContentModel)';
+    public oldText: Label = null;
+    @property(ContentModel)
+    public contentM: ContentModel = null;
     @property(Label)
-    public leftText = null;
+    public leftText: Label = null;
     @property(Node)
-    public btn_cash = null;
+    public btn_cash: Node = null;
     @property(Node)
-    public btn_coin = null;
+    public btn_coin: Node = null;
     @property(Node)
-    public btn_ad = null;
+    public btn_ad: Node = null;
     @property(Node)
-    public btn_free = null;
+    public btn_free: Node = null;
     @property(Node)
-    public btn_over = null;
+    public btn_over: Node = null;
     @property(Node)
-    public leftNode = null;
+    public leftNode: Node = null;
     @property(Label)
-    public cashLbl = null;
+    public cashLbl: Label = null;
     @property(Label)
-    public coinLbl = null;
+    public coinLbl: Label = null;
 
-    start () {
+    public meta: any = null;
+    public shopmeta: any = null;
+    public mergeId: any = null;
+
+    start() {
     }
 
-    updatePanel (meta: any, index: any, shopmeta: any) {
-        // this.shopmeta = shopmeta; 
-        // this.meta = meta 
-        // let num = meta.Count() 
-        // let numAdd = Math.round(meta.Off() * 100) 
-        // let price = meta.PriceString() 
-        // let contentParams = {} 
-        // contentParams.infoBtnParams = { 
-            // canTouch: true, 
-            // showInfoBtn: true, 
-            // callback: () => { 
-                // console.log("clicked item", meta.Content().Id()); 
-                // UIRoot.instance.openChildWindow("MergeTypeWindow", { mergeId: meta.Content().Id() }) 
-            // } 
-        // } 
-        // this.contentM.show(meta.Content(), contentParams); 
-        // this.spinNum.string = String.format(GameKit.i18n.t("ShopSpinNum"), GameKit.StringUtil.formatNumber(num)) 
-        // this.leftText.string = GameKit.i18n.t("ShopLeft") + this.meta.sdata.leftNum 
-        // if (numAdd <= 0) { 
-            // this.spinNumAdd.string = "" 
-        // } else { 
-            // this.spinNumAdd.string = String.format(GameKit.i18n.t("ShopAddPercent"), numAdd) 
-        // } 
-        // if (!meta.OnSale()) { 
-            // this.offNode.active = false 
-            // this.spinNumAdd.node.active = true 
-        // } else { 
-            // this.offNode.active = true 
-            // this.offText.string = String.format(GameKit.i18n.t("OffText"), numAdd) 
-            // this.spinNumAdd.node.active = false 
-        // } 
-        // this.oldText.node.active = false 
-        // console.log("多少钱",price); 
-        // this.spinNum.cacheMode = cc.Label.CacheMode.BITMAP 
-        // this.spinNumAdd.cacheMode = cc.Label.CacheMode.BITMAP 
-        // this.offText.cacheMode = cc.Label.CacheMode.BITMAP 
-        // this.oldText.cacheMode = cc.Label.CacheMode.BITMAP 
-        // this.CurrencyType(price); 
+    updatePanel(meta: any, index: any, shopmeta: any) {
+        this.shopmeta = shopmeta;
+        this.meta = meta;
+        const num = meta.Count();
+        const numAdd = Math.round(meta.Off() * 100);
+        const price = meta.PriceString();
+        const contentParams: any = {};
+        contentParams.infoBtnParams = {
+            canTouch: true,
+            showInfoBtn: true,
+            callback: () => {
+                console.log('clicked item', meta.Content().Id());
+                UIRoot.instance.openChildWindow('MergeTypeWindow', { mergeId: meta.Content().Id() });
+            },
+        };
+
+        this.contentM.show(meta.Content(), contentParams);
+        this.spinNum.string = String.format(GameKit.i18n.t('ShopSpinNum'), GameKit.StringUtil.formatNumber(num));
+        this.leftText.string = GameKit.i18n.t('ShopLeft') + this.meta.sdata.leftNum;
+        this.spinNumAdd.string = numAdd <= 0 ? '' : String.format(GameKit.i18n.t('ShopAddPercent'), numAdd);
+
+        if (!meta.OnSale()) {
+            this.offNode.active = false;
+            this.spinNumAdd.node.active = true;
+        } else {
+            this.offNode.active = true;
+            this.offText.string = String.format(GameKit.i18n.t('OffText'), numAdd);
+            this.spinNumAdd.node.active = false;
+        }
+
+        this.oldText.node.active = false;
+        console.log('多少钱', price);
+
+        this.spinNum.cacheMode = Label.CacheMode.BITMAP;
+        this.spinNumAdd.cacheMode = Label.CacheMode.BITMAP;
+        this.offText.cacheMode = Label.CacheMode.BITMAP;
+        this.oldText.cacheMode = Label.CacheMode.BITMAP;
+
+        this.CurrencyType(price);
     }
 
-    CurrencyType (price: any) {
-        // this.btn_ad.active = false; 
-        // this.btn_cash.active = false; 
-        // this.btn_coin.active = false; 
-        // this.btn_free.active = false; 
-        // this.btn_over.active = false; 
-        // this.leftNode.active = true; 
-        // if(this.meta.sdata.leftNum<=0){ 
-            // this.leftNode.active = false; 
-            // this.btn_over.active = true; 
-            // return; 
-        // } 
-        // switch (this.meta.CurrencyType()) { 
-            // case 0: 
-                // this.btn_free.active = true; 
-                // break; 
-            // case 1: 
-                // this.coinLbl.string = price 
-                // this.btn_coin.active = true;  
-                // break; 
-            // case 7: 
-                // this.cashLbl.string = price 
-                // this.btn_cash.active = true;  
-                // break; 
-            // default: 
-                // break; 
-        // } 
+    CurrencyType(price: any) {
+        this.btn_ad.active = false;
+        this.btn_cash.active = false;
+        this.btn_coin.active = false;
+        this.btn_free.active = false;
+        this.btn_over.active = false;
+        this.leftNode.active = true;
+        if (this.meta.sdata.leftNum <= 0) {
+            this.leftNode.active = false;
+            this.btn_over.active = true;
+            return;
+        }
+        switch (this.meta.CurrencyType()) {
+            case 0:
+                this.btn_free.active = true;
+                break;
+            case 1:
+                this.coinLbl.string = price;
+                this.btn_coin.active = true;
+                break;
+            case 7:
+                this.cashLbl.string = price;
+                this.btn_cash.active = true;
+                break;
+            default:
+                break;
+        }
     }
 
-    openCookingRecipeWindow (resultId: any) {
-        // UIRoot.instance.openChildWindow("MergeCookingRecipeWindow", { 
-            // resultId: resultId, 
-            // toolId: this.mergeId, 
-            // sourceWindow: this 
-        // }) 
+    openCookingRecipeWindow(resultId: any) {
+        UIRoot.instance.openChildWindow('MergeCookingRecipeWindow', {
+            resultId: resultId,
+            toolId: this.mergeId,
+            sourceWindow: this,
+        });
     }
 
-    onBuy () {
-        // if(this.meta.sdata.leftNum<=0){ 
-            // console.log("库存没了"); 
-            // return 
-        // } 
-        // if(this.meta.CurrencyType()!=0){ 
-            // let c =new Game.Content(this.meta.CurrencyType(),0,this.meta.Price()) 
-            // if(Game.ContentCheck.CheckContent(c)){ 
-                // console.log("sale", this.shopmeta.Name()); 
-                // let req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name()); 
-                // req.SetCallBack((res) => { 
-                    // GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res) 
-                    // console.log("sale", res.rewards); 
-                    // UIRoot.instance.openChildWindow("ShopBuySucessWindow", {"rewards": res.rewards}) 
-                // }) 
-                // req.Send(); 
-            // } 
-        // }else{ 
-                // console.log("sale免费", this.shopmeta.Name()); 
-                // let req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name()); 
-                // req.SetCallBack((res) => { 
-                    // GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res) 
-                    // console.log("sale", res.rewards); 
-                    // UIRoot.instance.openChildWindow("ShopBuySucessWindow", {"rewards": res.rewards}) 
-                // }) 
-                // req.Send(); 
-        // } 
+    onBuy() {
+        if (this.meta.sdata.leftNum <= 0) {
+            console.log('库存没了');
+            return;
+        }
+        if (this.meta.CurrencyType() != 0) {
+            const c = new Game.Content(this.meta.CurrencyType(), 0, this.meta.Price());
+            if (Game.ContentCheck.CheckContent(c)) {
+                console.log('sale', this.shopmeta.Name());
+                const req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name());
+                req.SetCallBack((res: any) => {
+                    GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res);
+                    console.log('sale', res.rewards);
+                    UIRoot.instance.openChildWindow('ShopBuySucessWindow', { rewards: res.rewards });
+                });
+                req.Send();
+            }
+        } else {
+            console.log('sale免费', this.shopmeta.Name());
+            const req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name());
+            req.SetCallBack((res: any) => {
+                GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res);
+                console.log('sale', res.rewards);
+                UIRoot.instance.openChildWindow('ShopBuySucessWindow', { rewards: res.rewards });
+            });
+            req.Send();
+        }
     }
-
 }
 
-
-/**
- * Note: The original script has been commented out, due to the large number of changes in the script, there may be missing in the conversion, you need to convert it manually
- */
-// cc.Class({
-//     extends: cc.Component,
-// 
-//     properties: {
-//         spinIcon:       cc.Sprite,
-//         spinNum:        cc.Label,
-//         spinNumAdd:     cc.Label,
-//         popularIcon:    cc.Node,
-//         bestValueIcon:  cc.Node,
-//         offNode:        cc.Node,
-//         offText:        cc.Label,
-//         oldText:        cc.Label,
-//         contentM:       require("ContentModel"),
-//         leftText:       cc.Label,
-//         btn_cash:       cc.Node,//钻石按钮
-//         btn_coin:       cc.Node,//金币按钮
-//         btn_ad:         cc.Node,//视频按钮
-//         btn_free:       cc.Node,//免费按钮
-//         btn_over:       cc.Node,//缺货
-//         leftNode:       cc.Node,//库存node
-//         cashLbl:        cc.Label,
-//         coinLbl:        cc.Label,
-//     },
-// 
-//     // LIFE-CYCLE CALLBACKS:
-// 
-//     // onLoad () {},
-// 
-//     start () {
-// 
-//     },
-// 
-//     updatePanel(meta, index, shopmeta){
-//         this.shopmeta = shopmeta;
-//         this.meta = meta
-//         let num = meta.Count()
-//         let numAdd = Math.round(meta.Off() * 100)
-//         let price = meta.PriceString()
-//         let contentParams = {}
-//         contentParams.infoBtnParams = {
-//             canTouch: true,
-//             showInfoBtn: true,
-//             callback: () => {
-//                 console.log("clicked item", meta.Content().Id());
-//                 UIRoot.instance.openChildWindow("MergeTypeWindow", { mergeId: meta.Content().Id() })
-//             }
-//         }
-//         this.contentM.show(meta.Content(), contentParams);
-//         this.spinNum.string = String.format(GameKit.i18n.t("ShopSpinNum"), GameKit.StringUtil.formatNumber(num))
-//         this.leftText.string = GameKit.i18n.t("ShopLeft") + this.meta.sdata.leftNum
-//         if (numAdd <= 0) {
-//             this.spinNumAdd.string = ""
-//         } else {
-//             this.spinNumAdd.string = String.format(GameKit.i18n.t("ShopAddPercent"), numAdd)
-//         }
-// 
-//         if (!meta.OnSale()) {
-//             this.offNode.active = false
-//             this.spinNumAdd.node.active = true
-//         } else {
-//             this.offNode.active = true
-//             this.offText.string = String.format(GameKit.i18n.t("OffText"), numAdd)
-//             this.spinNumAdd.node.active = false
-//         }
-// 
-//         // if(index == 2){
-//         //     this.popularIcon.active = true
-//         //     this.bestValueIcon.active = false
-//         // }else if(index == 5){
-//         //     this.popularIcon.active = false
-//         //     this.bestValueIcon.active = true
-//         // }else{
-//         //     this.popularIcon.active = false
-//         //     this.bestValueIcon.active = false
-//         // }
-// 
-//         this.oldText.node.active = false
-//         // if (oldMeta != meta) {
-//         //     this.oldText.node.active = true
-//         //     let oldNum = oldMeta.Count()
-//         //     this.oldText.string = String.format(GameKit.i18n.t("ShopSpinNum"), GameKit.StringUtil.formatNumber(oldNum))
-//         // }
-//         //this.spinPrice.string = price
-//         console.log("多少钱",price);
-//         
-// 
-//         this.spinNum.cacheMode = cc.Label.CacheMode.BITMAP
-//         this.spinNumAdd.cacheMode = cc.Label.CacheMode.BITMAP
-//         this.offText.cacheMode = cc.Label.CacheMode.BITMAP
-//         this.oldText.cacheMode = cc.Label.CacheMode.BITMAP
-// 
-//         this.CurrencyType(price);
-//     },
-//     CurrencyType(price){
-//         //0、免费
-//         //1、金币
-//         //7、钻石
-//         this.btn_ad.active = false;
-//         this.btn_cash.active = false;
-//         this.btn_coin.active = false;
-//         this.btn_free.active = false;
-//         this.btn_over.active = false;
-//         this.leftNode.active = true;
-//         if(this.meta.sdata.leftNum<=0){
-//             this.leftNode.active = false;
-//             this.btn_over.active = true;
-//             return;
-//         }
-//         switch (this.meta.CurrencyType()) {
-//             case 0:
-//                 this.btn_free.active = true;
-//                 break;
-//             case 1:
-//                 //广告统一处理
-//                 // if (this.meta.HasAd()&&AppKit.ADWrap.IsVideoPrepared()) {
-//                 //     this.btn_ad.active =true;
-//                 //     return;
-//                 // }
-//                 this.coinLbl.string = price
-//                 this.btn_coin.active = true; 
-//                 break;
-//             case 7:
-//                 //广告统一处理
-//                 // if (this.meta.HasAd()&&AppKit.ADWrap.IsVideoPrepared()) {
-//                 //     this.btn_ad.active =true;
-//                 //     return;
-//                 // }
-//                 this.cashLbl.string = price
-//                 this.btn_cash.active = true; 
-//                 break;
-//         
-//             default:
-//                 break;
-//         }
-//     },
-//     openCookingRecipeWindow(resultId) {
-//         UIRoot.instance.openChildWindow("MergeCookingRecipeWindow", {
-//             resultId: resultId,
-//             toolId: this.mergeId,
-//             sourceWindow: this
-//         })
-//     },
-// 
-//     onBuy(){
-//         if(this.meta.sdata.leftNum<=0){
-//             console.log("库存没了");
-//             return
-//         }
-//         if(this.meta.CurrencyType()!=0){
-//             let c =new Game.Content(this.meta.CurrencyType(),0,this.meta.Price())
-//             if(Game.ContentCheck.CheckContent(c)){
-//                 console.log("sale", this.shopmeta.Name());
-//                 let req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name());
-//                 req.SetCallBack((res) => {
-//                     GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res)
-//                     console.log("sale", res.rewards);
-//                     UIRoot.instance.openChildWindow("ShopBuySucessWindow", {"rewards": res.rewards})
-//                 })
-//                 req.Send();
-//             }
-//         }else{
-//                 console.log("sale免费", this.shopmeta.Name());
-//                 let req = SR.SRShop.BuyByShop(this.shopmeta.Id(), this.shopmeta.Name());
-//                 req.SetCallBack((res) => {
-//                     GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, res)
-//                     console.log("sale", res.rewards);
-//                     UIRoot.instance.openChildWindow("ShopBuySucessWindow", {"rewards": res.rewards})
-//                 })
-//                 req.Send();
-//         }
-//         
-//     }
-// });
+export default ShopSaleItem;

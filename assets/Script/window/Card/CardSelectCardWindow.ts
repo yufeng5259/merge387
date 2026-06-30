@@ -1,10 +1,11 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import CardModel from "./CardModel";
 
 /** @author fengyong-2019-6-4 */
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     SET_COUNT: 9,
     CARD_COUNT: 9,
@@ -14,6 +15,9 @@ const C = {
 export default class CardSelectCardWindow extends UIWindow {
 
     static windowPath = "Card/CardSelectCardWindow";
+
+    friend_userid: any = null
+    default_card_meta_id: any = null
 
     onShow(params) {
         this.friend_userid = params.friend_userid
@@ -37,8 +41,8 @@ export default class CardSelectCardWindow extends UIWindow {
         this.create_all_card()
     }
 
-    /** @type {cc.Label} */
-    @property({ tooltip: "当前可以选择多少张卡片的info", type: cc.Label })
+    /** @type {Label} */
+    @property({ tooltip: "当前可以选择多少张卡片的info", type: Label })
     label_info = null
 
     @property(ScrollViewTool)
@@ -91,7 +95,7 @@ export default class CardSelectCardWindow extends UIWindow {
         }
         node.active = true
         GameKit.ControllerTable.GetNode(node, "CardModel").getComponent(CardModel).show(card_meta_id)
-        node.getComponent(cc.Button).clickEvents[0].customEventData = card_meta_id
+        node.getComponent(Button).clickEvents[0].customEventData = card_meta_id
         // 如果已经是被选择的,则不允许点击
         let f = this.select_card_meta_id_list.includes(card_meta_id)
         let v2 = GameKit.ControllerTable.GetNode(node, "v2")
@@ -101,15 +105,15 @@ export default class CardSelectCardWindow extends UIWindow {
         this.select_card_v2[card_meta_id] = v2
     }
 
-    /** @type {cc.Node} 5个选择的card */
-    @property(cc.Node)
+    /** @type {Node} 5个选择的card */
+    @property(Node)
     item_select_card = null
 
     /** @type {number[]} 已经选择的card的meta-id数组,与CardModel一一对应 */
     select_card_meta_id_list = []
     /** @type {CardModel[]} 下面:已经选择的card的CardModel组件数组 */
     select_card_model_list = []
-    /** @type {{[key:number]:cc.Node}} card-meta-id与v2的一一对应 */
+    /** @type {{[key:number]:Node}} card-meta-id与v2的一一对应 */
     select_card_v2 = {}
 
     /** @type {number} 最大可以选择的card个数 */
@@ -128,18 +132,18 @@ export default class CardSelectCardWindow extends UIWindow {
         this.select_card_meta_id_list = new Array(this.get_max_select_count()).fill(null)
         this.item_select_card.active = false
         for (let i = 0; i < this.get_max_select_count(); i += 1) {
-            let n = cc.instantiate(this.item_select_card)
+            let n = instantiate(this.item_select_card)
             n.parent = this.item_select_card.parent
             n.active = true
-            n.getComponent(cc.Button).clickEvents[0].customEventData = ""
+            n.getComponent(Button).clickEvents[0].customEventData = ""
             let card_model = GameKit.ControllerTable.GetNode(n, "CardModel").getComponent(CardModel)
             card_model.node.active = false
             this.select_card_model_list.push(card_model)
         }
     }
 
-    /** @type {cc.Button} */
-    @property({ tooltip: "send按钮", type: cc.Button })
+    /** @type {Button} */
+    @property({ tooltip: "send按钮", type: Button })
     btn_send = null
 
     /** 选择一个card
@@ -154,7 +158,7 @@ export default class CardSelectCardWindow extends UIWindow {
         this.select_card_meta_id_list[index] = card_meta_id
         this.select_card_model_list[index].node.active = true
         this.select_card_model_list[index].show(card_meta_id)
-        this.select_card_model_list[index].node.parent.getComponent(cc.Button).clickEvents[0].customEventData = card_meta_id
+        this.select_card_model_list[index].node.parent.getComponent(Button).clickEvents[0].customEventData = card_meta_id
         // 修改btn-send样式
         this.btn_send.interactable = true
         return true
@@ -167,7 +171,7 @@ export default class CardSelectCardWindow extends UIWindow {
         // 允许,修改数据,下面修改显示,下面修改按钮绑定数据
         let index = this.select_card_meta_id_list.findIndex(v => v === card_meta_id)
         this.select_card_meta_id_list[index] = null
-        this.select_card_model_list[index].node.parent.getComponent(cc.Button).clickEvents[0].customEventData = ""
+        this.select_card_model_list[index].node.parent.getComponent(Button).clickEvents[0].customEventData = ""
         this.select_card_model_list[index].node.active = false
         // 释放v2
         let v2 = this.select_card_v2[card_meta_id]

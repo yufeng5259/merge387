@@ -1,9 +1,11 @@
 import '../../LegacyGlobals';
 //用户身份
 
-class UserStatus {
+export class UserStatus {
+    public data: any;
+    public thisVip: any;
 
-    constructor (userId) {
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -126,5 +128,3 @@ class UserStatus {
         return this.data.levelBonusGet || []
     }
 }
-
-global.Game.UserStatus = UserStatus

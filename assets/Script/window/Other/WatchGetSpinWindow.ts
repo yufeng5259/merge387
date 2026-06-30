@@ -1,14 +1,11 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
-import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
-import { UserInfoModel } from '../UserInfoModel';
+import { _decorator, Label } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-16
  */
 
-let UIRoot = window.UIRoot
-
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -26,9 +23,10 @@ class WatchGetSpinWindow extends UIWindow {
 
     static windowPath = "Other/WatchGetSpinWindow"
 
-    /** @type {cc.Label} 增加的数值lable */
-    @property(cc.Label)
+    /** @type {Label} 增加的数值lable */
+    @property(Label)
     add_label = null
+    spin_add_number = C.DEFAULT_SPIN_ADD
 
     onShow() {
         this.add_label.string = String.format(GameKit.i18n.t("watch_spin"), this.get_spin_add_number())

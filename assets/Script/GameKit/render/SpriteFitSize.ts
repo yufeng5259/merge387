@@ -27,7 +27,7 @@ export class SpriteFitSize extends Component {
     @property({ type: RatioType, visible: false })
     private _N$type = RatioType.box;
 
-    @property({ type: Vec2, visible: false })
+    @property({ visible: false })
     private _N$maxSize = new Vec2();
 
     public sprite: Sprite | null = null;
@@ -44,7 +44,7 @@ export class SpriteFitSize extends Component {
         this.updateSize();
     }
 
-    @property({ type: Vec2 })
+    @property
     get maxSize(): Vec2 {
         return this._N$maxSize;
     }

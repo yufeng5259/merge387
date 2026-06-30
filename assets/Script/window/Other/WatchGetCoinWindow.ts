@@ -1,14 +1,11 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
-import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
-import { UserInfoModel } from '../UserInfoModel';
+import { _decorator, Label } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-16
  */
 
-let UIRoot = window.UIRoot
-
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -26,8 +23,8 @@ class WatchGetCoinWindow extends UIWindow {
 
     static windowPath = "Other/WatchGetCoinWindow"
 
-    /** @type {cc.Label} 增加的数值lable */
-    @property(cc.Label)
+    /** @type {Label} 增加的数值lable */
+    @property(Label)
     add_label = null
 
     onShow() {

@@ -2,6 +2,7 @@ import { _decorator, Label, Sprite } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { UserInfoModel } from '../UserInfoModel';
 
+import { User } from '../../game/user/User';
 const { ccclass, property } = _decorator;
 
 @ccclass('InvitedNewUserWindow')
@@ -20,7 +21,7 @@ export default class InvitedNewUserWindow extends UIWindow {
     onShow(showParams: any) {
         const data = showParams.data;
 
-        (UserInfoModel as any).SetAvatar(this.spAvatar, new Game.User().updateData(data['user']));
+        (UserInfoModel as any).SetAvatar(this.spAvatar, new User().updateData(data['user']));
 
         const add = this.get_add_number();
 

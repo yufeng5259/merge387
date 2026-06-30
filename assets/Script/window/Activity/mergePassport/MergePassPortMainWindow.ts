@@ -15,16 +15,6 @@ function getNodeHeight(node: Node | null) {
     return getTransform(node)?.height || 0;
 }
 
-function convertToWorldSpaceAR(node: Node, localPosition: Vec3) {
-    const transform = getTransform(node);
-    return transform ? transform.convertToWorldSpaceAR(localPosition) : localPosition;
-}
-
-function convertToNodeSpaceAR(node: Node, worldPosition: Vec3) {
-    const transform = getTransform(node);
-    return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition;
-}
-
 @ccclass('MergePassPortMainWindow')
 export default class MergePassPortMainWindow extends UIWindow {
     public static windowPath = 'Activity/mergePassport/MergePassPortMainWindow';
@@ -145,7 +135,7 @@ export default class MergePassPortMainWindow extends UIWindow {
             this.exp_progress.node.on(Node.EventType.TOUCH_END, (e: any) => {
                 let parent = this.exp_progress?.node.parent;
                 if (!parent) return;
-                let dpos = convertToNodeSpaceAR(this.node, convertToWorldSpaceAR(parent, Vec3.ZERO));
+                let dpos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO));
                 PassPortDesWindow.Show(this.content, { parent: this.node, pos: dpos, height: getNodeHeight(parent) });
                 e.stopPropagation();
             }, this);

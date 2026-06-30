@@ -1,34 +1,34 @@
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
+import { _decorator, Button, Component, Label, ProgressBar, Sprite, SpriteAtlas, SpriteFrame } from 'cc';
 /** @author fengyong-2019-2-19 */
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     FAKE_DATA: false,       // 是否使用伪数据用来测试界面，不与服务器交互
 }
 
 @ccclass
-class QuestDailyPage extends cc.Component {
+export default class QuestDailyPage extends Component {
 
     /** @type {ScrollViewTool} */
     @property(ScrollViewTool)
     svt = null
 
-    /** @type {cc.SpriteFrame} 按钮样式-go */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     sp_btn_received = null
 
-    /** @type {cc.SpriteFrame} 按钮样式-get */
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     sp_btn_get = null
 
-    /** @type {cc.SpriteAtlas} 剩余时间 */
-    @property(cc.SpriteAtlas)
+    @property(SpriteAtlas)
     atlas_taskIcons = null;
 
     data = null
+    lastUpdateTime = 0
+    remainTime = 0
 
     show() {
-        if (C.FAKE_DATA) { cc.warn("注意：daily-page 正在使用fake-data模式") }
+        if (C.FAKE_DATA) { console.warn("注意：daily-page 正在使用fake-data模式") }
         this.get_data().then(v => {
             if (!this.node) return
             this.node.active = true
@@ -116,13 +116,13 @@ class QuestDailyPage extends cc.Component {
             // 获取对应的meta数据
             let meta = Meta.TaskMeta.GetById(id)
             // 修改样式
-            let task_icon = GameKit.ControllerTable.GetNode(node, 'task-icon').getComponent(cc.Sprite)
-            let award_icon = GameKit.ControllerTable.GetNode(node, 'award-icon').getComponent(cc.Sprite)
-            let award_value = GameKit.ControllerTable.GetNode(node, 'award-value').getComponent(cc.Label)
-            let name = GameKit.ControllerTable.GetNode(node, 'quest-name').getComponent(cc.Label)
+            let task_icon = GameKit.ControllerTable.GetNode(node, 'task-icon').getComponent(Sprite)
+            let award_icon = GameKit.ControllerTable.GetNode(node, 'award-icon').getComponent(Sprite)
+            let award_value = GameKit.ControllerTable.GetNode(node, 'award-value').getComponent(Label)
+            let name = GameKit.ControllerTable.GetNode(node, 'quest-name').getComponent(Label)
             let geted = GameKit.ControllerTable.GetNode(node, 'geted')
-            let progress = GameKit.ControllerTable.GetNode(node, 'quest-progress').getComponent(cc.ProgressBar)
-            let progress_string = GameKit.ControllerTable.GetNode(node, 'quest-progress-string').getComponent(cc.Label)
+            let progress = GameKit.ControllerTable.GetNode(node, 'quest-progress').getComponent(ProgressBar)
+            let progress_string = GameKit.ControllerTable.GetNode(node, 'quest-progress-string').getComponent(Label)
             let btn = GameKit.ControllerTable.GetNode(node, 'quest-btn')
             meta.Reward()[0].Icon(award_icon);
             task_icon.spriteFrame=this.atlas_taskIcons.getSpriteFrame(meta.TaskIcon())
@@ -140,8 +140,8 @@ class QuestDailyPage extends cc.Component {
                 }else{
                     geted.active = false;
                     btn.active=true;
-                    btn.getComponent(cc.Button).clickEvents[0].handler = "evnet_get"
-                    btn.getComponent(cc.Button).clickEvents[0].customEventData = meta.Id()
+                    btn.getComponent(Button).clickEvents[0].handler = "evnet_get"
+                    btn.getComponent(Button).clickEvents[0].customEventData = meta.Id()
                 }
             }else{
                 progress.node.active = true;
@@ -154,7 +154,7 @@ class QuestDailyPage extends cc.Component {
 
     /** 点击事件：get */
     evnet_get(e, id) {
-        new Promise((res, rej) => {
+        new Promise<void>((res, rej) => {
             // old-data
             this.data[id].received = true
             if (C.FAKE_DATA) {

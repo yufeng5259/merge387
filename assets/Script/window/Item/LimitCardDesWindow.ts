@@ -1,252 +1,133 @@
-import { _decorator, Component, Node, Sprite, Label, instantiate } from 'cc';
-import { ContentModel } from '../../game/items/ContentModel';
-import { SpriteItem } from '../../GameKit/ui/SpriteItem';
+import { _decorator, Component, instantiate, Label, Node, Prefab, Sprite, UITransform } from 'cc';
+import { fitByHeight } from '../../GameKit/render/fixedSizeRatio';
+import { EnterCloseAnim } from '../../GameKit/ui/EnterCloseAnim';
+
 const { ccclass, property } = _decorator;
 
-let width3 = 450
-let width4 = 586
-let heightHave = 330
-let heightNo = 224
-let bgY = 19
+const width3 = 450;
+const width4 = 586;
+const bgY = 19;
+
 @ccclass('LimitCardDesWindow')
 export class LimitCardDesWindow extends Component {
     @property(Node)
-    public bg = null;
+    public bg: Node = null;
     @property(Node)
-    public arrow = null;
+    public arrow: Node = null;
     @property(Sprite)
-    public bg1 = null;
+    public bg1: Sprite = null;
     @property(Label)
-    public limitLabel = null;
+    public limitLabel: Label = null;
     @property(Label)
-    public countLabel = null;
+    public countLabel: Label = null;
 
-    onLoad () {
-        // if (this.bg) this._bgInitPos = { x: this.bg.x, y: this.bg.y } 
-        // if (this.arrow) this._arrowInitPos = { x: this.arrow.x, y: this.arrow.y } 
+    public pheight = 0;
+    public chest_meta: any = null;
+    private closing = false;
+    private bgInitPos: any = null;
+    private arrowInitPos: any = null;
+
+    onLoad() {
+        if (this.bg) this.bgInitPos = this.bg.position.clone();
+        if (this.arrow) this.arrowInitPos = this.arrow.position.clone();
     }
 
-    show (reward: any) {
-        // let subjectMeta=Game.ActivityManager.GetActiveActivity(Meta.ActivityMeta.Types.Pay,Meta.ActivityMeta.SubTypes.SubjectCard) 
-        // let contents=[] 
-        // let chestId = reward && typeof reward.ContentId === "function" ? reward.ContentId() : (reward ? reward.cid : 0) 
-        // this.chest_meta = Meta.MetaManager.GetMeta(Meta.MetaType.CardChest, chestId) 
-        // let str=this.countLabel.string 
-        // if (this.chest_meta) { 
-            // this.countLabel.string = str.format(this.chest_meta.CardNum()) 
-        // } 
-        // if (CommonAssets.instance.cardLimitSkinAssets && CommonAssets.instance.cardLimitSkinAssets.desItemBg) { 
-            // this.bg1.spriteFrame = CommonAssets.instance.cardLimitSkinAssets.desItemBg 
-        // } 
-        // let height=this.bg1.node.height 
-        // require("fixedSizeRatio").fitByHeight(this.bg1, height) 
-        // let itemsCount=contents.length; 
-        // if (this.bg && this._bgInitPos) { 
-            // this.bg.setPosition(this._bgInitPos.x, this._bgInitPos.y) 
-            // this.bg.width = width3 
-        // } 
-        // if (this.arrow && this._arrowInitPos) { 
-            // this.arrow.setPosition(this._arrowInitPos.x, this._arrowInitPos.y) 
-            // this.arrow.scaleY = 1 
-        // } 
-        // if (itemsCount >= 4) { 
-            // this.bg.width = width4 
-        // } 
-        // this.bg.node.y = bgY 
-        // if (typeof UIRoot !== "undefined" && UIRoot.instance && UIRoot.instance.winSize) { 
-            // let margin = 20 
-            // let halfW = UIRoot.instance.winSize.width / 2 
-            // let panelHalfW = this.bg ? this.bg.width / 2 : 0 
-            // let minX = -halfW + margin + panelHalfW 
-            // let maxX = halfW - margin - panelHalfW 
-            // let oldX = this.node.x 
-            // let x = oldX 
-            // if (x < minX) x = minX 
-            // else if (x > maxX) x = maxX 
-            // this.node.x = x 
-            // let deltaX = x - oldX 
-            // if (this.arrow && deltaX !== 0) { 
-                // this.arrow.x -= deltaX 
-            // } 
-        // } 
-        // if (this.node.getWorldPosition().y + bgY + this.bg.height - 20 > UIRoot.instance.winSize.height / 2) { 
-            // this.arrow.scaleY = -1 
-            // this.arrow.y = -this.arrow.y 
-            // this.bg.node.y = -this.bg.node.y - this.bg.node.height 
-            // this.node.y -= this.pheight + this.pheight / 5 
-        // } 
-        // this.scheduleOnce(() => { 
-            // this.callClose(); 
-        // }, 5) 
+    show(reward: any) {
+        const contents: any[] = [];
+        const chestId = reward && typeof reward.ContentId === 'function' ? reward.ContentId() : (reward ? reward.cid : 0);
+        this.chest_meta = Meta.MetaManager.GetMeta(Meta.MetaType.CardChest, chestId);
+        const str = this.countLabel.string;
+        if (this.chest_meta) {
+            this.countLabel.string = str.format(this.chest_meta.CardNum());
+        }
+
+        if (CommonAssets.instance.cardLimitSkinAssets && CommonAssets.instance.cardLimitSkinAssets.desItemBg) {
+            this.bg1.spriteFrame = CommonAssets.instance.cardLimitSkinAssets.desItemBg;
+        }
+
+        const height = this.bg1.node.getComponent(UITransform).height;
+        fitByHeight(this.bg1, height);
+        const itemsCount = contents.length;
+
+        const bgTransform = this.bg.getComponent(UITransform);
+        if (this.bgInitPos) this.bg.setPosition(this.bgInitPos);
+        bgTransform.width = width3;
+        if (this.arrow && this.arrowInitPos) {
+            this.arrow.setPosition(this.arrowInitPos);
+            this.arrow.setScale(this.arrow.scale.x, 1, this.arrow.scale.z);
+        }
+
+        if (itemsCount >= 4) {
+            bgTransform.width = width4;
+        }
+
+        this.bg.setPosition(this.bg.position.x, bgY, this.bg.position.z);
+
+        if (UIRoot.instance && UIRoot.instance.winSize) {
+            const margin = 20;
+            const halfW = UIRoot.instance.winSize.width / 2;
+            const panelHalfW = bgTransform.width / 2;
+            const minX = -halfW + margin + panelHalfW;
+            const maxX = halfW - margin - panelHalfW;
+            const oldX = this.node.position.x;
+            let x = oldX;
+            if (x < minX) x = minX;
+            else if (x > maxX) x = maxX;
+            this.node.setPosition(x, this.node.position.y, this.node.position.z);
+
+            const deltaX = x - oldX;
+            if (this.arrow && deltaX !== 0) {
+                this.arrow.setPosition(this.arrow.position.x - deltaX, this.arrow.position.y, this.arrow.position.z);
+            }
+        }
+
+        if (this.node.getWorldPosition().y + bgY + bgTransform.height - 20 > UIRoot.instance.winSize.height / 2) {
+            this.arrow.setScale(this.arrow.scale.x, -1, this.arrow.scale.z);
+            this.arrow.setPosition(this.arrow.position.x, -this.arrow.position.y, this.arrow.position.z);
+            this.bg.setPosition(this.bg.position.x, -this.bg.position.y - bgTransform.height, this.bg.position.z);
+            this.node.setPosition(this.node.position.x, this.node.position.y - this.pheight - this.pheight / 5, this.node.position.z);
+        }
+
+        this.scheduleOnce(() => {
+            this.callClose();
+        }, 5);
     }
 
-    callClose () {
-        // if (this.closing) return 
-        // this.closing = true 
-        // require("EnterCloseAnim").playClose(this.node) 
-        // this.scheduleOnce(() => { 
-            // this.node.destroy() 
-        // }, 0.5) 
+    callClose() {
+        if (this.closing) return;
+        this.closing = true;
+        EnterCloseAnim.playClose(this.node);
+        this.scheduleOnce(() => {
+            this.node.destroy();
+        }, 0.5);
     }
 
+    static Show(content: any, params: any, x?: any, y?: any) {
+        UIRoot.instance.ShowCantClick();
+        const resName = 'window/Item/LimitCardDesWindow';
+        cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
+            if (err) {
+                Logs.Error('openModelWindow windowPath:' + resName + (err.message || err));
+                DialogWindow.Show(GameKit.i18n.t('loadResError'), () => {
+                    LimitCardDesWindow.Show(content, params, x, y);
+                }, nullFunction);
+                UIRoot.instance.CloseCantClick();
+                return;
+            }
+            if (winPre == null) {
+                UIRoot.instance.CloseCantClick();
+                return;
+            }
+
+            const wnd = instantiate(winPre);
+            wnd.parent = params.parent || UIRoot.instance.node;
+            wnd.setPosition(params.pos.x, params.pos.y + params.height / 2 + params.height / 10, wnd.position.z);
+            const panel = wnd.getComponent(LimitCardDesWindow);
+            panel.pheight = params.height;
+            panel.show(content);
+            UIRoot.instance.CloseCantClick();
+        });
+    }
 }
 
-
-LimitCardDesWindow.Show = function(content, params, x, y) {
-    UIRoot.instance.ShowCantClick()
-    let resName = "window/Item/LimitCardDesWindow"
-    cce.loadRes(resName, cc.Prefab, function (err, winPre) {
-        if (err) {
-            Logs.Error("openModelWindow windowPath:" + resName + (err.message || err));
-            DialogWindow.Show(GameKit.i18n.t("loadResError"), function() {
-                LimitCardDesWindow.Show(content, parent, x, y)
-            }.bind(this), nullFunction)
-            UIRoot.instance.CloseCantClick()
-            return;
-        }
-        if (winPre == null) {
-            UIRoot.instance.CloseCantClick()
-            return
-        }
-        let wnd = cc.instantiate(winPre)
-        wnd.parent = params.parent || UIRoot.instance.node
-        wnd.x = params.pos.x
-        wnd.y = params.pos.y + params.height / 2 + params.height / 10
-        let panel = wnd.getComponent(LimitCardDesWindow)
-        panel.pheight = params.height
-        panel.show(content)
-        UIRoot.instance.CloseCantClick()
-    }.bind(this))
-}
-/**
- * Note: The original script has been commented out, due to the large number of changes in the script, there may be missing in the conversion, you need to convert it manually
- */
-// var width3 = 450
-// var width4 = 586
-// var heightHave = 330
-// var heightNo = 224
-// var bgY = 19
-// const ContentModel = require("ContentModel")
-// let SpriteItem=require('SpriteItem')
-// 
-// var LimitCardDesWindow = cc.Class({
-//     extends: cc.Component,
-// 
-//     properties: {
-//         bg:cc.Node,
-//         arrow: cc.Node,
-//         bg1:cc.Sprite,
-//         limitLabel:cc.Label,
-//         countLabel:cc.Label,
-//     },
-//     onLoad () {
-//         if (this.bg) this._bgInitPos = { x: this.bg.x, y: this.bg.y }
-//         if (this.arrow) this._arrowInitPos = { x: this.arrow.x, y: this.arrow.y }
-//     },
-// 
-//     show (reward) {
-//         let subjectMeta=Game.ActivityManager.GetActiveActivity(Meta.ActivityMeta.Types.Pay,Meta.ActivityMeta.SubTypes.SubjectCard)
-//         // let para=subjectMeta.Param().ui
-// 
-//         let contents=[]
-//         let chestId = reward && typeof reward.ContentId === "function" ? reward.ContentId() : (reward ? reward.cid : 0)
-//         this.chest_meta = Meta.MetaManager.GetMeta(Meta.MetaType.CardChest, chestId)
-//         // console.log(this.chest_meta);
-//         let str=this.countLabel.string
-//         if (this.chest_meta) {
-//             this.countLabel.string = str.format(this.chest_meta.CardNum())
-//         }
-// 
-//         
-//         if (CommonAssets.instance.cardLimitSkinAssets && CommonAssets.instance.cardLimitSkinAssets.desItemBg) {
-//             this.bg1.spriteFrame = CommonAssets.instance.cardLimitSkinAssets.desItemBg
-//         }
-// 
-//         let height=this.bg1.node.height
-//         require("fixedSizeRatio").fitByHeight(this.bg1, height)
-//         let itemsCount=contents.length;
-// 
-//         if (this.bg && this._bgInitPos) {
-//             this.bg.setPosition(this._bgInitPos.x, this._bgInitPos.y)
-//             this.bg.width = width3
-//         }
-//         if (this.arrow && this._arrowInitPos) {
-//             this.arrow.setPosition(this._arrowInitPos.x, this._arrowInitPos.y)
-//             this.arrow.scaleY = 1
-//         }
-// 
-//         if (itemsCount >= 4) {
-//             this.bg.width = width4
-//         }
-// 
-//         this.bg.node.y = bgY
-// 
-//         // 参�?RandomChestPanel：水�?clamp 整个面板，避免直�?setWorldPosition 导致内容偏移异常
-//         if (typeof UIRoot !== "undefined" && UIRoot.instance && UIRoot.instance.winSize) {
-//             let margin = 20
-//             let halfW = UIRoot.instance.winSize.width / 2
-//             let panelHalfW = this.bg ? this.bg.width / 2 : 0
-//             let minX = -halfW + margin + panelHalfW
-//             let maxX = halfW - margin - panelHalfW
-//             let oldX = this.node.x
-//             let x = oldX
-//             if (x < minX) x = minX
-//             else if (x > maxX) x = maxX
-//             this.node.x = x
-//             let deltaX = x - oldX
-//             if (this.arrow && deltaX !== 0) {
-//                 this.arrow.x -= deltaX
-//             }
-//         }
-// 
-//         if (this.node.getWorldPosition().y + bgY + this.bg.height - 20 > UIRoot.instance.winSize.height / 2) {
-//             this.arrow.scaleY = -1
-//             this.arrow.y = -this.arrow.y
-//             this.bg.node.y = -this.bg.node.y - this.bg.node.height
-//             this.node.y -= this.pheight + this.pheight / 5
-//         }
-// 
-//         this.scheduleOnce(() => {
-//             this.callClose();
-//         }, 5)
-//     },
-// 
-//     callClose() {
-//         if (this.closing) return
-//         this.closing = true
-//         require("EnterCloseAnim").playClose(this.node)
-//         this.scheduleOnce(() => {
-//             this.node.destroy()
-//         }, 0.5)
-//     }
-// 
-// });
-// 
-// LimitCardDesWindow.Show = function(content, params, x, y) {
-//     UIRoot.instance.ShowCantClick()
-//     let resName = "window/Item/LimitCardDesWindow"
-//     cce.loadRes(resName, cc.Prefab, function (err, winPre) {
-//                 
-//         if (err) {
-//             Logs.Error("openModelWindow windowPath:" + resName + (err.message || err));
-//             DialogWindow.Show(GameKit.i18n.t("loadResError"), function() {
-//                 LimitCardDesWindow.Show(content, parent, x, y)
-//             }.bind(this), nullFunction)
-//             UIRoot.instance.CloseCantClick()
-//             return;
-//         }
-//         if (winPre == null) {
-//             UIRoot.instance.CloseCantClick()
-//             return
-//         }
-// 
-//         let wnd = cc.instantiate(winPre)
-//         wnd.parent = params.parent || UIRoot.instance.node
-//         wnd.x = params.pos.x
-//         wnd.y = params.pos.y + params.height / 2 + params.height / 10
-//         let panel = wnd.getComponent(LimitCardDesWindow)
-//         panel.pheight = params.height
-//         panel.show(content)
-//         UIRoot.instance.CloseCantClick()
-//     }.bind(this))
-// }
+export default LimitCardDesWindow;

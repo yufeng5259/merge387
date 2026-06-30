@@ -1,13 +1,12 @@
-import { sp } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { InviteRewardsPanel } from '../Item/InviteRewardsPanel';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-9
  */
 
-const UIRoot = window.UIRoot
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -33,53 +32,28 @@ class InviteWindow extends UIWindow {
     @property(sp.Skeleton)
     ani=null;
 
-    @property(cc.Button)
+    @property(Button)
     bounceButton=null;
 
-    @property(cc.Label)
+    @property(Label)
     invitationLabel=null;
 
-    @property(cc.Label)
+    @property(Label)
     progressBarLabel=null;
 
-    @property(cc.ProgressBar)
+    @property(ProgressBar)
     progressBar=null;
 
 
     inviteCount=0;
+    label_add_type0 = []
+    label_add_type1 = []
+    randomPackParent = null
     onShow() {
 
         this.invitationLabel.string="Your code:"+Game.SUser.data.invitationCode
         this.progressBar.progress=Game.SUser.data.invitationNum/10;
         this.progressBarLabel.string=Game.SUser.data.invitationNum+"/10";
-        // this.update_addnumber()
-
-        // this.label_note.node.active = AppKit.SdkManager.IsNative()
-
-        // if (wxTools.usewx) {
-        //     this.btn0.active = true
-        //     this.btn1.active = false
-        //     this.bg.height = C.bg_1
-        //     this.btn0.y = C.btn0_1
-        // } else if (fbInTools.usefbIn) {
-        //     this.btn0.active = false
-        //     this.btn1.active = true
-        //     this.bg.height = C.bg_1
-        // } else if (AppKit.SdkManager.IsNative() && false) {
-        //     this.btn0.active = true
-        //     this.btn1.active = true
-        //     this.bg.height = C.bg_2
-        //     this.btn0.y = C.btn0_2
-        // } else {
-        //     this.btn0.active = true
-        //     this.btn1.active = false
-        //     this.bg.height = C.bg_1
-        //     this.btn0.y = C.btn0_1
-        // }
-        // this.bg.getComponentsInChildren(cc.Widget).forEach((x) => {
-        //     x.enabled = true
-        // })
-        // CCTools.WidgetsUpdateAlignment(this.bg)
     }
 
     /** 获取新增的体力值 */
@@ -118,8 +92,8 @@ class InviteWindow extends UIWindow {
             }
         }
         let parent = this.randomPackParent||windowBg||this.bounceButton.node.parent
-        let dpos = parent.convertToNodeSpaceAR(this.bounceButton.node.convertToWorldSpaceAR(cc.Vec2.ZERO))
-        InviteRewardsPanel.Show(meta, {parent:parent, pos:dpos, height:this.bounceButton.node.height})
+        let dpos = parent.getComponent(UITransform)!.convertToNodeSpaceAR(this.bounceButton.node.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO, new Vec3()), new Vec3())
+        InviteRewardsPanel.Show(meta, {parent:parent, pos:dpos, height:this.bounceButton.node.getComponent(UITransform)!.height})
     }
     // /** 点击事件：默认分享按钮 */
     event_share_default() {
@@ -136,7 +110,7 @@ class InviteWindow extends UIWindow {
             if (Game.SUser.IsGuest()) {
                 UIRoot.instance.openChildWindow("AccountBindWindow")
             } else {
-                ShareWrap.FacebookInvite(templeteStr,()=>{});
+                AppKit.ShareWrap.FacebookInvite(templeteStr,()=>{});
             }
             return
         } 

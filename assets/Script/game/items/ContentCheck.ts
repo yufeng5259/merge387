@@ -1,8 +1,9 @@
 import '../../LegacyGlobals';
+import ChildWindowChain from '../../GameKit/ui/ChildWindowChain';
 // 检测花费是否足�?
 const Content = Game.Content
 
-var ContentCheck = {}
+const ContentCheck: any = {}
 
 ContentCheck.GetCurrentApRecoverLast = function() {
     try {
@@ -144,7 +145,7 @@ ContentCheck.CheckAp = function(price) {
             let id = apNotEnoughShop[i]
             let meta = Meta.MetaManager.GetMeta(Meta.MetaType.Shop, id)
             if (meta.Count() >= dis || i == apNotEnoughShop.length-1) {
-                let chain = new GameKit.ChildWindowChain()
+                let chain = new ChildWindowChain()
 
                 chain.add("NewPlayerPackWindow", () => {return Game.SUserStatus.GetNewPlayerLeftTime() != 0})
 

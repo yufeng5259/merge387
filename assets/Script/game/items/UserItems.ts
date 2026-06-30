@@ -1,9 +1,44 @@
 
 //用户道具
 
-class UserItems {
+export class UserItems {
+    public data: any;
+    public static ToolType = {
+        GoldEgg: 1,
+        Muchui: 2,
+        ShiChui: 3,
+        Balloon: 4,
+        CardsBoom: 5,
+        BetBlast: 6,
+    };
 
-    constructor (userId) {
+    public static GetToolData(id: any, name: any, icon: any, panel: any, end_time: any, image: any = null, param: any = {}) {
+        return {
+            description: name,
+            enable_trigger: "mapId>0",
+            end_time: end_time,
+            finish_time: end_time,
+            help_key: undefined,
+            icon: icon,
+            icon_goto: "panel",
+            id: id,
+            image: image,
+            name: name,
+            panel: panel,
+            param: param,
+            prepare_time: 1546313047,
+            shop_id: undefined,
+            shop_ids: undefined,
+            shortName: name,
+            start_time: 1546313047,
+            subType: 6,
+            type: 3,
+            dymic: true,
+            user_time: null,
+        };
+    }
+
+    constructor (userId?: any) {
         this.data = {
             userId: userId,
 
@@ -99,44 +134,3 @@ class UserItems {
         return actives
     }
 }
-
-//1:限时老虎机双倍金币道具（金蛋）  2:限时建造村庄折扣（木槌） 3:限时村庄完成建造奖励(石锤),4:气球活动,5:卡牌加倍 6:老虎机加倍
-UserItems.ToolType={
-    GoldEgg:1,
-    Muchui:2,
-    ShiChui:3,
-    Balloon:4,
-    CardsBoom:5,
-    BetBlast:6,
-
-}
-
-UserItems.GetToolData=function(id,name,icon,panel,end_time,image=null,param={}){
-    // 1546313047 2019-1-1 11:24:07
-    const data={
-        description: name,
-        enable_trigger: "mapId>0",
-        end_time: end_time,
-        finish_time: end_time,
-        help_key: undefined,
-        icon: icon,
-        icon_goto: "panel",
-        id: id,
-        image: image,
-        name: name,
-        panel: panel,
-        param: param,
-        prepare_time: 1546313047,
-        shop_id: undefined,
-        shop_ids: undefined,
-        shortName: name,
-        start_time: 1546313047,
-        subType: 6,
-        type: 3,
-        dymic:true,
-        user_time: null,
-    }
-    return data
-}
-
-window.Game.UserItems = UserItems

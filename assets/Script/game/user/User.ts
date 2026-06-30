@@ -1,8 +1,12 @@
 import '../../LegacyGlobals';
 //ç”¨æˆ·ç±?
 const i18n = typeof GameKit !== 'undefined' && GameKit.i18n ? GameKit.i18n : { t: (key: string) => key }
-class User {
-    static Genders: any
+export class User {
+    public static Genders = {
+        Unknown: "0",
+        Male: "1",
+        Female: "2",
+    };
     data: any
     rid: number
     logining: boolean
@@ -492,12 +496,5 @@ class User {
 
 }
 
-User.Genders = {
-    Unknown: "0",   //æœªçŸ¥
-    Male: "1",      //ç”?
-    Female: "2",    //å¥?
-}
-
-global.Game.User = User
 
 export default User

@@ -1,8 +1,9 @@
+import { _decorator, Button, Color, instantiate, Label, Node, Prefab, ProgressBar, RichText, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 /** @author fengyong 2019-5-14 */
 
 import CardModel from "./CardModel";
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     BASE_PATH: "Card",
     SET_BG_FILENAME: "set-bg",
@@ -36,8 +37,13 @@ export default class CardSingleSetWindow extends UIWindow {
     /** @type {CardModel[]} */
     card_list = []
 
-    @property(cc.Button)
+    @property(Button)
     bt_goShop = null
+
+    CardThemeMeta: any = null
+    Card_issue: any = null
+    setIds: number[] = []
+    setIdIndex = 0
 
     onShow(showParams) {
         // 获取在min-village限制下的最大set-id
@@ -58,7 +64,7 @@ export default class CardSingleSetWindow extends UIWindow {
         for (let id in all_set_meta) {
             let count = 0
             for (let i = 1; i <= 9; i++) {
-                count += Game.SUserCard.HaveCard(id * 100 + i) ? 1 : 0
+                count += Game.SUserCard.HaveCard(Number(id) * 100 + i) ? 1 : 0
             }
             if (Game.SUserVillage.MapId() >= all_set_meta[id].MinVillage() || count > 0){
                 if(meta){
@@ -138,7 +144,7 @@ export default class CardSingleSetWindow extends UIWindow {
         }
         // 刷新页面
         this.sp_set_name.spriteFrame = null
-        cce.loadRes(`${C.BASE_PATH}/common/${C.SET_BG_FILENAME}_${set_meta.Color()}`, cc.SpriteFrame, (err, res) => {
+        cce.loadRes(`${C.BASE_PATH}/common/${C.SET_BG_FILENAME}_${set_meta.Color()}`, SpriteFrame, (err, res) => {
             this.releaseMeta(res)
             if (!err && this.sp_set_name) {
                 this.sp_set_name.spriteFrame = res
@@ -164,7 +170,7 @@ export default class CardSingleSetWindow extends UIWindow {
         }
     }
 
-    releaseMeta(res) {
+    releaseMeta(res = null) {
         cce.releaseSpriteFrame(this.sp_set_name, res)
     }
 
@@ -194,16 +200,16 @@ export default class CardSingleSetWindow extends UIWindow {
         sr.Send()
     }
 
-    /** @type {cc.Sprite} */
-    @property(cc.Sprite)
+    /** @type {Sprite} */
+    @property(Sprite)
     sp_set_name = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     label_set_name = null
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     item_card = null
 
     /** 创建9个card-item */
@@ -213,7 +219,7 @@ export default class CardSingleSetWindow extends UIWindow {
             this.card_list.forEach((v, i) => {
                 v.show(this.card_meta_list[i].Id())
                 // 如果被锁住则不可点击
-                v.node.parent.getComponent(cc.Button).interactable = Game.SUserVillage.MapId() >= this.card_meta_list[i].MinVillage() || Game.SUserCard.HaveCard(this.card_meta_list[i].Id())
+                v.node.parent.getComponent(Button).interactable = Game.SUserVillage.MapId() >= this.card_meta_list[i].MinVillage() || Game.SUserCard.HaveCard(this.card_meta_list[i].Id())
                 v.goldTrade.active = this.card_meta_list[i].Golden() && !this.card_meta_list[i].CantSend()
             })
             return
@@ -222,7 +228,7 @@ export default class CardSingleSetWindow extends UIWindow {
         this.item_card.active = false
         for (let i = 0; i < 9; i += 1) {
             // 创建新node
-            let node = cc.instantiate(this.item_card)
+            let node = instantiate(this.item_card)
             node.parent = this.item_card.parent
             node.active = true
             // 刷新显示
@@ -230,7 +236,7 @@ export default class CardSingleSetWindow extends UIWindow {
             card_model.show(this.card_meta_list[i].Id())
             card_model.goldTrade = GameKit.ControllerTable.GetNode(node, "goldTrade")
             card_model.goldTrade.active = this.card_meta_list[i].Golden() && !this.card_meta_list[i].CantSend()
-            node.getComponent(cc.Button).interactable = Game.SUserVillage.MapId() >= this.card_meta_list[i].MinVillage() || Game.SUserCard.HaveCard(this.card_meta_list[i].Id())
+            node.getComponent(Button).interactable = Game.SUserVillage.MapId() >= this.card_meta_list[i].MinVillage() || Game.SUserCard.HaveCard(this.card_meta_list[i].Id())
             this.card_list.push(card_model)
             // 绑定点击事件
             node.on("click", () => {
@@ -239,12 +245,12 @@ export default class CardSingleSetWindow extends UIWindow {
         }
     }
 
-    /** @type {cc.Label} */
-    @property(cc.RichText)
+    /** @type {Label} */
+    @property(RichText)
     label_reward = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     label_set_done = null
 
     /** 点击事件:上一个set */

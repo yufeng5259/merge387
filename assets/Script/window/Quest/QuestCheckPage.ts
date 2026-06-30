@@ -1,7 +1,8 @@
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
+import { _decorator, Button, Color, Component, Label, LabelOutline, Node, Sprite, SpriteFrame, tween, Tween, UITransform, Vec3 } from 'cc';
 /** @author fengyong-2019-2-20 */
 
-const { ccclass, property } = cc._decorator
+const { ccclass, property } = _decorator
 const C = {
     FAKE_DATA: false,   // 是否使用伪数据用来测试界面，不与服务器交互
     MONTH_DAYS: 28,
@@ -11,38 +12,33 @@ const C = {
 }
 
 @ccclass
-export default class QuestCheckPage extends cc.Component {
+export default class QuestCheckPage extends Component {
 
-    /** @type {cc.Node[]} month进度的宝箱，4个 */
-    @property(cc.Node)
+    @property([Node])
     month_box = []
 
-    /** @type {cc.Node} month进度条，考虑层级关系不使用自带pb，使用一个矩形替代，参数在C中 */
-    @property(cc.Node)
+    @property(Node)
     month_pb = null
 
-    /** @type {cc.Node[]} daily界面week签到的单个框 */
-    @property(cc.Node)
+    @property([Node])
     week_box = []
 
-    /** @type {cc.Button} */
-    @property(cc.Button)
+    @property(Button)
     btn = null
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    @property(Label)
     btn_string = null
 
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     spf_week_box_normal = null
 
-    @property(cc.SpriteFrame)
+    @property(SpriteFrame)
     spf_week_box_golden = null
 
     data = null
 
     show() {
-        if (C.FAKE_DATA) { cc.warn("注意：check-page 正在使用fake-data模式") }
+        if (C.FAKE_DATA) { console.warn("注意：check-page 正在使用fake-data模式") }
         this.get_data().then(v => {
             if (!this.node) return
             this.node.active = true
@@ -79,12 +75,15 @@ export default class QuestCheckPage extends cc.Component {
         this.data = data
         // 界面修改
         // month
-        if (data.signMonthDay <= 7) this.month_pb.width = C.BAR_MIN + (C.BAR_MAX7 - C.BAR_MIN) * data.signMonthDay / 7
-        else this.month_pb.width = Math.min(C.BAR_MAX, C.BAR_MAX7 + (C.BAR_MAX - C.BAR_MAX7) * (data.signMonthDay-7) / (C.MONTH_DAYS-7))
+        let monthPbTransform = this.month_pb.getComponent(UITransform)
+        let monthPbWidth = data.signMonthDay <= 7
+            ? C.BAR_MIN + (C.BAR_MAX7 - C.BAR_MIN) * data.signMonthDay / 7
+            : Math.min(C.BAR_MAX, C.BAR_MAX7 + (C.BAR_MAX - C.BAR_MAX7) * (data.signMonthDay-7) / (C.MONTH_DAYS-7))
+        monthPbTransform.setContentSize(monthPbWidth, monthPbTransform.height)
         for (let i = 0; i < this.month_box.length; i += 1) {
-            let btn = this.month_box[i].getComponent(cc.Button)
+            let btn = this.month_box[i].getComponent(Button)
             let light = GameKit.ControllerTable.GetNode(this.month_box[i], "light")
-            let sp_box = GameKit.ControllerTable.GetNode(this.month_box[i], "sp-box").getComponent(cc.Sprite)
+            let sp_box = GameKit.ControllerTable.GetNode(this.month_box[i], "sp-box").getComponent(Sprite)
             let quest_bubble = GameKit.ControllerTable.GetNode(this.month_box[i], "quest-bubble")
             let bubble_award = GameKit.ControllerTable.GetNode(this.month_box[i], "bubble-award")
             let reward1 = GameKit.ControllerTable.GetComponent(this.month_box[i], "reward1", "ContentModel")
@@ -103,13 +102,18 @@ export default class QuestCheckPage extends cc.Component {
                 quest_bubble.active = true
                 // 可以领取，+抖动动画
                 if (canreceive) {
-                    sp_box.node.runAction(cc.sequence(
-                        cc.moveBy(0.3, 0, 5).easing(cc.easeOut(2)),
-                        cc.moveBy(0.5, 0, -5).easing(cc.easeBounceOut()),
-                        cc.moveBy(0.3, 0, 5).easing(cc.easeOut(2)),
-                        cc.moveBy(0.5, 0, -5).easing(cc.easeBounceOut()),
-                        cc.delayTime(1),
-                    ).repeatForever())
+                    Tween.stopAllByTarget(sp_box.node)
+                    const startPos = sp_box.node.position.clone()
+                    tween(sp_box.node)
+                        .repeatForever(
+                            tween()
+                                .to(0.3, { position: new Vec3(startPos.x, startPos.y + 5, startPos.z) }, { easing: 'quadOut' })
+                                .to(0.5, { position: startPos }, { easing: 'bounceOut' })
+                                .to(0.3, { position: new Vec3(startPos.x, startPos.y + 5, startPos.z) }, { easing: 'quadOut' })
+                                .to(0.5, { position: startPos }, { easing: 'bounceOut' })
+                                .delay(1)
+                        )
+                        .start()
                     light.active = true
                 }
             }
@@ -121,10 +125,10 @@ export default class QuestCheckPage extends cc.Component {
         // week
         for (let i = 0; i < this.week_box.length; i += 1) {
             let meta = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Week, i + 1)
-            let sp = this.week_box[i].getComponent(cc.Sprite)
-            let day_string = GameKit.ControllerTable.GetNode(this.week_box[i],"day-string").getComponent(cc.Label)
-            let award_icon = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-icon').getComponent(cc.Sprite)
-            let award_value = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-value-string').getComponent(cc.Label)
+            let sp = this.week_box[i].getComponent(Sprite)
+            let day_string = GameKit.ControllerTable.GetNode(this.week_box[i],"day-string").getComponent(Label)
+            let award_icon = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-icon').getComponent(Sprite)
+            let award_value = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-value-string').getComponent(Label)
             let received = GameKit.ControllerTable.GetNode(this.week_box[i], 'received')
             // 更改样式:normal状态,golden状态
             meta.Reward()[0].Icon(award_icon)
@@ -133,16 +137,16 @@ export default class QuestCheckPage extends cc.Component {
                 // golden
                 received.active = false
                 sp.spriteFrame = this.spf_week_box_golden
-                day_string.node.color = cc.Color.WHITE
-                award_value.node.color = cc.Color.WHITE
-                award_value.getComponent(cc.LabelOutline).enabled = true
+                day_string.color = Color.WHITE
+                award_value.color = Color.WHITE
+                award_value.getComponent(LabelOutline).enabled = true
             } else {
                 // normal
                 received.active = i < data.signWeekRewards
                 sp.spriteFrame = this.spf_week_box_normal
-                day_string.node.color = cc.color().fromHEX("#ab5e33")
-                award_value.node.color = cc.color().fromHEX("#692c0a")
-                award_value.getComponent(cc.LabelOutline).enabled = false
+                day_string.color = new Color().fromHEX("#ab5e33")
+                award_value.color = new Color().fromHEX("#692c0a")
+                award_value.getComponent(LabelOutline).enabled = false
             }
         }
         // sign-btn
@@ -153,7 +157,7 @@ export default class QuestCheckPage extends cc.Component {
     /** 点击事件：获取月签到奖励宝箱 */
     event_get_month_box_reward(e, days) {
         if (this.data.signMonthDay >= days) {
-            new Promise((res, rej) => {
+            new Promise<void>((res, rej) => {
                 // old-data，本地缓存变动
                 this.data.signMonthRewards.push(days)
                 if (C.FAKE_DATA) {
@@ -168,12 +172,12 @@ export default class QuestCheckPage extends cc.Component {
                 }
             }).then(() => {
                 // 界面变动
-                e.target.getComponent(cc.Button).interactable = false
-                GameKit.ControllerTable.GetNode(e.target, "sp-box").getComponent(cc.Sprite).setState(1)
+                e.target.getComponent(Button).interactable = false
+                GameKit.ControllerTable.GetNode(e.target, "sp-box").getComponent(Sprite).setState(1)
                 GameKit.ControllerTable.GetNode(e.target, "quest-bubble").active = false
                 GameKit.ControllerTable.GetNode(e.target, "bubble-award").active = false
                 // 取消抖动动画
-                GameKit.ControllerTable.GetNode(e.target, "sp-box").stopAllActions()
+                Tween.stopAllByTarget(GameKit.ControllerTable.GetNode(e.target, "sp-box"))
                 GameKit.ControllerTable.GetNode(e.target, "light").active = false
                 // 获取奖励
                 // UIRoot.instance.openChildWindow("GetRewardWindow", {
@@ -186,16 +190,16 @@ export default class QuestCheckPage extends cc.Component {
                 reward.active = false
             } else {
                 reward.active = true
-                reward.scale = 0.001
-                reward.stopAllActions()
-                reward.runAction(cc.scaleTo(0.15, 1, 1))
+                reward.setScale(0.001, 0.001, reward.scale.z)
+                Tween.stopAllByTarget(reward)
+                tween(reward).to(0.15, { scale: new Vec3(1, 1, reward.scale.z) }).start()
             }
         }
     }
 
     /** 点击事件：当前签到 */
     event_sign() {
-        new Promise((res, rej) => {
+        new Promise<void>((res, rej) => {
             // old-data，本地缓存变动
             this.data.signWeekRewards += 1
             if (C.FAKE_DATA) {
@@ -215,30 +219,25 @@ export default class QuestCheckPage extends cc.Component {
             // received动画
             let n = GameKit.ControllerTable.GetNode(this.week_box[this.data.signWeekDay - 1], 'received')
             n.active = true
-            n.scale = 0
+            n.setScale(0, 0, n.scale.z)
             // n.opacity = 0
-            n.runAction(cc.sequence(
-                cc.spawn(
-                    cc.scaleTo(0.5, 1).easing(cc.easeExponentialOut()),
-                    // cc.fadeIn(0.5),
-                    cc.callFunc(() => {
-                        let i = this.data.signWeekDay - 1
-                        let sp = this.week_box[i].getComponent(cc.Sprite)
-                        let day_string = GameKit.ControllerTable.GetNode(this.week_box[i], "day-string").getComponent(cc.Label)
-                        let award_value = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-value-string').getComponent(cc.Label)
-                        sp.spriteFrame = this.spf_week_box_normal
-                        day_string.node.color = cc.color().fromHEX("#ab5e33")
-                        award_value.node.color = cc.color().fromHEX("#692c0a")
-                        award_value.getComponent(cc.LabelOutline).enabled = false
-                    }),
-                ),
-                // cc.delayTime(0.5),
-                cc.callFunc(() => {
+            let i = this.data.signWeekDay - 1
+            let sp = this.week_box[i].getComponent(Sprite)
+            let day_string = GameKit.ControllerTable.GetNode(this.week_box[i], "day-string").getComponent(Label)
+            let award_value = GameKit.ControllerTable.GetNode(this.week_box[i], 'award-value-string').getComponent(Label)
+            sp.spriteFrame = this.spf_week_box_normal
+            day_string.color = new Color().fromHEX("#ab5e33")
+            award_value.color = new Color().fromHEX("#692c0a")
+            award_value.getComponent(LabelOutline).enabled = false
+            Tween.stopAllByTarget(n)
+            tween(n)
+                .to(0.5, { scale: new Vec3(1, 1, n.scale.z) }, { easing: 'expoOut' })
+                .call(() => {
                     // UIRoot.instance.openChildWindow("GetRewardWindow", {
                     //     contents: Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Week, this.data.signWeekDay).Reward()
                     // })
-                }),
-            ))
+                })
+                .start()
         }, e =>{})
     }
 }

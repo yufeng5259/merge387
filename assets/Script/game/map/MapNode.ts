@@ -10,7 +10,6 @@ import {
     tween,
     UIOpacity,
     UITransform,
-    Vec2,
     Vec3,
     view,
 } from 'cc';
@@ -58,6 +57,7 @@ const BUILD_LAYOUT: Record<number, { x: number; y: number; index: number }> = {
     39: { x: -1446, y: 212, index: 39 },
 };
 
+type BuildLayoutSourceItem = { buildID?: number | string; x?: number | string; y?: number | string; index?: number | string };
 type BuildLayoutItem = { buildID: number; x: number; y: number; index: number };
 
 function getOrAddOpacity(node: Node) {
@@ -70,11 +70,6 @@ function setOpacity(node: Node, opacity: number) {
 
 function getOpacity(node: Node) {
     return getOrAddOpacity(node).opacity;
-}
-
-function convertToWorldSpaceAR(node: Node, localPosition: Vec3) {
-    const transform = node.getComponent(UITransform);
-    return transform ? transform.convertToWorldSpaceAR(localPosition) : node.worldPosition.clone().add(localPosition);
 }
 
 @ccclass('MapNode')
@@ -298,7 +293,7 @@ export class MapNode extends Component {
 
     getBuildLayout() {
         const json = this.mapData && this.mapData.json;
-        const source = json && typeof json === 'object' && Object.keys(json).length > 0 ? json as any : BUILD_LAYOUT;
+        const source = (json && typeof json === 'object' && Object.keys(json).length > 0 ? json : BUILD_LAYOUT) as Record<string, BuildLayoutSourceItem>;
         const layout: Record<number, BuildLayoutItem> = {};
         for (const key in source) {
             if (!Object.prototype.hasOwnProperty.call(source, key)) continue;
@@ -308,7 +303,7 @@ export class MapNode extends Component {
                 buildID,
                 x: Number(item.x) || 0,
                 y: Number(item.y) || 0,
-                index: Number(item.index || item.zIndex || buildID),
+                index: Number(item.index || buildID),
             };
         }
         return layout;
@@ -574,28 +569,15 @@ export class MapNode extends Component {
         let maxX = -Infinity;
         let maxY = -Infinity;
         for (let i = 0; i < corners.length; i++) {
-            const worldPos = convertToWorldSpaceAR(node, corners[i]);
-            const screenPos = this.getWorldToScreenPoint(camera, worldPos);
+            const worldPos = node.getComponent(UITransform)!.convertToWorldSpaceAR(corners[i]);
+            const screenPos = new Vec3();
+            camera.worldToScreen(worldPos, screenPos);
             minX = Math.min(minX, screenPos.x);
             minY = Math.min(minY, screenPos.y);
             maxX = Math.max(maxX, screenPos.x);
             maxY = Math.max(maxY, screenPos.y);
         }
         return maxX >= 0 && minX <= winSize.width && maxY >= 0 && minY <= winSize.height;
-    }
-
-    getWorldToScreenPoint(camera: any, worldPos: any) {
-        const screenPos = new Vec2();
-        if (camera.worldToScreen) {
-            const out = new Vec3();
-            const result = camera.worldToScreen(worldPos, out) || out;
-            return new Vec2(result.x, result.y);
-        }
-        if (camera.getWorldToScreenPoint) {
-            const result = camera.getWorldToScreenPoint(worldPos, screenPos);
-            return result || screenPos;
-        }
-        return new Vec2(worldPos.x, worldPos.y);
     }
 
     playElementLevelUpAnimation(buildID: any, callback: any, eventData: any) {

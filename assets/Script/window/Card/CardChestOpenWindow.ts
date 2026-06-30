@@ -1,6 +1,7 @@
+import { UserItems } from '../../game/items/UserItems';
 ﻿// fengyong-2019-6-5
 // @ts-check
-//let isActive=Game.SUserItems.ToolIsActive(Game.UserItems.ToolType.CardsBoom) 鍒ゅ畾鏄惁寮€鍚?0%鍗＄墝濂栧姳
+//let isActive=Game.SUserItems.ToolIsActive(UserItems.ToolType.CardsBoom) 鍒ゅ畾鏄惁寮€鍚?0%鍗＄墝濂栧姳
 
 import { _decorator, instantiate, Label, Layout, Node, Sprite, SpriteFrame, tween, UITransform, v3, Vec3, view } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
@@ -57,16 +58,6 @@ export default class CardChestOpenWindow extends UIWindow {
     private setNodeWidth(node: Node, width: number) {
         const transform = node.getComponent(UITransform)
         if (transform) transform.setContentSize(width, transform.height)
-    }
-
-    private convertToNodeSpaceAR(node: Node, worldPosition: Vec3) {
-        const transform = node.getComponent(UITransform)
-        return transform ? transform.convertToNodeSpaceAR(worldPosition) : worldPosition
-    }
-
-    private convertToWorldSpaceAR(node: Node, localPosition: Vec3) {
-        const transform = node.getComponent(UITransform)
-        return transform ? transform.convertToWorldSpaceAR(localPosition) : localPosition
     }
 
     static enqueueShow = function(closeCallback=null,chestId=null) {
@@ -374,7 +365,7 @@ export default class CardChestOpenWindow extends UIWindow {
         this.item_card.active = false
         this.card_count.setScale(0, 0, 0)
         
-        let isActive = Game.SUserItems.ToolIsActive(Game.UserItems.ToolType.CardsBoom)
+        let isActive = Game.SUserItems.ToolIsActive(UserItems.ToolType.CardsBoom)
         this.cardsBoom.active = isActive
         // console.log("isActive"+isActive);        
 
@@ -601,7 +592,7 @@ export default class CardChestOpenWindow extends UIWindow {
                             GameKit.SoundManager.playSound(C.SOUND_CARD)
                         }
                     })
-                    .set({ position: v3(this.convertToNodeSpaceAR(n, this.convertToWorldSpaceAR(this.card_count, Vec3.ZERO))), scale: new Vec3(0.25, 0.25, 0.25), })
+                    .set({ position: v3(n.getComponent(UITransform)!.convertToNodeSpaceAR(this.card_count.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO))), scale: new Vec3(0.25, 0.25, 0.25), })
                     .to(0.5, { position: Vec3.ZERO, scale: Vec3.ONE }, { easing: "expoOut" })
                     .to(0.1, { scaleX: 0 })
                     .call(() => {

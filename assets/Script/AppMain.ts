@@ -2,6 +2,9 @@ import { _decorator, assetManager, Component, game, SpriteFrame } from 'cc';
 import { DEV } from 'cc/env';
 import SoundManager from './GameKit/SoundManager';
 
+import { User } from './game/user/User';
+import UserStory from './game/story/UserStory';
+import { UserMap } from './game/map/UserMap';
 const { ccclass, property } = _decorator;
 
 type ErrorLog = {
@@ -28,10 +31,10 @@ export class AppMain extends Component {
         AppMain.instance = this;
         global.AppMain = AppMain;
 
-        Game.OUser = new Game.User();
-        Game.SUser = new Game.User();
-        Game.SUserStory = new Game.UserStory(Game.SUser.UserId());
-        Game.SUserMap = new Game.UserMap(Game.SUser.UserId());
+        Game.OUser = new User();
+        Game.SUser = new User();
+        Game.SUserStory = new UserStory(Game.SUser.UserId());
+        Game.SUserMap = new UserMap(Game.SUser.UserId());
 
         Logs.m_Level = Logs.Level.Log;
         Logs.enableDebug = false;

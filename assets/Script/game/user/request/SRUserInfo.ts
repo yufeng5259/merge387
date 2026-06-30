@@ -1,5 +1,6 @@
 import '../../../LegacyGlobals';
-var SRUserInfo = {}
+import { User } from '../User';
+var SRUserInfo: any = {}
 
 //获取用户信息
 SRUserInfo.getInfo = function() {
@@ -32,11 +33,11 @@ SRUserInfo.updateFriends = function(friends) {
                 data.name = fdata.name
                 data.avatar = fdata.avatar
             }
-            Game.SUser.data.friendsList[uid] = new Game.User().updateData(data)
+            Game.SUser.data.friendsList[uid] = new User().updateData(data)
         }
         for (const key in res.CfriendsList) {
             const element = res.CfriendsList[key];
-            Game.SUser.data.CfriendsList[key] = new Game.User().updateData(element)
+            Game.SUser.data.CfriendsList[key] = new User().updateData(element)
 
         }
         

@@ -2,14 +2,13 @@ import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import { UITabContainer } from '../../GameKit/ui/UITabContainer';
 import { UserInfoModel } from '../UserInfoModel';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-13
  */
 
- const UIRoot = window.UIRoot
- 
- const { ccclass, property, executeInEditMode } = cc._decorator
+ const { ccclass, property, executeInEditMode } = _decorator
  
  /** 界面配置参数 */
  const C = {
@@ -20,10 +19,10 @@ import { UserInfoModel } from '../UserInfoModel';
      /** 载入sprite旋转一圈的时间 */
      LOADING_ROTATION_TIME: 0.5,
      /** 字体颜色：可点击 */
-     FONT_COLOR_ABLE_SEND: cc.color(255, 255, 255),
-     FONT_COLOR_ABLE_COLLECT: cc.color(255, 255, 255),
+     FONT_COLOR_ABLE_SEND: new Color(255, 255, 255),
+     FONT_COLOR_ABLE_COLLECT: new Color(255, 255, 255),
      /** 字体颜色：不可点击 */
-     FONT_COLOR_UNABLE: cc.color(60, 60, 60),
+     FONT_COLOR_UNABLE: new Color(60, 60, 60),
      // 一些测试默认值（以后需要从服务器/配置表中读取）
      DEFAULR_SPIN_SEND: 1,
      DEFAULR_SPIN_COLLECT: 1,
@@ -48,20 +47,23 @@ import { UserInfoModel } from '../UserInfoModel';
  class GiftsWindow extends UIWindow {
  
      static windowPath = "Menu/GiftsWindow"
+
+     choose_tab: any = null
+     data_array: any = null
  
-     /** @type {cc.SpriteFrame} 选中的时候的图标 */
-     //@property(cc.SpriteFrame)
+     /** @type {SpriteFrame} 选中的时候的图标 */
+     //@property(SpriteFrame)
      //choose_sf = null
  
-     /** @type {cc.SpriteFrame} 未选中的时候的图标 */
-     //@property(cc.SpriteFrame)
+     /** @type {SpriteFrame} 未选中的时候的图标 */
+     //@property(SpriteFrame)
      //unchoose_sf = null
  
-     /** @type {cc.SpriteFrame} 默认头像 */
-     @property(cc.SpriteFrame)
+     /** @type {SpriteFrame} 默认头像 */
+     @property(SpriteFrame)
      default_avatar_sf = null
  
-     /** @type {[cc.Node]} tab node数组 */
+     /** @type {[Node]} tab node数组 */
      @property(UITabContainer)
      tab_node_array = null
  
@@ -69,50 +71,50 @@ import { UserInfoModel } from '../UserInfoModel';
      @property(ScrollViewTool)
      svt = null
  
-     /** @type {cc.Node} 加载数据的动画圈 */
-     @property(cc.Node)
+     /** @type {Node} 加载数据的动画圈 */
+     @property(Node)
      loading_circle = null
  
-     /** @type {cc.Label} */
-     @property(cc.Label)
+     /** @type {Label} */
+     @property(Label)
      collect_progress_note = null
  
-     /** @type {cc.Button} */
-     @property(cc.Button)
+     /** @type {Button} */
+     @property(Button)
      btn_collect_all = null
  
-     /** @type {cc.Label} */
-     @property(cc.Label)
+     /** @type {Label} */
+     @property(Label)
      label_collect_all = null
  
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      anim_spin = null
  
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      anim_coin = null
      
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      limit_send = null
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      cant_collect = null
-     /** @type {cc.Label} */
-     @property(cc.Label)
+     /** @type {Label} */
+     @property(Label)
      cant_collect_des = null
  
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      gift_tip = null
  
-     /** @type {cc.Node} */
-     @property(cc.Node)
+     /** @type {Node} */
+     @property(Node)
      aMoreNode=null
  
-     /** @type {cc.RichText} */
-     @property(cc.RichText)
+     /** @type {RichText} */
+     @property(RichText)
      aMoreText=null
      onShow() {
          
@@ -138,7 +140,6 @@ import { UserInfoModel } from '../UserInfoModel';
  
      /**
       * 点击事件：修改language
-      * @param {cc.EventTouch} e EventTouch
       * @param {number} index CustomEventData 需要在编辑器中指定
       */
      event_change_to_tab(index = 0) {
@@ -194,17 +195,16 @@ import { UserInfoModel } from '../UserInfoModel';
      }
  
      /** 点击事件：send
-      * @param {cc.EventTouch} e
       */
      event_send(e) {
          // send交互
          // e.target为被点击的按钮
-         //this.able_btn(e.target.getComponent(cc.Button), false)
+         //this.able_btn(e.target.getComponent(Button), false)
      }
  
      /** 点击事件：collect */
      event_collect(e) {
-         //this.able_btn(e.target.getComponent(cc.Button), false)
+         //this.able_btn(e.target.getComponent(Button), false)
          //this.update_collect_progress()
      }
  
@@ -266,11 +266,11 @@ import { UserInfoModel } from '../UserInfoModel';
                  let anim = null
                  let giftGetMeta = Meta.MetaManager.GetMeta(Meta.MetaType.GiftGet, Game.SUserVillage.MapId())
                  if (this.choose_tab === 0) {
-                     anim = cc.instantiate(this.anim_spin)
-                     GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + (giftGetMeta.Spin() * (collectList.length)).toString()
+                     anim = instantiate(this.anim_spin)
+                     GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + (giftGetMeta.Spin() * (collectList.length)).toString()
                  } else {
-                     anim = cc.instantiate(this.anim_coin)
-                     GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + BigNumber.format(giftGetMeta.Coin() * (collectList.length))
+                     anim = instantiate(this.anim_coin)
+                     GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + BigNumber.format(giftGetMeta.Coin() * (collectList.length))
                  }
                  anim.parent = this.anim_spin.parent
                  anim.setWorldPosition(this.btn_collect_all.node.getWorldPosition())
@@ -308,16 +308,12 @@ import { UserInfoModel } from '../UserInfoModel';
              let n = this.tab_node_array[i]
              if (i === choose_tab) {
                  // 选中
-                 n.getComponent(cc.Sprite).spriteFrame = this.choose_sf
+                 n.getComponent(Sprite).spriteFrame = this.choose_sf
              } else {
                  // 未选中
-                 n.getComponent(cc.Sprite).spriteFrame = this.unchoose_sf
+                 n.getComponent(Sprite).spriteFrame = this.unchoose_sf
              }
          }*/
-         //// 特别注意
-         // 逻辑上应当使用node.zIndex来修改渲染顺序达到功能
-         // zIndex目前有以下缺陷，无法实现功能。一是zIndex为负数时，则不可被点击事件监控到；二是zIndex只能修改同级的渲染次序
-         // 因此目前的实现方法是在面板bg下面重新创建一组unchoose的tab，当检测为未选中是，则置当前tab的sf为null，显示出底部的unchoose_sf
          // if(choose_tab==2){
          //     this.aMoreNode.node.active =false;
          // }else{
@@ -414,18 +410,18 @@ import { UserInfoModel } from '../UserInfoModel';
          // 注意各个子节点的名称正确
          // 注意要把对应的节点拖入ControllerTables下面
          let userinfo = GameKit.ControllerTable.GetNode(itemHandle, "userinfo").getComponent(UserInfoModel)
-         let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(cc.Sprite)
+         let avatar = GameKit.ControllerTable.GetNode(itemHandle, "avatar").getComponent(Sprite)
          let add = GameKit.ControllerTable.GetNode(itemHandle, "add")
-         let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(cc.Label)
-         let explain = GameKit.ControllerTable.GetNode(itemHandle, "explain").getComponent(cc.Label)
+         let name = GameKit.ControllerTable.GetNode(itemHandle, "name").getComponent(Label)
+         let explain = GameKit.ControllerTable.GetNode(itemHandle, "explain").getComponent(Label)
          let btn_invite = GameKit.ControllerTable.GetNode(itemHandle, "btn_invite")
          let btn_send = GameKit.ControllerTable.GetNode(itemHandle, "btn_send")
          let btn_collect = GameKit.ControllerTable.GetNode(itemHandle, "btn_collect")
-         let invite_add = GameKit.ControllerTable.GetNode(itemHandle, "icon_label").getComponent(cc.Label)
+         let invite_add = GameKit.ControllerTable.GetNode(itemHandle, "icon_label").getComponent(Label)
          let card = GameKit.ControllerTable.GetNode(itemHandle, "card")
          let collectLock = GameKit.ControllerTable.GetNode(itemHandle, "collectLock")
          let aMore = GameKit.ControllerTable.GetNode(itemHandle, "aMore")
-         let aMoreT = GameKit.ControllerTable.GetNode(itemHandle, "Atitle").getComponent(cc.RichText)
+         let aMoreT = GameKit.ControllerTable.GetNode(itemHandle, "Atitle").getComponent(RichText)
          aMore.active = false;
          // 根据数据写入
          if (id == 0) {
@@ -467,7 +463,7 @@ import { UserInfoModel } from '../UserInfoModel';
                  switch (self.get_type(data["sended"], data["collected"], data["canCollect"])) {
                      case C.TYPE.SEND:
                          [btn_send.active, btn_collect.active] = [true, false]
-                         btn_send.getComponent(cc.Button).interactable = true
+                         btn_send.getComponent(Button).interactable = true
                          GameKit.ControllerTable.GetNode(btn_send, "title").color = C.FONT_COLOR_ABLE_SEND
                          if (self.choose_tab === 0) {
                              explain.string = String.format(GameKit.i18n.t("gifts_explain_spin_send"), C.DEFAULR_SPIN_SEND)
@@ -477,7 +473,7 @@ import { UserInfoModel } from '../UserInfoModel';
                          break;
                      case C.TYPE.SENDED:
                          [btn_send.active, btn_collect.active] = [true, false]
-                         btn_send.getComponent(cc.Button).interactable = false
+                         btn_send.getComponent(Button).interactable = false
                          GameKit.ControllerTable.GetNode(btn_send, "title").color = C.FONT_COLOR_UNABLE
                          if (self.choose_tab === 0) {
                              explain.string = String.format(GameKit.i18n.t("gifts_explain_spin_send"), C.DEFAULR_SPIN_SEND)
@@ -487,7 +483,7 @@ import { UserInfoModel } from '../UserInfoModel';
                          break;
                      case C.TYPE.COLLECT:
                          [btn_send.active, btn_collect.active] = [false, true]
-                         btn_collect.getComponent(cc.Button).interactable = true
+                         btn_collect.getComponent(Button).interactable = true
                          GameKit.ControllerTable.GetNode(btn_collect, "title").color = C.FONT_COLOR_ABLE_COLLECT
                          if (self.choose_tab === 0) {
                              explain.string = String.format(GameKit.i18n.t("gifts_explain_spin_collect"), giftGetMeta.Spin())
@@ -497,7 +493,7 @@ import { UserInfoModel } from '../UserInfoModel';
                          break;
                      case C.TYPE.COLLECTED:
                          [btn_send.active, btn_collect.active] = [false, true]
-                         btn_collect.getComponent(cc.Button).interactable = false
+                         btn_collect.getComponent(Button).interactable = false
                          GameKit.ControllerTable.GetNode(btn_collect, "title").color = C.FONT_COLOR_UNABLE
                          if (self.choose_tab === 0) {
                              explain.string = String.format(GameKit.i18n.t("gifts_explain_spin_collect"), giftGetMeta.Spin())
@@ -530,11 +526,11 @@ import { UserInfoModel } from '../UserInfoModel';
                          /*let anim = null
                          let giftGetMeta = Meta.MetaManager.GetMeta(Meta.MetaType.GiftGet, Game.SUserVillage.MapId())
                          if (this.choose_tab === 0) {
-                             anim = cc.instantiate(this.anim_spin)
-                             GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + giftGetMeta.Spin().toString()
+                             anim = instantiate(this.anim_spin)
+                             GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + giftGetMeta.Spin().toString()
                          } else {
-                             anim = cc.instantiate(this.anim_coin)
-                             GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + BigNumber.format(giftGetMeta.Coin())
+                             anim = instantiate(this.anim_coin)
+                             GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + BigNumber.format(giftGetMeta.Coin())
                          }
                          anim.parent = this.anim_spin.parent
                          anim.setWorldPosition(btn_send.getWorldPosition())
@@ -569,11 +565,11 @@ import { UserInfoModel } from '../UserInfoModel';
                      let anim = null
                      let giftGetMeta = Meta.MetaManager.GetMeta(Meta.MetaType.GiftGet, Game.SUserVillage.MapId())
                      if (this.choose_tab === 0) {
-                         anim = cc.instantiate(this.anim_spin)
-                         GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + giftGetMeta.Spin().toString()
+                         anim = instantiate(this.anim_spin)
+                         GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + giftGetMeta.Spin().toString()
                      } else {
-                         anim = cc.instantiate(this.anim_coin)
-                         GameKit.ControllerTable.GetNode(anim, "label").getComponent(cc.Label).string = "+" + BigNumber.format(giftGetMeta.Coin())
+                         anim = instantiate(this.anim_coin)
+                         GameKit.ControllerTable.GetNode(anim, "label").getComponent(Label).string = "+" + BigNumber.format(giftGetMeta.Coin())
                      }
                      anim.parent = this.anim_spin.parent
                      anim.setWorldPosition(btn_send.getWorldPosition())
@@ -611,14 +607,14 @@ import { UserInfoModel } from '../UserInfoModel';
          let name = GameKit.ControllerTable.GetNode(itemHandle, "name")
          let userinfo = GameKit.ControllerTable.GetNode(itemHandle, "userinfo").getComponent(UserInfoModel)
          let add = GameKit.ControllerTable.GetNode(itemHandle, "add")
-         let explain = GameKit.ControllerTable.GetNode(itemHandle, "explain").getComponent(cc.Label)
+         let explain = GameKit.ControllerTable.GetNode(itemHandle, "explain").getComponent(Label)
          let btn_invite = GameKit.ControllerTable.GetNode(itemHandle, "btn_invite")
          let btn_send = GameKit.ControllerTable.GetNode(itemHandle, "btn_send")
          let btn_collect = GameKit.ControllerTable.GetNode(itemHandle, "btn_collect")
          let card = GameKit.ControllerTable.GetNode(itemHandle, "card")
          let collectLock = GameKit.ControllerTable.GetNode(itemHandle, "collectLock")
          let aMore = GameKit.ControllerTable.GetNode(itemHandle, "aMore")
-         let aMoreT = GameKit.ControllerTable.GetNode(itemHandle, "Atitle").getComponent(cc.RichText)
+         let aMoreT = GameKit.ControllerTable.GetNode(itemHandle, "Atitle").getComponent(RichText)
          aMore.active = false;
          // 根据数据写入
          if (id ==-2) {
@@ -632,7 +628,7 @@ import { UserInfoModel } from '../UserInfoModel';
              btn_collect.targetOff(this)
              btn_collect.active = false
              btn_send.active = true
-             btn_send.getComponent(cc.Button).interactable = true
+             btn_send.getComponent(Button).interactable = true
              btn_send.targetOff(this)
              btn_send.on("click", () => {
                  //达到每日上限
@@ -666,7 +662,7 @@ import { UserInfoModel } from '../UserInfoModel';
              collectLock.active = cardMeta.MinVillage() > Game.SUserVillage.MapId()
  
              btn_collect.active = true
-             btn_collect.getComponent(cc.Button).interactable = true
+             btn_collect.getComponent(Button).interactable = true
              btn_send.active = false
              
              btn_send.targetOff(this)
@@ -749,7 +745,7 @@ import { UserInfoModel } from '../UserInfoModel';
  
      /** 获取free spins的数据 */
      get_spins_data() {
-         return new Promise((resolve, reject) => {
+         return new Promise<any>((resolve, reject) => {
              if (this.data_array) {
                  resolve(this.data_array.spinList)
                  return
@@ -787,7 +783,7 @@ import { UserInfoModel } from '../UserInfoModel';
  
      /** 获取free coins的数据 */
      get_coins_data() {
-         return new Promise((resolve, reject) => {
+         return new Promise<any>((resolve, reject) => {
              if (this.data_array) {
                  resolve(this.data_array.coinList)
                  return
@@ -822,7 +818,7 @@ import { UserInfoModel } from '../UserInfoModel';
      }
  
      get_cards_data() {
-         return new Promise((resolve, reject) => {
+         return new Promise<any[]>((resolve, reject) => {
              if (this.data_array) {
                  resolve(this.data_array.cardList)
                  return
@@ -846,16 +842,16 @@ import { UserInfoModel } from '../UserInfoModel';
  
      /** 打开loading动画 */
      open_loading_anima() {
-         /*if (this.loading_anima === undefined) {
-             this.loading_anima = cc.rotateBy(C.LOADING_ROTATION_TIME, 360).repeatForever()
-             this.loading_circle.active = true
-             this.loading_circle.runAction(this.loading_anima)
-         }*/
+         Tween.stopAllByTarget(this.loading_circle)
          this.loading_circle.active = true
+         tween(this.loading_circle)
+             .repeatForever(tween<Node>().by(C.LOADING_ROTATION_TIME, { angle: 360 }))
+             .start()
      }
  
      /** 关闭loading动画 */
      close_loading_anima() {
+         Tween.stopAllByTarget(this.loading_circle)
          this.loading_circle.active = false
      }
  
@@ -863,14 +859,14 @@ import { UserInfoModel } from '../UserInfoModel';
       * 修改按钮禁用状态
       * - 请保证btn下的文字节点名称为title
       * - 请保证给btn添加ControllerTable组件并拖入title节点（必须，否则会直接报错）
-      * @param {cc.Button} btn
+      * @param {Button} btn
       * @param {boolean} is_able
       */
      able_btn(btn, is_able) {
          btn.enableAutoGrayEffect = true // 注册变灰事件
          btn.interactable = is_able
          if (is_able) {
-             GameKit.ControllerTable.GetNode(btn.node, "title").color = C.FONT_COLOR_ABLE
+             GameKit.ControllerTable.GetNode(btn.node, "title").color = C.FONT_COLOR_ABLE_SEND
          } else {
              GameKit.ControllerTable.GetNode(btn.node, "title").color = C.FONT_COLOR_UNABLE
          }

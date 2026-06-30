@@ -6,12 +6,6 @@ import LocalMergeTutorialTestData from './LocalMergeTutorialTestData';
 const MergeTutorialManager: any = {
 }
 
-function convertToWorldSpaceAR(node: any, localPosition?: Vec3) {
-    if (!node) return null
-    var transform = node.getComponent ? node.getComponent(UITransform) : null
-    return transform ? transform.convertToWorldSpaceAR(localPosition || Vec3.ZERO) : node.worldPosition
-}
-
 function getNodeContentSize(node: any) {
     var transform = node && node.getComponent ? node.getComponent(UITransform) : null
     if (transform) return transform.contentSize
@@ -424,37 +418,16 @@ MergeTutorialManager.GetNodeWorldGeometry = function(node, padding) {
 
 MergeTutorialManager.GetNodeGuideWorldPos = function(node) {
     if (!node) return null
-    var worldPos = convertToWorldSpaceAR(node, Vec3.ZERO)
+    var worldPos = node.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO)
     if (this.IsMapBuildNode(node)) {
         var camera = this.GetVillageCamera()
-        var screenPos = this.GetCameraWorldToScreenPoint(camera, worldPos)
-        if (screenPos) {
+        if (camera) {
+            var screenPos = new Vec3()
+            camera.worldToScreen(new Vec3(worldPos.x, worldPos.y, worldPos.z || 0), screenPos)
             return this.ConvertScreenPointToUiWorldPos(screenPos)
         }
     }
     return worldPos
-}
-
-MergeTutorialManager.GetCameraWorldToScreenPoint = function(camera, worldPos) {
-    if (!camera || !worldPos) return null
-    var out = new Vec3()
-    var point = new Vec3(worldPos.x, worldPos.y, worldPos.z || 0)
-    var result = null
-    try {
-        if (camera.worldToScreen) {
-            result = camera.worldToScreen(point, out) || out
-        } else if (camera.getWorldToScreenPoint) {
-            result = camera.getWorldToScreenPoint(point, out) || out
-        }
-    } catch (e) {
-        try {
-            result = camera.getWorldToScreenPoint ? camera.getWorldToScreenPoint(point) : null
-        } catch (ignore) {
-            result = null
-        }
-    }
-    result = result || out
-    return result ? new Vec2(result.x, result.y) : null
 }
 
 MergeTutorialManager.ConvertScreenPointToUiWorldPos = function(screenPos) {
@@ -463,25 +436,13 @@ MergeTutorialManager.ConvertScreenPointToUiWorldPos = function(screenPos) {
     var point = new Vec3(screenPos.x, screenPos.y, screenPos.z || 0)
     if (uiCamera) {
         var out = new Vec3()
-        var result = null
-        try {
-            if (uiCamera.screenToWorld) {
-                result = uiCamera.screenToWorld(point, out) || out
-            } else if (uiCamera.getScreenToWorldPoint) {
-                result = uiCamera.getScreenToWorldPoint(point, out) || out
-            } else if (uiCamera.getCameraToWorldPoint) {
-                uiCamera.getCameraToWorldPoint(point, out)
-                result = out
-            }
-        } catch (e) {
-            result = null
-        }
-        if (result) return new Vec2(result.x, result.y)
+        uiCamera.screenToWorld(point, out)
+        return new Vec2(out.x, out.y)
     }
     var visibleSize = view.getVisibleSize()
     if (UIRoot && UIRoot.instance && UIRoot.instance.node) {
         var localPos = new Vec3(screenPos.x - visibleSize.width / 2, screenPos.y - visibleSize.height / 2, 0)
-        return convertToWorldSpaceAR(UIRoot.instance.node, localPos)
+        return UIRoot.instance.node.getComponent(UITransform)!.convertToWorldSpaceAR(localPos)
     }
     return new Vec2(screenPos.x - visibleSize.width / 2, screenPos.y - visibleSize.height / 2)
 }

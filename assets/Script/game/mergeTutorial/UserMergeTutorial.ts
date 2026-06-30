@@ -1,6 +1,7 @@
 import '../../LegacyGlobals';
-class UserMergeTutorial {
-    constructor(userId) {
+export class UserMergeTutorial {
+    public data: any;
+    constructor(userId?: any) {
         this.data = {
             userId: userId,
             tutorialMap: {},
@@ -44,5 +45,3 @@ class UserMergeTutorial {
         this.data.tutorialMap[groupId] = id
     }
 }
-
-global.Game.UserMergeTutorial = UserMergeTutorial

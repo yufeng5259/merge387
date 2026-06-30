@@ -1,11 +1,11 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 /**
  * @author fengyong
  * @version 2018-8-9
  */
 
-const UIRoot = window.UIRoot
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 
 /** 界面配置参数 */
 const C = {
@@ -28,26 +28,26 @@ class InviteWindow extends UIWindow {
     
     static windowPath = "Menu/InviteWindow"
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     label_add_type0 = []
 
-    /** @type {cc.Label} */
-    @property(cc.RichText)
+    /** @type {Label} */
+    @property(RichText)
     label_add_type1 = []
 
-    /** @type {cc.Label} */
-    @property(cc.Label)
+    /** @type {Label} */
+    @property(Label)
     label_note = null
 
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     bg = null
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     btn0 = null
-    /** @type {cc.Node} */
-    @property(cc.Node)
+    /** @type {Node} */
+    @property(Node)
     btn1 = null
 
     onShow() {
@@ -58,24 +58,24 @@ class InviteWindow extends UIWindow {
         if (wxTools.usewx) {
             this.btn0.active = true
             this.btn1.active = false
-            this.bg.height = C.bg_1
-            this.btn0.y = C.btn0_1
+            this.bg.getComponent(UITransform).height = C.bg_1
+            this.btn0.setPosition(this.btn0.position.x, C.btn0_1, this.btn0.position.z)
         } else if (fbInTools.usefbIn) {
             this.btn0.active = false
             this.btn1.active = true
-            this.bg.height = C.bg_1
+            this.bg.getComponent(UITransform).height = C.bg_1
         } else if (AppKit.SdkManager.IsNative() && false) {
             this.btn0.active = true
             this.btn1.active = true
-            this.bg.height = C.bg_2
-            this.btn0.y = C.btn0_2
+            this.bg.getComponent(UITransform).height = C.bg_2
+            this.btn0.setPosition(this.btn0.position.x, C.btn0_2, this.btn0.position.z)
         } else {
             this.btn0.active = true
             this.btn1.active = false
-            this.bg.height = C.bg_1
-            this.btn0.y = C.btn0_1
+            this.bg.getComponent(UITransform).height = C.bg_1
+            this.btn0.setPosition(this.btn0.position.x, C.btn0_1, this.btn0.position.z)
         }
-        this.bg.getComponentsInChildren(cc.Widget).forEach((x) => {
+        this.bg.getComponentsInChildren(Widget).forEach((x) => {
             x.enabled = true
         })
         CCTools.WidgetsUpdateAlignment(this.bg)

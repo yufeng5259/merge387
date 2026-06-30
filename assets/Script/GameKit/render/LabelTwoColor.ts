@@ -20,7 +20,7 @@ function ensureUITransform(node: Node): UITransform {
 @ccclass('LabelTwoColor')
 @executeInEditMode
 export class LabelTwoColor extends Component {
-    @property({ type: Color, visible: false })
+    @property({ visible: false })
     private _colorTo = createDefaultColor();
 
     @property({ visible: false })
@@ -30,7 +30,7 @@ export class LabelTwoColor extends Component {
     public cLabel: Node | null = null;
     public inited = false;
 
-    @property({ type: Color })
+    @property
     get colorTo(): Color {
         return this._colorTo;
     }

@@ -1,6 +1,7 @@
+import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import ContentModel from '../../game/items/ContentModel';
-const { ccclass, property, executeInEditMode } = cc._decorator
+const { ccclass, property, executeInEditMode } = _decorator
 /**
  * Store界面
  * - 包含各类按钮的点击事件处理
@@ -11,13 +12,20 @@ const { ccclass, property, executeInEditMode } = cc._decorator
 class ThreeToOneWindow extends UIWindow {
 
     static windowPath = "Merge/ThreeToOneWindow"
-    @property(cc.Label)
+    funcOptions: any[] = []
+    instanceId: any = null
+    cellKey: any = null
+    targetCellKey: any = null
+    pickPieceData: any = null
+    lastSelectContent: any = null
+
+    @property(Label)
     titleLabel = null
-    @property(cc.Label)
+    @property(Label)
     desLabel = null
     @property(ContentModel)
     mergeContentModelArr = []
-    @property(cc.Node)
+    @property(Node)
     selectButton = null
 
 
@@ -40,8 +48,8 @@ class ThreeToOneWindow extends UIWindow {
             // console.log("content",content);
 
             mergeContentModel.show(content,{iconParams:{dontTouch:true}})
-            mergeContentModel.node.off(cc.Node.EventType.TOUCH_END);
-            mergeContentModel.node.on(cc.Node.EventType.TOUCH_END, function(e) {
+            mergeContentModel.node.off(Node.EventType.TOUCH_END);
+            mergeContentModel.node.on(Node.EventType.TOUCH_END, function(e) {
                 self.selectButton.active = true
                 self.unSelectContent()
                 self.selectContent(this)

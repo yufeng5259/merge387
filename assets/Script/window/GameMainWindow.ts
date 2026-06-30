@@ -1,9 +1,13 @@
-import { _decorator, Component, instantiate, isValid, Label, Node, RichText, Sprite, SpriteFrame, tween, UITransform, UIOpacity, Vec2, Vec3, sp } from 'cc';
+import { _decorator, Component, instantiate, isValid, Label, Node, RichText, Sprite, SpriteFrame, tween, Tween, UITransform, UIOpacity, Vec2, Vec3, sp } from 'cc';
 import { UIWindow } from '../GameKit/ui/UIWindow';
 import { UserInfoModel } from './UserInfoModel';
 import { EnterCloseAnim } from '../GameKit/ui/EnterCloseAnim';
 import { BadgeItem } from '../GameKit/Editor/BadgeItem';
 
+import { User } from '../game/user/User';
+import { UserItems } from '../game/items/UserItems';
+import Guild from '../game/guild/Guild';
+import ChildWindowChain from '../GameKit/ui/ChildWindowChain';
 const { ccclass, property } = _decorator;
 
 
@@ -277,7 +281,7 @@ export default class GameMainWindow extends UIWindow {
         //     let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
         //     req.SetCallBack(function(res) {
         //         // console.log("进入我的军团",res);
-        //         Game.Guild.askList={};
+        //         Guild.askList={};
         //         res.user.forEach((ele)=>{
         //             Game.SGuild.guildInfo[ele.userId] = ele;
         //         })
@@ -361,7 +365,7 @@ export default class GameMainWindow extends UIWindow {
         })
             
         let cd = GameKit.TimeUtil.getCurrentDay()
-        let chain = new GameKit.ChildWindowChain()
+        let chain = new ChildWindowChain()
         this.firstChain = chain
 
         // 额外奖励
@@ -761,7 +765,7 @@ export default class GameMainWindow extends UIWindow {
         if (fst) {
             let star = fst
             this.labelStar.string = GameKit.StringUtil.formatNumber(star)
-            tween(this.labelStar.node).stop()
+            Tween.stopAllByTarget(this.labelStar.node)
             this.setNodeScale(this.labelStar.node, 1)
             this.oldStar = star
             return
@@ -800,7 +804,7 @@ export default class GameMainWindow extends UIWindow {
 
         this.menuBadge.SetNum(num)
         if (AppKit.SdkManager.IsNative() && AppKit.SdkManager.IsIos()) {
-            this.menuBadge.node.scale = 0.6
+            this.setNodeScale(this.menuBadge.node, 0.6)
         }
         this.updateMenuMainButton2aBadge(num)
     }
@@ -921,8 +925,8 @@ export default class GameMainWindow extends UIWindow {
         sprite.spriteFrame = spriteFrame
         iconNode.active = true
         if (spriteFrame.getRect) {
-            let rect = spriteFrame.getRect()
-            iconNode.setContentSize(rect.width, rect.height)
+            let { width, height } = spriteFrame.getRect()
+            this.setNodeContentSize(iconNode, width, height)
         }
         this.setNodeTopSibling(iconNode)
         this.startMainButton2aBadge(state)
@@ -1003,8 +1007,9 @@ export default class GameMainWindow extends UIWindow {
         skeleton.loop = true
         skeleton.premultipliedAlpha = false
 
-        let baseSize = Math.max(state.badgeNode.width || 30, state.badgeNode.height || 30)
-        spineNode.scale = baseSize / 30
+        let { width: badgeWidth, height: badgeHeight } = this.getNodeContentSize(state.badgeNode)
+        let baseSize = Math.max(badgeWidth || 30, badgeHeight || 30)
+        this.setNodeScale(spineNode, baseSize / 30)
 
         state.skeleton = skeleton
         state.bone = this.findMainButton2aBone(skeleton)
@@ -1105,9 +1110,13 @@ export default class GameMainWindow extends UIWindow {
             state.skeleton.updateWorldTransform()
         }
 
-        let bonePos = new Vec2(state.bone.worldX || 0, state.bone.worldY || 0)
-        let worldPos = state.spineNode.convertToWorldSpaceAR(bonePos)
-        let localPos = state.attachNode.parent.convertToNodeSpaceAR(worldPos)
+        let spineTransform = state.spineNode.getComponent(UITransform)
+        let parentTransform = state.attachNode.parent.getComponent(UITransform)
+        if (!spineTransform || !parentTransform) return
+
+        let bonePos = new Vec3(state.bone.worldX || 0, state.bone.worldY || 0, 0)
+        let worldPos = spineTransform.convertToWorldSpaceAR(bonePos, new Vec3())
+        let localPos = parentTransform.convertToNodeSpaceAR(worldPos, new Vec3())
         state.attachNode.setPosition(localPos)
     }
     findMainButton2aBone(skeleton) {
@@ -1123,7 +1132,7 @@ export default class GameMainWindow extends UIWindow {
     }
     setNodeTopSibling(node) {
         if (!node || !isValid(node) || !node.parent || !node.setSiblingIndex) return
-        node.setSiblingIndex(node.parent.childrenCount - 1)
+        node.setSiblingIndex(node.parent.children.length - 1)
     }
     setNodeBottomSibling(node) {
         if (!node || !isValid(node) || !node.setSiblingIndex) return
@@ -1177,7 +1186,7 @@ export default class GameMainWindow extends UIWindow {
     playAddCoinAnim() {
         let animBuild = instantiate(this.animAddCoin)
         animBuild.parent = this.animAddCoin.parent
-        animBuild.x=0,animBuild.y=0,animBuild.active=true
+        animBuild.setPosition(0, 0, animBuild.position.z); animBuild.active = true
         GameKit.SoundManager.playSound("steal_money")
     }
     watchSpinAd() {
@@ -1270,7 +1279,7 @@ export default class GameMainWindow extends UIWindow {
         if (this.hasShowMessage) return
         this.hasShowMessage = true
 
-        this.spriteMessageUser.show(new Game.User().updateData(data["user"]))
+        this.spriteMessageUser.show(new User().updateData(data["user"]))
         // 不同界面的信息域内容不同，因此要根据界面调整User信息域与界面信息的处理
         // avatar.spriteFrame = this.default_avatar_sf
         let isVip = data["user"]["isVip"] && !G.GameConfig.closeVIP && AppKit.SdkManager.IsNative()
@@ -1322,11 +1331,11 @@ export default class GameMainWindow extends UIWindow {
             
             this.btnMenu.active = false
             this.subMenu.active = false
-            tween(this.btnAdCoin.parent).stop()
+            Tween.stopAllByTarget(this.btnAdCoin.parent)
             this.btnAdCoin.parent.active = false
-            tween(this.btnAdSpin.parent).stop()
+            Tween.stopAllByTarget(this.btnAdSpin.parent)
             this.btnAdSpin.parent.active = false
-            tween(this.btnLuckyDraw.parent).stop()
+            Tween.stopAllByTarget(this.btnLuckyDraw.parent)
             this.btnLuckyDraw.parent.active = false
             this.userinfo.btnCoinAdd.node.active = false
             this.userinfo.btnApAdd.node.active = false
@@ -1383,7 +1392,7 @@ export default class GameMainWindow extends UIWindow {
                         wnd.addOnCloseFunc(() => {
                             //UIRoot.instance.openChildWindow("NewPlayerPackWindow")
 
-                            let chain = new GameKit.ChildWindowChain()
+                            let chain = new ChildWindowChain()
                             chain.add("SignWindow", () => {
                                 let signData = GameKit.DataCache.GetData("signData")
                                 return signData.signWeekDay > signData.signWeekRewards
@@ -1427,7 +1436,7 @@ export default class GameMainWindow extends UIWindow {
         } else {
             badge.node.parent = this.activityRight
         }
-        badge.node.x = 0
+        badge.node.setPosition(0, badge.node.position.y, badge.node.position.z)
 
         if (badge.node.name == "KingPassportBadge") {
             this.updateQuestBadge()
@@ -1507,13 +1516,22 @@ export default class GameMainWindow extends UIWindow {
         UIRoot.instance.openChildWindow("ActivityCenterWindow",parmas)
     }
     updateActivityBadge() {
-        let act = Game.SUserActivity.GetGameActivityBadgeState()
-        if (act && !this.activityBadge.active) {
-            this.activityBadge.active = act
-            (this.btnActivityCenter.getComponentInChildren("RotateAnim") as any).start()
-        } else if (!act && this.activityBadge.active) {
-            this.activityBadge.active = act
-            (this.btnActivityCenter.getComponentInChildren("RotateAnim") as any).stop()
+        if (!this.activityBadge || !isValid(this.activityBadge)) return
+
+        let showBadge = !!Game.SUserActivity.GetGameActivityBadgeState()
+        if (showBadge === this.activityBadge.active) return
+
+        this.activityBadge.active = showBadge
+
+        let rotateAnim = this.btnActivityCenter && (this.btnActivityCenter.getComponentInChildren("RotateAnim") as any)
+        if (!rotateAnim) return
+
+        if (showBadge) {
+            if (typeof rotateAnim.start === "function") {
+                rotateAnim.start()
+            }
+        } else if (typeof rotateAnim.stop === "function") {
+            rotateAnim.stop()
         }
     }
     updateActivityButton() {
@@ -1570,7 +1588,7 @@ export default class GameMainWindow extends UIWindow {
     }
     updateToolsTime(){
         //木槌道具ICON
-        let isMuchui=Game.SUserItems.ToolIsActive(Game.UserItems.ToolType.Muchui)
+        let isMuchui=Game.SUserItems.ToolIsActive(UserItems.ToolType.Muchui)
         if(this.shichuiActive!=isMuchui){
             this.shichuiActive=isMuchui
         }
@@ -1602,10 +1620,12 @@ export default class GameMainWindow extends UIWindow {
         AppKit.ADWrap.ShowVideo(() => {
             let req = SR.SRUserData.finishVideoShield()
             req.SetCallBack(() => {
-                let x = -47.1 + 35 * Game.SUser.ADShield() - this.adshieldAnim.node.parent.x
-                let y = -1.3 - this.adshieldAnim.node.parent.y
+                let parentPos = this.adshieldAnim.node.parent.position
+                let sourcePos = this.adshieldAnim.node.position
+                let x = -47.1 + 35 * Game.SUser.ADShield() - parentPos.x
+                let y = -1.3 - parentPos.y
                 let adshieldAnimNode = instantiate(this.adshieldAnim.node)
-                adshieldAnimNode.parent=this.adshieldAnim.node.parent;adshieldAnimNode.x=this.adshieldAnim.node.x;adshieldAnimNode.y=this.adshieldAnim.node.y;
+                adshieldAnimNode.parent = this.adshieldAnim.node.parent; adshieldAnimNode.setPosition(sourcePos.x, sourcePos.y, sourcePos.z);
                 let adshieldAnim = adshieldAnimNode.getComponent("ShieldAnim")
                 let adsd = Game.SUser.ADShield()
                 adshieldAnim.play(x, y, 1, () => {
@@ -1635,7 +1655,7 @@ export default class GameMainWindow extends UIWindow {
             GameKit.DataCache.SetData("ADTipsBubblePopup", false)
         }
         this.setNodeScale(this.adshieldTip, 0.001)
-        tween(this.adshieldTip).stop()
+        Tween.stopAllByTarget(this.adshieldTip)
         if (this.adshieldTipSTI != null) {
             clearTimeout(this.adshieldTipSTI)
             this.adshieldTipSTI = null
@@ -1778,13 +1798,13 @@ export default class GameMainWindow extends UIWindow {
             this.shieldsBgs[i].active = i == shieldMax - G.GameConstance.shieldMax[0]
         }
         for (let i = 0; i < this.userinfo.shields.length; i++) {
-            this.userinfo.shields[i].x = shieldPosx[shieldMax][i]
+            this.userinfo.shields[i].setPosition(shieldPosx[shieldMax][i], this.userinfo.shields[i].position.y, this.userinfo.shields[i].position.z)
         }
         
     }
     // Helper
     OnNewMapStart() {
-        let chain = new GameKit.ChildWindowChain()
+        let chain = new ChildWindowChain()
         let chest = GameKit.DataCache.GetData("UserCardChestArr").pop()
         chain.add("CardChestOpenWindow", () => {
             if (chest) {
@@ -1839,7 +1859,7 @@ export default class GameMainWindow extends UIWindow {
         //         let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
         //         req.SetCallBack(function(res) {
         //             // console.log("进入我的军团",res);
-        //             Game.Guild.askList={};
+        //             Guild.askList={};
         //             res.user.forEach((ele)=>{
         //                 Game.SGuild.guildInfo[ele.userId] = ele;
         //             })
@@ -1872,7 +1892,7 @@ export default class GameMainWindow extends UIWindow {
         //         let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
         //         req.SetCallBack(function(res) {
         //             // console.log("进入我的军团",res);
-        //             Game.Guild.askList={};
+        //             Guild.askList={};
         //             res.user.forEach((ele)=>{
         //                 Game.SGuild.guildInfo[ele.userId] = ele;
         //             })
@@ -1929,7 +1949,7 @@ export default class GameMainWindow extends UIWindow {
             let req = SR.SRGuild.checkGuildInfo(Game.SUser.GuildId());
             req.SetCallBack(function(res) {
                 // console.log("进入我的军团",res);
-                Game.Guild.askList={};
+                Guild.askList={};
                 res.user.forEach((ele)=>{
                     Game.SGuild.guildInfo[ele.userId] = ele;
                 })
@@ -1965,7 +1985,20 @@ export default class GameMainWindow extends UIWindow {
 
     private setNodeHeight(node: Node | null, height: number) {
         const transform = this.getOrAddTransform(node);
-        if (transform) transform.setContentSize(transform.width, height);
+        if (transform) {
+            const { width } = transform.contentSize;
+            transform.setContentSize(width, height);
+        }
+    }
+
+    private setNodeContentSize(node: Node | null, width: number, height: number) {
+        const transform = this.getOrAddTransform(node);
+        if (transform) transform.setContentSize(width, height);
+    }
+
+    private getNodeContentSize(node: Node | null) {
+        const transform = node ? node.getComponent(UITransform) : null;
+        return transform ? transform.contentSize : { width: 0, height: 0 };
     }
 
     private setNodeOpacity(node: Node | null, opacity: number) {

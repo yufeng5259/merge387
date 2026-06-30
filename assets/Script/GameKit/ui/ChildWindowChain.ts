@@ -1,62 +1,76 @@
+import UIRoot from '../../UIRoot';
+import SoundManager from '../SoundManager';
 
-//子窗口链
-//用于连续打开多个子窗口
+type ChainCheckFunc = () => boolean;
+type ChainCallback = () => void;
+
+type ChainWindowParams = Record<string, any> & {
+    showCallback?: (window: any) => void;
+};
+
+type ChainItem = {
+    windowName: string;
+    checkFunc?: ChainCheckFunc | null;
+    params?: ChainWindowParams | null;
+};
 
 export default class ChildWindowChain {
-    constructor() {
-        this.data = []
-    }
+    private data: ChainItem[] = [];
+    private index = 0;
+    private finishFunc: ChainCallback | null = null;
+    private completeFunc: ChainCallback | null = null;
 
-    add(windowName, checkFunc, params) {
-        this.data.push({windowName:windowName, checkFunc:checkFunc, params:params})
+    add(windowName: string, checkFunc: ChainCheckFunc | null = null, params: ChainWindowParams | null = null) {
+        this.data.push({ windowName, checkFunc, params });
     }
 
     start() {
-        this.index = 0
-        this.execute(this.index)
+        this.index = 0;
+        this.execute(this.index);
     }
 
-    execute(index) {
+    private execute(index: number) {
         if (index >= this.data.length) {
-            this.finish()
-            return
+            this.finish();
+            return;
         }
 
-        let data = this.data[index]
+        const data = this.data[index];
         if (data.checkFunc == null || data.checkFunc()) {
-            let params = data.params || {}
-            let cb = params.showCallback
-            params.showCallback = (window) => {
+            const params = data.params || {};
+            const showCallback = params.showCallback;
+            params.showCallback = (window: any) => {
                 window.addOnCloseFunc(() => {
-                    this.index++
-                    this.execute(this.index)
-                })
-                window.childWindowChain = this
-                if (cb) cb()
-            }
-            GameKit.SoundManager.playSound("se_open")
-            UIRoot.instance.openChildWindow(data.windowName, params)
+                    this.index++;
+                    this.execute(this.index);
+                });
+                window.childWindowChain = this;
+                if (showCallback) showCallback(window);
+            };
+            SoundManager.playSound('se_open');
+            UIRoot.instance.openChildWindow(data.windowName, params);
         } else {
-            this.index++
-            this.execute(this.index)
+            this.index++;
+            this.execute(this.index);
         }
     }
 
     end() {
-        this.index = this.data.length
-        if (this.completeFunc) this.completeFunc()
+        this.index = this.data.length;
+        if (this.completeFunc) this.completeFunc();
     }
 
     finish() {
-        this.index = this.data.length
-        if (this.completeFunc) this.completeFunc()
-        if (this.finishFunc) this.finishFunc()
+        this.index = this.data.length;
+        if (this.completeFunc) this.completeFunc();
+        if (this.finishFunc) this.finishFunc();
     }
 
-    setFinishFunc(c) {
-        this.finishFunc = c
+    setFinishFunc(callback: ChainCallback) {
+        this.finishFunc = callback;
     }
-    setCompleteFunc(c) {
-        this.completeFunc = c
+
+    setCompleteFunc(callback: ChainCallback) {
+        this.completeFunc = callback;
     }
 }

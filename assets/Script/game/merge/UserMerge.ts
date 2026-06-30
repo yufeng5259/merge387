@@ -1,6 +1,7 @@
 import '../../LegacyGlobals';
 
-class UserMerge {
+export class UserMerge {
+    public data: any;
     constructor() {
         this.data = {
             bubblePieces:{},//
@@ -565,7 +566,8 @@ class UserMerge {
     /**获取仓库数据Id */
     GetWarehouseDataId() {
         let ids = []
-        let storeData = Object.values(this.GetStoreData())
+        let store = this.GetStoreData();
+        let storeData = Object.keys(store).map((key) => store[key]);
         storeData.forEach(element => {
             if (element) {
                 let item = element.split('_')
@@ -646,5 +648,3 @@ class UserMerge {
         return this.data.bubblePieces[bubbleId]
     }
 }
-
-global.Game.UserMerge = UserMerge

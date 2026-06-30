@@ -13,10 +13,10 @@ export class CCButtonAutoGreyLabel extends Component {
     @property([Label])
     public labels: Label[] = [];
 
-    @property(Color)
+    @property
     public colorEnable = new Color();
 
-    @property(Color)
+    @property
     public colorDisable = new Color();
 
     private button: ButtonWithAutoGray | null = null;

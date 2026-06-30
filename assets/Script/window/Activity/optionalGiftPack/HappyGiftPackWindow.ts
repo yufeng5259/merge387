@@ -1,6 +1,9 @@
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import ContentModel from '../../../game/items/ContentModel';
-const { ccclass, property } = cc._decorator
+import { _decorator, Button, instantiate, Label, Node, ParticleSystem, Sprite } from 'cc';
+
+import { UserItems } from '../../../game/items/UserItems';
+const { ccclass, property } = _decorator
 
 const tipPosY=[ -156,-429,-210]
 const arrowY=[295,295,-38]
@@ -10,12 +13,14 @@ export default class HappyGiftPackWindow extends UIWindow {
 
     static windowPath = "Activity/optionalGiftPack/HappyGiftPackWindow";
     
+    meta = null
+    leftTime = null
 
-    /** @type {cc.Label} */
-    @property({ tooltip: "", type: cc.Label })
+
+    @property({ tooltip: "", type: Label })
     labelTimer = null
 
-    @property(cc.Node)
+    @property([Node])
     items=[]
 
     onShow(params) {
@@ -47,18 +52,16 @@ export default class HappyGiftPackWindow extends UIWindow {
             
             //n.parent = this.buy_item.parent
             n.active = true
-            // n.y = ItemYs[i]
             let data = {
                 node: n,
                 reward_layout: GameKit.ControllerTable.GetNode(n, "reward-layout"),
                 reward_item: GameKit.ControllerTable.GetNode(n, "reward-item"),
-                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(cc.Label),
+                label_buy_cost: GameKit.ControllerTable.GetNode(n, "label-buy-cost").getComponent(Label),
                 buy_lock: GameKit.ControllerTable.GetNode(n, "buy-lock"),
-                // label_buy_count: GameKit.ControllerTable.GetNode(n, "label-buy-count").getComponent(cc.Label),
                 buy_use_coin: GameKit.ControllerTable.GetNode(n, "buy-use-coin"),
-                bkg2: GameKit.ControllerTable.GetNode(n, "bkg2").getComponent(cc.Sprite),
-                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(cc.Button),
-                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(cc.ParticleSystem),
+                bkg2: GameKit.ControllerTable.GetNode(n, "bkg2").getComponent(Sprite),
+                btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(Button),
+                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem),
             }
             
             data.buy_lock_particle.node.active=false
@@ -110,7 +113,7 @@ export default class HappyGiftPackWindow extends UIWindow {
             let packRewardMeta=Meta.ChoosePackRewardPackMeta.getChoosePackRewardsByLevel(packId,Game.SUserVillage.MapId())
             let rewards=Game.Content.FromStrings(packRewardMeta.Item())
             rewards.forEach(reward => {
-                let reward_node = cc.instantiate(data.reward_item)
+                let reward_node = instantiate(data.reward_item)
                 reward_node.parent = data.reward_layout
                 reward_node.active = true
                 reward_node.getComponent(ContentModel).show(reward)
@@ -208,7 +211,7 @@ export default class HappyGiftPackWindow extends UIWindow {
         this.closeAnim(()=>{
             rewards.forEach(reward => {
                 if(reward.Type()==Game.Content.Types.Gift){
-                    if(reward.ContentId()==Game.UserItems.ToolType.GoldEgg){
+                    if(reward.ContentId()==UserItems.ToolType.GoldEgg){
                         this.nextStep()
                     }
                 }

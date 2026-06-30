@@ -1,9 +1,10 @@
 import '../../LegacyGlobals';
 //用户金币
 
-class UserCard {
+export class UserCard {
+    public data: any;
 
-    constructor(userId) {
+    constructor(userId?: any) {
         this.data = {
             userId: userId,
             cardData: {},     //卡片数据 id:num
@@ -180,7 +181,5 @@ class UserCard {
     }
 
 }
-
-global.Game.UserCard = UserCard
 
 global.CLOSE_Card = false

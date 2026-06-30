@@ -8,44 +8,6 @@ import { MergeOrderGroup } from './MergeOrderGroup';
 
 const { ccclass, property } = _decorator;
 
-function getTransform (node: Node | null) {
-    return node ? node.getComponent(UITransform) : null;
-}
-
-function getSize (node: Node | null) {
-    const transform = getTransform(node);
-    return transform ? { width: transform.width, height: transform.height } : { width: 0, height: 0 };
-}
-
-function getWorldPos (node: Node | null) {
-    const transform = getTransform(node);
-    return transform ? transform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
-}
-
-function setNodeX (node: Node | null, x: number) {
-    if (!node) return;
-    const pos = node.position;
-    node.setPosition(x, pos.y, pos.z);
-}
-
-function setNodeY (node: Node | null, y: number) {
-    if (!node) return;
-    const pos = node.position;
-    node.setPosition(pos.x, y, pos.z);
-}
-
-function hitTestWorldBounds (a: Node | null, b: Node | null) {
-    const rectA = getTransform(a)?.getBoundingBoxToWorld();
-    const rectB = getTransform(b)?.getBoundingBoxToWorld();
-    if (!rectA || !rectB) return false;
-    return !(
-        rectA.xMax < rectB.xMin ||
-        rectA.xMin > rectB.xMax ||
-        rectA.yMax < rectB.yMin ||
-        rectA.yMin > rectB.yMax
-    );
-}
-
 @ccclass('MergeUI')
 export class MergeUI extends Component {
     @property(Node)
@@ -126,7 +88,7 @@ export class MergeUI extends Component {
 
         this.activityBoxData[box.meta.Id()] = box;
         box.node.parent = this.activitiesUI;
-        setNodeX(box.node, 0);
+        box.node.setPosition(0, box.node.position.y, box.node.position.z);
         this._updateActivitiesUIVisible();
     }
 
@@ -212,7 +174,8 @@ export class MergeUI extends Component {
             } else if (t === Game.Content.Types.Cash) {
                 targetNode = userInfo.cashLabel.node;
             }
-            resolvedToWorldPos = getWorldPos(targetNode);
+            const targetTransform = targetNode.getComponent(UITransform);
+            resolvedToWorldPos = targetTransform ? targetTransform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
         }
         GameMainWindow.instance.coinFlyToTargetAnim.PlayAnim(globalFromPos, resolvedToWorldPos, 1.0, 0.15, animCount, textures, cb, (worldPos: Vec3, flyNode: Node) => {
             if (!flyNode || !isValid(flyNode)) return;
@@ -238,7 +201,8 @@ export class MergeUI extends Component {
             const box = this.activityBoxData && this.activityBoxData[activityId];
             if (box) {
                 const icon = box.icon;
-                const toWorldPos = getWorldPos(icon.node);
+                const iconTransform = icon.node.getComponent(UITransform);
+                const toWorldPos = iconTransform ? iconTransform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
                 GameMainWindow.instance.coinFlyToTargetAnim.PlayCollectAnim(icon.spriteFrame, fromWorldPos, toWorldPos, animCount, () => {
                     if (box.updateShow) box.updateShow();
                     successCount++;
@@ -264,24 +228,26 @@ export class MergeUI extends Component {
     FitScreenUI () {
         GameKit.MergeUtil.getSize();
         const ssize = view.getVisibleSize();
-        const gridSize = getSize(this.gridBg);
-        const bottomSize = getSize(this.bottomUI);
+        const gridTransform = this.gridBg ? this.gridBg.getComponent(UITransform) : null;
+        const bottomTransform = this.bottomUI ? this.bottomUI.getComponent(UITransform) : null;
+        const gridSize = gridTransform ? { width: gridTransform.width, height: gridTransform.height } : { width: 0, height: 0 };
+        const bottomSize = bottomTransform ? { width: bottomTransform.width, height: bottomTransform.height } : { width: 0, height: 0 };
         if (GameKit.MergeUtil.isLongScreen()) {
             const nw = ssize.width - 10;
             const scale = gridSize.width > 0 ? nw / gridSize.width : 1;
             this.gridBg?.setScale(scale, scale);
             const bottomY = -(ssize.height / 2 - bottomSize.height / 2 - 50);
-            setNodeY(this.bottomUI, bottomY);
+            if (this.bottomUI) this.bottomUI.setPosition(this.bottomUI.position.x, bottomY, this.bottomUI.position.z);
             const gridY = bottomY + bottomSize.height / 2 + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2 + 10;
-            setNodeY(this.gridBg, gridY);
-            setNodeY(this.topUI, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2 + 20);
+            if (this.gridBg) this.gridBg.setPosition(this.gridBg.position.x, gridY, this.gridBg.position.z);
+            if (this.topUI) this.topUI.setPosition(this.topUI.position.x, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2 + 20, this.topUI.position.z);
         } else {
             this.gridBg?.setScale(0.9, 0.9);
             const bottomY = -(ssize.height / 2 - bottomSize.height / 2 - 30);
-            setNodeY(this.bottomUI, bottomY);
+            if (this.bottomUI) this.bottomUI.setPosition(this.bottomUI.position.x, bottomY, this.bottomUI.position.z);
             const gridY = bottomY + bottomSize.height / 2 + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2;
-            setNodeY(this.gridBg, gridY);
-            setNodeY(this.topUI, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2);
+            if (this.gridBg) this.gridBg.setPosition(this.gridBg.position.x, gridY, this.gridBg.position.z);
+            if (this.topUI) this.topUI.setPosition(this.topUI.position.x, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2, this.topUI.position.z);
         }
     }
 
@@ -292,7 +258,7 @@ export class MergeUI extends Component {
             const tilePos = waitCreateAnimItemsTilePos.shift();
             const layout = this.mergeLevelNode.getMergeBoardLayout();
             const localPos = GameKit.MergeUtil.tile2px(tilePos.x, tilePos.y, layout);
-            const transform = getTransform(GamePlay.instance.mergeRoot.mergeLevelNode.node);
+            const transform = GamePlay.instance.mergeRoot.mergeLevelNode.node.getComponent(UITransform);
             const worldPos = transform ? transform.convertToWorldSpaceAR(new Vec3(localPos.x, localPos.y, 0)) : new Vec3(localPos.x, localPos.y, 0);
             this.mergeEffectManager.PlayTiShiEnter(worldPos);
         }
@@ -329,7 +295,9 @@ export class MergeUI extends Component {
         return new Promise<void>((resolve) => {
             setTimeout(() => {
                 const anim = GamePlay.instance.mergeRoot.raidAnim;
-                const toGlobalPos = getWorldPos(this.notetemp?.icon ? this.notetemp.icon.node : null);
+                const iconNode = this.notetemp?.icon ? this.notetemp.icon.node : null;
+                const iconTransform = iconNode ? iconNode.getComponent(UITransform) : null;
+                const toGlobalPos = iconTransform ? iconTransform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
                 anim.play2(globalPos, toGlobalPos, additionSpf, () => {
                     resolve();
                 });
@@ -418,7 +386,9 @@ export class MergeUI extends Component {
             return false;
         }
 
-        const noteWorldPos = getWorldPos(this.notetemp?.icon ? this.notetemp.icon.node : null);
+        const iconNode = this.notetemp?.icon ? this.notetemp.icon.node : null;
+        const iconTransform = iconNode ? iconNode.getComponent(UITransform) : null;
+        const noteWorldPos = iconTransform ? iconTransform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
         const emptyPos = lvl.getEmptyTilePos(noteWorldPos);
         if (!emptyPos) {
             this.PlayAdditionDscAnim('娌℃湁绌烘牸瀛愪簡锛屼笉鑳芥彁鍙栦复鏃舵暟鎹紒');
@@ -487,11 +457,20 @@ export class MergeUI extends Component {
     }
 
     IfMergeHitTestStoreButton (tg: Node) {
-        return hitTestWorldBounds(this.storeButton, tg);
+        const storeRect = this.storeButton?.getComponent(UITransform)?.getBoundingBoxToWorld();
+        const targetRect = tg.getComponent(UITransform)?.getBoundingBoxToWorld();
+        if (!storeRect || !targetRect) return false;
+        return !(
+            storeRect.xMax < targetRect.xMin ||
+            storeRect.xMin > targetRect.xMax ||
+            storeRect.yMax < targetRect.yMin ||
+            storeRect.yMin > targetRect.yMax
+        );
     }
 
     GetStoreButtonGlobalPos () {
-        return getWorldPos(this.storeButton);
+        const transform = this.storeButton ? this.storeButton.getComponent(UITransform) : null;
+        return transform ? transform.convertToWorldSpaceAR(Vec3.ZERO) : Vec3.ZERO;
     }
 }
 
