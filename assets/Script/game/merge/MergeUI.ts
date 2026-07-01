@@ -1,4 +1,4 @@
-import { _decorator, Animation, Component, instantiate, isValid, Label, Node, Prefab, UITransform, Vec3, view } from 'cc';
+import { _decorator, Animation, Component, instantiate, isValid, Label, Node, Prefab, UITransform, Vec3 } from 'cc';
 import { MergeDes } from './MergeDes';
 import MergeTypes from './MergeTypes';
 import { MergeEffectManager } from './MergeEffectManager';
@@ -54,8 +54,11 @@ export class MergeUI extends Component {
 
     public mergeLevelNode: any = null;
     public activityBoxData: any = null;
+    private _bottomTouchButton: Node | null = null;
 
     onLoad () {
+        this.node.on(Node.EventType.TOUCH_START, this._onBottomUITouchStart, this, true);
+        this.node.on(Node.EventType.TOUCH_END, this._onBottomUITouchEnd, this, true);
     }
 
     CreateMergeLevelNode () {
@@ -72,6 +75,11 @@ export class MergeUI extends Component {
         this.FitScreenUI();
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.CoinEvent, 'MergeUI', this.onDialogDataChanged.bind(this));
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated, 'MergeUI', this.onPendingRewardsChanged.bind(this));
+    }
+
+    onDestroy () {
+        this.node.off(Node.EventType.TOUCH_START, this._onBottomUITouchStart, this, true);
+        this.node.off(Node.EventType.TOUCH_END, this._onBottomUITouchEnd, this, true);
     }
 
     ClearAll () {
@@ -227,7 +235,7 @@ export class MergeUI extends Component {
 
     FitScreenUI () {
         GameKit.MergeUtil.getSize();
-        const ssize = view.getVisibleSize();
+        const ssize = GameKit.MergeUtil.getWinSize();
         const gridTransform = this.gridBg ? this.gridBg.getComponent(UITransform) : null;
         const bottomTransform = this.bottomUI ? this.bottomUI.getComponent(UITransform) : null;
         const gridSize = gridTransform ? { width: gridTransform.width, height: gridTransform.height } : { width: 0, height: 0 };
@@ -248,6 +256,47 @@ export class MergeUI extends Component {
             const gridY = bottomY + bottomSize.height / 2 + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2;
             if (this.gridBg) this.gridBg.setPosition(this.gridBg.position.x, gridY, this.gridBg.position.z);
             if (this.topUI) this.topUI.setPosition(this.topUI.position.x, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2, this.topUI.position.z);
+        }
+        this._bringBottomUIToTop();
+    }
+
+    _bringBottomUIToTop () {
+        if (!this.bottomUI || !this.bottomUI.parent) return;
+        this.bottomUI.setSiblingIndex(this.bottomUI.parent.children.length - 1);
+    }
+
+    _isTouchInNode (e: any, node: Node | null) {
+        if (!e || !node) return false;
+        const transform = node.getComponent(UITransform);
+        if (!transform || !e.getLocation) return false;
+        const touchPoint = e.getLocation();
+        const rect = transform.getBoundingBoxToWorld();
+        return touchPoint.x >= rect.x &&
+            touchPoint.x <= rect.x + rect.width &&
+            touchPoint.y >= rect.y &&
+            touchPoint.y <= rect.y + rect.height;
+    }
+
+    _getBottomButtonAtTouch (e: any) {
+        const buildButton = this.bottomUI ? this.bottomUI.getChildByName('build_btn') : null;
+        if (this._isTouchInNode(e, buildButton)) return buildButton;
+        if (this._isTouchInNode(e, this.storeButton)) return this.storeButton;
+        return null;
+    }
+
+    _onBottomUITouchStart (e: any) {
+        this._bottomTouchButton = this._getBottomButtonAtTouch(e);
+    }
+
+    _onBottomUITouchEnd (e: any) {
+        const button = this._bottomTouchButton;
+        this._bottomTouchButton = null;
+        if (!button || button !== this._getBottomButtonAtTouch(e)) return;
+        if (e && e.target && this.bottomUI && e.target.parent === this.bottomUI) return;
+        if (button.name === 'build_btn') {
+            this.onClickOpenVillage();
+        } else if (button === this.storeButton || button.name === 'store_btn') {
+            this.onClickOpenStore();
         }
     }
 

@@ -80,8 +80,15 @@ MergeUtil.getSize = function () {
     return Math.max(0, 44 - Math.max(0, (rootHeight - winHeight) / 2))
 }
 
+MergeUtil.getWinSize = function () {
+    if (UIRoot.instance && UIRoot.instance.winSize) {
+        return UIRoot.instance.winSize
+    }
+    return view.getVisibleSize()
+}
+
 MergeUtil.isLongScreen = function () {
-    const size = view.getVisibleSize()
+    const size = MergeUtil.getWinSize()
     return size.height / size.width > 1250 / 640
 }
 
