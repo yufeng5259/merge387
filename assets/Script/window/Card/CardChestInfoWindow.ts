@@ -93,7 +93,12 @@ export default class CardChestInfoWindow extends UIWindow {
             let price = this.meta.Price()
             if (Game.SUser.Coin() < price) {
                 this.closeAnim()
-                UIRoot.instance.GetWindow("ShopWindow").tab_node_array.changeIndex(1)
+                let shopWindow = UIRoot.instance.GetWindow("ShopWindow")
+                if (shopWindow && shopWindow.tab_node_array) {
+                    shopWindow.tab_node_array.changeIndex(1)
+                } else {
+                    UIRoot.instance.openChildWindow("ShopWindow", {showCoin: true})
+                }
                 return
             }
     

@@ -31,6 +31,9 @@ export class ChapterTalkNode extends Component {
 
     public showInfo(data: any) {
         this.init();
+        if (GameKit.SoundManager && GameKit.SoundManager.playDialoguePopSound) {
+            GameKit.SoundManager.playDialoguePopSound();
+        }
         this.storyMeta = data;
         this.eid = this.storyMeta.EId();
         this.roleMeta = this.storyMeta.GetRoleMeata(this.eid);

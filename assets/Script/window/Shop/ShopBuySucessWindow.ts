@@ -22,6 +22,9 @@ export default class ShopBuySucessWindow extends UIWindow {
     onShow(showParams: any) {
         this.data = showParams.rewards;
         console.log('璐拱鎴愬姛', this.data);
+        if (GameKit.SoundManager && GameKit.SoundManager.playBreakEggFinSound) {
+            GameKit.SoundManager.playBreakEggFinSound();
+        }
         this.playTopSpine();
         this.initNode();
     }

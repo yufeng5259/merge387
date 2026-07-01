@@ -1,5 +1,6 @@
 import { _decorator, Component, instantiate, Label, Node, ProgressBar, Sprite, tween, UITransform, Vec2, Vec3 } from 'cc';
 import { ContentModel } from '../../../game/items/ContentModel';
+import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 import { fitByHeight, fitSpriteInRange2 } from '../../../GameKit/render/fixedSizeRatio';
 
 const { ccclass } = _decorator;
@@ -105,8 +106,8 @@ export class ActivitySlotSymbolRankBar extends Component {
             fitSpriteInRange2(spSymbol, new Vec2(70, 70), new Vec2(rect.width, rect.height));
         }
         if (barNode) {
-            barNode.off(Node.EventType.TOUCH_END, this.onClickShowReward1, this);
-            barNode.on(Node.EventType.TOUCH_END, this.onClickShowReward1, this);
+            unbindGuardedClick(barNode, this);
+            bindGuardedClick(barNode, this, this.onClickShowReward1, { passBoundTarget: true });
             (barNode as any).data = this.data[this.data.length - 1];
         }
         let pre0 = Meta.ActivityParamsMeta.GetValue(Meta.ActivityParamsMeta.Types.SlotCollectRankPoint, (this.rankList[0].id - 1) <= 0 ? 1 : (this.rankList[0].id - 1));
@@ -142,8 +143,8 @@ export class ActivitySlotSymbolRankBar extends Component {
                 rSp.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.PresentPack, indexStr);
             }
             rNode.setPosition(tx, rNode.position.y, rNode.position.z);
-            rNode.off(Node.EventType.TOUCH_END, this.onClickShowReward, this);
-            rNode.on(Node.EventType.TOUCH_END, this.onClickShowReward, this);
+            unbindGuardedClick(rNode, this);
+            bindGuardedClick(rNode, this, this.onClickShowReward, { passBoundTarget: true });
         }
 
         const w2SpSymbol = getCTComponentSafe(this.node, 'w2SpSymbol', Sprite);
@@ -157,12 +158,13 @@ export class ActivitySlotSymbolRankBar extends Component {
         if (!this.w1 || !this.sm) {
             return;
         }
+        const target = event.boundTarget || event.target;
         if (!this.w1init) {
             const w1item = GameKit.ControllerTable.GetNode(this.node, 'w1Item');
             if (!w1item) {
                 return;
             }
-            const rewards = event.target.data.content;
+            const rewards = target.data.content;
             for (let i = 0; i < rewards.length; i++) {
                 const n1 = instantiate(w1item);
                 n1.parent = w1item.parent;
@@ -180,7 +182,8 @@ export class ActivitySlotSymbolRankBar extends Component {
         if (!this.w2 || !this.sm) {
             return;
         }
-        const cArr = event.target.data.content;
+        const target = event.boundTarget || event.target;
+        const cArr = target.data.content;
         const w2item1 = GameKit.ControllerTable.GetNode(this.node, 'w2Item1');
         const itemNode = GameKit.ControllerTable.GetNode(this.node, 'itemNode');
         const w2bg = GameKit.ControllerTable.GetNode(this.node, 'w2bg');
@@ -204,9 +207,9 @@ export class ActivitySlotSymbolRankBar extends Component {
         }
         const needLbl = getCTComponentSafe(this.node, 'needLbl', Label);
         if (needLbl) {
-            needLbl.string = event.target.data.score;
+            needLbl.string = target.data.score;
         }
-        this.w2.setPosition(event.target.position.x, this.w2.position.y, this.w2.position.z);
+        this.w2.setPosition(target.position.x, this.w2.position.y, this.w2.position.z);
         this.showRNode(this.w2);
         this.sm.active = true;
     }

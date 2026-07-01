@@ -1,5 +1,6 @@
 import { _decorator, Component, Label, Node, ProgressBar, UITransform, Vec3 } from 'cc';
 import { ContentModel } from '../items/ContentModel';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 import { MergeContentUtil } from './MergeContentUtil';
 
 const { ccclass, property } = _decorator;
@@ -203,8 +204,8 @@ export class MergeCookingDes extends Component {
         const id = this.cookingData.ingredientIds[index];
         const content = Game.Content.FromString('9=' + id + '=1');
         showContentModel(resultContent, content);
-        node.off(Node.EventType.TOUCH_END);
-        node.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(node, this);
+        bindGuardedClick(node, this, () => {
             const transform = node.getComponent(UITransform);
             const globalPos = transform ? transform.convertToWorldSpaceAR(Vec3.ZERO) : node.worldPosition.clone();
             const mergeLevelNode = GamePlay.instance.mergeRoot.mergeLevelNode;

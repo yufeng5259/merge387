@@ -1,4 +1,5 @@
 import { _decorator, Button, Component, EventTouch, Node } from 'cc';
+import { bindGuardedClick, unbindGuardedClick } from './TouchClickGuard';
 
 const { ccclass, property } = _decorator;
 
@@ -11,19 +12,19 @@ export class HelpButton extends Component {
     public helpKey = '';
 
     public onEnable(): void {
-        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        bindGuardedClick(this.node, this, this.onTouchEnd, {
+            shouldEnd: () => {
+                const button = this.node.getComponent(Button);
+                return !button || button.interactable;
+            },
+        });
     }
 
     public onDisable(): void {
-        this.node.off(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        unbindGuardedClick(this.node, this);
     }
 
     private onTouchEnd(_event: EventTouch): void {
-        const button = this.node.getComponent(Button);
-        if (button && !button.interactable) {
-            return;
-        }
-
         Game.HelpWindow.Show(GameKit.i18n.t(this.titleKey), this.helpKey);
     }
 }

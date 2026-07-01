@@ -307,6 +307,9 @@ import { CardSubjectSet } from './CardSubjectSet';
         AppKit.ADWrap.ShowVideo(() => {
             let req = SR.SRCard.watchChest()
             req.SetCallBack(() => {
+                if (GameKit.SoundManager && GameKit.SoundManager.playDailyFreeChestOpenSound) {
+                    GameKit.SoundManager.playDailyFreeChestOpenSound()
+                }
                 this.svt.flushData()
                 
                 CardChestOpenWindow.tryShow()

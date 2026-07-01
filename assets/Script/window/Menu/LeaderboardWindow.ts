@@ -1,6 +1,7 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import { UITabContainer } from '../../GameKit/ui/UITabContainer';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 import { UserInfoModel } from '../UserInfoModel';
 import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 import { User } from '../../game/user/User';
@@ -244,7 +245,8 @@ class LeaderboardWindow extends UIWindow {
                 }
                 if (btn_bg) {
                     btn_bg.vdata = data;
-                    btn_bg.node.on(Node.EventType.TOUCH_END,function() {
+                    unbindGuardedClick(btn_bg.node, this);
+                    bindGuardedClick(btn_bg.node, this, function() {
                         if(this.svt.scrollView.isScrolling()){
                             // console.log("???");
                             return;
@@ -254,7 +256,7 @@ class LeaderboardWindow extends UIWindow {
                             UIRoot.instance.openChildWindow("OtherPlayerWindow",btn_bg.vdata);
                         }
                         
-                    },this)
+                    })
                 }
                
                

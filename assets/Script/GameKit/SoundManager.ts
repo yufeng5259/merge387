@@ -1,6 +1,6 @@
 // 音频管理
 
-import { AudioClip, AudioSource, director, game, Game, Node, resources, sys } from 'cc';
+import { AudioClip, AudioSource, director, game, Game as CocosGame, Node, resources, sys } from 'cc';
 
 type ManagedSound = AudioSource | any;
 
@@ -16,8 +16,60 @@ SoundManager.SoundNames = {
     BGM_VikingBonus: "bgm_vikingbonus",
 };
 
+SoundManager.SoundExts = {
+    MP3: ".mp3",
+    WAV: ".wav",
+};
+
+SoundManager.SoundPaths = {
+    MergeLevelPrefix: "audio/hebing/SfxMergelv",
+    GeneratorManualSpawn: "audio/dianji/SfxMergeSpawnManual",
+    GeneratorExtraSpawn: "audio/dianji/sfxShoppingBreakShow",
+    ItemLanding: "audio/dianji/sfxItemLanding",
+    GeneratorBoardFull: "audio/youjian/SfxColdingClick",
+    OrderNew: "audio/dingdan/sfxOrderCompleteNew",
+    OrderComplete: "audio/dingdan/sfxOrderComplete",
+    CollectCoins: "audio/dingdan/SfxMergeCollectCoins",
+    CollectDiamond: "audio/dingdan/SfxMergeCollectDiamond",
+    CollectExperience: "audio/dingdan/SfxMergeCollectExperience",
+    CollectEnergy: "audio/dingdan/SfxMergeCollectEnergy",
+    WarehousePut: "audio/caozuo/sfxMoveToTepository",
+    WarehouseTakeOut: "audio/caozuo/SfxMergeSpawnManual2",
+    CommonDelete: "audio/caozuo/sfxCommonDelete",
+    WindowClose: "audio/caozuo/sfxStoryOut",
+    WindowOpen: "audio/caozuo/sfxWindowPop",
+    RestaurantLevelUp: "audio/caozuo/SfxLevelUp",
+    NewAreaUnlock: "audio/xinzeng/SfxNewAreaUnlock",
+    GhostReward: "audio/xinzeng/SfxGhostReward",
+    BreakEggFin: "audio/xinzeng/sfxBreakEggFin",
+    BuildHammer1: "audio/jianzhu/SfxBuildHammer1",
+    BuildHammer2: "audio/jianzhu/SfxBuildHammer2",
+    Renovate: "audio/jianzhu/sfxRenovate",
+    DialoguePop: "audio/jianzhu/sfxDialoguePop",
+    DailyFreeChestOpen: "audio/youjian/SfxOpenRandomBox",
+    MailRewardCollect: "audio/youjian/sfxRewardCollect",
+    ShopBuy: "audio/youjian/SfxShopBuy",
+    PurchaseNotEnough: "audio/youjian/SfxColdingClick",
+    SceneSwitch: "audio/ditu/SfxScenesSwitch",
+    SceneSwitch2: "audio/ditu/SfxScenesSwitch2",
+    SeaWave: "audio/ditu/sfxSeaWave",
+    BubbleSpawn: "audio/paopao/SfxMergeBubbleSpawn",
+    BubbleOpen: "audio/paopao/SfxMergeBubbleOpen",
+    BubbleBreak: "audio/paopao/SfxMergeBubbleBreak",
+};
+
+SoundManager.SoundAliases = {
+    se_open: { path: "WindowOpen", ext: SoundManager.SoundExts.WAV, minInterval: 350 },
+    se_back: { path: "WindowClose", ext: SoundManager.SoundExts.WAV, minInterval: 350 },
+    item_purchased: { path: "ShopBuy", ext: SoundManager.SoundExts.WAV },
+    swipe_clouds: { path: "SceneSwitch", ext: SoundManager.SoundExts.WAV },
+    swipe_clouds_open: { path: "SceneSwitch2", ext: SoundManager.SoundExts.WAV },
+};
+
 SoundManager.aVolume = 1;
 SoundManager.soundVolume = 1;
+SoundManager._seaWaveLoopEnabled = false;
+SoundManager._seaWaveLoopPlaying = false;
 
 const usewx = false && wxTools.usewx;
 
@@ -44,11 +96,23 @@ function destroyAudioSource(source: AudioSource) {
     source.destroy();
 }
 
-function removeSound(soundName: string, sound: ManagedSound) {
-    const list = SoundManager.SEs[soundName];
+function removeSound(soundKey: string, sound: ManagedSound) {
+    const list = SoundManager.SEs[soundKey];
     if (!list) return;
     const index = list.indexOf(sound);
     if (index >= 0) list.splice(index, 1);
+}
+
+function ensureSoundList(soundKey: string) {
+    if (!SoundManager.SEs.hasOwnProperty(soundKey)) SoundManager.SEs[soundKey] = [];
+    return SoundManager.SEs[soundKey];
+}
+
+function onceAudioEnded(source: AudioSource, callback: () => void) {
+    const eventType = (AudioSource as any).EventType?.ENDED;
+    if (eventType && source.node && typeof source.node.once === "function") {
+        source.node.once(eventType, callback);
+    }
 }
 
 function loadAudioClip(path: string, callback: (err: Error | null, audio?: AudioClip) => void) {
@@ -83,14 +147,14 @@ SoundManager.init = function() {
         sys.localStorage.setItem("SoundSwitch", SoundManager.soundVolume);
     }
 
-    game.on(Game.EVENT_HIDE, function() {
+    game.on(CocosGame.EVENT_HIDE, function() {
         if (usewx) {
         } else {
             forEachAudioSource(source => source.pause());
         }
     });
 
-    game.on(Game.EVENT_SHOW, function() {
+    game.on(CocosGame.EVENT_SHOW, function() {
         if (usewx) {
             if (SoundManager.bgm != null) SoundManager.bgm.play();
         } else {
@@ -172,10 +236,238 @@ SoundManager.SetBgmLoop = function(lo) {
 SoundManager.SEs = {};
 SoundManager.SECache = {};
 SoundManager.soundMp3LoopIds = {};
+SoundManager.LastPlayAt = {};
+SoundManager.DebugPlayLogNames = {};
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.CommonDelete] = "sfxCommonDelete.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.RestaurantLevelUp] = "SfxLevelUp.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.NewAreaUnlock] = "SfxNewAreaUnlock.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.GhostReward] = "SfxGhostReward.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.BreakEggFin] = "sfxBreakEggFin.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.BuildHammer1] = "SfxBuildHammer1.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.BuildHammer2] = "SfxBuildHammer2.wav";
+SoundManager.DebugPlayLogNames[SoundManager.SoundPaths.Renovate] = "sfxRenovate.wav";
+
+SoundManager.logDebugSoundPlay = function(soundPath) {
+    const soundName = SoundManager.DebugPlayLogNames[soundPath];
+    if (soundName) console.log("play sound: " + soundName);
+};
+
+SoundManager.playSoundByPath = function(soundPath, loop = false, wxExt = SoundManager.SoundExts.MP3, minInterval = 0, canPlay?: () => boolean) {
+    if (SoundManager.soundVolume <= 0 || !soundPath) return;
+    if (canPlay && !canPlay()) return;
+    if (!loop && minInterval > 0) {
+        const now = Date.now();
+        const lastPlayAt = SoundManager.LastPlayAt[soundPath] || 0;
+        if (now - lastPlayAt < minInterval) return;
+        SoundManager.LastPlayAt[soundPath] = now;
+    }
+
+    if (usewx) {
+        const sound = wx.createInnerAudioContext();
+        sound.loop = loop;
+        sound.volume = 1 * SoundManager.soundVolume;
+        sound.src = AppKit.SdkManager.AssetsPathToRealPath(soundPath + wxExt);
+        sound.onStop(function() {
+            sound.destroy();
+            removeSound(soundPath, sound);
+        });
+        SoundManager.logDebugSoundPlay(soundPath);
+        sound.play();
+        ensureSoundList(soundPath).push(sound);
+    } else {
+        const playSound = function(audio: AudioClip) {
+            if (canPlay && !canPlay()) return;
+            const source = createAudioSource(audio, loop, 1 * SoundManager.soundVolume);
+            SoundManager.logDebugSoundPlay(soundPath);
+            source.play();
+            ensureSoundList(soundPath).push(source);
+            if (!loop) {
+                onceAudioEnded(source, function() {
+                    removeSound(soundPath, source);
+                    destroyAudioSource(source);
+                });
+            }
+        };
+        if (SoundManager.SECache[soundPath] != null) {
+            playSound(SoundManager.SECache[soundPath]);
+        } else {
+            loadAudioClip(soundPath, (err, audio) => {
+                if (err || !audio) return;
+                if (canPlay && !canPlay()) return;
+                SoundManager.SECache[soundPath] = audio;
+                playSound(audio);
+            });
+        }
+    }
+};
+
+SoundManager.playMergeSoundByLevel = function(level) {
+    let soundLevel = Math.floor(Number(level) || 0);
+    if (soundLevel < 2) soundLevel = 2;
+    if (soundLevel > 9) soundLevel = 9;
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.MergeLevelPrefix + soundLevel, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playGeneratorManualSpawnSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.GeneratorManualSpawn, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playGeneratorExtraSpawnSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.GeneratorExtraSpawn, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playBubbleSpawnSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BubbleSpawn, false, SoundManager.SoundExts.WAV, 120);
+};
+
+SoundManager.playBubbleOpenSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BubbleOpen, false, SoundManager.SoundExts.WAV, 120);
+};
+
+SoundManager.playBubbleBreakSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BubbleBreak, false, SoundManager.SoundExts.WAV, 120);
+};
+
+SoundManager.playItemLandingSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.ItemLanding, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playGeneratorBoardFullSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.GeneratorBoardFull, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playOrderNewSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.OrderNew, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playOrderCompleteSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.OrderComplete, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playRewardCollectSoundByContentType = function(contentType) {
+    if (typeof Game === "undefined" || !Game.Content || !Game.Content.Types) return;
+    if (contentType === Game.Content.Types.Coin || contentType === Game.Content.Types.ShopCoin) {
+        SoundManager.playSoundByPath(SoundManager.SoundPaths.CollectCoins, false, SoundManager.SoundExts.WAV);
+    } else if (contentType === Game.Content.Types.Cash) {
+        SoundManager.playSoundByPath(SoundManager.SoundPaths.CollectDiamond, false, SoundManager.SoundExts.WAV);
+    } else if (contentType === Game.Content.Types.Exp) {
+        SoundManager.playSoundByPath(SoundManager.SoundPaths.CollectExperience, false, SoundManager.SoundExts.WAV);
+    } else if (contentType === Game.Content.Types.Ap) {
+        SoundManager.playSoundByPath(SoundManager.SoundPaths.CollectEnergy, false, SoundManager.SoundExts.WAV);
+    }
+};
+
+SoundManager.playWarehousePutSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.WarehousePut, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playWarehouseTakeOutSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.WarehouseTakeOut, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playCommonDeleteSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.CommonDelete, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playWindowCloseSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.WindowClose, false, SoundManager.SoundExts.WAV, 350);
+};
+
+SoundManager.playWindowOpenSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.WindowOpen, false, SoundManager.SoundExts.WAV, 350);
+};
+
+SoundManager.playRestaurantLevelUpSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.RestaurantLevelUp, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playNewAreaUnlockSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.NewAreaUnlock, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playGhostRewardSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.GhostReward, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playBreakEggFinSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BreakEggFin, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playBuildLevelUpSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.RestaurantLevelUp, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playBuildHammer1Sound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BuildHammer1, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playBuildHammer2Sound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BuildHammer2, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playRenovateSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.Renovate, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playDialoguePopSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.DialoguePop, false, SoundManager.SoundExts.WAV, 120);
+};
+
+SoundManager.playDailyFreeChestOpenSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.DailyFreeChestOpen, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playMailRewardCollectSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.MailRewardCollect, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playShopBuySuccessSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.ShopBuy, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playPurchaseNotEnoughSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.PurchaseNotEnough, false, SoundManager.SoundExts.WAV, 250);
+};
+
+SoundManager.playSceneSwitchSound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.SceneSwitch, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.playSceneSwitch2Sound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.SceneSwitch2, false, SoundManager.SoundExts.WAV);
+};
+
+SoundManager.setSeaWaveLoopEnabled = function(enabled) {
+    SoundManager._seaWaveLoopEnabled = !!enabled;
+    if (SoundManager._seaWaveLoopEnabled) {
+        SoundManager.playSeaWaveLoopSound();
+    } else {
+        SoundManager.stopSeaWaveLoopSound();
+    }
+};
+
+SoundManager.playSeaWaveLoopSound = function() {
+    if (SoundManager._seaWaveLoopPlaying || SoundManager.soundVolume <= 0) return;
+    SoundManager._seaWaveLoopPlaying = true;
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.SeaWave, true, SoundManager.SoundExts.WAV, 0, function() {
+        return SoundManager._seaWaveLoopEnabled && SoundManager._seaWaveLoopPlaying;
+    });
+};
+
+SoundManager.stopSeaWaveLoopSound = function() {
+    SoundManager._seaWaveLoopPlaying = false;
+    SoundManager.stopSound(SoundManager.SoundPaths.SeaWave);
+};
 
 SoundManager.playSound = function(soundName, loop = false) {
     if (SoundManager.soundVolume <= 0) return;
-    if (!SoundManager.SEs.hasOwnProperty(soundName)) SoundManager.SEs[soundName] = [];
+    const alias = SoundManager.SoundAliases[soundName];
+    if (alias) {
+        const soundPath = SoundManager.SoundPaths[alias.path] || alias.path;
+        SoundManager.playSoundByPath(soundPath, loop, alias.ext || SoundManager.SoundExts.WAV, alias.minInterval || 0);
+        return;
+    }
+
     if (usewx) {
         const sound = wx.createInnerAudioContext();
         sound.loop = loop;
@@ -186,14 +478,14 @@ SoundManager.playSound = function(soundName, loop = false) {
             removeSound(soundName, sound);
         });
         sound.play();
-        SoundManager.SEs[soundName].push(sound);
+        ensureSoundList(soundName).push(sound);
     } else {
         const playSound = function(audio: AudioClip) {
             const source = createAudioSource(audio, loop, 1 * SoundManager.soundVolume);
             source.play();
-            SoundManager.SEs[soundName].push(source);
+            ensureSoundList(soundName).push(source);
             if (!loop) {
-                source.node.once(AudioSource.EventType.ENDED, function() {
+                onceAudioEnded(source, function() {
                     removeSound(soundName, source);
                     destroyAudioSource(source);
                 });
@@ -278,7 +570,24 @@ SoundManager.loadSound = function(soundName) {
     }
 };
 
+SoundManager.loadSoundByPath = function(soundPath) {
+    if (usewx || !soundPath) return;
+    if (SoundManager.SECache[soundPath] != null) return;
+    loadAudioClip(soundPath, (err, audio) => {
+        if (err || !audio) return;
+        SoundManager.SECache[soundPath] = audio;
+    });
+};
+
 SoundManager.preloadSound = function() {
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.RestaurantLevelUp);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.NewAreaUnlock);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.GhostReward);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.BreakEggFin);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.BuildHammer1);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.BuildHammer2);
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.Renovate);
+
     if (AppKit.SdkManager.IsNative()) return;
     if (usewx) {
     } else {
@@ -328,6 +637,11 @@ SoundManager.changeBGMSwitch = function() {
 SoundManager.changeSoundSwitch = function() {
     SoundManager.soundVolume = 1 - SoundManager.soundVolume;
     sys.localStorage.setItem("SoundSwitch", SoundManager.soundVolume);
+    if (SoundManager.soundVolume <= 0) {
+        SoundManager.stopSeaWaveLoopSound();
+    } else if (SoundManager._seaWaveLoopEnabled) {
+        SoundManager.playSeaWaveLoopSound();
+    }
 };
 
 SoundManager.getBGMSwitch = function() {

@@ -8,32 +8,8 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "a933c901-5100-4a01-870e-15d22ef6a2b2@6c48a",
-      "displayName": "itemAtlas",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "a933c901-5100-4a01-870e-15d22ef6a2b2",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
-      "uuid": "e3c26bed-4fdb-42c1-ad01-4455a65d8aa2",
+      "uuid": "2de69c21-07fb-4ed0-a415-9a66f76ac7b4",
       "imported": false,
       "importer": "sprite-frame",
       "files": [],
@@ -61,6 +37,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "a933c901-5100-4a01-870e-15d22ef6a2b2@6c48a",
+      "displayName": "itemAtlas",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "a933c901-5100-4a01-870e-15d22ef6a2b2",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

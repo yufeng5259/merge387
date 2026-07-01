@@ -1,4 +1,5 @@
 import { _decorator, Color, Component, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 const { ccclass, property } = _decorator;
 
 function getNodeHeight (node: Node | null) {
@@ -70,10 +71,14 @@ export class ContentModel extends Component {
         if (!this.content) return;
         this.params = params;
 
-        if (this.infoBtn) this.infoBtn.active = false;
+        if (this.infoBtn) {
+            this.infoBtn.active = false;
+            unbindGuardedClick(this.infoBtn, this);
+        }
 
         if (this.icon) {
             this.icon.node.off(Node.EventType.TOUCH_END);
+            unbindGuardedClick(this.icon.node, this);
             this.content.Icon(this.icon, () => {
                 if (this.noCountGray && this.content.Count() <= 0) {
                     setSpriteGray(this.icon, true);
@@ -91,7 +96,7 @@ export class ContentModel extends Component {
         if (!this.icon || !this.content) return;
         if (this.content.Type() === Game.Content.Types.RandomPack) {
             if (this.infoBtn) this.infoBtn.active = true;
-            this.icon.node.on(Node.EventType.TOUCH_END, (e: any) => {
+            bindGuardedClick(this.icon.node, this, (e: any) => {
                 const parent = UIRoot.instance.node;
                 const pos = getTouchPos(parent, this.icon!.node);
                 getWindowClass('RandomChestPanel')?.Show?.(this.content.Id(), {
@@ -100,10 +105,10 @@ export class ContentModel extends Component {
                     height: getNodeHeight(this.icon!.node),
                 });
                 e.stopPropagation();
-            }, this);
+            });
         } else if (this.content.Type() === Game.Content.Types.Gift) {
             if (this.infoBtn) this.infoBtn.active = true;
-            this.icon.node.on(Node.EventType.TOUCH_END, (e: any) => {
+            bindGuardedClick(this.icon.node, this, (e: any) => {
                 const window = CCTools.getComponentInParent(this.node, 'UIWindow');
                 if (!window) return;
                 const parent = this.randomPackParent || (window as any).node || this.icon!.node.parent;
@@ -114,11 +119,11 @@ export class ContentModel extends Component {
                     height: getNodeHeight(this.icon!.node),
                 });
                 e.stopPropagation();
-            }, this);
+            });
         } else if (this.content.Type() === Game.Content.Types.CardChest) {
             if (this.content.Id() === 14 || this.content.Id() === 15) {
                 if (this.infoBtn) this.infoBtn.active = true;
-                this.icon.node.on(Node.EventType.TOUCH_END, (e: any) => {
+                bindGuardedClick(this.icon.node, this, (e: any) => {
                     const window = CCTools.getComponentInParent(this.node, 'UIWindow');
                     if (!window) return;
                     const parent = this.randomPackParent || (window as any).node || this.icon!.node.parent;
@@ -129,7 +134,7 @@ export class ContentModel extends Component {
                         height: getNodeHeight(this.icon!.node),
                     });
                     e.stopPropagation();
-                }, this);
+                });
             }
         } else if (this.content.Type() === Game.Content.Types.MergeIcon) {
             this.bindMergeIconTouch(params);
@@ -144,18 +149,18 @@ export class ContentModel extends Component {
         }
         if (this.infoBtn && infoBtnParams.canTouch && this.infoBtn.active) {
             this.infoBtn.off(Node.EventType.TOUCH_END);
-            this.infoBtn.on(Node.EventType.TOUCH_END, (e: any) => {
+            unbindGuardedClick(this.infoBtn, this);
+            bindGuardedClick(this.infoBtn, this, (e: any) => {
                 if (infoBtnParams.callback) {
                     infoBtnParams.callback({ content: this.content, contentModel: this });
                 }
                 e.stopPropagation();
-            }, this);
+            });
         }
 
         const iconParams = (params && params.iconParams) || {};
         if (iconParams.dontTouch === true) return;
-        this.icon.node.on(Node.EventType.TOUCH_END, (e: any) => {
-            if (iconParams.forceTouch === false) return;
+        bindGuardedClick(this.icon.node, this, (e: any) => {
             if (!iconParams.onlyCallback && ((this.infoBtn && this.infoBtn.active) || iconParams.forceTouch === true)) {
                 UIRoot.instance.openChildWindow('MergeTypeWindow', { mergeId: this.content.Id() });
             }
@@ -163,7 +168,7 @@ export class ContentModel extends Component {
                 iconParams.callback({ content: this.content, contentModel: this });
             }
             e.stopPropagation();
-        }, this);
+        }, { shouldEnd: () => iconParams.forceTouch !== false });
     }
 
     private updateLabels () {
@@ -215,8 +220,10 @@ export class ContentModel extends Component {
     clear () {
         if (this.icon) {
             this.icon.spriteFrame = null;
+            unbindGuardedClick(this.icon.node, this);
             this.icon.node.targetOff(this);
         }
+        if (this.infoBtn) unbindGuardedClick(this.infoBtn, this);
         if (this.count) this.count.string = '';
         if (this.countBignum) this.countBignum.string = '';
         if (this.countX) this.countX.string = '';

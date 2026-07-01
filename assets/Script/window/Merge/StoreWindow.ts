@@ -204,6 +204,9 @@ class StoreWindow extends UIWindow {
                         this.tempPutbackMergeData.push(itemData);
                         let pname = res.cellKey
                         GamePlay.instance.mergeRoot.mergeLevelNode.CreateFromWharehouse(pname, itemData);
+                        if (GameKit.SoundManager && GameKit.SoundManager.playWarehouseTakeOutSound) {
+                            GameKit.SoundManager.playWarehouseTakeOutSound()
+                        }
                         this.updateStoreItems()
                     })
                     req.Send()

@@ -718,6 +718,9 @@ export class LevelMergeNode extends Component {
                 return true
             case MergeTypes.MergeDoubleTapIntent.NO_EMPTY_TILE:
                 //没有空格子，不能产出
+                if (GameKit.SoundManager && GameKit.SoundManager.playGeneratorBoardFullSound) {
+                    GameKit.SoundManager.playGeneratorBoardFullSound()
+                }
                 this._vibrate(160)
                 GameKit.ShakeAnimTool.Shake(startMergeItem.node, 3)
                 setTimeout(() => {
@@ -1219,6 +1222,9 @@ export class LevelMergeNode extends Component {
                                 mergeId: startMergeItem.GetMergeId ? startMergeItem.GetMergeId() : null,
                             })
                         }
+                        if (GameKit.SoundManager && GameKit.SoundManager.playWarehousePutSound) {
+                            GameKit.SoundManager.playWarehousePutSound()
+                        }
                         this.DeleteSelectMergeItem(dragNode, this.touchStartPosName, false, {})
                         this.updateOrderStatus()
                     })
@@ -1429,6 +1435,9 @@ export class LevelMergeNode extends Component {
                 let tempDataStr = nextId + "_" + envStatus + "_-1"
                 let mergeEffectFromLevel = SR.SRMerge.MergeBoardLogicConfigProvider.getPieceLevel(dropMergeItem.GetMergeId())
                 let mergeEffectToLevel = SR.SRMerge.MergeBoardLogicConfigProvider.getPieceLevel(nextId)
+                if (GameKit.SoundManager && GameKit.SoundManager.playMergeSoundByLevel) {
+                    GameKit.SoundManager.playMergeSoundByLevel(mergeEffectToLevel)
+                }
                 if(result.bubbleCreated){
                     this.applyBubbleCreatedResult(dropMergeItem.tx + "_" + dropMergeItem.ty, result.bubbleCreated)
                 }
@@ -1556,6 +1565,9 @@ export class LevelMergeNode extends Component {
 
     applyBubbleCreatedResult(sourceCellKey?: any, bubbleCreated?: any) {
         if (!bubbleCreated || !bubbleCreated.cellKey || !bubbleCreated.pieceData) return null
+        if (GameKit.SoundManager && GameKit.SoundManager.playBubbleSpawnSound) {
+            GameKit.SoundManager.playBubbleSpawnSound()
+        }
         return this.jumpBubbleNode(sourceCellKey, bubbleCreated.cellKey, bubbleCreated.pieceData)
     }
 
@@ -1932,7 +1944,9 @@ export class LevelMergeNode extends Component {
 
         if (needUpdateServer) {
             this.updateMergeMapEvent(args).then((result) => {
-
+                if (result && result.success && (args.actionType === 'delete' || args.actionType === 'sell') && args.forceSend && GameKit.SoundManager && GameKit.SoundManager.playCommonDeleteSound) {
+                    GameKit.SoundManager.playCommonDeleteSound()
+                }
                 if (cb) cb();
                 this.updateOrderStatus()
             });
@@ -2137,6 +2151,9 @@ export class LevelMergeNode extends Component {
     }
 
     applyBubbleClaimedResult(claimed?: any) {
+        if (GameKit.SoundManager && GameKit.SoundManager.playBubbleOpenSound) {
+            GameKit.SoundManager.playBubbleOpenSound()
+        }
         this.applyBubbleBrokenResult(claimed)
     }
 
@@ -2193,9 +2210,15 @@ export class LevelMergeNode extends Component {
             let itemNode = this.node.getChildByName(broken.cellKey)
             let mergeItem = itemNode ? itemNode.getComponent(MergeItem) : null
             if (!mergeItem || !mergeItem.playBubbleBrokenOnce) {
+                if (GameKit.SoundManager && GameKit.SoundManager.playBubbleBreakSound) {
+                    GameKit.SoundManager.playBubbleBreakSound()
+                }
                 this.applyBubbleBrokenResult(broken)
                 resolve()
                 return
+            }
+            if (GameKit.SoundManager && GameKit.SoundManager.playBubbleBreakSound) {
+                GameKit.SoundManager.playBubbleBreakSound()
             }
             mergeItem.playBubbleBrokenOnce(() => {
                 this.applyBubbleBrokenResult(broken)
@@ -2282,7 +2305,12 @@ export class LevelMergeNode extends Component {
     /**
      * 服务器确认后的本地产出：更新地图、播跳跃、处理一次性生成器销毁或刷新冷却。
      */
-    _createGeneratedItemByData(generateTilePos?: any, frompos?: any, mergeDataStr?: any, cb?: any) {
+    _createGeneratedItemByData(generateTilePos?: any, frompos?: any, mergeDataStr?: any, options?: any, cb?: any) {
+        if (typeof options === 'function') {
+            cb = options
+            options = {}
+        }
+        options = options || {}
         let boardLayout = this.getMergeBoardLayout()
         let pos = GameKit.MergeUtil.tile2px(generateTilePos.x, generateTilePos.y, boardLayout)
         let newNode = this.getItem();
@@ -2290,7 +2318,12 @@ export class LevelMergeNode extends Component {
         newNode.setPosition(frompos.x, frompos.y, 0)
         let item = newNode.getComponent(MergeItem);
         item.InitMergeItem(generateTilePos.x, generateTilePos.y, mergeDataStr)
-        this.playItemJumpAnim(newNode, frompos, pos, {}, cb);
+        this.playItemJumpAnim(newNode, frompos, pos, {}, () => {
+            if (options.playLandingSound && GameKit.SoundManager && GameKit.SoundManager.playItemLandingSound) {
+                GameKit.SoundManager.playItemLandingSound()
+            }
+            if (cb) cb()
+        });
         return newNode
     }
 
@@ -2316,11 +2349,14 @@ export class LevelMergeNode extends Component {
 
         this.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.GENERATE, instanceId: instanceId, generatedPieceId: gid, remainingCount: remainingCount, targetCellKey: targetCellKey, generatedPieceData: newMergeDataStr, fromGid: generateNode.getComponent(MergeItem).GetMergeId() }).then((result) => {
             if (!onetimeDestroy && result && result.produced) {
+                if (GameKit.SoundManager && GameKit.SoundManager.playGeneratorManualSpawnSound) {
+                    GameKit.SoundManager.playGeneratorManualSpawnSound()
+                }
                 let resultPieceData = result.generatedPieceData || newMergeDataStr
                 let resultCellKey = result.generatedCellKey || targetCellKey
                 let targetPos = this._parseTileKey(resultCellKey)
                 let targetTilePos = new Vec2(targetPos.tx, targetPos.ty)
-                this._createGeneratedItemByData(targetTilePos, frompos, resultPieceData)
+                this._createGeneratedItemByData(targetTilePos, frompos, resultPieceData, { playLandingSound: true })
                 if (result.bubbleCreated) {
                     this.applyBubbleCreatedResult(resultCellKey, result.bubbleCreated)
                 }

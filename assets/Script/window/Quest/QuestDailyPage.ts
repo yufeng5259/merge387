@@ -33,7 +33,10 @@ export default class QuestDailyPage extends Component {
             if (!this.node) return
             this.node.active = true
             this.update_page(v)
-            UIRoot.instance.GetWindow("NewCollectFlagMainWindow").UpdateCollectButton()
+            let collectFlagWindow = UIRoot.instance.GetWindow("NewCollectFlagMainWindow")
+            if (collectFlagWindow && collectFlagWindow.UpdateCollectButton) {
+                collectFlagWindow.UpdateCollectButton()
+            }
         }, e =>{})
         
         /*var date1 = new Date();
@@ -180,12 +183,19 @@ export default class QuestDailyPage extends Component {
             // })
 
             this.scheduleOnce(() => {
-                if (UIRoot.instance.GetWindow("GetRewardWindow") != null) {
-                    UIRoot.instance.GetWindow("GetRewardWindow").addOnCloseFunc(() => {
-                        UIRoot.instance.GetWindow("NewCollectFlagMainWindow").GetOneFlag()
+                let rewardWindow = UIRoot.instance.GetWindow("GetRewardWindow")
+                if (rewardWindow != null) {
+                    rewardWindow.addOnCloseFunc(() => {
+                        let collectFlagWindow = UIRoot.instance.GetWindow("NewCollectFlagMainWindow")
+                        if (collectFlagWindow && collectFlagWindow.GetOneFlag) {
+                            collectFlagWindow.GetOneFlag()
+                        }
                     })
                 } else {
-                    UIRoot.instance.GetWindow("NewCollectFlagMainWindow").GetOneFlag()
+                    let collectFlagWindow = UIRoot.instance.GetWindow("NewCollectFlagMainWindow")
+                    if (collectFlagWindow && collectFlagWindow.GetOneFlag) {
+                        collectFlagWindow.GetOneFlag()
+                    }
                 }
             }, 0.5)
         }, e =>{})

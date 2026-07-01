@@ -8,32 +8,8 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "4f43f96c-8b24-451f-9fac-c2451ba2e0ea@6c48a",
-      "displayName": "Badge",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "4f43f96c-8b24-451f-9fac-c2451ba2e0ea",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
-      "uuid": "a116d191-f4ca-4aa9-bbe0-155537e4fb55",
+      "uuid": "230d2793-ed3e-4de7-bf80-cb79823bbbb0",
       "imported": false,
       "importer": "sprite-frame",
       "files": [],
@@ -61,6 +37,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "4f43f96c-8b24-451f-9fac-c2451ba2e0ea@6c48a",
+      "displayName": "Badge",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "4f43f96c-8b24-451f-9fac-c2451ba2e0ea",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

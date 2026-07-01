@@ -353,7 +353,9 @@ class MergeTypeWindow extends UIWindow {
         let bgNode = scrollNode.getChildByName("bg");
         let screenHeight = UIRoot.instance && UIRoot.instance.winSize ? UIRoot.instance.winSize.height : view.getVisibleSize().height;
         let maxHeight = Math.max(0, screenHeight - 160);
-        let scrollHeight = Math.min(scrollContent.height + 100, maxHeight);
+        let scrollContentTransform = scrollContent.getComponent(UITransform);
+        let scrollContentHeight = scrollContentTransform ? scrollContentTransform.height : 0;
+        let scrollHeight = Math.min(scrollContentHeight + 100, maxHeight);
 
         let scrollTransform = scrollNode.getComponent(UITransform)
         scrollTransform.height = scrollHeight;

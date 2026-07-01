@@ -38,6 +38,7 @@ export class UIWindow extends Component {
     close () {
         if (!this.node || !isValid(this.node)) return;
 
+        this._playWindowCloseSound();
         this.onClose();
 
         for (let i = this.childWindows.length - 1; i >= 0; i--) {
@@ -88,6 +89,9 @@ export class UIWindow extends Component {
             GameKit.BackKeyManager.registerBackEvent();
         }
 
+        if (this.isChild && GameKit.SoundManager && GameKit.SoundManager.playWindowOpenSound && (!showParams || showParams.playWindowOpenSound !== false)) {
+            GameKit.SoundManager.playWindowOpenSound();
+        }
         this.onShow(showParams);
     }
 
@@ -114,6 +118,7 @@ export class UIWindow extends Component {
     closeAnim (callback?: Function) {
         if (!this.node || !isValid(this.node) || this.closing) return;
         this.closing = true;
+        this._playWindowCloseSound();
 
         let finish = () => {
             this.close();
@@ -163,5 +168,13 @@ export class UIWindow extends Component {
             UIRoot.instance.CloseCantClick();
         }
         finish();
+    }
+
+    _playWindowCloseSound () {
+        if (!this.isChild || (this as any)._closeSoundPlayed) return;
+        (this as any)._closeSoundPlayed = true;
+        if (GameKit.SoundManager && GameKit.SoundManager.playWindowCloseSound) {
+            GameKit.SoundManager.playWindowCloseSound();
+        }
     }
 }

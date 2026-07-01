@@ -58,6 +58,9 @@ export default class LevelUpGetRewardWindow extends UIWindow {
 
     onShow(showParams: any) {
         UIRoot.instance.closeChildWindow('GetRewardWindow');
+        if (GameKit.SoundManager && GameKit.SoundManager.playNewAreaUnlockSound) {
+            GameKit.SoundManager.playNewAreaUnlockSound();
+        }
         this.prepareSpineShow(this.SpineOk);
         this.prepareSpineShow(this.SpineBg);
         let contents = showParams.contents;

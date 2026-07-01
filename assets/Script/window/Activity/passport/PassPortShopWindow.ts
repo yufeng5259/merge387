@@ -43,7 +43,10 @@ export default class PassPortShopWindow extends UIWindow {
                 GameKit.SoundManager.playSound('item_purchased');
                 let sr = SR.SRActivityPassport.buyLevelPassport(data.m.AddLevel());
                 sr.SetCallBack((res: any) => {
-                    UIRoot.instance.GetWindow('PassPortMainWindow').callPurchaseOver();
+                    let passPortWindow = UIRoot.instance.GetWindow('PassPortMainWindow');
+                    if (passPortWindow && passPortWindow.callPurchaseOver) {
+                        passPortWindow.callPurchaseOver();
+                    }
                     GameKit.SoundManager.playSound('item_purchased');
                     this.call_close();
                 });

@@ -1,4 +1,5 @@
 import { _decorator, Component, instantiate, Node, sp, Sprite, UITransform, Vec3 } from 'cc';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 import ContentModel from '../items/ContentModel';
 import MergeTypes from './MergeTypes';
 import { MergeRoleNode } from './MergeRoleNode';
@@ -94,7 +95,8 @@ export class MergeOrder extends Component {
     start () {
         if (this.completeBtn) {
             this.completeBtn.off(Node.EventType.TOUCH_END, this.onClickCompleteBtn, this);
-            this.completeBtn.on(Node.EventType.TOUCH_END, this.onClickCompleteBtn, this);
+            unbindGuardedClick(this.completeBtn, this);
+            bindGuardedClick(this.completeBtn, this, this.onClickCompleteBtn);
         }
     }
 
@@ -515,7 +517,10 @@ export class MergeOrder extends Component {
         }
 
         mergeLevelNode.SetNetRunning(true);
-        mergeLevelNode.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.CLAIM_ORDER, slotIndex: slotIndex, orderId: orderId, forceServer: true }).then(() => {
+        mergeLevelNode.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.CLAIM_ORDER, slotIndex: slotIndex, orderId: orderId, forceServer: true }).then((result: any) => {
+            if (result && result.success && GameKit.SoundManager && GameKit.SoundManager.playOrderCompleteSound) {
+                GameKit.SoundManager.playOrderCompleteSound();
+            }
             mergeLevelNode.ClaimOrderReward(orderData, globalPosByMergeId, storeDataStrArr, () => {
                 this.showRewardAnim(() => {
                     mergeUI.orderGroup.PlayClaimedOrderRemoveAnim(this, () => {
@@ -596,6 +601,9 @@ export class MergeOrder extends Component {
 
         for (let i = 0; i < flyRewardData.length; i++) {
             const data = flyRewardData[i];
+            if (GameKit.SoundManager && GameKit.SoundManager.playRewardCollectSoundByContentType) {
+                GameKit.SoundManager.playRewardCollectSoundByContentType(data.contentType);
+            }
             GamePlay.instance.mergeRoot.mergeNodeUI.PlayCoinFlyToTargetAnim(data.globalFromPos, Math.floor(Math.random() * 8) + 1, [data.spriteFrame], data.contentType, undefined, finishOne);
         }
     }

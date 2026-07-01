@@ -8,32 +8,8 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
-      "displayName": "guildBossRes",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
-      "uuid": "f40b43c4-ea3a-456a-a251-05591d8c7c5a",
+      "uuid": "bf0b9ca9-9e56-4f15-891a-9a46f39e88d1",
       "imported": false,
       "importer": "sprite-frame",
       "files": [],
@@ -61,6 +37,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
+      "displayName": "guildBossRes",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

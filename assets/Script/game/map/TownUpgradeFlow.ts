@@ -60,6 +60,10 @@ TownUpgradeFlow.start = function(params) {
                 params.window.close_window()
             }
 
+            if (levelChangedByBuild && GameKit.SoundManager && GameKit.SoundManager.playBuildLevelUpSound) {
+                GameKit.SoundManager.playBuildLevelUpSound()
+            }
+
             TownUpgradeFlow._playBuildAnimation(buildID, {
                 buildID: buildID,
                 level: newElement.level,

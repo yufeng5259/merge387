@@ -38,6 +38,9 @@ export class ShopChestItem extends Component {
     public onBuy() {
         const price = this.meta.Price();
         if (Game.SUser.Coin() < price) {
+            if (GameKit.SoundManager && GameKit.SoundManager.playPurchaseNotEnoughSound) {
+                GameKit.SoundManager.playPurchaseNotEnoughSound();
+            }
             return;
         }
 
@@ -92,6 +95,9 @@ export class ShopChestItem extends Component {
         AppKit.ADWrap.ShowVideo(() => {
             const req = SR.SRCard.watchChest();
             req.SetCallBack(() => {
+                if (GameKit.SoundManager && GameKit.SoundManager.playDailyFreeChestOpenSound) {
+                    GameKit.SoundManager.playDailyFreeChestOpenSound();
+                }
                 const cardWnd = UIRoot.instance.GetWindow('CardAllSetWindow');
                 if (cardWnd) {
                     cardWnd.svt.flushData();

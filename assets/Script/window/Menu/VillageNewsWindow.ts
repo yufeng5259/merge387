@@ -333,6 +333,9 @@ export default class VillageNewsWindow extends UIWindow {
                     btnCollect.node.on("click", ()=>{
                         let req = SR.SRVillage.collectPresent(id)
                         req.SetCallBack(function(res) {
+                            if (GameKit.SoundManager && GameKit.SoundManager.playMailRewardCollectSound) {
+                                GameKit.SoundManager.playMailRewardCollectSound()
+                            }
                             present.received = true
                             btnCollect.interactable = false
                             btnCollect.inScrollView = true

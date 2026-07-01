@@ -8,6 +8,7 @@ import './shop/meta/ShopDailyMeta'
 import './shop/meta/ShopHotMeta'
 import './merge/OrderMeta'
 import './merge/OrderSlotMeta'
+import './story/meta/StoryMeta'
 
 const MetaManager: any = {_data:{}}
 
@@ -85,7 +86,9 @@ Meta.MetaType = {
     GiftPackageItems:"giftPackageItems",
     MergeTutorial:"mergeTutorial",
     MergeTutorialGuide:"mergeTutorialGuide",
-    MergeTutorialTrigger:"mergeTutorialTrigger"
+    MergeTutorialTrigger:"mergeTutorialTrigger",
+
+    Story:"Story"
 
 }
 
@@ -197,6 +200,7 @@ MetaManager.init = function(rawMetaData: any) {
     this.SetTypeData(Meta.MetaType.Map, Meta.MapMeta.MakeEntity, metaData[Meta.MetaType.Map] || {})
     this.SetTypeData(Meta.MetaType.Level, Meta.LevelMeta.MakeEntity, metaData[Meta.MetaType.Level] || {})
     this.SetTypeData(Meta.MetaType.GiftPackageItems, Meta.GiftPackageItemsMeta.MakeEntity, metaData[Meta.MetaType.GiftPackageItems] || {})
+    this.SetTypeData(Meta.MetaType.Story, Meta.StoryMeta.MakeEntity, metaData[Meta.MetaType.Story] || {})
 
 }
 

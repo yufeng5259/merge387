@@ -78,6 +78,9 @@ export default class CashShopWindow extends UIWindow {
         btnBuy.on('click', () => {
             let price = meta.Price();
             if (Game.SUser.Cash() < price) {
+                if (GameKit.SoundManager && GameKit.SoundManager.playPurchaseNotEnoughSound) {
+                    GameKit.SoundManager.playPurchaseNotEnoughSound();
+                }
                 DialogWindow.Show(GameKit.i18n.t('CashShopNotEnough'), nullFunction);
                 return;
             }

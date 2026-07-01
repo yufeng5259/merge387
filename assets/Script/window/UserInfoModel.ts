@@ -1,5 +1,6 @@
 import { _decorator, Button, Color, Component, ImageAsset, Label, LabelOutline, Node, ProgressBar, Sprite, SpriteFrame, Texture2D, Tween, tween, Vec3 } from 'cc';
 import NumAnim from '../GameKit/ui/NumAnim';
+import { bindGuardedClick } from '../GameKit/ui/TouchClickGuard';
 
 import { User } from '../game/user/User';
 const { ccclass, property } = _decorator;
@@ -113,7 +114,7 @@ export class UserInfoModel extends Component {
             });
 
             if (this.avatarSprite) {
-                this.avatarSprite.node.on(Node.EventType.TOUCH_END, () => {
+                bindGuardedClick(this.avatarSprite.node, this, () => {
                     UIRoot.instance.openChildWindow('AvatarWindow', { user: this.User });
                 });
             }

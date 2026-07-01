@@ -63,10 +63,16 @@ ContentCheck.UpdateByResources = function(resources) {
     }
 }
 
+ContentCheck.PlayPurchaseNotEnoughSound = function() {
+    if (GameKit.SoundManager && GameKit.SoundManager.playPurchaseNotEnoughSound) {
+        GameKit.SoundManager.playPurchaseNotEnoughSound()
+    }
+}
+
 ContentCheck.CheckContent = function(content) {
     let type = content.Type()
 
-    console.log(type,'ContentCheck.CheckContent',content);
+    // console.log(type,'ContentCheck.CheckContent',content);
 
     if (type == Content.Types.Coin) {
         return ContentCheck.CheckCoin(content.Count())
@@ -85,6 +91,7 @@ ContentCheck.CheckCoin = function(price, showShop = false, onlyNotEnough = false
     if (userdata >= price) {
         return true
     } else {
+        ContentCheck.PlayPurchaseNotEnoughSound()
         UIRoot.instance.openChildWindow("HowToWindow")
         return false
         if (showShop) {
@@ -134,6 +141,7 @@ ContentCheck.CheckAp = function(price) {
         return true
     } else {
         //
+        ContentCheck.PlayPurchaseNotEnoughSound()
         UIRoot.instance.openChildWindow("ApNotEnoughDialogWindow")
         return false
         if (Game.ActivityManager.checkSpecialOffer()) return false
@@ -181,6 +189,7 @@ ContentCheck.CheckCash = function(price) {
     if (userdata >= price) {
         return true
     } else {
+        ContentCheck.PlayPurchaseNotEnoughSound()
         let shopWindow = UIRoot.instance.GetWindow("ShopWindow")
         if (shopWindow && shopWindow.tab_node_array) {
             shopWindow.tab_node_array.changeIndex(0)

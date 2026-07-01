@@ -45,7 +45,8 @@ export class ChangeSceneManager extends Component {
         this.scheduleOnce(() => {
             if (callback && typeof callback == 'function') callback();
         }, 0.3);
-        GameKit.SoundManager.playSound('swipe_clouds');
+        if (GameKit.SoundManager.playSceneSwitchSound) GameKit.SoundManager.playSceneSwitchSound();
+        else GameKit.SoundManager.playSound('swipe_clouds');
     }
 
     hide(callback?: () => void) {
@@ -54,7 +55,8 @@ export class ChangeSceneManager extends Component {
         this.scheduleOnce(() => {
             if (callback && typeof callback == 'function') callback();
         }, 0.25);
-        GameKit.SoundManager.playSound('swipe_clouds_open');
+        if (GameKit.SoundManager.playSceneSwitch2Sound) GameKit.SoundManager.playSceneSwitch2Sound();
+        else GameKit.SoundManager.playSound('swipe_clouds_open');
     }
 }
 

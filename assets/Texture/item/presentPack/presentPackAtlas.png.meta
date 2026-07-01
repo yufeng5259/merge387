@@ -8,32 +8,8 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "35f8a199-cf3d-44bc-a87f-5c37cb2bc61b@6c48a",
-      "displayName": "presentPackAtlas",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "35f8a199-cf3d-44bc-a87f-5c37cb2bc61b",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
-      "uuid": "4253805e-2e30-4687-907b-9e331d1cc602",
+      "uuid": "c0c0f9a4-ed7c-4d71-8d09-93b973331516",
       "imported": false,
       "importer": "sprite-frame",
       "files": [],
@@ -61,6 +37,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "35f8a199-cf3d-44bc-a87f-5c37cb2bc61b@6c48a",
+      "displayName": "presentPackAtlas",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "35f8a199-cf3d-44bc-a87f-5c37cb2bc61b",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

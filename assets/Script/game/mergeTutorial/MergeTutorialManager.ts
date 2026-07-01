@@ -1454,6 +1454,9 @@ MergeTutorialManager.TryClaimTutorialOrder = function(slotIndex, orderNode) {
     Game.MergeOrderLogic.compactWarehouse(warehouseData)
     order.claimed = true
 
+    if (typeof GameKit !== 'undefined' && GameKit.SoundManager && GameKit.SoundManager.playOrderCompleteSound) {
+        GameKit.SoundManager.playOrderCompleteSound()
+    }
     this.RemoveTutorialOrder(order)
     this.PlayTutorialOrderClaimAnim(orderNode, order, orderData, globalPosByMergeId, storeDataStrArr, function() {
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.Emit) {

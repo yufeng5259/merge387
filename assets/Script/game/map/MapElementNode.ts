@@ -17,6 +17,9 @@ import {
 } from 'cc';
 import { UserMap } from './UserMap';
 const { ccclass, property } = _decorator;
+const BUILD_EFFECT_HAMMER1_TIME = 0.35;
+const BUILD_EFFECT_HAMMER2_TIME = 0.8;
+const BUILD_EFFECT_HAMMER3_TIME = 1.2;
 
 type LevelNodeView = {
     node: Node | null;
@@ -295,6 +298,37 @@ export class MapElementNode extends Component {
         this.setNodeActive(this.cupLevel, canUpgrade);
     }
 
+    private scheduleBuildAnimationSound(delay: number, playFunc: (soundManager: any) => void) {
+        if (!GameKit.SoundManager) return;
+        this.scheduleOnce(() => {
+            if (!this.node || !this.node.isValid || !GameKit.SoundManager) return;
+            playFunc(GameKit.SoundManager);
+        }, delay);
+    }
+
+    private playBuildAnimationSounds() {
+        if (!GameKit.SoundManager) return;
+        if (GameKit.SoundManager.loadSoundByPath && GameKit.SoundManager.SoundPaths) {
+            GameKit.SoundManager.loadSoundByPath(GameKit.SoundManager.SoundPaths.BuildHammer1);
+            GameKit.SoundManager.loadSoundByPath(GameKit.SoundManager.SoundPaths.BuildHammer2);
+        }
+        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER1_TIME, (soundManager) => {
+            if (soundManager.playBuildHammer1Sound) soundManager.playBuildHammer1Sound();
+        });
+        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER2_TIME, (soundManager) => {
+            if (soundManager.playBuildHammer2Sound) soundManager.playBuildHammer2Sound();
+        });
+        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER3_TIME, (soundManager) => {
+            if (soundManager.playBuildHammer2Sound) soundManager.playBuildHammer2Sound();
+        });
+    }
+
+    private playRenovateFinishSound() {
+        if (GameKit.SoundManager && GameKit.SoundManager.playRenovateSound) {
+            GameKit.SoundManager.playRenovateSound();
+        }
+    }
+
     playUnlockAnimation() {
         this.node.setScale(new Vec3(0, 0, 0));
         tween(this.node)
@@ -310,8 +344,10 @@ export class MapElementNode extends Component {
             nd.parent = this.EffectNode;
         }
         const t = ((nd && (nd.getComponent('TimeDestroy') as any)?.t) || 0) / 1.2;
+        this.playBuildAnimationSounds();
         this.scheduleOnce(() => {
             this.isbuild = false;
+            this.playRenovateFinishSound();
             this.updateElement();
             if (callback) {
                 callback();

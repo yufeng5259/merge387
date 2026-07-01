@@ -1,5 +1,6 @@
 import { _decorator, Button, Color, Component, Label, Node, ProgressBar, Sprite, SpriteAtlas, tween, UITransform, Vec3, view } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
+import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 
 const { ccclass, property } = _decorator;
 
@@ -132,13 +133,14 @@ export default class MergePassPortMainWindow extends UIWindow {
         }
 
         if (this.exp_progress) {
-            this.exp_progress.node.on(Node.EventType.TOUCH_END, (e: any) => {
+            unbindGuardedClick(this.exp_progress.node, this);
+            bindGuardedClick(this.exp_progress.node, this, (e: any) => {
                 let parent = this.exp_progress?.node.parent;
                 if (!parent) return;
                 let dpos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO));
                 PassPortDesWindow.Show(this.content, { parent: this.node, pos: dpos, height: getNodeHeight(parent) });
                 e.stopPropagation();
-            }, this);
+            });
         }
 
         this.leftTime = 0;
@@ -340,7 +342,11 @@ export default class MergePassPortMainWindow extends UIWindow {
             (bg as any).color = new Color().fromHEX('#FFFFFF');
         }
 
-        completebtn.once(Node.EventType.TOUCH_END, () => {
+        let completeClicked = false;
+        unbindGuardedClick(completebtn, this);
+        bindGuardedClick(completebtn, this, () => {
+            if (completeClicked) return;
+            completeClicked = true;
             let req = SR.SRActivityPassport.NewPassportCollectTask(meta.Id());
             req.SetCallBack((res: any) => {
                 console.log(res, 'res');
@@ -352,7 +358,7 @@ export default class MergePassPortMainWindow extends UIWindow {
                     .start();
             });
             req.Send();
-        }, this);
+        });
     }
 
     onRewardItemRender(node: Node, index: number) {
@@ -387,15 +393,15 @@ export default class MergePassPortMainWindow extends UIWindow {
         let buy_quest_btn = GameKit.ControllerTable.GetNode(buyItem, 'quest-btn');
         let buy_icon_state = GameKit.ControllerTable.GetNode(buyItem, 'icon_state');
         buy_quest_btn.targetOff(this);
-        buy_quest_btn.off(Node.EventType.TOUCH_END);
-        buy_quest_btn.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(buy_quest_btn, this);
+        bindGuardedClick(buy_quest_btn, this, () => {
             let req = SR.SRActivityPassport.NewPassportCollectBuy(level);
             req.SetCallBack((res: any) => {
                 console.log(res, 'res');
                 if (this.svt_reward) (this.svt_reward as any).updateAll();
             });
             req.Send();
-        }, this);
+        });
 
         if ((userActivityData.received_passport || []).indexOf(level) >= 0) {
             buy_lock.active = false;
@@ -452,8 +458,8 @@ export default class MergePassPortMainWindow extends UIWindow {
         }
 
         free_quest_btn.targetOff(this);
-        free_quest_btn.off(Node.EventType.TOUCH_END);
-        free_quest_btn.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(free_quest_btn, this);
+        bindGuardedClick(free_quest_btn, this, () => {
             let req = SR.SRActivityPassport.NewPassportCollectFree(level);
             req.SetCallBack((res: any) => {
                 if (this.svt_reward) (this.svt_reward as any).updateAll();
@@ -462,7 +468,7 @@ export default class MergePassPortMainWindow extends UIWindow {
                 console.log(res, 'error');
             });
             req.Send();
-        }, this);
+        });
     }
 
     changeAndLogReward(layout: Node, contentModel: any, mergeId: any) {

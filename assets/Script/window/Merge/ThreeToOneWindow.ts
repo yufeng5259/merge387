@@ -1,6 +1,7 @@
 import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import ContentModel from '../../game/items/ContentModel';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 const { ccclass, property, executeInEditMode } = _decorator
 /**
  * Store界面
@@ -49,12 +50,13 @@ class ThreeToOneWindow extends UIWindow {
 
             mergeContentModel.show(content,{iconParams:{dontTouch:true}})
             mergeContentModel.node.off(Node.EventType.TOUCH_END);
-            mergeContentModel.node.on(Node.EventType.TOUCH_END, function(e) {
+            unbindGuardedClick(mergeContentModel.node, this);
+            bindGuardedClick(mergeContentModel.node, this, function(e) {
                 self.selectButton.active = true
                 self.unSelectContent()
                 self.selectContent(this)
                 e.stopPropagation()
-            }.bind(mergeContentModel), this)
+            }.bind(mergeContentModel))
         });
     }
     unSelectContent() {

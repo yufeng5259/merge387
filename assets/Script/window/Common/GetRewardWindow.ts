@@ -83,7 +83,11 @@ export default class GetRewardWindow extends UIWindow {
 
         GameKit.BackKeyManager.registerBackEvent();
 
-        GameKit.SoundManager.playSound('slot_item_win');
+        if (GameKit.SoundManager && GameKit.SoundManager.playGhostRewardSound) {
+            GameKit.SoundManager.playGhostRewardSound();
+        } else {
+            GameKit.SoundManager.playSound('slot_item_win');
+        }
     }
 
     onClose() {

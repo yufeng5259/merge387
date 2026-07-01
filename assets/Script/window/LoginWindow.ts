@@ -637,9 +637,13 @@ export default class LoginWindow extends UIWindow {
             
                 AppKit.LogEventWrap.logEvent("LoadDetail", {phase:"enterGamePlay"})
 
-                this.OpenMainMenuWindow()
+                this.OpenTutorialWindow()
             }
         }.bind(this), 0.1)
+    }
+    OpenTutorialWindow() {
+        UIRoot.instance.openChildWindow("GeneralStotyWindow")
+        this.OpenMainMenuWindow()
     }
     OpenMainMenuWindow() {
         this.setProgress(0.95)

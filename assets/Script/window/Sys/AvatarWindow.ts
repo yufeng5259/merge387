@@ -1,5 +1,6 @@
 import { _decorator, Component, EditBox, Label, Node, ProgressBar, Sprite, SpriteFrame, sys, UIOpacity } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 
 const { ccclass, property } = _decorator;
 
@@ -147,8 +148,8 @@ export default class AvatarWindow extends UIWindow {
             }
             avatarFrameSprite.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.AvatarFrames, avatarFrameName);
         }
-        node.off(Node.EventType.TOUCH_END);
-        node.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(node, this);
+        bindGuardedClick(node, this, () => {
             if (this.tab_index == 0) {
 
             } else {
@@ -157,7 +158,7 @@ export default class AvatarWindow extends UIWindow {
                 avatarFrame.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.AvatarFrames, this.selectedAvatarFrameName);
                 this.list.updateAll();
             }
-        }, this);
+        });
     }
 
     SetAvatar(sprite: any, avatar: any) {

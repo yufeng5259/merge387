@@ -1,5 +1,6 @@
 import { _decorator, Component, Label, Node, ParticleSystem, Sprite, UIOpacity } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
+import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 
 const { ccclass, property } = _decorator;
 
@@ -159,17 +160,19 @@ export default class MergePassPortIconWindow extends UIWindow {
         setOpacity(icon.node, this.selectedId == mergeId ? 255 : 128);
 
         icon.node.targetOff(this);
-        icon.node.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(icon.node, this);
+        bindGuardedClick(icon.node, this, () => {
             this.selectedId = mergeId;
             let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, mergeId);
             this.changeSelectRewards(meta);
             if (this.svt_reward) (this.svt_reward as any).updateAll();
-        }, this);
+        });
 
         infoBtn.targetOff(this);
-        infoBtn.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(infoBtn, this);
+        bindGuardedClick(infoBtn, this, () => {
             UIRoot.instance.openChildWindow('MergeTypeWindow', { mergeId: mergeId });
-        }, this);
+        });
     }
 
     ShowShiningAnim(shiningAnim: ParticleSystem | null) {
@@ -212,13 +215,13 @@ export default class MergePassPortIconWindow extends UIWindow {
         let infoBtn = contentModel.infoBtn;
         let selectFrame = GameKit.ControllerTable.GetNode(child, 'picframe');
 
-        infoBtn.off(Node.EventType.TOUCH_END);
-        infoBtn.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(infoBtn, this);
+        bindGuardedClick(infoBtn, this, () => {
             setOpacity(icon1.node, getOpacity(icon1.node) == 255 ? 128 : 255);
-        }, this);
+        });
 
-        icon1.node.off(Node.EventType.TOUCH_END);
-        icon1.node.on(Node.EventType.TOUCH_END, () => {
+        unbindGuardedClick(icon1.node, this);
+        bindGuardedClick(icon1.node, this, () => {
             if (this.lastSelectFrame) {
                 this.lastSelectFrame.active = false;
             }
@@ -231,7 +234,7 @@ export default class MergePassPortIconWindow extends UIWindow {
             if (this.svt_reward) (this.svt_reward as any).updateAll();
             this.listIndex = this.id_list.findIndex(x => x == this.selectedId) || 0;
             if (this.svt_reward) (this.svt_reward as any).scrollTo(this.listIndex);
-        }, this);
+        });
     }
 
     call_close() {

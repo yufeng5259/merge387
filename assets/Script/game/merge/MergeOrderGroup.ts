@@ -21,6 +21,7 @@ export class MergeOrderGroup extends Component {
     public _orderNodeDefaultPos: Vec3[] = [];
     public _isPlayingClaimAnim = false;
     public _pendingOrdersForInit: any = null;
+    public _hasInitOrderListOnce = false;
 
     onLoad () {
         this._initOrderListFromOrderItem();
@@ -30,6 +31,7 @@ export class MergeOrderGroup extends Component {
         this._cacheOrderNodeDefaultPos();
         this._isPlayingClaimAnim = false;
         this._pendingOrdersForInit = null;
+        this._hasInitOrderListOnce = false;
         this._ensureRuntimeState();
     }
 
@@ -233,6 +235,10 @@ export class MergeOrderGroup extends Component {
         this._ensureRuntimeState();
         orders = this._buildDisplayOrderDataList(orders || []);
         const oldPosByKey = this._snapshotActiveOrderPosByKey();
+        const oldOrderIdentityKeys: any = {};
+        for (const key in this._orderKeyByUuid) {
+            oldOrderIdentityKeys[this._orderKeyByUuid[key]] = true;
+        }
         const nextOrderKeys = orders.map((order: any) => this._buildOrderDataKey(order));
         const currentOrderKeys = this._getActiveOrdersBySiblingIndex()
             .map(order => this._buildOrderDataKey(order._orderData));
@@ -244,10 +250,14 @@ export class MergeOrderGroup extends Component {
                     break;
                 }
             }
-            if (same) return;
+            if (same) {
+                this._hasInitOrderListOnce = true;
+                return;
+            }
         }
 
         const usedOrders: MergeOrder[] = [];
+        let hasNewOrder = false;
         for (let i = 0; i < orders.length && i < this.orderList.length; i++) {
             const orderData = orders[i];
             const order = this._findReusableOrderForData(orderData, usedOrders);
@@ -257,6 +267,9 @@ export class MergeOrderGroup extends Component {
             const dataKey = this._buildOrderDataKey(orderData);
             const oldIdentityKey = this._orderKeyByUuid[order.node.uuid];
             const oldDataKey = this._buildOrderDataKey(order._orderData);
+            if (this._hasInitOrderListOnce && !oldOrderIdentityKeys[identityKey]) {
+                hasNewOrder = true;
+            }
             if (oldIdentityKey !== identityKey) {
                 const defaultIndex = this.orderList.indexOf(order);
                 this._restoreOrderNodeTransformByIndex(defaultIndex);
@@ -283,6 +296,10 @@ export class MergeOrderGroup extends Component {
             .map(order => this._orderKeyByUuid[order.node.uuid] || '');
         this._updateLayout();
         this._moveOrdersFromOldPos(oldPosByKey, 0.22);
+        if (hasNewOrder && GameKit.SoundManager && GameKit.SoundManager.playOrderNewSound) {
+            GameKit.SoundManager.playOrderNewSound();
+        }
+        this._hasInitOrderListOnce = true;
     }
 
     InitOrderList (orders: any) {
