@@ -24,9 +24,13 @@ class StoreWindow extends UIWindow {
     storeItems = []
     storeItemGroupSize = 4
     tempPutbackMergeData: any[] = []
+    private _isClosing = false
+    private _closeTouchStartPos: { x: number, y: number } | null = null
     
 
     onShow(showParams) {
+        this._isClosing = false
+        this.bindCloseButtonTouchGuard()
         this.storeItems=[]
         this.tempPutbackMergeData = []
         let metas = Meta.MetaManager.GetMetas(Meta.MetaType.MergeWharehouse)
@@ -61,7 +65,12 @@ class StoreWindow extends UIWindow {
 
 
     /** 点击事件：close */
-    event_close() {
+    event_close(event?: any) {
+        event?.stopPropagation?.()
+        if (this._isClosing) {
+            return
+        }
+        this._isClosing = true
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
             Game.MergeTutorialManager.EmitNodeClick('backpack_close_button')
         }
@@ -85,7 +94,9 @@ class StoreWindow extends UIWindow {
         }
         for (let i = this.storeItemGroupSize; i < container.children.length; i++) {
             container.children[i].active = false
+            container.children[i].off(Node.EventType.TOUCH_START)
             container.children[i].off(Node.EventType.TOUCH_END)
+            container.children[i].off(Node.EventType.TOUCH_CANCEL)
         }
     }
 
@@ -100,7 +111,9 @@ class StoreWindow extends UIWindow {
         if (!node) {
             return
         }
+        node.off(Node.EventType.TOUCH_START)
         node.off(Node.EventType.TOUCH_END)
+        node.off(Node.EventType.TOUCH_CANCEL)
         if (index >= this.storeItems.length) {
             node.active = false
             return
@@ -147,7 +160,26 @@ class StoreWindow extends UIWindow {
             addGrid.active = false
             icon.spriteFrame = GamePlay.instance.mergeRoot.mergeLevelNode.GetSpriteFrameByMergeId(mergeId);
         }
-        node.on(Node.EventType.TOUCH_END, () => {
+        let touchStartPos: { x: number, y: number } | null = null
+        let touchStartedInItem = false
+        node.on(Node.EventType.TOUCH_START, (event: any) => {
+            touchStartPos = this.getTouchLocation(event)
+            touchStartedInItem = !this.isTouchInCloseButton(event) && this.isTouchInNode(event, node)
+        })
+        node.on(Node.EventType.TOUCH_CANCEL, () => {
+            touchStartPos = null
+            touchStartedInItem = false
+        })
+        node.on(Node.EventType.TOUCH_END, (event: any) => {
+            let touchEndPos = this.getTouchLocation(event)
+            if (this._isClosing || this.isTouchInCloseButton(event) || !touchStartedInItem || !this.isTouchInNode(event, node) || !touchStartPos || !touchEndPos || this.isTouchMoved(touchStartPos, touchEndPos, 20)) {
+                touchStartPos = null
+                touchStartedInItem = false
+                return
+            }
+            event?.stopPropagation?.()
+            touchStartPos = null
+            touchStartedInItem = false
             if (addGrid.active) {
                 let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeWharehouse, index + 1)
                 if (!meta) {
@@ -182,6 +214,74 @@ class StoreWindow extends UIWindow {
             console.log('点击了仓库物品', index);
         })
     }
+
+    private bindCloseButtonTouchGuard() {
+        this.node.off(Node.EventType.TOUCH_START, this.onWindowTouchStart, this, true)
+        this.node.off(Node.EventType.TOUCH_END, this.onWindowTouchEnd, this, true)
+        this.node.off(Node.EventType.TOUCH_CANCEL, this.onWindowTouchCancel, this, true)
+        this.node.on(Node.EventType.TOUCH_START, this.onWindowTouchStart, this, true)
+        this.node.on(Node.EventType.TOUCH_END, this.onWindowTouchEnd, this, true)
+        this.node.on(Node.EventType.TOUCH_CANCEL, this.onWindowTouchCancel, this, true)
+    }
+
+    private onWindowTouchStart(event: any) {
+        if (!this.isTouchInCloseButton(event)) {
+            this._closeTouchStartPos = null
+            return
+        }
+        this._closeTouchStartPos = this.getTouchLocation(event)
+        event?.stopPropagation?.()
+    }
+
+    private onWindowTouchEnd(event: any) {
+        if (!this._closeTouchStartPos || !this.isTouchInCloseButton(event)) {
+            this._closeTouchStartPos = null
+            return
+        }
+        let touchEndPos = this.getTouchLocation(event)
+        if (!touchEndPos || this.isTouchMoved(this._closeTouchStartPos, touchEndPos, 20)) {
+            this._closeTouchStartPos = null
+            return
+        }
+        this._closeTouchStartPos = null
+        event?.stopPropagation?.()
+        this.event_close(event)
+    }
+
+    private onWindowTouchCancel() {
+        this._closeTouchStartPos = null
+    }
+
+    private getTouchLocation(event?: any) {
+        let pos = event?.getUILocation ? event.getUILocation() : event?.getLocation?.()
+        if (!pos) {
+            return null
+        }
+        return { x: pos.x, y: pos.y }
+    }
+
+    private isTouchMoved(startPos: { x: number, y: number }, endPos: { x: number, y: number }, threshold: number) {
+        let dx = endPos.x - startPos.x
+        let dy = endPos.y - startPos.y
+        return dx * dx + dy * dy > threshold * threshold
+    }
+
+    private isTouchInNode(event: any, node: Node) {
+        let pos = this.getTouchLocation(event)
+        let transform = node?.getComponent(UITransform)
+        if (!pos || !transform) {
+            return false
+        }
+        let rect = transform.getBoundingBoxToWorld()
+        return pos.x >= rect.x && pos.x <= rect.x + rect.width && pos.y >= rect.y && pos.y <= rect.y + rect.height
+    }
+
+    private isTouchInCloseButton(event: any) {
+        let content = this.node.getChildByName('content')
+        let closeButton = content ? content.getChildByName('btn_close') : null
+        return closeButton ? this.isTouchInNode(event, closeButton) : false
+    }
+
     update(){
         this.listBg.setPosition(this.listBg.position.x, this.list.content.node.position.y, this.listBg.position.z)
     }

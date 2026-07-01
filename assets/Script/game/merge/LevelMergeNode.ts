@@ -487,6 +487,23 @@ export class LevelMergeNode extends Component {
     // 触摸：选子、拖拽、落点判定（双击意图委托 MergeItem）
     // =========================================================================
 
+    _getTouchUILocation(touchOrEvent?: any) {
+        if (touchOrEvent && touchOrEvent.getUILocation) {
+            let pos = touchOrEvent.getUILocation()
+            return new Vec2(pos.x, pos.y)
+        }
+        if (touchOrEvent && touchOrEvent.getLocation) {
+            let pos = touchOrEvent.getLocation()
+            return new Vec2(pos.x, pos.y)
+        }
+        return new Vec2()
+    }
+
+    _getTouchLocalPoint(touchOrEvent?: any) {
+        let pos = this._getTouchUILocation(touchOrEvent)
+        return this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(pos.x, pos.y, 0), new Vec3())
+    }
+
     registerEvents() {
         this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -822,12 +839,12 @@ export class LevelMergeNode extends Component {
         this.touchStartNode = null
         this.touchStartPosName = null
 
-        this.pressPosStart = e.getLocation()
+        this.pressPosStart = this._getTouchUILocation(e)
         var touches = e.getTouches();
         if (touches.length == 1) {
             //
             var touch1 = touches[0]
-            var touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3());
+            var touchPoint1 = this._getTouchLocalPoint(touch1);
             let tp = GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, this.getMergeBoardLayout())
             let pname = tp.x + '_' + tp.y;
 
@@ -893,7 +910,7 @@ export class LevelMergeNode extends Component {
         var touches = e.getTouches();
         if (touches.length == 1) {
             var touch1 = touches[0]
-            var screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
+            var screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
             if (screenDist < 15) return
             if (this._isTutorialClickGeneratorOnlyRule()) {
                 this.itemCanDrag = false
@@ -901,7 +918,7 @@ export class LevelMergeNode extends Component {
                 return
             }
             this.picFrame.active = false;
-            var touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3());
+            var touchPoint1 = this._getTouchLocalPoint(touch1);
             if (this.touchStartNode) {
             this.touchStartNode.setPosition(touchPoint1)
             }
@@ -922,9 +939,9 @@ export class LevelMergeNode extends Component {
         if (touches.length !== 1) return
 
         let touch1 = touches[0]
-        let touchPoint1 = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(touch1.getLocation().x, touch1.getLocation().y, 0), new Vec3())
+        let touchPoint1 = this._getTouchLocalPoint(touch1)
         let boardLayout = this.getMergeBoardLayout()
-        let screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
+        let screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
         let isTap = screenDist < 40
 
         let tp = GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, boardLayout)
@@ -1271,7 +1288,7 @@ export class LevelMergeNode extends Component {
      */
     _touchEndSameCellTap(touch1?: any, endPos?: any, endPosName?: any, startMergeItem?: any, dropMergeItem?: any, dropNode?: any) {
         this.touchStartNode.setPosition(endPos.x, endPos.y, 0)
-        let dist1 = this.pressPosStart ? Vec2.distance(this.pressPosStart, touch1.getLocation()) : 0
+        let dist1 = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
         if (dist1 < 40) {
             // this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
             if (this.lastSelectMergeItem && this.lastSelectMergeItem.node == dropNode) {

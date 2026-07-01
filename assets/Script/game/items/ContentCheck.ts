@@ -181,8 +181,12 @@ ContentCheck.CheckCash = function(price) {
     if (userdata >= price) {
         return true
     } else {
-        UIRoot.instance.GetWindow("ShopWindow").tab_node_array.changeIndex(0)
-        //UIRoot.instance.openChildWindow("ShopWindow", {showCash: true})
+        let shopWindow = UIRoot.instance.GetWindow("ShopWindow")
+        if (shopWindow && shopWindow.tab_node_array) {
+            shopWindow.tab_node_array.changeIndex(0)
+        } else {
+            UIRoot.instance.openChildWindow("ShopWindow", {showCash: true})
+        }
     }
     return false
 }
