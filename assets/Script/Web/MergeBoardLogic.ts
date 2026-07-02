@@ -49,22 +49,7 @@ import MergeOrderLogicModule from "./MergeOrderLogic";
 import MergeGeneratorModule from "./MergeGenerator";
 import MergeContentUtilModule from "../game/merge/MergeContentUtil";
 
-type MergeLogicModule = Record<string, any>;
-type MergeResult = Record<string, any> & {
-    success: boolean;
-    errorCode: string;
-    errorMsg: string;
-    boardState: any;
-    sideEffects?: any[];
-};
-type MergeBoardWindow = Window & {
-    MergeBoardLogic?: MergeLogicModule;
-    MergeOrderLogic?: MergeLogicModule;
-    MergeContentUtil?: MergeLogicModule;
-    MergeGenerator?: MergeLogicModule;
-};
-
-var MergeBoardLogic: MergeLogicModule = {};
+var MergeBoardLogic: any = {};
 
 // ====================================================================
 //  常量
@@ -1369,7 +1354,7 @@ MergeBoardLogic.recordObtainedPieces = function (boardState, pieceDatas) {
 //  辅助：结果对象工�?
 // ====================================================================
 
-function _baseResult(boardState): MergeResult {
+function _baseResult(boardState): any {
     return {
         success: false,
         errorCode: '',
@@ -1385,7 +1370,7 @@ function _baseResult(boardState): MergeResult {
  * 同时检�?boardState.warehouse（如果存在）以匹配仓库中的棋�?
  * 前后端共用此函数，保证订单进度始终与棋盘数据同步
  */
-function _postProcessResult(result: MergeResult) {
+function _postProcessResult(result: any) {
     if (!result.success) return result;
     var bs = result.boardState;
     if (!bs || !bs.orderData || !bs.orderData.orders || bs.orderData.orders.length === 0) return result;
@@ -3021,8 +3006,8 @@ MergeBoardLogic.initBoard = function (boardState, configProvider) {
 //  MergeOrderLogic 延迟引用（避免循环依赖）
 // ====================================================================
 
-var _cachedMergeOrderLogic: MergeLogicModule | null = MergeOrderLogicModule;
-var _cachedMergeContentUtil: MergeLogicModule | null = MergeContentUtilModule;
+var _cachedMergeOrderLogic: any = MergeOrderLogicModule;
+var _cachedMergeContentUtil: any = MergeContentUtilModule;
 
 /**
  * 获取 MergeOrderLogic 引用（延迟加载）
@@ -3031,8 +3016,8 @@ var _cachedMergeContentUtil: MergeLogicModule | null = MergeContentUtilModule;
  */
 MergeBoardLogic._getMergeOrderLogic = function () {
     if (_cachedMergeOrderLogic) return _cachedMergeOrderLogic;
-    if (typeof window !== 'undefined' && (window as MergeBoardWindow).MergeOrderLogic) {
-        _cachedMergeOrderLogic = (window as MergeBoardWindow).MergeOrderLogic || null;
+    if (typeof window !== 'undefined' && (window as any).MergeOrderLogic) {
+        _cachedMergeOrderLogic = (window as any).MergeOrderLogic || null;
     }
     return _cachedMergeOrderLogic;
 };
@@ -3043,8 +3028,8 @@ MergeBoardLogic.setMergeOrderLogic = function (mol) {
 
 MergeBoardLogic._getMergeContentUtil = function () {
     if (_cachedMergeContentUtil) return _cachedMergeContentUtil;
-    if (!_cachedMergeContentUtil && typeof window !== 'undefined' && (window as MergeBoardWindow).MergeContentUtil) {
-        _cachedMergeContentUtil = (window as MergeBoardWindow).MergeContentUtil || null;
+    if (!_cachedMergeContentUtil && typeof window !== 'undefined' && (window as any).MergeContentUtil) {
+        _cachedMergeContentUtil = (window as any).MergeContentUtil || null;
     }
     if (!_cachedMergeContentUtil && typeof Game !== 'undefined' && Game.MergeContentUtil) {
         _cachedMergeContentUtil = Game.MergeContentUtil;
@@ -3095,7 +3080,7 @@ MergeBoardLogic.checkAndDeductResource = function (boardState, consumeStr) {
 //  MergeGenerator 延迟引用（生成器产出算法模块�?
 // ====================================================================
 
-var _cachedMergeGenerator: MergeLogicModule | null = MergeGeneratorModule;
+var _cachedMergeGenerator: any = MergeGeneratorModule;
 
 /**
  * 获取 MergeGenerator 引用（延迟加载）
@@ -3103,8 +3088,8 @@ var _cachedMergeGenerator: MergeLogicModule | null = MergeGeneratorModule;
  */
 MergeBoardLogic._getMergeGenerator = function () {
     if (_cachedMergeGenerator) return _cachedMergeGenerator;
-    if (!_cachedMergeGenerator && typeof window !== 'undefined' && (window as MergeBoardWindow).MergeGenerator) {
-        _cachedMergeGenerator = (window as MergeBoardWindow).MergeGenerator || null;
+    if (!_cachedMergeGenerator && typeof window !== 'undefined' && (window as any).MergeGenerator) {
+        _cachedMergeGenerator = (window as any).MergeGenerator || null;
     }
     if (!_cachedMergeGenerator && typeof Game !== 'undefined' && Game.MergeGenerator) {
         _cachedMergeGenerator = Game.MergeGenerator;
@@ -3343,7 +3328,7 @@ MergeBoardLogic.prepareWarehousePieceForGrid = function (boardState, pieceData, 
 };
 
 MergeBoardLogic.movePieceDataToWarehouse = function (boardState, pieceData) {
-    var result: MergeResult = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
+    var result: any = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
     if (!MergeBoardLogic.parsePieceData(pieceData)) {
         result.errorCode = 'INVALID_PARAMS';
         result.errorMsg = 'invalid pieceData';
@@ -3368,7 +3353,7 @@ MergeBoardLogic.movePieceDataToWarehouse = function (boardState, pieceData) {
 };
 
 MergeBoardLogic.movePieceFromGridToWarehouse = function (boardState, cellKey) {
-    var result: MergeResult = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
+    var result: any = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
     var pieceData = boardState.data ? boardState.data[cellKey] : null;
     if (!pieceData) { result.errorCode = 'PIECE_NOT_FOUND'; result.errorMsg = 'grid cell is empty'; return result; }
     if (MergeBoardLogic.isBubblePieceData(pieceData)) { result.errorCode = 'BUBBLE_OPERATION_FORBIDDEN'; result.errorMsg = '气泡棋子不能放入仓库'; return result; }
@@ -3384,7 +3369,7 @@ MergeBoardLogic.movePieceFromGridToWarehouse = function (boardState, cellKey) {
 
 /** 仓库 -> 棋盘（下一个空格） */
 MergeBoardLogic.movePieceFromWarehouseToGrid = function (boardState, warehouseIndex, configProvider) {
-    var result: MergeResult = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
+    var result: any = { success: false, errorCode: '', errorMsg: '', boardState: boardState };
     var key = String(warehouseIndex);
     var pieceData = boardState.warehouse ? boardState.warehouse[key] : null;
     if (!pieceData) { result.errorCode = 'WAREHOUSE_ITEM_NOT_FOUND'; result.errorMsg = 'warehouse item not found'; return result; }
@@ -3404,7 +3389,7 @@ MergeBoardLogic.movePieceFromWarehouseToGrid = function (boardState, warehouseIn
 
 /** 升级仓库容量（容�?1；货币消耗由调用方处理） */
 MergeBoardLogic.batchMoveFromWarehouseByData = function (boardState, pieceDatas, configProvider) {
-    var result: MergeResult = {
+    var result: any = {
         success: false,
         errorCode: '',
         errorMsg: '',
@@ -3476,7 +3461,7 @@ MergeBoardLogic.upgradeWarehouseCapacity = function (boardState) {
 // ====================================================================
 
 if (typeof window !== 'undefined') {
-    (window as MergeBoardWindow).MergeBoardLogic = MergeBoardLogic;
+    (window as any).MergeBoardLogic = MergeBoardLogic;
 }
 Game.MergeBoardLogic = MergeBoardLogic;
 

@@ -552,8 +552,20 @@ MergeOrderLogic._getAllElementMetas = function (configProvider) {
         meta.level = own;
         return own;
     };
-    for (var j = 0; j < list.length; j++) computeLevel(list[j].id);
-    return list;
+    var enabled = [];
+    for (var j = 0; j < list.length; j++) {
+        computeLevel(list[j].id);
+        if (MergeOrderLogic._getOrderPieceLevel(list[j]) > 0) {
+            enabled.push(list[j]);
+        }
+    }
+    return enabled;
+};
+
+MergeOrderLogic._getOrderPieceLevel = function (meta) {
+    if (!meta) return 0;
+    var orderLv = MergeOrderLogic._toInt(meta.orderLv, 0);
+    return orderLv > 0 ? orderLv : 0;
 };
 
 MergeOrderLogic._isGeneratorPiece = function (pieceId, configProvider) {
@@ -658,7 +670,8 @@ MergeOrderLogic._choosePieceForLevel = function (elements, series, level, usedId
         if (MergeOrderLogic._isGeneratorPiece(meta.id, configProvider)) continue;
         if (series != null && String(meta.series) !== String(series)) continue;
         if (usedIds[String(meta.id)]) continue;
-        var metaLevel = MergeOrderLogic._toInt(meta.level, 0);
+        var metaLevel = MergeOrderLogic._getOrderPieceLevel(meta);
+        if (metaLevel <= 0) continue;
         fallback.push(meta);
         if (metaLevel === level) {
             candidates.push(meta);
@@ -906,7 +919,7 @@ MergeOrderLogic._createRecycleOrderForSlot = function (orderState, slot, slotInd
         var item = pieceIndex.flat[i];
         if (seenIds[String(item.pieceId)]) continue;
         var meta = MergeOrderLogic._getElementMeta(item.pieceId, configProvider) || {};
-        var level = MergeOrderLogic._toInt(meta.level, 0);
+        var level = MergeOrderLogic._getOrderPieceLevel(meta);
         if (level <= threshold) continue;
         seenIds[String(item.pieceId)] = true;
         candidates.push({

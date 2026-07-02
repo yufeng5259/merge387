@@ -17,7 +17,7 @@ export class StoreItem extends Component {
     @property(ContentModel)
     public contentModel: ContentModel | null = null;
 
-    start () {
+    start() {
     }
 }
 
