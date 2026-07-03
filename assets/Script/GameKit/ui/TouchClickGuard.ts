@@ -20,6 +20,7 @@ type GuardedClickRecord = {
 };
 
 const GUARDED_CLICK_RECORDS = '__guardedClickRecords';
+const STOP_PROPAGATION_SHIM = '__touchClickGuardStopPropagationShim';
 
 function getRecords(node: Node): GuardedClickRecord[] {
     const data = node as any;
@@ -51,6 +52,31 @@ export function isTouchMoved(startPos: TouchPoint, endPos: TouchPoint, threshold
     const dx = endPos.x - startPos.x;
     const dy = endPos.y - startPos.y;
     return dx * dx + dy * dy > threshold * threshold;
+}
+
+export function stopTouchPropagation(event?: any): void {
+    if (!event) {
+        return;
+    }
+    if (typeof event.stopPropagation === 'function' && !event.stopPropagation[STOP_PROPAGATION_SHIM]) {
+        event.stopPropagation();
+        return;
+    }
+    markTouchPropagationStopped(event);
+}
+
+function markTouchPropagationStopped(event: any): void {
+    event.propagationStopped = true;
+    event._propagationStopped = true;
+}
+
+function normalizeTouchEvent<T extends EventTouch>(event: T): T {
+    const data = event as any;
+    if (typeof data.stopPropagation !== 'function') {
+        data.stopPropagation = () => markTouchPropagationStopped(data);
+        data.stopPropagation[STOP_PROPAGATION_SHIM] = true;
+    }
+    return event;
 }
 
 export function unbindGuardedClick(node: Node | null | undefined, owner: any): void {
@@ -116,12 +142,12 @@ export function bindGuardedClick(
 
         clear();
         if (stopPropagation) {
-            (event as any).stopPropagation?.();
+            stopTouchPropagation(event);
         }
         if (options.passBoundTarget) {
             (event as any).boundTarget = node;
         }
-        callback.call(owner, event);
+        callback.call(owner, normalizeTouchEvent(event));
     };
 
     const onCancel = () => {

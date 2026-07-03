@@ -1,7 +1,7 @@
 import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import ContentModel from '../../game/items/ContentModel';
-import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
+import { bindGuardedClick, stopTouchPropagation, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 const { ccclass, property, executeInEditMode } = _decorator
 /**
  * Store界面
@@ -55,7 +55,7 @@ class ThreeToOneWindow extends UIWindow {
                 self.selectButton.active = true
                 self.unSelectContent()
                 self.selectContent(this)
-                e.stopPropagation()
+                stopTouchPropagation(e)
             }.bind(mergeContentModel))
         });
     }

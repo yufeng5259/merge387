@@ -1,10 +1,7 @@
 import { _decorator, Component, EventHandler, EventTouch, Node } from 'cc';
+import { stopTouchPropagation } from './TouchClickGuard';
 
 const { ccclass, property } = _decorator;
-
-type PropagationEventTouch = EventTouch & {
-    stopPropagation: () => void;
-};
 
 @ccclass('EventListenerEx')
 export class EventListenerEx extends Component {
@@ -74,7 +71,7 @@ export class EventListenerEx extends Component {
 
     private stopPropagationIfNeeded(event: EventTouch): void {
         if (!this.inScrollView) {
-            (event as PropagationEventTouch).stopPropagation();
+            stopTouchPropagation(event);
         }
     }
 }

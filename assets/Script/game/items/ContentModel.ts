@@ -1,5 +1,5 @@
 import { _decorator, Color, Component, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
-import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
+import { bindGuardedClick, stopTouchPropagation, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 const { ccclass, property } = _decorator;
 
 function getNodeHeight (node: Node | null) {
@@ -104,7 +104,7 @@ export class ContentModel extends Component {
                     pos,
                     height: getNodeHeight(this.icon!.node),
                 });
-                e.stopPropagation();
+                stopTouchPropagation(e);
             });
         } else if (this.content.Type() === Game.Content.Types.Gift) {
             if (this.infoBtn) this.infoBtn.active = true;
@@ -118,7 +118,7 @@ export class ContentModel extends Component {
                     pos,
                     height: getNodeHeight(this.icon!.node),
                 });
-                e.stopPropagation();
+                stopTouchPropagation(e);
             });
         } else if (this.content.Type() === Game.Content.Types.CardChest) {
             if (this.content.Id() === 14 || this.content.Id() === 15) {
@@ -133,7 +133,7 @@ export class ContentModel extends Component {
                         pos,
                         height: getNodeHeight(this.icon!.node),
                     });
-                    e.stopPropagation();
+                    stopTouchPropagation(e);
                 });
             }
         } else if (this.content.Type() === Game.Content.Types.MergeIcon) {
@@ -154,7 +154,7 @@ export class ContentModel extends Component {
                 if (infoBtnParams.callback) {
                     infoBtnParams.callback({ content: this.content, contentModel: this });
                 }
-                e.stopPropagation();
+                stopTouchPropagation(e);
             });
         }
 
@@ -167,7 +167,7 @@ export class ContentModel extends Component {
             if (iconParams.callback) {
                 iconParams.callback({ content: this.content, contentModel: this });
             }
-            e.stopPropagation();
+            stopTouchPropagation(e);
         }, { shouldEnd: () => iconParams.forceTouch !== false });
     }
 

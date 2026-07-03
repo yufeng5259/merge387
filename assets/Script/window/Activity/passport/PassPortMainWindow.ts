@@ -1,6 +1,6 @@
 ﻿import { _decorator, Button, Component, instantiate, Label, Node, ParticleSystem, ProgressBar, UITransform, Vec3, view } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
-import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
+import { bindGuardedClick, stopTouchPropagation, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 import PassPortDesWindow from './PassPortDesWindow';
 
 const { ccclass, property } = _decorator;
@@ -92,7 +92,7 @@ export default class PassPortMainWindow extends UIWindow {
             let parent = this.quest_progress.node.parent
             let dpos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO))
             PassPortDesWindow.Show(this.content, {parent:this.node, pos:dpos, height:this.getNodeHeight(parent)})
-            e.stopPropagation()
+            stopTouchPropagation(e)
         
         })
 

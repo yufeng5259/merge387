@@ -1,6 +1,6 @@
 import { _decorator, Button, Color, Component, Label, Node, ProgressBar, Sprite, SpriteAtlas, tween, UITransform, Vec3, view } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
-import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
+import { bindGuardedClick, stopTouchPropagation, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 
 const { ccclass, property } = _decorator;
 
@@ -139,7 +139,7 @@ export default class MergePassPortMainWindow extends UIWindow {
                 if (!parent) return;
                 let dpos = this.node.getComponent(UITransform)!.convertToNodeSpaceAR(parent.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO));
                 PassPortDesWindow.Show(this.content, { parent: this.node, pos: dpos, height: getNodeHeight(parent) });
-                e.stopPropagation();
+                stopTouchPropagation(e);
             });
         }
 

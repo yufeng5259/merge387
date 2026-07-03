@@ -17,6 +17,7 @@ import {
     Vec3,
     view,
 } from 'cc';
+import { stopTouchPropagation } from '../../GameKit/ui/TouchClickGuard';
 const { ccclass, property } = _decorator;
 
 function clamp(value: number, min: number, max: number) {
@@ -128,7 +129,7 @@ export class MapControlle extends Component {
         this.camera.screenToWorld(new Vec3(screenPos.x, screenPos.y, 0), realPos);
         const targetPos = this.camera.node.parent.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(realPos.x, realPos.y, 0));
         this.smoothOperate(this.camera, targetPos, scale);
-        event.stopPropagation();
+        stopTouchPropagation(event);
     }
 
     onDestroy() {
@@ -165,7 +166,7 @@ export class MapControlle extends Component {
             this.isSingleTouchMoving = false;
             this.isPinching = false;
         }
-        event.stopPropagation();
+        stopTouchPropagation(event);
     }
 
     onTouchMove(event: any) {
@@ -214,7 +215,7 @@ export class MapControlle extends Component {
             const targetPos = this.camera.node.parent.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(realPos.x, realPos.y, 0));
             this.smoothOperate(this.camera, targetPos, targetScale);
         }
-        event.stopPropagation();
+        stopTouchPropagation(event);
     }
 
     initClickEffectPool() {
