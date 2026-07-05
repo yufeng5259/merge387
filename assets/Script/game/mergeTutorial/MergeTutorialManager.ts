@@ -24,6 +24,13 @@ MergeTutorialManager.isReportingFinish = false
 MergeTutorialManager.allowTutorialFinalSave = false
 MergeTutorialManager.finishRetryTimer = null
 MergeTutorialManager.finishRetryDelay = 2000
+MergeTutorialManager.triggerStartRetryTimer = null
+MergeTutorialManager.triggerStartRetryDelay = 500
+MergeTutorialManager.TriggerStartBlockWindows = [
+    'MainTutorialFinishWindow',
+    'CardChestOpenWindow',
+    'CardCollectWindow',
+]
 MergeTutorialManager.normalOrderDataBackup = null
 MergeTutorialManager.hasNormalOrderBackup = false
 MergeTutorialManager.ordersHiddenForTutorial = false
@@ -56,6 +63,7 @@ MergeTutorialManager.CompleteTypes = {
     TutorialOrderSubmit: 'tutorial_order_submit',
     NodeClick: 'node_click',
     DragToBackpack: 'drag_to_backpack',
+    FlowEvent: 'flow_event',
     None: 'none',
 }
 MergeTutorialManager.EventTypes = {
@@ -68,6 +76,7 @@ MergeTutorialManager.EventTypes = {
     FullscreenClick: 'fullscreen_click',
     NodeClick: 'node_click',
     DragToBackpack: 'drag_to_backpack',
+    FlowEvent: 'flow_event',
 }
 MergeTutorialManager.TriggerBlockModes = {
     None: 'none',
@@ -86,6 +95,10 @@ MergeTutorialManager.Clear = function() {
     if (this.finishRetryTimer) {
         clearTimeout(this.finishRetryTimer)
         this.finishRetryTimer = null
+    }
+    if (this.triggerStartRetryTimer) {
+        clearTimeout(this.triggerStartRetryTimer)
+        this.triggerStartRetryTimer = null
     }
     this.normalOrderDataBackup = null
     this.hasNormalOrderBackup = false
@@ -111,22 +124,70 @@ MergeTutorialManager.GetCurrentId = function() {
     return this.currentId || this.StartId
 }
 
+MergeTutorialManager.ShouldUseLocalP4Meta = function(id) {
+    return !!(LocalMergeTutorialTestData &&
+        LocalMergeTutorialTestData.OverrideP4 &&
+        LocalMergeTutorialTestData.IsP4Id &&
+        LocalMergeTutorialTestData.IsP4Id(id))
+}
+
+MergeTutorialManager.MakeLocalMeta = function(metaClass, data) {
+    if (!metaClass || !data || !metaClass.MakeEntity) return null
+    return metaClass.MakeEntity(data)
+}
+
 MergeTutorialManager.GetMeta = function(metaId) {
+    if (this.ShouldUseLocalP4Meta(metaId) &&
+        LocalMergeTutorialTestData.GetMergeTutorialStep &&
+        Meta.MergeTutorialMeta) {
+        var localStep = LocalMergeTutorialTestData.GetMergeTutorialStep(metaId)
+        if (localStep) return this.MakeLocalMeta(Meta.MergeTutorialMeta, localStep)
+    }
     return Meta.MetaManager.GetMeta(Meta.MetaType.MergeTutorial, metaId)
 }
 
 MergeTutorialManager.GetGuideMeta = function(guideId) {
     if (!guideId) return null
+    if (this.ShouldUseLocalP4Meta(guideId) &&
+        LocalMergeTutorialTestData.GetMergeTutorialGuide &&
+        Meta.MergeTutorialGuideMeta) {
+        var localGuide = LocalMergeTutorialTestData.GetMergeTutorialGuide(guideId)
+        if (localGuide) return this.MakeLocalMeta(Meta.MergeTutorialGuideMeta, localGuide)
+    }
     return Meta.MetaManager.GetMeta(Meta.MetaType.MergeTutorialGuide, guideId)
 }
 
 MergeTutorialManager.GetTriggerMeta = function(triggerId) {
     if (!triggerId) return null
+    if (this.ShouldUseLocalP4Meta(triggerId) &&
+        LocalMergeTutorialTestData.GetMergeTutorialTrigger &&
+        Meta.MergeTutorialTriggerMeta) {
+        var localTrigger = LocalMergeTutorialTestData.GetMergeTutorialTrigger(triggerId)
+        if (localTrigger) return this.MakeLocalMeta(Meta.MergeTutorialTriggerMeta, localTrigger)
+    }
     return Meta.MetaManager.GetMeta(Meta.MetaType.MergeTutorialTrigger, triggerId)
 }
 
 MergeTutorialManager.GetTriggerMetas = function() {
-    return Meta.MetaManager.GetMetas(Meta.MetaType.MergeTutorialTrigger) || {}
+    var remoteMetas = Meta.MetaManager.GetMetas(Meta.MetaType.MergeTutorialTrigger) || {}
+    var metas = {}
+    for (var remoteId in remoteMetas) {
+        if (Object.prototype.hasOwnProperty.call(remoteMetas, remoteId)) {
+            metas[remoteId] = remoteMetas[remoteId]
+        }
+    }
+    if (LocalMergeTutorialTestData &&
+        LocalMergeTutorialTestData.OverrideP4 &&
+        LocalMergeTutorialTestData.GetMergeTutorialTriggers &&
+        Meta.MergeTutorialTriggerMeta) {
+        var localTriggers = LocalMergeTutorialTestData.GetMergeTutorialTriggers()
+        for (var id in localTriggers) {
+            if (!Object.prototype.hasOwnProperty.call(localTriggers, id)) continue
+            var localMeta = this.MakeLocalMeta(Meta.MergeTutorialTriggerMeta, localTriggers[id])
+            if (localMeta) metas[id] = localMeta
+        }
+    }
+    return metas
 }
 
 MergeTutorialManager.IsFinished = function() {
@@ -303,7 +364,7 @@ MergeTutorialManager.ResolveGuideTargetNode = function(targetKey) {
     }
 
     if (targetKey === 'building_upgrade_button') {
-        var buildWindows = ['MapBuyBuildWindow', 'MapBuildUpgradeWindow', 'MapBuildStageUpgradeWindow', 'MapElementWindow']
+        var buildWindows = ['MapBuyBuildWindow', 'MapBuildUpgradeWindow', 'MapBuildStageUpgradeWindow']
         for (var i = 0; i < buildWindows.length; i++) {
             var mapElementWnd = this.GetWindowInstance(buildWindows[i])
             if (!mapElementWnd) continue
@@ -416,18 +477,43 @@ MergeTutorialManager.GetNodeWorldGeometry = function(node, padding) {
     }
 }
 
+MergeTutorialManager.GetMapBuildWorldGeometry = function(node) {
+    if (!node) return null
+    var worldPos = this.GetNodeGuideWorldPos(node)
+    if (!worldPos) return null
+    var diameter = this.MapBuildGuideDiameter || 150
+    return {
+        shape: 'circle',
+        x: worldPos.x,
+        y: worldPos.y,
+        width: diameter,
+        height: diameter,
+        tweenDuration: 0.2,
+    }
+}
+
 MergeTutorialManager.GetNodeGuideWorldPos = function(node) {
     if (!node) return null
     var worldPos = node.getComponent(UITransform)!.convertToWorldSpaceAR(Vec3.ZERO)
     if (this.IsMapBuildNode(node)) {
         var camera = this.GetVillageCamera()
-        if (camera) {
-            var screenPos = new Vec3()
-            camera.worldToScreen(new Vec3(worldPos.x, worldPos.y, worldPos.z || 0), screenPos)
+        var screenPos = this.GetCameraWorldToScreenPoint(camera, worldPos)
+        if (screenPos) {
             return this.ConvertScreenPointToUiWorldPos(screenPos)
         }
     }
     return worldPos
+}
+
+MergeTutorialManager.GetCameraWorldToScreenPoint = function(camera, worldPos) {
+    if (!camera || !worldPos || !camera.worldToScreen) return null
+    var out = new Vec3()
+    try {
+        camera.worldToScreen(new Vec3(worldPos.x, worldPos.y, worldPos.z || 0), out)
+    } catch (e) {
+        return null
+    }
+    return out
 }
 
 MergeTutorialManager.ConvertScreenPointToUiWorldPos = function(screenPos) {
@@ -464,7 +550,12 @@ MergeTutorialManager.GetNodeWorldPos = function(targetKey) {
 }
 
 MergeTutorialManager.GetNodeHighlightGeometry = function(targetKey) {
-    return this.GetNodeWorldGeometry(this.ResolveGuideTargetNode(targetKey), 30)
+    var node = this.ResolveGuideTargetNode(targetKey)
+    if (!node) return null
+    if (this.IsMapBuildTarget(targetKey) || this.IsMapBuildNode(node)) {
+        return this.GetMapBuildWorldGeometry(node)
+    }
+    return this.GetNodeWorldGeometry(node, 30)
 }
 
 MergeTutorialManager.MatchNodeClickParam = function(completeParam, payload) {
@@ -473,9 +564,35 @@ MergeTutorialManager.MatchNodeClickParam = function(completeParam, payload) {
     var expected = this.NormalizeOrderParam(completeParam)
     var candidates = [payload.nodeKey, payload.targetKey, payload.key, payload.node]
     for (var i = 0; i < candidates.length; i++) {
-        if (this.NormalizeOrderParam(candidates[i]) === expected) return true
+        if (this.NormalizeOrderParam(candidates[i]) === expected) {
+            return this.MatchCurrentMapBuildPayload(expected, payload)
+        }
     }
     return false
+}
+
+MergeTutorialManager.MatchCurrentMapBuildPayload = function(expected, payload) {
+    if (expected !== 'building_buy_button' && expected !== 'building_upgrade_button') return true
+    payload = payload || {}
+    var target = this.GetCurrentMapBuildTarget ? this.GetCurrentMapBuildTarget() : null
+    if (!target) return true
+    if (target.mapId && String(payload.mapId || payload.mapID || '') !== String(target.mapId)) return false
+    if (target.buildId && String(payload.buildId || payload.buildID || '') !== String(target.buildId)) return false
+    return true
+}
+
+MergeTutorialManager.MatchFlowEventParam = function(completeParam, payload) {
+    if (!completeParam) return true
+    payload = payload || {}
+    var expected = this.ParseKeyValueParam(completeParam)
+    var eventKey = expected.event || expected.eventName || expected.nodeKey || expected.key
+    if (!eventKey) {
+        eventKey = String(completeParam).split(';')[0]
+    }
+    if (eventKey && !this.MatchNodeClickParam(eventKey, payload)) return false
+    if (expected.mapId && String(payload.mapId || payload.mapID || '') !== String(expected.mapId)) return false
+    if (expected.buildId && String(payload.buildId || payload.buildID || '') !== String(expected.buildId)) return false
+    return true
 }
 
 MergeTutorialManager.EmitNodeClick = function(nodeKey, payload) {
@@ -484,9 +601,28 @@ MergeTutorialManager.EmitNodeClick = function(nodeKey, payload) {
     this.Emit(this.EventTypes.NodeClick, payload)
 }
 
+MergeTutorialManager.EmitFlowEvent = function(eventKey, payload) {
+    payload = payload || {}
+    payload.nodeKey = eventKey
+    payload.event = eventKey
+    this.Emit(this.EventTypes.FlowEvent, payload)
+}
+
 MergeTutorialManager.IsWaitingNodeClick = function(nodeKey) {
     var stepMeta = this.activeTriggerStepMeta || this.currentMeta
     return !!(stepMeta && stepMeta.CompleteType && stepMeta.CompleteType() === this.CompleteTypes.NodeClick && this.MatchNodeClickParam(stepMeta.CompleteParam(), { nodeKey: nodeKey }))
+}
+
+MergeTutorialManager.ShouldBlockGuideInput = function() {
+    return !!(this.activeTriggerStepMeta &&
+        this.activeTriggerBlockMode === this.TriggerBlockModes.Force &&
+        this.activeTriggerStepMeta.CompleteType &&
+        this.activeTriggerStepMeta.CompleteType() === this.CompleteTypes.NodeClick)
+}
+
+MergeTutorialManager.ShouldBlockMapControl = function() {
+    return !!(this.activeTriggerStepMeta &&
+        this.activeTriggerBlockMode === this.TriggerBlockModes.Force)
 }
 
 MergeTutorialManager.RefreshCurrentWindow = function() {
@@ -693,9 +829,62 @@ MergeTutorialManager.TryStartNextTrigger = function() {
     if (this.activeTriggerMeta || this.isReportingFinish) return
     if (this.currentMeta && !this.IsFinished()) return
     if (!this.triggerQueue || this.triggerQueue.length === 0) return
+    if (this.ShouldDelayTriggerStart()) {
+        this.ScheduleTriggerStartRetry()
+        return
+    }
     var triggerMeta = this.triggerQueue.shift()
     if (!triggerMeta) return
     this.StartTrigger(triggerMeta)
+}
+
+MergeTutorialManager.GetRawWindowInstance = function(windowName) {
+    if (!UIRoot || !UIRoot.instance || !UIRoot.instance.windowInstance) return null
+    if (!Object.prototype.hasOwnProperty.call(UIRoot.instance.windowInstance, windowName)) return null
+    return UIRoot.instance.windowInstance[windowName]
+}
+
+MergeTutorialManager.IsWindowOpenOrLoading = function(windowName) {
+    var wnd = this.GetRawWindowInstance(windowName)
+    if (!wnd) return false
+    if (wnd.isFake) return true
+    if (!wnd.node) return true
+    if (wnd.node.isValid === false) return false
+    return wnd.node.active !== false
+}
+
+MergeTutorialManager.IsMergeBoardSceneActive = function() {
+    return !!(typeof GamePlay !== 'undefined' &&
+        GamePlay.instance &&
+        GamePlay.instance.currentScene === GamePlay.Scenes.Merge)
+}
+
+MergeTutorialManager.ShouldTriggerStartOnMergeBoard = function(triggerMeta) {
+    if (!triggerMeta) return false
+    if (triggerMeta.Id && Number(triggerMeta.Id()) === 3040010) return true
+    var firstStepId = triggerMeta.FirstStepId ? triggerMeta.FirstStepId() : 0
+    var stepMeta = firstStepId ? this.GetMeta(firstStepId) : null
+    if (!stepMeta || !stepMeta.CompleteParam) return false
+    return this.NormalizeOrderParam(stepMeta.CompleteParam()) === 'town_button'
+}
+
+MergeTutorialManager.ShouldDelayTriggerStart = function() {
+    var nextTrigger = this.triggerQueue && this.triggerQueue.length > 0 ? this.triggerQueue[0] : null
+    if (this.ShouldTriggerStartOnMergeBoard(nextTrigger) && !this.IsMergeBoardSceneActive()) return true
+    var blockWindows = this.TriggerStartBlockWindows || []
+    for (var i = 0; i < blockWindows.length; i++) {
+        if (this.IsWindowOpenOrLoading(blockWindows[i])) return true
+    }
+    return false
+}
+
+MergeTutorialManager.ScheduleTriggerStartRetry = function(delay) {
+    if (this.triggerStartRetryTimer) return
+    var retryDelay = delay == null ? this.triggerStartRetryDelay : delay
+    this.triggerStartRetryTimer = setTimeout(function() {
+        MergeTutorialManager.triggerStartRetryTimer = null
+        MergeTutorialManager.TryStartNextTrigger()
+    }, Math.max(0, Number(retryDelay) || 0))
 }
 
 MergeTutorialManager.StartTrigger = function(triggerMeta) {
@@ -738,6 +927,10 @@ MergeTutorialManager.startTriggerStep = function() {
         this.nextTriggerStep()
         return
     }
+    if (this.activeTriggerStepMeta.CompleteType() === this.CompleteTypes.FlowEvent && !this.activeTriggerGuideMeta) {
+        this.CloseTutorialWindow()
+        return
+    }
     this.showTriggerWindow()
 }
 
@@ -776,13 +969,20 @@ MergeTutorialManager.nextTriggerStep = function() {
 MergeTutorialManager.CompleteActiveTrigger = function() {
     var triggerMeta = this.activeTriggerMeta
     this.ClearActiveTriggerState()
-    if (this.mainWindow && this.mainWindow.close) {
-        this.mainWindow.close()
-    }
+    this.CloseTutorialWindow()
     if (triggerMeta) {
         this.MarkTriggerCompletedAndReport(triggerMeta)
     }
     this.TryStartNextTrigger()
+}
+
+MergeTutorialManager.CloseTutorialWindow = function() {
+    if (UIRoot && UIRoot.instance && UIRoot.instance.closeChildWindow) {
+        UIRoot.instance.closeChildWindow('MergeTutorialWindow')
+    } else if (this.mainWindow && this.mainWindow.close) {
+        this.mainWindow.close()
+    }
+    this.mainWindow = null
 }
 
 MergeTutorialManager.MarkTriggerCompletedAndReport = function(triggerMeta) {
@@ -1154,6 +1354,39 @@ MergeTutorialManager.BuildDynamicHighlightGeometry = function(worldA, worldB, pr
     }
 }
 
+MergeTutorialManager.GetMergeTileWorldSize = function() {
+    var levelNode = this.GetMergeLevelNode ? this.GetMergeLevelNode() : null
+    if (!levelNode || !levelNode.getMergeBoardLayout || !levelNode.node) return 0
+    var layout = levelNode.getMergeBoardLayout()
+    if (!layout || !layout.itemSize) return 0
+    var scale = new Vec3(1, 1, 1)
+    if (levelNode.node.getWorldScale) {
+        try {
+            levelNode.node.getWorldScale(scale)
+        } catch (e) {
+            scale = new Vec3(1, 1, 1)
+        }
+    }
+    return Math.max(Math.abs(layout.itemSize.x * (scale.x || 1)), Math.abs(layout.itemSize.y * (scale.y || 1)))
+}
+
+MergeTutorialManager.BuildTileHighlightGeometry = function(worldPos, preset) {
+    if (!worldPos) return null
+    preset = preset || this.MergeDragGuidePreset || {}
+    var tileSize = this.GetMergeTileWorldSize()
+    var diameter = tileSize > 0
+        ? tileSize * (preset.tileCount || 2.5)
+        : (preset.fallbackSize || 215)
+    return {
+        shape: 'circle',
+        x: worldPos.x,
+        y: worldPos.y,
+        width: diameter,
+        height: diameter,
+        tweenDuration: preset.tweenDuration || 0.25,
+    }
+}
+
 MergeTutorialManager.MatchStepComplete = function(stepMeta, eventName, payload, progressPrefix) {
     if (!stepMeta) return false
     var completeType = stepMeta.CompleteType()
@@ -1182,6 +1415,9 @@ MergeTutorialManager.MatchStepComplete = function(stepMeta, eventName, payload, 
     }
     if (completeType === this.CompleteTypes.DragToBackpack) {
         return this.MatchDragToBackpackParam(completeParam, payload)
+    }
+    if (completeType === this.CompleteTypes.FlowEvent) {
+        return this.MatchFlowEventParam(completeParam, payload)
     }
     return false
 }

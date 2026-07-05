@@ -36,8 +36,13 @@ export default class SignWindow extends UIWindow {
 
     data = null
     needSign = false
+    private _clickTxNode: Node | null = null
+    private _monthBubbleOutsideTouchBinded = false
 
     onShow() {
+        this.hideClickTx()
+        this.hideAllClaimedNodes()
+        this.hideMonthRewardBubbles()
         if (C.FAKE_DATA) { console.warn("注意：check-page 正在使用fake-data模式") }
         this.get_data().then(v => {
             if (!this.node) return
@@ -48,6 +53,159 @@ export default class SignWindow extends UIWindow {
     }
 
     /** 获取check-page所依赖的数据 */
+    onLoad() {
+        this.hideClickTx()
+        this.hideAllClaimedNodes()
+        this.bindMonthBubbleOutsideTouch()
+    }
+
+    getClickTxNode() {
+        if (!this._clickTxNode && this.node) {
+            this._clickTxNode = this.node.getChildByName("ClickTx")
+            this.setupClickTxNode(this._clickTxNode)
+        }
+        return this._clickTxNode
+    }
+
+    setupClickTxNode(clickTx: Node | null) {
+        if (!clickTx) return
+        let button = clickTx.getComponent(Button)
+        if (button) button.enabled = false
+        clickTx.off(Node.EventType.TOUCH_START)
+        clickTx.off(Node.EventType.TOUCH_MOVE)
+        clickTx.off(Node.EventType.TOUCH_END)
+        clickTx.off(Node.EventType.TOUCH_CANCEL)
+    }
+
+    getWeekClickTxNode(index: number) {
+        let box = this.week_box && this.week_box[index]
+        if (!box) return null
+        let clickTx = box.getChildByName("ClickTx")
+        this.setupClickTxNode(clickTx)
+        return clickTx
+    }
+
+    hideClickTx() {
+        let clickTx = this.getClickTxNode()
+        if (clickTx) clickTx.active = false
+        if (!this.week_box) return
+        for (let i = 0; i < this.week_box.length; i += 1) {
+            let weekClickTx = this.getWeekClickTxNode(i)
+            if (weekClickTx) weekClickTx.active = false
+        }
+    }
+
+    getClickTxClaimIndex() {
+        if (!this.data || !this.week_box || this.data.signWeekDay <= this.data.signWeekRewards) return -1
+        let weekDay = Number(this.data.signWeekDay)
+        if (Number.isFinite(weekDay) && weekDay > 0) return Math.min(this.week_box.length - 1, weekDay - 1)
+        let currentDay = Number(this.data.signMonthDay)
+        if (!Number.isFinite(currentDay) || currentDay <= 0) return -1
+        return (Math.max(1, currentDay) - 1) % this.week_box.length
+    }
+
+    updateClickTx() {
+        this.hideClickTx()
+        let index = this.getClickTxClaimIndex()
+        let clickTx = this.getWeekClickTxNode(index)
+        if (!clickTx) return
+        clickTx.active = true
+        if (clickTx.parent) clickTx.setSiblingIndex(clickTx.parent.children.length - 1)
+    }
+
+    hideAllClaimedNodes() {
+        if (!this.week_box) return
+        for (let i = 0; i < this.week_box.length; i += 1) {
+            let box = this.week_box[i]
+            if (!box) continue
+            this.setClaimedNode(box.getChildByName("Claimed"), false)
+        }
+    }
+
+    setClaimedNode(node: Node | null, show: boolean, withAnim = false) {
+        if (!node) return
+        Tween.stopAllByTarget(node)
+        node.active = show
+        let opacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity)
+        opacity.opacity = show ? 255 : 0
+        if (!show) {
+            node.setScale(0, 0, node.scale.z)
+            return
+        }
+        if (!withAnim) {
+            node.setScale(1, 1, node.scale.z)
+            return
+        }
+        node.setScale(0.2, 0.2, node.scale.z)
+        opacity.opacity = 0
+        tween(opacity).to(0.18, { opacity: 255 }).start()
+        tween(node)
+            .to(0.18, { scale: new Vec3(1.2, 1.2, node.scale.z) }, { easing: 'backOut' })
+            .to(0.12, { scale: new Vec3(0.96, 0.96, node.scale.z) }, { easing: 'quadOut' })
+            .to(0.1, { scale: new Vec3(1, 1, node.scale.z) }, { easing: 'quadOut' })
+            .start()
+    }
+
+    setMonthDotNode(node: Node | null, show: boolean, withAnim = false) {
+        if (!node) return
+        if (!show) {
+            Tween.stopAllByTarget(node)
+            node.active = false
+            node.setScale(1, 1, node.scale.z)
+            let opacity = node.getComponent(UIOpacity)
+            if (opacity) opacity.opacity = 255
+            return
+        }
+        let needAnim = withAnim && !node.active
+        node.active = true
+        if (!needAnim) {
+            node.setScale(1, 1, node.scale.z)
+            return
+        }
+        Tween.stopAllByTarget(node)
+        node.setScale(0.2, 0.2, node.scale.z)
+        tween(node).to(0.12, { scale: new Vec3(1, 1, node.scale.z) }, { easing: 'quadOut' }).start()
+    }
+
+    getMonthDotNode(monthBox: Node | null) {
+        if (!monthBox) return null
+        let dot = monthBox.getChildByName("quest-30dayBar-dot")
+        if (dot) return dot
+        return GameKit.ControllerTable.GetNode(monthBox, "dotComp")
+    }
+
+    bindMonthBubbleOutsideTouch() {
+        if (!this.node || this._monthBubbleOutsideTouchBinded) return
+        this._monthBubbleOutsideTouchBinded = true
+        this.node.on(Node.EventType.TOUCH_END, this.onMonthBubbleOutsideTouchEnd, this, true)
+    }
+
+    onMonthBubbleOutsideTouchEnd(e: any) {
+        if (this.isMonthBoxTouchTarget(e ? e.target : null)) return
+        this.hideMonthRewardBubbles()
+    }
+
+    isMonthBoxTouchTarget(target: any) {
+        if (!target || !this.month_box) return false
+        for (let i = 0; i < this.month_box.length; i += 1) {
+            let box = this.month_box[i]
+            let node = target
+            while (node) {
+                if (node === box) return true
+                node = node.parent
+            }
+        }
+        return false
+    }
+
+    hideMonthRewardBubbles() {
+        if (!this.month_box) return
+        for (let i = 0; i < this.month_box.length; i += 1) {
+            let bubble = GameKit.ControllerTable.GetNode(this.month_box[i], "bubble-award")
+            if (bubble) bubble.active = false
+        }
+    }
+
     get_data() {
         return new Promise<any>((res, rej) => {
             // old_data
@@ -86,7 +244,7 @@ export default class SignWindow extends UIWindow {
             let btn = this.month_box[i].getComponent(Button)
             let light = GameKit.ControllerTable.GetNode(this.month_box[i], "light")
             let sp_box = GameKit.ControllerTable.GetNode(this.month_box[i], "sp-box").getComponent(Sprite)
-            let dotComp = GameKit.ControllerTable.GetNode(this.month_box[i], "dotComp")
+            let dotComp = this.getMonthDotNode(this.month_box[i])
             let bubble_award = GameKit.ControllerTable.GetNode(this.month_box[i], "bubble-award")
             let reward1 = GameKit.ControllerTable.GetComponent(this.month_box[i], "reward1", "ContentModel")
             let reward2 = GameKit.ControllerTable.GetComponent(this.month_box[i], "reward2", "ContentModel")
@@ -97,7 +255,7 @@ export default class SignWindow extends UIWindow {
                 // 已经领取
                 //btn.interactable = false
                 sp_box.node.active = false
-                dotComp.active = true
+                this.setMonthDotNode(dotComp, true, true)
                 sp_box_open.active = true
                 sp_box_open.getComponent(Sprite).setState(1)
             } else {
@@ -121,7 +279,7 @@ export default class SignWindow extends UIWindow {
                     light.active = true
                 }
                 sp_box_open.active = false
-                dotComp.active = false
+                this.setMonthDotNode(dotComp, canreceive, true)
             }
             let rewards = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Month, days).Reward()
             if (rewards[0]) reward1.show(rewards[0])
@@ -176,7 +334,9 @@ export default class SignWindow extends UIWindow {
             spMonth.active = false
             spAnim.active = i >= this.data.signWeekRewards
             spCurrent.active = i == this.data.signWeekDay - 1 && this.data.signWeekDay > this.data.signWeekRewards
+            this.setClaimedNode(this.week_box[i].getChildByName("Claimed"), i < this.data.signWeekRewards)
         }
+        this.updateClickTx()
     }
 
     /** 点击事件：获取月签到奖励宝箱 */
@@ -195,6 +355,7 @@ export default class SignWindow extends UIWindow {
         console.log(monthDays[3],"days",days,ePos);
         
         if (days == monthDays[3]) {
+            this.hideMonthRewardBubbles()
             let rewards = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Month, days).Reward()
             RandomChestPanel.Show(rewards[0].Id(), {parent:this.btn.node.parent, pos:ePos, height:60})
             return
@@ -214,6 +375,7 @@ export default class SignWindow extends UIWindow {
     /** 点击事件：当前签到 */
     event_sign() {
         this.btn.interactable = false
+        this.hideClickTx()
         
         if (!this.needSign) {
             this.closeAnim()
@@ -403,8 +565,16 @@ export default class SignWindow extends UIWindow {
             let spCurrentOpacity = spCurrent.getComponent(UIOpacity) || spCurrent.addComponent(UIOpacity)
             Tween.stopAllByTarget(spCurrentOpacity)
             tween(spCurrentOpacity).to(0.4, { opacity: 0 }).start()
+            this.setClaimedNode(this.week_box[this.data.signWeekDay - 1].getChildByName("Claimed"), true, true)
 
             
         }, e =>{})
+    }
+
+    onClose() {
+        if (this.node) this.node.off(Node.EventType.TOUCH_END, this.onMonthBubbleOutsideTouchEnd, this, true)
+        this._monthBubbleOutsideTouchBinded = false
+        this.hideMonthRewardBubbles()
+        this.hideClickTx()
     }
 }

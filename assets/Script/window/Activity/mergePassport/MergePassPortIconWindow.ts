@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Node, ParticleSystem, Sprite, UIOpacity } from 'cc';
+import { _decorator, Component, Label, Node, ParticleSystem2D, Sprite, UIOpacity } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import { bindGuardedClick, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 
@@ -137,7 +137,7 @@ export default class MergePassPortIconWindow extends UIWindow {
         let spf = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.MergeIcon, meta.Icon());
         icon.spriteFrame = spf;
 
-        let shiningAnim = GameKit.ControllerTable.GetComponent(node, 'particle_texture1', ParticleSystem);
+        let shiningAnim = GameKit.ControllerTable.GetComponent(node, 'particle_texture1', ParticleSystem2D);
 
         let generateMeta = Meta.MergeGeneraterMeta.GetGenerateByMergeId(mergeId);
         if (generateMeta) {
@@ -175,7 +175,7 @@ export default class MergePassPortIconWindow extends UIWindow {
         });
     }
 
-    ShowShiningAnim(shiningAnim: ParticleSystem | null) {
+    ShowShiningAnim(shiningAnim: ParticleSystem2D | null) {
         if (shiningAnim) {
             shiningAnim.duration = -1;
             shiningAnim.node.active = true;
@@ -183,7 +183,7 @@ export default class MergePassPortIconWindow extends UIWindow {
         }
     }
 
-    HideShiningAnim(shiningAnim: ParticleSystem | null) {
+    HideShiningAnim(shiningAnim: ParticleSystem2D | null) {
         if (!shiningAnim) return;
         (shiningAnim as any).stopSystem();
         shiningAnim.node.active = false;

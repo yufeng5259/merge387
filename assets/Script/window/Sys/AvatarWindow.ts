@@ -56,10 +56,12 @@ export default class AvatarWindow extends UIWindow {
         if (this.nameLabel) this.nameLabel.string = showParams.user.Name();
         if (this.idLabel) this.idLabel.string = 'ID:' + showParams.user.Id().toString();
         if (this.levelLabel) this.levelLabel.string = showParams.user.Level().toString();
+        let expInfo = showParams.user.GetLevelExpInfo ? showParams.user.GetLevelExpInfo() : null;
         let levelExp = Meta.MetaManager.GetMeta(Meta.MetaType.Level, showParams.user.Level()).Exp();
-        if (this.expProgress) this.expProgress.progress = showParams.user.Exp() / levelExp;
-        if (this.expProgress1) this.expProgress1.progress = showParams.user.Exp() / levelExp;
-        if (this.expLabel) this.expLabel.string = showParams.user.Exp().toString() + '/' + levelExp.toString();
+        let expProgress = expInfo ? expInfo.progress : showParams.user.Exp() / levelExp;
+        if (this.expProgress) this.expProgress.progress = expProgress;
+        if (this.expProgress1) this.expProgress1.progress = expProgress;
+        if (this.expLabel) this.expLabel.string = expInfo ? expInfo.current.toString() + '/' + expInfo.need.toString() : showParams.user.Exp().toString() + '/' + levelExp.toString();
         if (this.editNameInput) {
             this.editNameInput.string = '';
             this.setNodeOpacity(this.editNameInput.node, 0);

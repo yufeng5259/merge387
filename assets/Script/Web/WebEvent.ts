@@ -22,6 +22,7 @@ WebEvent.EventName = {
     LevelUpEvent: "levelUpEvent",
     ExpEvent: "expEvent",
     ApEvent: "apEvent",
+    ResourceDeltaEvent: "resourceDeltaEvent",
     CoinEvent: "coinEvent",
     CashEvent: "cashEvent",
     ShieldEvent: "shieldEvent",

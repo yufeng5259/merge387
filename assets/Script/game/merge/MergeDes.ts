@@ -3,6 +3,7 @@ import { ContentModel } from '../items/ContentModel';
 import MergeTypes from './MergeTypes';
 import { MergeBubbleDes } from './MergeBubbleDes';
 import { MergeCookingDes } from './MergeCookingDes';
+import LabelLocalized from '../../GameKit/i18n/LabelLocalized';
 
 const { ccclass, property } = _decorator;
 
@@ -56,9 +57,11 @@ export class MergeDes extends Component {
         if (this.cookingDes && this.cookingDes.node) this.cookingDes.node.active = false;
         if (this.bubbleDesNode && this.bubbleDesNode.node) this.bubbleDesNode.node.active = false;
         this._lastShowKey = null;
+        this.refreshStaticLocalizedLabels();
     }
 
     Show (meta: any, mergeItem: any) {
+        this.refreshStaticLocalizedLabels();
         if (!meta) {
             this._lastShowKey = null;
             this.contentDesNode.active = false;
@@ -204,6 +207,21 @@ export class MergeDes extends Component {
             this.openButton.active = false;
         }
         this.refreshDesLabelLayout();
+    }
+
+    refreshStaticLocalizedLabels () {
+        this.bindLocalizedLabel(this.defaultDesNode ? this.defaultDesNode.getChildByName('des') : null, 'Merge_Default_Des');
+        this.bindLocalizedLabel(this.sellButton ? this.sellButton.getChildByName('New Label') : null, 'SaleMark');
+    }
+
+    bindLocalizedLabel (node: Node | null, textKey: string) {
+        if (!node) return;
+        let localized = node.getComponent(LabelLocalized) || node.getComponent('LabelLocalized') as any;
+        if (!localized) {
+            localized = node.addComponent(LabelLocalized);
+        }
+        localized.textKey = textKey;
+        if (localized.onLoad) localized.onLoad();
     }
 
     refreshDesLabelLayout () {

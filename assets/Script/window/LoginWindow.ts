@@ -25,6 +25,7 @@ export default class LoginWindow extends UIWindow {
     pause = false;
     noenter = false;
     metaLoaded = false;
+    openingVideoChecked = false;
     onLoad(){
         let budleID = AppKit.NativeWrap.getBudleID();
         console.log("LoginWindow onLoad budleID==="+budleID);
@@ -36,6 +37,7 @@ export default class LoginWindow extends UIWindow {
         this.progress.node.parent.active = false
         //this.spUpdating.active = false
         this.noenter = false
+        this.openingVideoChecked = false
 
         UIRoot.instance.stopShowWindow = false
 
@@ -85,13 +87,23 @@ export default class LoginWindow extends UIWindow {
     setProgress (p, f = false) {
         if (!this.progress) return
         if (this.progress.progress > p && p > 0 && !f) return
-        this.progress.progress = p
+        this.refreshProgressView(p)
+    }
+    formatDownloadSpeed(bytesPerSecond: number) {
+        if (!bytesPerSecond || bytesPerSecond <= 0) return ""
+        if (bytesPerSecond >= 1024 * 1024) {
+            return (bytesPerSecond / 1024 / 1024).toFixed(1) + " MB/s"
+        }
+        return Math.max(1, Math.floor(bytesPerSecond / 1024)).toString() + " KB/s"
+    }
+    refreshProgressView(p: number, speedText?: string) {
+        p = Math.max(0, Math.min(1, p))
+        if (this.progress) this.progress.progress = p
         this.setMaskWidth()
     }
     update (dt) {
         if (this.progress && this.progress.progress < 0.9 && !this.pause) {
-            this.progress.progress += dt * 0.015
-            this.setMaskWidth()
+            this.refreshProgressView(this.progress.progress + dt * 0.015)
         }
     }
     getAppInfo () {
@@ -180,17 +192,15 @@ export default class LoginWindow extends UIWindow {
                 }.bind(this)
 
                 if (AppKit.SdkManager.IsNative() && !(AppKit.NativeWrap.isReview() && AppKit.SdkManager.IsIos())) {
-                    this.hotUpdate.checkUpdate(G.GameConfig.huversion, getAppInfoOver3.bind(this), (n) => {
+                    this.hotUpdate.checkUpdate(G.GameConfig.huversion, getAppInfoOver3.bind(this), (n, info) => {
                         if (n == -1) {
                             //DialogWindow.Show(GameKit.i18n.t("LoginWindowNeedUpdate"), nullFunction)
                             this.progress.node.parent.active = true
-                            this.progress.progress = 0
+                            this.refreshProgressView(0)
                             //this.spUpdating.active = true
-                            this.setMaskWidth()
                         } else {
                             if (n < 0.98) {
-                                this.progress.progress = n
-                                this.setMaskWidth()
+                                this.refreshProgressView(n, this.formatDownloadSpeed(info && info.speedBytes))
                             }
                         }
                     }, (e) => {
@@ -593,19 +603,7 @@ export default class LoginWindow extends UIWindow {
                                 GamePlay.instance.preloadGames()
                             }
 
-                            if (GameKit.PlayerPrefs.GetInt("privacy_read") != 1) {
-                                //login in first time
-                                UIRoot.instance.openChildWindow("PrivacyWindow", {
-                                    showCallback: (window) => {
-                                        window.addOnCloseFunc(() => {
-                                            this.EnterGamePlay()
-                                        })
-                                    }
-                                })
-                                return
-                            }else{
-                                this.EnterGamePlay()
-                            }
+                            this.ShowPrivacyOrEnterGame()
                         }
                     }.bind(this), 0.1)
                 }.bind(this))
@@ -627,6 +625,39 @@ export default class LoginWindow extends UIWindow {
             })
         })
     }
+    TryPlayOpeningVideoBeforeEnter(enterFunc) {
+        if (this.openingVideoChecked) {
+            enterFunc(false)
+            return
+        }
+        this.openingVideoChecked = true
+
+        if (AppKit.SdkManager.IsNative() && AppKit.SdkManager.IsAndroid()) {
+            let shouldPlay = AppKit.NativeWrap.callDirect("SDKHandleClass", "ShouldPlayOpeningVideo")
+            if (shouldPlay == "true" || shouldPlay === true) {
+                AppKit.NativeWrap.call("SDKHandleClass", "PlayOpeningVideo", null, () => {
+                    enterFunc(shouldPlay)
+                })
+                return
+            }
+        }
+
+        enterFunc(false)
+    }
+    ShowPrivacyOrEnterGame() {
+        if (GameKit.PlayerPrefs.GetInt("privacy_read") != 1) {
+            UIRoot.instance.openChildWindow("PrivacyWindow", {
+                showCallback: (window) => {
+                    window.addOnCloseFunc(() => {
+                        this.EnterGamePlay()
+                    })
+                }
+            })
+            return
+        }
+
+        this.EnterGamePlay()
+    }
     EnterGamePlay() {
         let gameplay = GamePlay.instance
         gameplay.node.active = true
@@ -637,13 +668,26 @@ export default class LoginWindow extends UIWindow {
             
                 AppKit.LogEventWrap.logEvent("LoadDetail", {phase:"enterGamePlay"})
 
-                this.OpenTutorialWindow()
+                this.TryPlayOpeningVideoBeforeEnter((playVideo) => {
+                    if (playVideo) {
+                        this.OpenTutorialWindow()
+                    } else {
+                        this.OpenMainMenuWindow()
+                    }
+                })
             }
         }.bind(this), 0.1)
     }
     OpenTutorialWindow() {
-        UIRoot.instance.openChildWindow("GeneralStotyWindow")
-        this.OpenMainMenuWindow()
+        UIRoot.instance.openChildWindow("GeneralStotyWindow", {
+            key: "Tutorial_1",
+            showCallback: (wnd) => {
+                wnd.addOnCloseFunc(() => {
+                    console.log("General story closed")
+                    this.OpenMainMenuWindow()
+                })
+            }
+        })
     }
     OpenMainMenuWindow() {
         this.setProgress(0.95)

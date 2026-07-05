@@ -20,6 +20,12 @@ function attachAlias(root: LegacyRoot, key: string, value: LegacyRoot): void {
     }
 }
 
+function attachDefault(root: LegacyRoot | undefined, key: string, value: any): void {
+    if (root && typeof root[key] === 'undefined') {
+        root[key] = value;
+    }
+}
+
 export function ensureLegacyGlobals(): LegacyGlobals {
     const root = getRoot();
     const windowRoot = root.window as LegacyRoot | undefined;
@@ -64,6 +70,29 @@ export function ensureLegacyGlobals(): LegacyGlobals {
     if (!globalRoot) {
         attachAlias(root, 'global', root);
     }
+
+    if (windowRoot && !windowRoot.global) {
+        attachAlias(windowRoot, 'global', windowRoot);
+    }
+
+    attachDefault(root, 'CLOSE_Card', false);
+    attachDefault(windowRoot, 'CLOSE_Card', root.CLOSE_Card);
+    attachDefault(globalRoot, 'CLOSE_Card', root.CLOSE_Card);
+    attachDefault(root, 'DISABLE_CardFeature', true);
+    attachDefault(windowRoot, 'DISABLE_CardFeature', root.DISABLE_CardFeature);
+    attachDefault(globalRoot, 'DISABLE_CardFeature', root.DISABLE_CardFeature);
+
+    Game.IsCardFeatureClosed = function() {
+        return !!root.DISABLE_CardFeature;
+    };
+
+    Game.IsCardWindowName = function(windowName: string) {
+        if (!windowName) return false;
+        return windowName.indexOf('Card') === 0 ||
+            windowName.indexOf('Cards') === 0 ||
+            windowName === 'JokerCardWindow' ||
+            windowName === 'LimitCardDesWindow';
+    };
 
     return { Game, Meta, SR, GameKit, AppKit, G, cce };
 }

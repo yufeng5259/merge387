@@ -523,6 +523,7 @@ class MenuWindow extends UIWindow {
 
     /** 点击事件： */
     event_7_card() {
+        if (Game.IsCardFeatureClosed && Game.IsCardFeatureClosed()) return
         this.event_back(null, () => { UIRoot.instance.openChildWindow("CardAllSetWindow") }, C.IN_ANIMATION_TIME * 1000)
         AppKit.LogEventWrap.logEvent("menu_card")
     }

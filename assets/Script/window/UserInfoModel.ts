@@ -80,6 +80,8 @@ export class UserInfoModel extends Component {
     public apStop = false;
     public showAp = 0;
     public apRemainTime: number | null = null;
+    public apDisplayLocked = false;
+    public lockedShowAp: any = null;
     public genderMale: Node | null = null;
     public genderFemale: Node | null = null;
 
@@ -174,6 +176,11 @@ export class UserInfoModel extends Component {
         if (!this.User) {
             return;
         }
+        if (this.apDisplayLocked) {
+            this.apStop = true;
+            this.setApWithNum(this.lockedShowAp);
+            return;
+        }
         this.apStop = false;
         if (this.isSelf && Game.SUser && Game.SUser.GetFullApTime) {
             Game.SUser.GetFullApTime();
@@ -235,7 +242,14 @@ export class UserInfoModel extends Component {
         const apMax = apRuntime.apMax;
         const apRecoverSpins = apRuntime.apRecoverSpins;
 
-        this.apRemainTime = G.GameConstance.apRecover - (this.User.ApRecover() + GameKit.TimeUtil.getCurrentTime() - 1 - this.User.ApRecoverLast());
+        const apRecoverTime = isFinite(Number(G.GameConstance.apRecover)) ? Number(G.GameConstance.apRecover) : 0;
+        const apRecover = isFinite(Number(this.User.ApRecover())) ? Number(this.User.ApRecover()) : 0;
+        const apRecoverLast = isFinite(Number(this.User.ApRecoverLast())) ? Number(this.User.ApRecoverLast()) : GameKit.TimeUtil.getCurrentTime() - 1;
+        this.apRemainTime = apRecoverTime - (apRecover + GameKit.TimeUtil.getCurrentTime() - 1 - apRecoverLast);
+        if (apRecoverTime > 0 && this.apRemainTime <= 0) {
+            this.apRemainTime = this.apRemainTime % apRecoverTime;
+            if (this.apRemainTime <= 0) this.apRemainTime += apRecoverTime;
+        }
         const ap = isFinite(Number(apNum)) ? Number(apNum) : 0;
         const maxAp = isFinite(Number(apMax)) ? parseInt(apMax, 10) : 0;
 
@@ -265,6 +279,17 @@ export class UserInfoModel extends Component {
         this.setApWithNum(ap);
     }
 
+    public lockApDisplay(ap: any) {
+        this.apDisplayLocked = true;
+        this.lockedShowAp = ap;
+        this.stopApAt(ap);
+    }
+
+    public unlockApDisplay() {
+        this.apDisplayLocked = false;
+        this.lockedShowAp = null;
+    }
+
     public playApAnim(cb: any) {
         this.energyFullAnim.play(() => {
             this.apStop = false;
@@ -286,22 +311,26 @@ export class UserInfoModel extends Component {
         if (this.apStop) {
             if (this.showAp < apMax) {
                 this.apRemainTime -= dt;
-                if (this.apRemainTime <= 0) {
-                    this.showAp += apRecoverSpins;
-                    this.setApWithNum(this.showAp);
+                if (Math.ceil(this.apRemainTime) <= 0) {
+                    if (this.User && this.User.UpdateApTime && this.User.UpdateApTime()) {
+                        this.setApWithNum(this.User.Ap());
+                    } else {
+                        this.showAp += apRecoverSpins;
+                        this.setApWithNum(this.showAp);
+                    }
                 } else if (this.labelApRemain) {
-                    this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(this.apRemainTime);
+                    this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(Math.ceil(this.apRemainTime));
                 }
             }
         } else if (this.User.Ap() < apMax) {
             this.apRemainTime -= dt;
-            if (this.apRemainTime <= 0) {
+            if (Math.ceil(this.apRemainTime) <= 0) {
                 this._setAp();
                 if (SR && SR.SRMerge && SR.SRMerge.SaveLocalMergeSnapshot) {
                     SR.SRMerge.SaveLocalMergeSnapshot('apRecover');
                 }
             } else if (this.labelApRemain) {
-                this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(this.apRemainTime);
+                this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(Math.ceil(this.apRemainTime));
             }
         }
     }
@@ -465,8 +494,12 @@ export class UserInfoModel extends Component {
             this.labelLevel.string = this.User.Level().toString();
         }
         if (this.expProgress) {
-            const levelExp = Meta.MetaManager.GetMeta(Meta.MetaType.Level, this.User.Level()).Exp();
-            this.expProgress.progress = this.User.Exp() / levelExp;
+            if (this.User.GetLevelExpInfo) {
+                this.expProgress.progress = this.User.GetLevelExpInfo().progress;
+            } else {
+                const levelExp = Meta.MetaManager.GetMeta(Meta.MetaType.Level, this.User.Level()).Exp();
+                this.expProgress.progress = this.User.Exp() / levelExp;
+            }
         }
     }
 

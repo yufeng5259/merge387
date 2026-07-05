@@ -435,18 +435,28 @@ export class MergeItem extends Component {
 
     hideBubbleAnim() {
         if (!this.bubble_anim || !this.bubble_anim.node) return;
-        this.bubble_anim.setCompleteListener(null);
-        this.bubble_anim.clearTracks();
+        if (this.bubble_anim.setCompleteListener) {
+            this.bubble_anim.setCompleteListener(null);
+        }
+        if (this.bubble_anim.clearTracks) {
+            this.bubble_anim.clearTracks();
+        }
         this.bubble_anim.node.active = false;
     }
 
     showBubbleIdle() {
         if (!this.bubble_anim || !this.bubble_anim.node) return false;
         this.bubble_anim.node.active = true;
-        this.bubble_anim.setCompleteListener(null);
-        this.bubble_anim.clearTracks();
-        this.bubble_anim.setToSetupPose();
-        if (!this.bubble_anim.findAnimation('idle')) return false;
+        if (this.bubble_anim.setCompleteListener) {
+            this.bubble_anim.setCompleteListener(null);
+        }
+        if (this.bubble_anim.clearTracks) {
+            this.bubble_anim.clearTracks();
+        }
+        if (this.bubble_anim.setToSetupPose) {
+            this.bubble_anim.setToSetupPose();
+        }
+        if (this.bubble_anim.findAnimation && !this.bubble_anim.findAnimation('idle')) return false;
         this.bubble_anim.setAnimation(0, 'idle', true);
         return true;
     }
@@ -456,26 +466,40 @@ export class MergeItem extends Component {
             if (cb) cb();
             return false;
         }
-        if (!this.bubble_anim.findAnimation('broken')) {
+        if (this.bubble_anim.findAnimation && !this.bubble_anim.findAnimation('broken')) {
             this.hideBubbleAnim();
             if (cb) cb();
             return false;
         }
         this.bubble_anim.node.active = true;
-        this.bubble_anim.setCompleteListener(null);
-        this.bubble_anim.clearTracks();
-        this.bubble_anim.setToSetupPose();
+        if (this.bubble_anim.setCompleteListener) {
+            this.bubble_anim.setCompleteListener(null);
+        }
+        if (this.bubble_anim.clearTracks) {
+            this.bubble_anim.clearTracks();
+        }
+        if (this.bubble_anim.setToSetupPose) {
+            this.bubble_anim.setToSetupPose();
+        }
 
         let finished = false;
         let finish = () => {
             if (finished) return;
             finished = true;
-            this.bubble_anim.setCompleteListener(null);
+            if (this.bubble_anim && this.bubble_anim.setCompleteListener) {
+                this.bubble_anim.setCompleteListener(null);
+            }
             this.hideBubbleAnim();
             if (cb) cb();
         };
         let trackEntry = this.bubble_anim.setAnimation(0, 'broken', false);
-        this.bubble_anim.setTrackCompleteListener(trackEntry, finish);
+        if (this.bubble_anim.setTrackCompleteListener && trackEntry) {
+            this.bubble_anim.setTrackCompleteListener(trackEntry, finish);
+        } else if (this.bubble_anim.setCompleteListener) {
+            this.bubble_anim.setCompleteListener(finish);
+        } else {
+            this.scheduleOnce(finish, 0.5);
+        }
         return true;
     }
 

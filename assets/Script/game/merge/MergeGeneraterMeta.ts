@@ -112,6 +112,9 @@ class MergeGeneraterMeta {
      * 生成器点击产出后生成气泡的概率；优先读取生成器表配置�?
      * @returns {number|string|null} 气泡概率
      */
+    Interval() {
+        return this.GetFieldValue(["interval", "Interval", "string", "String"], "") || ""
+    }
     BubbleRate() {
         return this.GetFieldValue([
             "BubbleRate", "bubbleRate", "bubblerate", "bubble_rate",

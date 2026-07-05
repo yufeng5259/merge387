@@ -482,6 +482,33 @@ export class User {
     MaxExp(){
         return this.data.maxExp||1;
     }
+    GetLevelTotalExp(level) {
+        level = Math.floor(this.GetValidNumber(level, 0))
+        if (level <= 0) return 0
+        if (typeof Meta === "undefined" || !Meta.MetaManager || !Meta.MetaType) return 0
+        let meta = Meta.MetaManager.GetMeta(Meta.MetaType.Level, level)
+        if (!meta || !meta.Exp) return 0
+        return Math.max(0, this.GetValidNumber(meta.Exp(), 0))
+    }
+    GetLevelExpInfo() {
+        let level = Math.max(1, Math.floor(this.GetValidNumber(this.Level(), 1)))
+        let totalExp = Math.max(0, this.GetValidNumber(this.Exp(), 0))
+        let levelStartExp = this.GetLevelTotalExp(level - 1)
+        let nextLevelExp = this.GetLevelTotalExp(level)
+        if (nextLevelExp <= levelStartExp) {
+            nextLevelExp = levelStartExp + Math.max(1, this.GetValidNumber(this.MaxExp(), 1))
+        }
+        let need = Math.max(1, nextLevelExp - levelStartExp)
+        let current = Math.max(0, Math.min(need, totalExp - levelStartExp))
+        return {
+            current: current,
+            need: need,
+            progress: Math.clamp(current / need, 0, 1),
+            totalExp: totalExp,
+            levelStartExp: levelStartExp,
+            nextLevelExp: nextLevelExp
+        }
+    }
     //增加等级用戶
     Level(){
         return this.data.level;

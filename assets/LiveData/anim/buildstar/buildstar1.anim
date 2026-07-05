@@ -1,263 +1,67 @@
-[
-  {
-    "__type__": "cc.AnimationClip",
-    "_name": "buildstar1",
-    "_objFlags": 0,
-    "_native": "",
-    "sample": 60,
-    "speed": 1,
-    "wrapMode": 1,
-    "_duration": 0.8,
-    "_hash": 0,
-    "_tracks": [
-      {
-        "__id__": 1
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "buildstar1",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.8,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "star": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.8,
+              "value": 400
+            }
+          ]
+        }
       },
-      {
-        "__id__": 6
-      },
-      {
-        "__id__": 11
+      "glow dots": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 20,
+              "curve": [
+                0.29999999999999993,
+                -0.00462184873949556,
+                0.9993697478991594,
+                0.6947478991596638
+              ]
+            },
+            {
+              "frame": 0.2833333333333333,
+              "value": 255
+            },
+            {
+              "frame": 0.6166666666666667,
+              "value": 255
+            },
+            {
+              "frame": 0.8,
+              "value": 255
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 100
+            },
+            {
+              "frame": 0.8,
+              "value": 150
+            }
+          ]
+        }
       }
-    ],
-    "_events": [],
-    "_exoticAnimation": null
-  },
-  {
-    "__type__": "cc.animation.UntypedTrack",
-    "_binding": {
-      "__type__": "cc.animation.TrackBinding",
-      "path": {
-        "__id__": 2
-      }
-    },
-    "_channels": [
-      {
-        "__id__": 4
-      }
-    ]
-  },
-  {
-    "__type__": "cc.animation.TrackPath",
-    "_paths": [
-      {
-        "__id__": 3
-      },
-      "position"
-    ]
-  },
-  {
-    "__type__": "cc.animation.HierarchyPath",
-    "path": "star"
-  },
-  {
-    "__type__": "cc.animation.UntypedTrackChannel",
-    "_curve": {
-      "__id__": 5
-    },
-    "property": "y"
-  },
-  {
-    "__type__": "cc.RealCurve",
-    "_times": [
-      0,
-      0.8
-    ],
-    "_values": [
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 0,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      },
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 400,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      }
-    ],
-    "preExtrapolation": 1,
-    "postExtrapolation": 1
-  },
-  {
-    "__type__": "cc.animation.UntypedTrack",
-    "_binding": {
-      "__type__": "cc.animation.TrackBinding",
-      "path": {
-        "__id__": 7
-      }
-    },
-    "_channels": [
-      {
-        "__id__": 9
-      }
-    ]
-  },
-  {
-    "__type__": "cc.animation.TrackPath",
-    "_paths": [
-      {
-        "__id__": 8
-      },
-      "position"
-    ]
-  },
-  {
-    "__type__": "cc.animation.HierarchyPath",
-    "path": "glow dots"
-  },
-  {
-    "__type__": "cc.animation.UntypedTrackChannel",
-    "_curve": {
-      "__id__": 10
-    },
-    "property": "y"
-  },
-  {
-    "__type__": "cc.RealCurve",
-    "_times": [
-      0,
-      0.8
-    ],
-    "_values": [
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 100,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      },
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 150,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      }
-    ],
-    "preExtrapolation": 1,
-    "postExtrapolation": 1
-  },
-  {
-    "__type__": "cc.animation.RealTrack",
-    "_binding": {
-      "__type__": "cc.animation.TrackBinding",
-      "path": {
-        "__id__": 12
-      }
-    },
-    "_channel": {
-      "__id__": 15
     }
   },
-  {
-    "__type__": "cc.animation.TrackPath",
-    "_paths": [
-      {
-        "__id__": 13
-      },
-      {
-        "__id__": 14
-      },
-      "opacity"
-    ]
-  },
-  {
-    "__type__": "cc.animation.HierarchyPath",
-    "path": "glow dots"
-  },
-  {
-    "__type__": "cc.animation.ComponentPath",
-    "component": "cc.UIOpacity"
-  },
-  {
-    "__type__": "cc.animation.Channel",
-    "_curve": {
-      "__id__": 16
-    }
-  },
-  {
-    "__type__": "cc.RealCurve",
-    "_times": [
-      0,
-      0.2833333333333333,
-      0.6166666666666667,
-      0.8
-    ],
-    "_values": [
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 2,
-        "tangentWeightMode": 2,
-        "value": 20,
-        "rightTangent": -12.778052397428905,
-        "rightTangentWeight": 1.0894553922447412,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      },
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 1,
-        "value": 255,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 401711.7647057423,
-        "leftTangentWeight": 71.73424369770126,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      },
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 255,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      },
-      {
-        "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 255,
-        "rightTangent": 0,
-        "rightTangentWeight": 0,
-        "leftTangent": 0,
-        "leftTangentWeight": 0,
-        "easingMethod": 0,
-        "__editorExtras__": null
-      }
-    ],
-    "preExtrapolation": 1,
-    "postExtrapolation": 1
-  }
-]
+  "events": []
+}

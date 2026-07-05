@@ -50,6 +50,7 @@ export class AppGame extends Component {
         game.on(CocosGame.EVENT_SHOW, function() {
             setTimeout(() => {
                 if (this.logined && Game.MergeTutorialManager.IsFinished()) {
+                    this.settleApRecover('show');
                     if (GameKit.TimeUtil.getCurrentTime() - this.leaveTime < 120) {
                         SR.SRUserData.heartBeat().Send();
                         return;
@@ -64,6 +65,22 @@ export class AppGame extends Component {
                 }
             }, 100);
         }, this);
+    }
+
+    settleApRecover(reason?: string) {
+        if (Game && Game.SUser && Game.SUser.UpdateApTime) {
+            Game.SUser.UpdateApTime();
+        }
+        if (SR && SR.SRMerge && SR.SRMerge.SaveLocalMergeSnapshot) {
+            SR.SRMerge.SaveLocalMergeSnapshot('apRecover:' + (reason || 'settle'));
+        }
+        if (GameKit && GameKit.WebEvent && GameKit.WebEvent.DispatcherEvent && GameKit.WebEvent.EventName) {
+            GameKit.WebEvent.DispatcherEvent(GameKit.WebEvent.EventName.ApEvent, {
+                ap: Game.SUser && Game.SUser.Ap ? Game.SUser.Ap() : 0,
+                apRecover: Game.SUser && Game.SUser.ApRecover ? Game.SUser.ApRecover() : 0,
+                apRecoverLast: Game.SUser && Game.SUser.ApRecoverLast ? Game.SUser.ApRecoverLast() : 0,
+            });
+        }
     }
 
     reqUserData () {
@@ -145,6 +162,7 @@ export class AppGame extends Component {
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CardChest, 'Game', function(data) {
+            if (Game.IsCardFeatureClosed && Game.IsCardFeatureClosed()) return;
             let chestArr = GameKit.DataCache.GetData('UserCardChestArr');
             if (!chestArr) {
                 chestArr = [];
@@ -157,6 +175,7 @@ export class AppGame extends Component {
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.RandomPack, 'Game', function(data) {
+            if (Game.IsCardFeatureClosed && Game.IsCardFeatureClosed()) return;
             let randomPackArr = GameKit.DataCache.GetData('UserRandomPackArr') || [];
             randomPackArr = randomPackArr.concat(data);
             GameKit.DataCache.SetData('UserRandomPackArr', randomPackArr);
@@ -182,8 +201,28 @@ export class AppGame extends Component {
         this.prelogined = false;
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ApEvent, 'Game', function(data) {
+            if (data && data.__serverEvent === true && data.ap != null && data.legacyApSnapshot !== true && data.__legacyApSnapshot !== true) {
+                if (SR && SR.SRMerge && SR.SRMerge.SyncResourceShadow) SR.SRMerge.SyncResourceShadow();
+                GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ApEvent, data);
+                return;
+            }
             Game.SUser.updateData(data);
             GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ApEvent, data);
+        }.bind(this));
+
+        GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ResourceDeltaEvent, 'Game', function(data) {
+            if (!data || !Array.isArray(data.contents) || !SR || !SR.SRMerge || !SR.SRMerge.ApplyLocalContentDelta) return;
+            let contents = data.contents.filter(function(content) {
+                return content && Number(content.type) === 2;
+            });
+            let applied = SR.SRMerge.ApplyLocalContentDelta(contents);
+            if (!applied || applied.length === 0) return;
+            if (SR.SRMerge.PersistMergeSnapshot) {
+                let promise = SR.SRMerge.PersistMergeSnapshot(data.reason || 'resourceDelta');
+                if (promise && typeof promise.catch === 'function') {
+                    promise.catch((err) => { console.error(err, 'resourceDelta persist error'); });
+                }
+            }
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CoinEvent, 'Game', function(data) {

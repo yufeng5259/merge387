@@ -173,6 +173,46 @@ SRMerge.GetCurrentApRecoverLast = () => {
     return Math.floor(Date.now() / 1000)
 }
 
+SRMerge.GetValidNumber = (value, defaultValue) => {
+    let num = Number(value)
+    return isFinite(num) ? num : defaultValue
+}
+
+SRMerge.GetApMax = () => {
+    try {
+        if (typeof Game !== "undefined" && Game.SUser && Game.SUser.GetApRuntimeConfig) {
+            let config = Game.SUser.GetApRuntimeConfig()
+            return SRMerge.GetValidNumber(config && config.apMax, null)
+        }
+    } catch (e) { }
+    if (typeof G !== "undefined" && G.GameConstance) {
+        return SRMerge.GetValidNumber(G.GameConstance.apMax, null)
+    }
+    return null
+}
+
+SRMerge.BuildApUpdateData = (apValue) => {
+    try { if (Game.SUser && Game.SUser.UpdateApTime) Game.SUser.UpdateApTime() } catch (e) { }
+
+    let nextAp = Math.max(0, SRMerge.GetValidNumber(apValue, 0))
+    let apMax = SRMerge.GetApMax()
+    let now = SRMerge.GetCurrentApRecoverLast()
+    let data: any = { ap: nextAp }
+    if (apMax == null || apMax <= 0 || typeof Game === "undefined" || !Game.SUser) return data
+
+    let beforeAp = SRMerge.GetValidNumber(Game.SUser.Ap && Game.SUser.Ap(), 0)
+    if (nextAp >= apMax) {
+        data.apRecover = 0
+        data.apRecoverLast = now
+    } else if (beforeAp < apMax) {
+        data.apRecover = SRMerge.GetValidNumber(Game.SUser.ApRecover && Game.SUser.ApRecover(), 0)
+        data.apRecoverLast = SRMerge.GetValidNumber(Game.SUser.ApRecoverLast && Game.SUser.ApRecoverLast(), now)
+    } else {
+        data.apRecover = 0
+        data.apRecoverLast = now
+    }
+    return data
+}
 SRMerge.ApplyResourceShadowToUser = (snapshot) => {
     if (typeof Game === "undefined" || !Game.SUser || !Game.SUser.updateData || !snapshot) return false
     let resources = snapshot.resources
@@ -667,9 +707,11 @@ SRMerge.SetUserResourceValue = (content, value) => {
     let data = null
     if (content.type === 1) data = { coin: value }
     else if (content.type === 2) {
-        let now = SRMerge.GetCurrentApRecoverLast()
-        data = { ap: value, apRecover: 0 }
-        if (now != null) data.apRecoverLast = now
+        if (Game.ContentCheck && Game.ContentCheck.BuildApUpdateData) {
+            data = Game.ContentCheck.BuildApUpdateData(value)
+        } else {
+            data = SRMerge.BuildApUpdateData(value)
+        }
     }
     else if (content.type === 7) data = { cash: value }
     else if (content.type === 8) data = { exp: value }
@@ -1578,6 +1620,7 @@ SRMerge.MergeBoardLogicConfigProvider = {
             prdId: g.PrdId(),
             prdChangeRate: g.PrdChangeRate(),
             initialSequence: g.InitialSequence(),
+            interval: g.Interval ? g.Interval() : '',
             bubbleRate: g.BubbleRate ? g.BubbleRate() : null,
             bubbleParam: g.BubbleParam ? g.BubbleParam() : null,
             bubbleCost: g.BubbleCost ? g.BubbleCost() : null
@@ -1737,6 +1780,7 @@ SRMerge.MergeOrderLogiConfigProvider = () => {
                     series: meta.Series ? meta.Series() : null,
                     goldPrice: meta.GoldPrice ? meta.GoldPrice() : 0,
                     orderScore: meta.OrderScore ? meta.OrderScore() : 0,
+                    orderLv: meta.OrderLv ? meta.OrderLv() : 0,
                     preId: meta.PrevId ? meta.PrevId() : null,
                     prevId: meta.PrevId ? meta.PrevId() : null,
                     nextId: meta.NextId ? meta.NextId() : null

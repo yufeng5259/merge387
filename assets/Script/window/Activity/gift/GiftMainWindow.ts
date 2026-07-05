@@ -1,4 +1,4 @@
-import { _decorator, Button, instantiate, Label, Node, ParticleSystem, Sprite, SpriteFrame, tween, Tween, UIOpacity, Vec3 } from 'cc';
+import { _decorator, Button, instantiate, Label, Node, ParticleSystem2D, Sprite, SpriteFrame, tween, Tween, UIOpacity, Vec3 } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import SpriteGray from '../../../GameKit/render/SpriteGray';
 import ContentModel from '../../../game/items/ContentModel';
@@ -74,7 +74,7 @@ export default class GiftMainWindow extends UIWindow {
                 btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(Button),
                 cannot_buy: GameKit.ControllerTable.GetNode(n, "cannot-buy"),
                 arrow: GameKit.ControllerTable.GetNode(n, "arrow"),
-                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem),
+                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem2D),
             }
             if(i==5){
                 data.arrow.active=false

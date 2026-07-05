@@ -1,4 +1,4 @@
-﻿import { _decorator, Button, Component, instantiate, Label, Node, ParticleSystem, ProgressBar, UITransform, Vec3, view } from 'cc';
+﻿import { _decorator, Button, Component, instantiate, Label, Node, ParticleSystem2D, ProgressBar, UITransform, Vec3, view } from 'cc';
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import { bindGuardedClick, stopTouchPropagation, unbindGuardedClick } from '../../../GameKit/ui/TouchClickGuard';
 import PassPortDesWindow from './PassPortDesWindow';
@@ -375,7 +375,7 @@ export default class PassPortMainWindow extends UIWindow {
             let buyItem=GameKit.ControllerTable.GetNode(node, 'buy_item')
             let buy_icon_state=GameKit.ControllerTable.GetNode(buyItem, 'icon_state')
             let buy_lock=GameKit.ControllerTable.GetNode(buyItem, 'buy-lock')
-            let buy_lock_particle=GameKit.ControllerTable.GetComponent(buyItem, 'buy_lock_particle', ParticleSystem)
+            let buy_lock_particle=GameKit.ControllerTable.GetComponent(buyItem, 'buy_lock_particle', ParticleSystem2D)
             let buy_reward_layout=GameKit.ControllerTable.GetNode(buyItem, "reward-layout")
             let buy_quest_btn=GameKit.ControllerTable.GetNode(buyItem, "quest-btn")
             buy_quest_btn.active=false
@@ -456,7 +456,7 @@ export default class PassPortMainWindow extends UIWindow {
             let freeItem=GameKit.ControllerTable.GetNode(node, 'free_item', Node)
             let free_icon_state=GameKit.ControllerTable.GetNode(freeItem, 'icon_state')
             let free_lock=GameKit.ControllerTable.GetNode(freeItem, 'buy-lock')
-            let free_lock_particle=GameKit.ControllerTable.GetComponent(freeItem, 'buy_lock_particle', ParticleSystem)
+            let free_lock_particle=GameKit.ControllerTable.GetComponent(freeItem, 'buy_lock_particle', ParticleSystem2D)
             let free_reward_layout=GameKit.ControllerTable.GetNode(freeItem, "reward-layout")
             let free_quest_btn=GameKit.ControllerTable.GetNode(freeItem, "quest-btn")
             
@@ -587,7 +587,7 @@ export default class PassPortMainWindow extends UIWindow {
             let buyItem=GameKit.ControllerTable.GetNode(node, 'buy_item')
             let buy_icon_state=GameKit.ControllerTable.GetNode(buyItem, 'icon_state')
             let buy_lock=GameKit.ControllerTable.GetNode(buyItem, 'buy-lock')
-            let buy_lock_particle=GameKit.ControllerTable.GetComponent(buyItem, 'buy_lock_particle', ParticleSystem)
+            let buy_lock_particle=GameKit.ControllerTable.GetComponent(buyItem, 'buy_lock_particle', ParticleSystem2D)
             let buy_reward_layout=GameKit.ControllerTable.GetNode(buyItem, "reward-layout")
             let buy_quest_btn=GameKit.ControllerTable.GetNode(buyItem, "quest-btn")
             buy_quest_btn.active=false
@@ -667,7 +667,7 @@ export default class PassPortMainWindow extends UIWindow {
             let freeItem=GameKit.ControllerTable.GetNode(node, 'free_item', Node)
             let free_icon_state=GameKit.ControllerTable.GetNode(freeItem, 'icon_state')
             let free_lock=GameKit.ControllerTable.GetNode(freeItem, 'buy-lock')
-            let free_lock_particle=GameKit.ControllerTable.GetComponent(freeItem, 'buy_lock_particle', ParticleSystem)
+            let free_lock_particle=GameKit.ControllerTable.GetComponent(freeItem, 'buy_lock_particle', ParticleSystem2D)
             let free_reward_layout=GameKit.ControllerTable.GetNode(freeItem, "reward-layout")
             let free_quest_btn=GameKit.ControllerTable.GetNode(freeItem, "quest-btn")
             

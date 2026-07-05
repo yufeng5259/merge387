@@ -8,15 +8,65 @@
     ".png"
   ],
   "subMetas": {
-    "f9941": {
-      "uuid": "65d29581-5ceb-4f14-9cad-a2fbf64f6444",
-      "imported": false,
+    "town": {
+      "ver": "1.0.6",
+      "uuid": "664df11d-29cf-4997-be4a-103a4b8bab86",
       "importer": "sprite-frame",
-      "files": [],
+      "rawTextureUuid": "7945b934-a495-45cd-8df9-b485e6fcd0ad",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 7.5,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 60,
+      "height": 109,
+      "rawWidth": 64,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "subMetas": {},
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "7945b934-a495-45cd-8df9-b485e6fcd0ad@6c48a",
+      "displayName": "town",
+      "id": "6c48a",
+      "name": "texture",
       "userData": {
-        "importer": "sprite-frame",
-        "trimType": "auto",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "7945b934-a495-45cd-8df9-b485e6fcd0ad",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "7945b934-a495-45cd-8df9-b485e6fcd0ad@f9941",
+      "displayName": "town",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
         "trimThreshold": 1,
         "rotated": false,
         "offsetX": 0,
@@ -31,31 +81,71 @@
         "borderBottom": 0,
         "borderLeft": 0,
         "borderRight": 0,
-        "imageUuidOrDatabaseUri": "7945b934-a495-45cd-8df9-b485e6fcd0ad@6c48a"
-      },
-      "ver": "0.0.1",
-      "displayName": "",
-      "id": "",
-      "name": ""
-    },
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "7945b934-a495-45cd-8df9-b485e6fcd0ad@6c48a",
-      "displayName": "town",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -30,
+            -54.5,
+            0,
+            30,
+            -54.5,
+            0,
+            -30,
+            54.5,
+            0,
+            30,
+            54.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            2,
+            126,
+            62,
+            126,
+            2,
+            17,
+            62,
+            17
+          ],
+          "nuv": [
+            0.03125,
+            0.1328125,
+            0.96875,
+            0.1328125,
+            0.03125,
+            0.984375,
+            0.96875,
+            0.984375
+          ],
+          "minPos": [
+            -30,
+            -54.5,
+            0
+          ],
+          "maxPos": [
+            30,
+            54.5,
+            0
+          ]
+        },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "7945b934-a495-45cd-8df9-b485e6fcd0ad",
-        "visible": false
+        "imageUuidOrDatabaseUri": "7945b934-a495-45cd-8df9-b485e6fcd0ad@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
       },
-      "ver": "1.0.22",
+      "ver": "1.0.12",
       "imported": true,
       "files": [
         ".json"
@@ -64,9 +154,15 @@
     }
   },
   "userData": {
-    "type": "texture",
-    "fixAlphaTransparencyArtifacts": false,
+    "wrapModeS": "repeat",
+    "wrapModeT": "repeat",
+    "minfilter": "linear",
+    "magfilter": "linear",
+    "mipfilter": "none",
+    "anisotropy": 0,
+    "type": "sprite-frame",
     "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
     "redirect": "7945b934-a495-45cd-8df9-b485e6fcd0ad@6c48a"
   }
 }

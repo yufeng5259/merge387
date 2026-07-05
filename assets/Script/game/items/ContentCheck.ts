@@ -20,6 +20,52 @@ ContentCheck.UpdateApBeforeRead = function() {
     } catch (e) {}
 }
 
+ContentCheck.GetValidNumber = function(value, defaultValue) {
+    let num = Number(value)
+    return isFinite(num) ? num : defaultValue
+}
+
+ContentCheck.GetApMax = function() {
+    try {
+        if (Game.SUser && Game.SUser.GetApRuntimeConfig) {
+            let config = Game.SUser.GetApRuntimeConfig()
+            return ContentCheck.GetValidNumber(config && config.apMax, null)
+        }
+    } catch (e) {}
+    if (typeof G !== "undefined" && G.GameConstance) {
+        return ContentCheck.GetValidNumber(G.GameConstance.apMax, null)
+    }
+    return null
+}
+
+ContentCheck.BuildApUpdateData = function(apValue, skipUpdate) {
+    if (!skipUpdate) ContentCheck.UpdateApBeforeRead()
+
+    let nextAp = Math.max(0, ContentCheck.GetValidNumber(apValue, 0))
+    let apMax = ContentCheck.GetApMax()
+    let now = ContentCheck.GetCurrentApRecoverLast()
+    let data: any = { ap: nextAp }
+    if (apMax == null || apMax <= 0 || !Game.SUser) return data
+
+    let beforeAp = ContentCheck.GetValidNumber(Game.SUser.Ap && Game.SUser.Ap(), 0)
+    if (nextAp >= apMax) {
+        data.apRecover = 0
+        data.apRecoverLast = now
+    } else if (beforeAp < apMax) {
+        data.apRecover = ContentCheck.GetValidNumber(Game.SUser.ApRecover && Game.SUser.ApRecover(), 0)
+        data.apRecoverLast = ContentCheck.GetValidNumber(Game.SUser.ApRecoverLast && Game.SUser.ApRecoverLast(), now)
+    } else {
+        data.apRecover = 0
+        data.apRecoverLast = now
+    }
+    return data
+}
+
+ContentCheck.BuildApConsumeData = function(count) {
+    ContentCheck.UpdateApBeforeRead()
+    return ContentCheck.BuildApUpdateData(Game.SUser.Ap() - count, true)
+}
+
 ContentCheck.CheckContents = function(contents) {
     if (!contents || contents.length == 0) return true
 
@@ -39,12 +85,7 @@ ContentCheck.ClientUseConten = function(content) {
     if (type == Content.Types.Coin) {
         GameKit.WebEvent.DispatcherEvent(GameKit.WebEvent.EventName.CoinEvent, { coin: Game.SUser.Coin() - count })
     } else if (type == Content.Types.Ap) {
-        ContentCheck.UpdateApBeforeRead()
-        GameKit.WebEvent.DispatcherEvent(GameKit.WebEvent.EventName.ApEvent, {
-            ap: Game.SUser.Ap() - count,
-            apRecover: 0,
-            apRecoverLast: ContentCheck.GetCurrentApRecoverLast()
-        })
+        GameKit.WebEvent.DispatcherEvent(GameKit.WebEvent.EventName.ApEvent, ContentCheck.BuildApConsumeData(count))
     } else if (type == Content.Types.Cash) {
         GameKit.WebEvent.DispatcherEvent(GameKit.WebEvent.EventName.CashEvent, { cash: Game.SUser.Cash() - count })
     }

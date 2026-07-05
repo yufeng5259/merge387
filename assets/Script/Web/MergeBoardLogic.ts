@@ -180,6 +180,126 @@ MergeBoardLogic.parseNeedCharge = function (value) {
     return value === true || value === 'TRUE' || value === 'true' || value === 1 || value === '1';
 };
 
+MergeBoardLogic.parseGeneratorRecoverInterval = function (value) {
+    if (value == null) return { raw: '', recoverInterval: 0, recoverCount: 0 };
+    if (typeof value === 'function') {
+        try { value = value(); } catch (e) { value = ''; }
+    }
+    if (typeof value === 'object' && !Array.isArray(value)) {
+        if (value.value !== undefined) value = value.value;
+        else if (value.v !== undefined) value = value.v;
+        else if (value.default !== undefined) value = value.default;
+        else if (value.data !== undefined) value = value.data;
+    }
+    if (Array.isArray(value)) {
+        value = value.join(',');
+    }
+    var raw = String(value == null ? '' : value).trim();
+    if (!raw || raw === '0') return { raw: raw, recoverInterval: 0, recoverCount: 0 };
+    var parts = raw.split(/[,，;；]/);
+    var recoverInterval = parseInt(parts[0]);
+    var recoverCount = parseInt(parts.length > 1 ? parts[1] : '1');
+    if (isNaN(recoverInterval) || recoverInterval <= 0) recoverInterval = 0;
+    if (isNaN(recoverCount) || recoverCount <= 0) recoverCount = 0;
+    if (recoverInterval <= 0 || recoverCount <= 0) {
+        recoverInterval = 0;
+        recoverCount = 0;
+    }
+    return { raw: raw, recoverInterval: recoverInterval, recoverCount: recoverCount };
+};
+
+MergeBoardLogic.getGeneratorRecoverIntervalConfig = function (generatorConfig) {
+    return MergeBoardLogic.getMetaFieldValue(generatorConfig, ['interval', 'Interval', 'string', 'String'], '');
+};
+
+MergeBoardLogic.syncGeneratorRecoverConfig = function (generatorState, generatorConfig) {
+    if (!generatorState) return generatorState;
+    generatorConfig = generatorConfig || {};
+    var maxOutputCount = parseInt(generatorConfig.maxOutputCount);
+    if (!isNaN(maxOutputCount) && maxOutputCount > 0) {
+        generatorState.maxOutputCount = maxOutputCount;
+        if (parseInt(generatorState.remainingCount) > maxOutputCount) {
+            generatorState.remainingCount = maxOutputCount;
+        }
+    }
+    if (generatorConfig.needCharge !== undefined) {
+        generatorState.needCharge = MergeBoardLogic.parseNeedCharge(generatorConfig.needCharge);
+    }
+    if (generatorConfig.chargeTime !== undefined) generatorState.chargeTime = parseInt(generatorConfig.chargeTime) || 0;
+    if (generatorConfig.delayTime !== undefined) generatorState.delayTime = parseInt(generatorConfig.delayTime) || 0;
+    if (generatorConfig.onetimeDestroy !== undefined) generatorState.onetimeDestroy = parseInt(generatorConfig.onetimeDestroy) === 1;
+
+    var parsed = MergeBoardLogic.parseGeneratorRecoverInterval(MergeBoardLogic.getGeneratorRecoverIntervalConfig(generatorConfig));
+    generatorState.interval = parsed.raw;
+    generatorState.recoverInterval = parsed.recoverInterval;
+    generatorState.recoverCount = parsed.recoverCount;
+    if (generatorState.lastSmallRecoverTime == null || isNaN(parseInt(generatorState.lastSmallRecoverTime))) {
+        generatorState.lastSmallRecoverTime = 0;
+    }
+    if (parsed.recoverInterval <= 0 || parsed.recoverCount <= 0) {
+        generatorState.lastSmallRecoverTime = 0;
+    }
+    return generatorState;
+};
+
+MergeBoardLogic.applyGeneratorSmallRecover = function (generatorState, generatorConfig, currentTime) {
+    if (!generatorState) return generatorState;
+    MergeBoardLogic.syncGeneratorRecoverConfig(generatorState, generatorConfig);
+    var recoverInterval = parseInt(generatorState.recoverInterval) || 0;
+    var recoverCount = parseInt(generatorState.recoverCount) || 0;
+    if (recoverInterval <= 0 || recoverCount <= 0) return generatorState;
+    if (parseInt(generatorState.nextRefillTime) > 0) return generatorState;
+
+    var maxOutputCount = parseInt(generatorState.maxOutputCount) || parseInt(generatorConfig && generatorConfig.maxOutputCount) || 0;
+    if (maxOutputCount <= 0) return generatorState;
+    var remainingCount = parseInt(generatorState.remainingCount);
+    if (isNaN(remainingCount)) remainingCount = 0;
+    if (remainingCount <= 0) {
+        generatorState.lastSmallRecoverTime = 0;
+        return generatorState;
+    }
+    if (remainingCount >= maxOutputCount) {
+        generatorState.remainingCount = maxOutputCount;
+        generatorState.lastSmallRecoverTime = 0;
+        return generatorState;
+    }
+
+    currentTime = parseInt(currentTime);
+    if (isNaN(currentTime) || currentTime <= 0) currentTime = Math.floor(Date.now() / 1000);
+    var lastSmallRecoverTime = parseInt(generatorState.lastSmallRecoverTime) || 0;
+    if (lastSmallRecoverTime <= 0 || currentTime <= lastSmallRecoverTime) return generatorState;
+
+    var ticks = Math.floor((currentTime - lastSmallRecoverTime) / recoverInterval);
+    if (ticks <= 0) return generatorState;
+    remainingCount = Math.min(maxOutputCount, remainingCount + ticks * recoverCount);
+    generatorState.remainingCount = remainingCount;
+    if (remainingCount >= maxOutputCount) {
+        generatorState.remainingCount = maxOutputCount;
+        generatorState.lastSmallRecoverTime = 0;
+    } else {
+        generatorState.lastSmallRecoverTime = lastSmallRecoverTime + ticks * recoverInterval;
+    }
+    return generatorState;
+};
+
+MergeBoardLogic.markGeneratorSmallRecoverAfterConsume = function (generatorState, generatorConfig, currentTime) {
+    if (!generatorState) return generatorState;
+    MergeBoardLogic.syncGeneratorRecoverConfig(generatorState, generatorConfig);
+    var recoverInterval = parseInt(generatorState.recoverInterval) || 0;
+    var recoverCount = parseInt(generatorState.recoverCount) || 0;
+    if (recoverInterval <= 0 || recoverCount <= 0) return generatorState;
+    var maxOutputCount = parseInt(generatorState.maxOutputCount) || parseInt(generatorConfig && generatorConfig.maxOutputCount) || 0;
+    var remainingCount = parseInt(generatorState.remainingCount) || 0;
+    if (remainingCount <= 0 || remainingCount >= maxOutputCount || parseInt(generatorState.nextRefillTime) > 0) {
+        generatorState.lastSmallRecoverTime = 0;
+        return generatorState;
+    }
+    if ((parseInt(generatorState.lastSmallRecoverTime) || 0) <= 0) {
+        generatorState.lastSmallRecoverTime = parseInt(currentTime) || Math.floor(Date.now() / 1000);
+    }
+    return generatorState;
+};
+
 MergeBoardLogic.isTruthyConfig = function (value) {
     return value === true || value === 'TRUE' || value === 'true' || value === 1 || value === '1';
 };
@@ -1085,6 +1205,9 @@ MergeBoardLogic.buildGeneratorState = function (generatorConfig, generatorId, qu
     var chargeTime = generatorConfig.chargeTime || 0;
     var delayTime = generatorConfig.delayTime || 0;
     var onetimeDestroy = parseInt(generatorConfig.onetimeDestroy) === 1;
+    var recoverCfg = MergeBoardLogic.parseGeneratorRecoverInterval(
+        MergeBoardLogic.getGeneratorRecoverIntervalConfig(generatorConfig)
+    );
 
     var state = {
         generatorId: generatorId,
@@ -1101,7 +1224,11 @@ MergeBoardLogic.buildGeneratorState = function (generatorConfig, generatorId, qu
         isCooling: false,
         queueSeed: queueSeed,
         produceState: null,
-        producedCount: 0
+        producedCount: 0,
+        interval: recoverCfg.raw,
+        recoverInterval: recoverCfg.recoverInterval,
+        recoverCount: recoverCfg.recoverCount,
+        lastSmallRecoverTime: 0
     };
     // �?MergeGenerator 初始�?produceState 并填充首个队�?
     MergeBoardLogic.refillGeneratorQueue(state, generatorConfig);
@@ -1902,6 +2029,7 @@ MergeBoardLogic.generate = function (boardState, params, configProvider) {
         return result;
     }
 
+    MergeBoardLogic.syncGeneratorRecoverConfig(generatorState, generatorConfig);
     MergeBoardLogic.ensureInitialSequence(boardState, generatorState.generatorId, generatorConfig);
 
     var currentTime = configProvider.getCurrentTime();
@@ -1916,7 +2044,10 @@ MergeBoardLogic.generate = function (boardState, params, configProvider) {
         generatorState.lastRefillTime = currentTime;
         generatorState.nextRefillTime = 0;
         generatorState.coolingStartTime = 0;
+        generatorState.lastSmallRecoverTime = 0;
     }
+
+    MergeBoardLogic.applyGeneratorSmallRecover(generatorState, generatorConfig, currentTime);
 
     // ---------- 一次性宝箱：倒计时结�?----------
     if (generatorState.delayTime === undefined) generatorState.delayTime = delayTime;
@@ -1955,6 +2086,7 @@ MergeBoardLogic.generate = function (boardState, params, configProvider) {
             if (generatorState.nextRefillTime <= 0) {
                 generatorState.nextRefillTime = currentTime + (generatorState.chargeTime || 0);
                 generatorState.coolingStartTime = currentTime;
+                generatorState.lastSmallRecoverTime = 0;
             }
             result.cooling = true;
             result.remainingTime = Math.ceil(generatorState.nextRefillTime - currentTime);
@@ -2075,6 +2207,9 @@ MergeBoardLogic.generate = function (boardState, params, configProvider) {
         if (generatorState.nextRefillTime === 0) {
             generatorState.nextRefillTime = currentTime + (generatorState.chargeTime || 0);
         }
+        generatorState.lastSmallRecoverTime = 0;
+    } else {
+        MergeBoardLogic.markGeneratorSmallRecoverAfterConsume(generatorState, generatorConfig, currentTime);
     }
 
     // ---------- 一次性用完：清理 ----------

@@ -1,6 +1,6 @@
 // 音频管理
 
-import { AudioClip, AudioSource, director, game, Game as CocosGame, Node, resources, sys } from 'cc';
+import { AudioClip, AudioSource, director, game, Game as CocosGame, instantiate, Node, Prefab, resources, sys } from 'cc';
 
 type ManagedSound = AudioSource | any;
 
@@ -68,10 +68,81 @@ SoundManager.SoundAliases = {
 
 SoundManager.aVolume = 1;
 SoundManager.soundVolume = 1;
+SoundManager.volumeConfig = null;
+SoundManager.VolumeConfigRes = "config/SoundVolumeConfig";
+SoundManager._currentBgmConfigKey = "";
 SoundManager._seaWaveLoopEnabled = false;
 SoundManager._seaWaveLoopPlaying = false;
 
 const usewx = false && wxTools.usewx;
+
+function clampVolume(value: any, defaultValue = 1) {
+    const num = Number(value);
+    if (!isFinite(num)) return defaultValue;
+    return Math.max(0, Math.min(1, num));
+}
+
+SoundManager.setVolumeConfig = function(config) {
+    SoundManager.volumeConfig = config || null;
+    if (SoundManager.volumeConfig && SoundManager.volumeConfig.rebuildCache) {
+        SoundManager.volumeConfig.rebuildCache();
+    }
+    if (SoundManager.bgm != null && usewx) {
+        SoundManager.bgm.volume = SoundManager.getBgmEngineVolume(SoundManager.getCurrentBgmConfigKey());
+    } else if (SoundManager.bgmSource != null && !usewx) {
+        SoundManager.bgmSource.volume = SoundManager.getBgmEngineVolume(SoundManager.getCurrentBgmConfigKey());
+    }
+};
+
+SoundManager.getCurrentBgmConfigKey = function() {
+    return SoundManager._currentBgmConfigKey || SoundManager.bgmName || "";
+};
+
+SoundManager.getBgmVolumeScale = function(bgmName) {
+    if (SoundManager.volumeConfig && SoundManager.volumeConfig.getBgmVolume) {
+        return clampVolume(SoundManager.volumeConfig.getBgmVolume(bgmName), 1);
+    }
+    return 1;
+};
+
+SoundManager.getSoundVolumeScale = function(soundKey) {
+    if (SoundManager.volumeConfig && SoundManager.volumeConfig.getSoundVolume) {
+        return clampVolume(SoundManager.volumeConfig.getSoundVolume(soundKey), 1);
+    }
+    return 1;
+};
+
+SoundManager.getBgmEngineVolume = function(bgmName, baseVolume = 0.3) {
+    return clampVolume(baseVolume, 0.3) * SoundManager.aVolume * SoundManager.getBgmVolumeScale(bgmName);
+};
+
+SoundManager.getSoundEngineVolume = function(soundKey) {
+    return SoundManager.soundVolume * SoundManager.getSoundVolumeScale(soundKey);
+};
+
+SoundManager.loadVolumeConfig = function() {
+    if (SoundManager.volumeConfig) return;
+    const typedResources = resources as any;
+    if (!typedResources.getInfoWithPath) return;
+    const configInfo = typedResources.getInfoWithPath(SoundManager.VolumeConfigRes, Prefab) || typedResources.getInfoWithPath(SoundManager.VolumeConfigRes);
+    if (!configInfo) return;
+
+    resources.load(SoundManager.VolumeConfigRes, Prefab, function(err, prefab) {
+        if (err || !prefab || SoundManager.volumeConfig) return;
+        const node = instantiate(prefab);
+        node.name = "SoundVolumeConfig";
+        if (typeof AppMain !== "undefined" && AppMain.instance && AppMain.instance.node) {
+            node.parent = AppMain.instance.node;
+        } else {
+            const scene = director.getScene();
+            if (scene) {
+                scene.addChild(node);
+                const persistDirector = director as any;
+                if (persistDirector.addPersistRootNode) persistDirector.addPersistRootNode(node);
+            }
+        }
+    });
+};
 
 function ensureSoundRoot() {
     if (!soundRoot.parent) {
@@ -135,6 +206,8 @@ function forEachAudioSource(callback: (source: AudioSource) => void) {
 }
 
 SoundManager.init = function() {
+    SoundManager.loadVolumeConfig();
+
     SoundManager.aVolume = parseFloat(sys.localStorage.getItem("BGMSwitch"));
     if (SoundManager.aVolume !== 0 && !SoundManager.aVolume) {
         SoundManager.aVolume = 1;
@@ -177,6 +250,8 @@ SoundManager.playBgm = function() {
     }
     if (SoundManager.aVolume <= 0) return;
     const bgmIndex = G.getRandomInt(1, SoundManager.BgmNum + 1);
+    const bgmKey = 'bgm' + bgmIndex.toString();
+    SoundManager._currentBgmConfigKey = bgmKey;
     if (usewx) {
         if (SoundManager.bgm != null) {
             SoundManager.bgm.stop();
@@ -185,14 +260,14 @@ SoundManager.playBgm = function() {
         SoundManager.bgm = wx.createInnerAudioContext();
         SoundManager.bgm.autoplay = true;
         SoundManager.bgm.loop = true;
-        SoundManager.bgm.volume = 0.7 * SoundManager.aVolume;
-        SoundManager.bgm.src = AppKit.SdkManager.AssetsPathToRealPath('audio/bgm/bgm' + bgmIndex.toString() + ".mp3");
+        SoundManager.bgm.volume = SoundManager.getBgmEngineVolume(bgmKey, 0.7);
+        SoundManager.bgm.src = AppKit.SdkManager.AssetsPathToRealPath('audio/bgm/' + bgmKey + ".mp3");
     } else {
         SoundManager.stopAllAudioSources();
-        const resName = 'audio/bgm/bgm' + bgmIndex.toString();
+        const resName = 'audio/bgm/' + bgmKey;
         loadAudioClip(resName, function(err, audio) {
             if (err || !audio) return;
-            SoundManager.bgmSource = createAudioSource(audio, true, 0.3 * SoundManager.aVolume);
+            SoundManager.bgmSource = createAudioSource(audio, true, SoundManager.getBgmEngineVolume(bgmKey, 0.3));
             SoundManager.bgmSource.play();
         });
     }
@@ -200,6 +275,7 @@ SoundManager.playBgm = function() {
 
 SoundManager.playBgmByName = function(bgmName) {
     this.bgmName = bgmName;
+    SoundManager._currentBgmConfigKey = bgmName || "";
     if (SoundManager.aVolume <= 0) return;
     if (usewx) {
         if (SoundManager.bgm != null) {
@@ -209,14 +285,14 @@ SoundManager.playBgmByName = function(bgmName) {
         SoundManager.bgm = wx.createInnerAudioContext();
         SoundManager.bgm.autoplay = true;
         SoundManager.bgm.loop = true;
-        SoundManager.bgm.volume = 0.3 * SoundManager.aVolume;
+        SoundManager.bgm.volume = SoundManager.getBgmEngineVolume(bgmName, 0.3);
         SoundManager.bgm.src = AppKit.SdkManager.AssetsPathToRealPath('audio/bgm/' + bgmName + ".mp3");
     } else {
         SoundManager.stopAllAudioSources();
         const resName = 'audio/bgm/' + bgmName;
         loadAudioClip(resName, function(err, audio) {
             if (err || !audio) return;
-            SoundManager.bgmSource = createAudioSource(audio, true, 0.3 * SoundManager.aVolume);
+            SoundManager.bgmSource = createAudioSource(audio, true, SoundManager.getBgmEngineVolume(bgmName, 0.3));
             SoundManager.bgmSource.play();
         });
     }
@@ -265,7 +341,7 @@ SoundManager.playSoundByPath = function(soundPath, loop = false, wxExt = SoundMa
     if (usewx) {
         const sound = wx.createInnerAudioContext();
         sound.loop = loop;
-        sound.volume = 1 * SoundManager.soundVolume;
+        sound.volume = SoundManager.getSoundEngineVolume(soundPath);
         sound.src = AppKit.SdkManager.AssetsPathToRealPath(soundPath + wxExt);
         sound.onStop(function() {
             sound.destroy();
@@ -277,7 +353,7 @@ SoundManager.playSoundByPath = function(soundPath, loop = false, wxExt = SoundMa
     } else {
         const playSound = function(audio: AudioClip) {
             if (canPlay && !canPlay()) return;
-            const source = createAudioSource(audio, loop, 1 * SoundManager.soundVolume);
+            const source = createAudioSource(audio, loop, SoundManager.getSoundEngineVolume(soundPath));
             SoundManager.logDebugSoundPlay(soundPath);
             source.play();
             ensureSoundList(soundPath).push(source);
@@ -471,7 +547,7 @@ SoundManager.playSound = function(soundName, loop = false) {
     if (usewx) {
         const sound = wx.createInnerAudioContext();
         sound.loop = loop;
-        sound.volume = 1 * SoundManager.soundVolume;
+        sound.volume = SoundManager.getSoundEngineVolume(soundName);
         sound.src = AppKit.SdkManager.AssetsPathToRealPath('audio/fx/' + soundName + ".mp3");
         sound.onStop(function() {
             sound.destroy();
@@ -481,7 +557,7 @@ SoundManager.playSound = function(soundName, loop = false) {
         ensureSoundList(soundName).push(sound);
     } else {
         const playSound = function(audio: AudioClip) {
-            const source = createAudioSource(audio, loop, 1 * SoundManager.soundVolume);
+            const source = createAudioSource(audio, loop, SoundManager.getSoundEngineVolume(soundName));
             source.play();
             ensureSoundList(soundName).push(source);
             if (!loop) {
@@ -623,7 +699,7 @@ SoundManager.changeBGMSwitch = function() {
 
     if (usewx) {
         if (SoundManager.bgm != null) {
-            SoundManager.bgm.volume = 0.25 * SoundManager.aVolume;
+            SoundManager.bgm.volume = SoundManager.getBgmEngineVolume(SoundManager.getCurrentBgmConfigKey(), 0.25);
         } else {
             SoundManager.playBgm();
         }

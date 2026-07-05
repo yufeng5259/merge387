@@ -385,7 +385,8 @@ export class UserMerge {
                 spawnType: this._callGeneratorMeta(meta, 'SpawnType', null),
                 prdId: this._callGeneratorMeta(meta, 'PrdId', null),
                 prdChangeRate: this._callGeneratorMeta(meta, 'PrdChangeRate', 0),
-                initialSequence: this._callGeneratorMeta(meta, 'InitialSequence', [])
+                initialSequence: this._callGeneratorMeta(meta, 'InitialSequence', []),
+                interval: this._callGeneratorMeta(meta, 'Interval', '')
             }
         } catch (e) {
             return null
@@ -408,6 +409,20 @@ export class UserMerge {
         let value = generatorConfig ? generatorConfig.needCharge : generatorState.needCharge
         return value === true || value === 'TRUE' || value === 'true' || value === 1 || value === '1'
     }
+    _refreshGeneratorStateForPreview(generatorState, generatorConfig?: any, currentTime?: any) {
+        if (!generatorState) return generatorState
+        let boardLogic = (typeof Game !== 'undefined') ? Game.MergeBoardLogic : null
+        if (!boardLogic) return generatorState
+        generatorConfig = generatorConfig || this._getGeneratorConfigForPreview(generatorState.generatorId)
+        currentTime = currentTime || this._getCurrentTimeForPreview()
+        if (boardLogic.syncGeneratorRecoverConfig && generatorConfig) {
+            boardLogic.syncGeneratorRecoverConfig(generatorState, generatorConfig)
+        }
+        if (boardLogic.applyGeneratorSmallRecover && generatorConfig) {
+            boardLogic.applyGeneratorSmallRecover(generatorState, generatorConfig, currentTime)
+        }
+        return generatorState
+    }
     _ensureGeneratorPreviewQueue(generatorState) {
         if (!generatorState) return false
         if (!Array.isArray(generatorState.queue)) {
@@ -415,12 +430,13 @@ export class UserMerge {
         }
         let boardLogic = (typeof Game !== 'undefined') ? Game.MergeBoardLogic : null
         let generatorConfig = this._getGeneratorConfigForPreview(generatorState.generatorId)
+        let currentTime = this._getCurrentTimeForPreview()
+        this._refreshGeneratorStateForPreview(generatorState, generatorConfig, currentTime)
 
         if (boardLogic && boardLogic.ensureInitialSequence && generatorConfig) {
             boardLogic.ensureInitialSequence(this.data, generatorState.generatorId, generatorConfig)
         }
 
-        let currentTime = this._getCurrentTimeForPreview()
         let nextRefillTime = parseInt(generatorState.nextRefillTime) || 0
         let needCharge = this._isNeedChargeForPreview(generatorState, generatorConfig)
         let onetimeDestroy = parseInt(generatorState.onetimeDestroy != null ? generatorState.onetimeDestroy : (generatorConfig && generatorConfig.onetimeDestroy)) === 1
@@ -439,6 +455,7 @@ export class UserMerge {
             generatorState.lastRefillTime = currentTime
             generatorState.nextRefillTime = 0
             generatorState.coolingStartTime = 0
+            generatorState.lastSmallRecoverTime = 0
         }
 
         if ((!generatorState.queue || generatorState.queue.length <= 0) && boardLogic && boardLogic.refillGeneratorQueue && generatorConfig) {
@@ -535,12 +552,15 @@ export class UserMerge {
     }
     /**根据instanceId获取生成数据 */
     GetGeneratorByInstanceId(instanceId) {
-        return this.data.generatorStates[instanceId]
+        let data = this.data.generatorStates[instanceId]
+        if (data) this._refreshGeneratorStateForPreview(data)
+        return data
     }
     /**判断是否可以产出 */
     CheckCanGenerate(instanceId) {
         let data = this.data.generatorStates[instanceId]
         if (data) {
+            this._refreshGeneratorStateForPreview(data)
             return data.nextRefillTime == 0
         }
         return false

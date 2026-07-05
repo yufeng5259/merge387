@@ -8,15 +8,65 @@
     ".png"
   ],
   "subMetas": {
-    "f9941": {
-      "uuid": "bf0b9ca9-9e56-4f15-891a-9a46f39e88d1",
-      "imported": false,
+    "guildBossRes": {
+      "ver": "1.0.6",
+      "uuid": "09a1f19c-bf04-4c54-bb70-fb60028474d3",
       "importer": "sprite-frame",
-      "files": [],
+      "rawTextureUuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -10.5,
+      "offsetY": 3.5,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 39,
+      "height": 53,
+      "rawWidth": 64,
+      "rawHeight": 64,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "subMetas": {},
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
+      "displayName": "guildBossRes",
+      "id": "6c48a",
+      "name": "texture",
       "userData": {
-        "importer": "sprite-frame",
-        "trimType": "auto",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@f9941",
+      "displayName": "guildBossRes",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
         "trimThreshold": 1,
         "rotated": false,
         "offsetX": -10.5,
@@ -31,31 +81,71 @@
         "borderBottom": 0,
         "borderLeft": 0,
         "borderRight": 0,
-        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a"
-      },
-      "ver": "0.0.1",
-      "displayName": "",
-      "id": "",
-      "name": ""
-    },
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
-      "displayName": "guildBossRes",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -19.5,
+            -26.5,
+            0,
+            19.5,
+            -26.5,
+            0,
+            -19.5,
+            26.5,
+            0,
+            19.5,
+            26.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            2,
+            62,
+            41,
+            62,
+            2,
+            9,
+            41,
+            9
+          ],
+          "nuv": [
+            0.03125,
+            0.140625,
+            0.640625,
+            0.140625,
+            0.03125,
+            0.96875,
+            0.640625,
+            0.96875
+          ],
+          "minPos": [
+            -19.5,
+            -26.5,
+            0
+          ],
+          "maxPos": [
+            19.5,
+            26.5,
+            0
+          ]
+        },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
-        "visible": false
+        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
       },
-      "ver": "1.0.22",
+      "ver": "1.0.12",
       "imported": true,
       "files": [
         ".json"
@@ -64,9 +154,15 @@
     }
   },
   "userData": {
-    "type": "texture",
-    "fixAlphaTransparencyArtifacts": false,
+    "wrapModeS": "repeat",
+    "wrapModeT": "repeat",
+    "minfilter": "linear",
+    "magfilter": "linear",
+    "mipfilter": "none",
+    "anisotropy": 0,
+    "type": "sprite-frame",
     "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
     "redirect": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a"
   }
 }

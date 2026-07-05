@@ -1,6 +1,6 @@
 import { UIWindow } from '../../../GameKit/ui/UIWindow';
 import ContentModel from '../../../game/items/ContentModel';
-import { _decorator, Button, instantiate, Label, Node, ParticleSystem, Sprite } from 'cc';
+import { _decorator, Button, instantiate, Label, Node, ParticleSystem2D, Sprite } from 'cc';
 
 import { UserItems } from '../../../game/items/UserItems';
 const { ccclass, property } = _decorator
@@ -61,7 +61,7 @@ export default class HappyVacationWindow extends UIWindow {
                 buy_use_coin: GameKit.ControllerTable.GetNode(n, "buy-use-coin"),
                 bkg2: GameKit.ControllerTable.GetNode(n, "bkg2").getComponent(Sprite),
                 btn_buy: GameKit.ControllerTable.GetNode(n, "btn-buy").getComponent(Button),
-                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem),
+                buy_lock_particle:GameKit.ControllerTable.GetNode(n, "buy_lock_particle").getComponent(ParticleSystem2D),
             }
             
             data.buy_lock_particle.node.active=false

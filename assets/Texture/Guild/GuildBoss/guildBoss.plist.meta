@@ -7,6 +7,35 @@
     ".json"
   ],
   "subMetas": {
+    "bossyucha.png": {
+      "ver": "1.0.6",
+      "uuid": "293c5140-444f-4a25-b9c7-484bb30fe249",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 39,
+      "height": 53,
+      "rawWidth": 39,
+      "rawHeight": 53,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {},
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
     "72ee1": {
       "importer": "sprite-frame",
       "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84@72ee1",
@@ -14,9 +43,6 @@
       "id": "72ee1",
       "name": "bossyucha",
       "userData": {
-        "importer": "sprite-frame",
-        "atlasUuid": "f565a190-7744-4b84-baee-1df1c9b0dc84",
-        "trimType": "auto",
         "trimThreshold": 1,
         "rotated": false,
         "offsetX": 0,
@@ -45,7 +71,9 @@
           "maxPos": []
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a"
+        "imageUuidOrDatabaseUri": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
+        "atlasUuid": "f565a190-7744-4b84-baee-1df1c9b0dc84",
+        "trimType": "auto"
       },
       "ver": "1.0.12",
       "imported": true,
@@ -58,7 +86,7 @@
   "userData": {
     "atlasTextureName": "guildBossRes.png",
     "format": 2,
-    "textureUuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a",
-    "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84"
+    "uuid": "f565a190-7744-4b84-baee-1df1c9b0dc84",
+    "textureUuid": "4a9a2a99-e7fe-48b9-9898-6be7cfcb2925@6c48a"
   }
 }

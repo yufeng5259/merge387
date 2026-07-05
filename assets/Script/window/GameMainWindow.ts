@@ -197,6 +197,7 @@ export default class GameMainWindow extends UIWindow {
         this.CashLeftTime = 1604376000 - GameKit.TimeUtil.getCurrentTime()
         
         UIRoot.instance.preloadWindow("MenuWindow")
+        this.clearCardEntryBadge()
 
         
         
@@ -678,6 +679,10 @@ export default class GameMainWindow extends UIWindow {
             this.spJokerCard.active = false
         }
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.CardEvent, "GameMainWindow", function(data) {
+            if (this.isCardFeatureClosed()) {
+                this.clearCardEntryBadge()
+                return
+            }
             this.updateCardBadge()
             if (!this.haveJokerCard && Game.SUserCard.JokerCount() > 0) {
                 this.haveJokerCard = true
@@ -1146,9 +1151,28 @@ export default class GameMainWindow extends UIWindow {
     }
     openCard(parmas) {
         if (GamePlay.instance.isBusy()) return
+        if (this.isCardFeatureClosed()) return
         UIRoot.instance.openChildWindow("CardAllSetWindow",parmas)
     }
+    isCardFeatureClosed() {
+        if (typeof Game !== "undefined" && Game.IsCardFeatureClosed) return Game.IsCardFeatureClosed()
+        return typeof CLOSE_Card !== "undefined" && CLOSE_Card
+    }
+    clearCardEntryBadge() {
+        if (!this.isCardFeatureClosed()) return
+        this.haveJokerCard = false
+        if (this.btnCard) this.btnCard.active = false
+        let slotNode = GamePlay && GamePlay.instance ? GamePlay.instance.slotNode : null
+        let slotCardButton = slotNode && slotNode.getChildByName ? slotNode.getChildByName("Button - Card") : null
+        if (slotCardButton) slotCardButton.active = false
+        if (this.spJokerCard) this.spJokerCard.active = false
+        if (this.cardBadge) this.cardBadge.SetNum(0)
+    }
     updateCardBadge() {
+        if (this.isCardFeatureClosed()) {
+            this.clearCardEntryBadge()
+            return
+        }
         let n = G.GameConstance.dailyFreeChestCount - Game.SUserCard.data.freeCount
         if ((Game.SUserVillage.MapId() < G.GameConstance.cardSystemStartLevel) || !AppKit.ADWrap.AdEnabled() || Game.SUserVillage.MapId() < G.GameConfig.FreeChestLevel) {
             n = 0
@@ -1397,7 +1421,9 @@ export default class GameMainWindow extends UIWindow {
                                 let signData = GameKit.DataCache.GetData("signData")
                                 return signData.signWeekDay > signData.signWeekRewards
                             })
-                            chain.add("CardSystemOpenWindow")
+                            chain.add("CardSystemOpenWindow", () => {
+                                return !this.isCardFeatureClosed()
+                            })
                             //新用户完成新手引导时会弹出
                             // chain.add("GetInviteRewardsWindow")
                             chain.start()
@@ -1805,8 +1831,9 @@ export default class GameMainWindow extends UIWindow {
     // Helper
     OnNewMapStart() {
         let chain = new ChildWindowChain()
-        let chest = GameKit.DataCache.GetData("UserCardChestArr").pop()
+        let chest = this.isCardFeatureClosed() ? null : GameKit.DataCache.GetData("UserCardChestArr").pop()
         chain.add("CardChestOpenWindow", () => {
+            if (this.isCardFeatureClosed()) return false
             if (chest) {
                // GameKit.DataCache.RemoveData("UserCardChestArr")
                 return true

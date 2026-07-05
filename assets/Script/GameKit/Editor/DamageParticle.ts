@@ -1,13 +1,13 @@
-import { _decorator, Component, ParticleSystem } from 'cc';
+import { _decorator, Component, ParticleSystem2D } from 'cc';
 
 const { ccclass } = _decorator;
 
 @ccclass('DamageParticle')
 export class DamageParticle extends Component {
-    private particle: ParticleSystem | null = null;
+    private particle: ParticleSystem2D | null = null;
 
     onLoad() {
-        this.particle = this.getComponent(ParticleSystem);
+        this.particle = this.getComponent(ParticleSystem2D);
     }
 
     start() {

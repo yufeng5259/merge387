@@ -115,6 +115,9 @@ export default class ShopWindow extends UIWindow {
     @property(Component)
     tab_node_array: any = null;
 
+    @property(Node)
+    testActivityPageNode: Node | null = null;
+
     showCash = false;
     hotServerMeta: any[] = [];
     saleServerMeta: any[] = [];
@@ -125,6 +128,7 @@ export default class ShopWindow extends UIWindow {
     activityMeta: any = null;
     leftTime: any = null;
     choose_tab: any = null;
+    _pendingShopTabIndex: number | null = null;
     _shopTabLayoutDirty = false;
     _shopScrollView: ScrollView | null = null;
     _mergeTutorialNodeClickHandler: any = null;
@@ -148,6 +152,9 @@ export default class ShopWindow extends UIWindow {
         this._lastShopRefreshRemainSecond = null;
         this.showOff = false;
         this.refreshCashCount = 0;
+        this.choose_tab = null;
+        this._pendingShopTabIndex = null;
+        this.hideGemActivityPages();
         LoadingWindow.Show();
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, 'ShopWindowrefresh', function(this: ShopWindow, data: any) {
             this.refresh();
@@ -237,17 +244,20 @@ export default class ShopWindow extends UIWindow {
             this.disabledIOS.string = GameKit.i18n.t(disStr);
         }
 
+        const defaultTabIndex = this.showCash ? 0 : 1;
+        this._pendingShopTabIndex = defaultTabIndex;
         if (this.tab_node_array) {
             this.tab_node_array.onShow((index: number, tab: any, first: boolean) => {
                 if (this.showCash) {
                     index = 0;
                 }
+                this._pendingShopTabIndex = index;
                 if (first) {
                     setTimeout(() => { this.event_change_to_tab(index); }, 300);
                 } else {
                     this.event_change_to_tab(index);
                 }
-            });
+            }, defaultTabIndex);
         }
         this.initsubjectPage();
         this.bindMergeTutorialNodeClick();
@@ -270,6 +280,7 @@ export default class ShopWindow extends UIWindow {
         index = Number(index);
         if (this.choose_tab === index) { return; }
         this.choose_tab = index;
+        this._pendingShopTabIndex = index;
         this.setShopTabPageVisible(index);
         switch (index) {
             case 0:
@@ -287,12 +298,14 @@ export default class ShopWindow extends UIWindow {
     setShopTabPageVisible(index: number) {
         let showGem = index === 0;
         let showItem = index === 1;
+        this.hideGemActivityPages();
         if (this.gemPageNode) this.gemPageNode.active = showGem;
         if (this.salePageNode) this.salePageNode.active = showItem;
         if (this.hotPageNode) this.hotPageNode.active = showItem;
     }
 
     scheduleRefreshCurrentTabLayout() {
+        this.refreshCurrentTabLayout();
         if (this._shopTabLayoutDirty) return;
         this._shopTabLayoutDirty = true;
         this.scheduleOnce(() => {
@@ -302,62 +315,87 @@ export default class ShopWindow extends UIWindow {
     }
 
     refreshCurrentTabLayout() {
-        let activePages = this.getActiveShopPages();
-        activePages.forEach(pageNode => {
-            this.refreshNodeLayout(pageNode);
-            pageNode.children.forEach(child => {
-                this.refreshNodeLayout(child);
-            });
-            this.refreshNodeLayout(pageNode);
-        });
-
         let scrollView = this.getShopScrollView();
         if (!scrollView) return;
 
-        this.alignShopScrollViewToTab(scrollView);
+        this.refreshShopScrollViewArea(scrollView);
 
         let contentNode = scrollView.content;
         if (contentNode) {
-            this.refreshNodeLayout(contentNode);
+            this.refreshNodeTreeLayout(contentNode);
         }
 
+        this.refreshShopScrollViewArea(scrollView);
+
+        scrollView.stopAutoScroll();
+        scrollView.scrollToTop(0);
+        this.alignShopScrollContentToTop(scrollView);
+    }
+
+    refreshShopScrollViewArea(scrollView: ScrollView | null) {
+        if (!scrollView || !scrollView.node || !scrollView.node.isValid) return;
+
         let scrollWidget = scrollView.node.getComponent(Widget);
-        if (scrollWidget && scrollWidget.enabled) {
-            scrollWidget.updateAlignment();
+        if (scrollWidget) {
+            let desiredTop = this.getShopScrollViewTop();
+            let desiredBottom = this.getShopScrollViewBottom();
+            if (Math.abs(scrollWidget.top - desiredTop) > 0.5) {
+                scrollWidget.top = desiredTop;
+            }
+            if (Math.abs(scrollWidget.bottom - desiredBottom) > 0.5) {
+                scrollWidget.bottom = desiredBottom;
+            }
+            this.updateWidgetAlignmentOnce(scrollWidget);
         }
 
         let viewNode = scrollView.node.getChildByName('view');
         if (viewNode) {
-            let viewWidget = viewNode.getComponent(Widget);
-            if (viewWidget && viewWidget.enabled) {
-                viewWidget.updateAlignment();
-            }
+            this.updateWidgetAlignmentOnce(viewNode.getComponent(Widget));
         }
-
-        scrollView.stopAutoScroll();
-        scrollView.scrollToTop(0);
     }
 
-    alignShopScrollViewToTab(scrollView: ScrollView) {
+    getShopScrollViewTop() {
+        return 340;
+    }
+
+    getShopScrollViewBottom() {
         let tabNode = this.getShopTabNode();
-        if (!tabNode) return;
-
-        let scrollWidget = scrollView.node.getComponent(Widget);
-        if (!scrollWidget || !scrollWidget.enabled) return;
-
-        let desiredBottom = this.getNodeHeight(tabNode);
-        if (Math.abs(scrollWidget.bottom - desiredBottom) > 0.5) {
-            scrollWidget.bottom = desiredBottom;
-        }
-        scrollWidget.updateAlignment();
+        return tabNode ? this.getNodeHeight(tabNode) : 80;
     }
 
-    getActiveShopPages() {
-        let pages: Node[] = [];
-        if (this.gemPageNode && this.gemPageNode.active) pages.push(this.gemPageNode);
-        if (this.salePageNode && this.salePageNode.active) pages.push(this.salePageNode);
-        if (this.hotPageNode && this.hotPageNode.active) pages.push(this.hotPageNode);
-        return pages;
+    updateWidgetAlignmentOnce(widget: Widget | null) {
+        if (!widget) return;
+        let wasEnabled = widget.enabled;
+        widget.enabled = true;
+        widget.updateAlignment();
+        widget.enabled = wasEnabled;
+    }
+
+    refreshNodeTreeLayout(node: Node | null) {
+        if (!node || !node.isValid) return;
+        node.children.forEach(child => {
+            if (child && child.active) {
+                this.refreshNodeTreeLayout(child);
+            }
+        });
+        this.refreshNodeLayout(node);
+    }
+
+    hideGemActivityPages() {
+        if (this.testActivityPageNode && this.testActivityPageNode.isValid) {
+            this.testActivityPageNode.active = false;
+        }
+        if (this.subjectItem && this.subjectItem.node && this.subjectItem.node.isValid) {
+            this.subjectItem.node.active = false;
+        }
+    }
+
+    alignShopScrollContentToTop(scrollView: ScrollView | null) {
+        if (!scrollView || !scrollView.content || !scrollView.content.isValid) return;
+        let contentNode = scrollView.content;
+        if (Math.abs(contentNode.position.y) > 0.5) {
+            contentNode.setPosition(contentNode.position.x, 0, contentNode.position.z);
+        }
     }
 
     refreshNodeLayout(node: Node | null) {
@@ -556,6 +594,16 @@ export default class ShopWindow extends UIWindow {
         hotItem.updatePanel(this.hotServerMeta[index], id, meta);
     }
 
+    showTestActivitPage() {
+        if (this.testActivityPageNode && this.testActivityPageNode.isValid) {
+            this.testActivityPageNode.active = true;
+        }
+    }
+
+    showsubjectPage() {
+        this.initsubjectPage();
+    }
+
     initSpinPage() {
         if (this.spinInited) return;
         let spinSVData = new Array();
@@ -705,6 +753,8 @@ export default class ShopWindow extends UIWindow {
 
     showGemPage() {
         if (this.activityText) this.activityText.node.active = (this.activityMeta && this.activityMeta.ShopIds().spin != null);
+        this.showTestActivitPage();
+        this.showsubjectPage();
         if (this.gemPageNode) this.gemPageNode.active = true;
         if (this.disabledIOS) this.disabledIOS.node.active = !AppKit.PaymentWrap.PayEnabled();
         this.initGemPage();
@@ -712,6 +762,7 @@ export default class ShopWindow extends UIWindow {
 
     showSalePage() {
         if (this.activityText) this.activityText.node.active = (this.activityMeta && this.activityMeta.ShopIds().spin != null);
+        this.hideGemActivityPages();
         if (this.salePageNode) this.salePageNode.active = true;
         if (this.disabledIOS) this.disabledIOS.node.active = !AppKit.PaymentWrap.PayEnabled();
         this.initSalePage();
@@ -719,6 +770,7 @@ export default class ShopWindow extends UIWindow {
 
     showHotPage() {
         if (this.activityText) this.activityText.node.active = (this.activityMeta && this.activityMeta.ShopIds().spin != null);
+        this.hideGemActivityPages();
         if (this.hotPageNode) this.hotPageNode.active = true;
         if (this.disabledIOS) this.disabledIOS.node.active = !AppKit.PaymentWrap.PayEnabled();
         this.initHotPage();
