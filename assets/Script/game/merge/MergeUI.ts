@@ -257,12 +257,12 @@ export class MergeUI extends Component {
             if (this.gridBg) this.gridBg.setPosition(this.gridBg.position.x, gridY, this.gridBg.position.z);
             if (this.topUI) this.topUI.setPosition(this.topUI.position.x, gridY + (gridSize.height * (this.gridBg?.scale.y || 1)) / 2, this.topUI.position.z);
         }
-        this._bringBottomUIToTop();
+        this._bringMergeGridToTop();
     }
 
-    _bringBottomUIToTop () {
-        if (!this.bottomUI || !this.bottomUI.parent) return;
-        this.bottomUI.setSiblingIndex(this.bottomUI.parent.children.length - 1);
+    _bringMergeGridToTop () {
+        if (!this.gridBg || !this.gridBg.parent) return;
+        this.gridBg.setSiblingIndex(this.gridBg.parent.children.length - 1);
     }
 
     _isTouchInNode (e: any, node: Node | null) {
@@ -277,6 +277,18 @@ export class MergeUI extends Component {
             touchPoint.y <= rect.y + rect.height;
     }
 
+    _isNodeOrChildOf (node: Node | null, parent: Node | null) {
+        while (node) {
+            if (node === parent) return true;
+            node = node.parent;
+        }
+        return false;
+    }
+
+    _stopEventPropagation (e: any) {
+        if (e && e.stopPropagation) e.stopPropagation();
+    }
+
     _getBottomButtonAtTouch (e: any) {
         const buildButton = this.bottomUI ? this.bottomUI.getChildByName('build_btn') : null;
         if (this._isTouchInNode(e, buildButton)) return buildButton;
@@ -286,13 +298,17 @@ export class MergeUI extends Component {
 
     _onBottomUITouchStart (e: any) {
         this._bottomTouchButton = this._getBottomButtonAtTouch(e);
+        if (this._bottomTouchButton && e && e.target && !this._isNodeOrChildOf(e.target, this._bottomTouchButton)) {
+            this._stopEventPropagation(e);
+        }
     }
 
     _onBottomUITouchEnd (e: any) {
         const button = this._bottomTouchButton;
         this._bottomTouchButton = null;
         if (!button || button !== this._getBottomButtonAtTouch(e)) return;
-        if (e && e.target && this.bottomUI && e.target.parent === this.bottomUI) return;
+        if (e && e.target && this._isNodeOrChildOf(e.target, button)) return;
+        this._stopEventPropagation(e);
         if (button.name === 'build_btn') {
             this.onClickOpenVillage();
         } else if (button === this.storeButton || button.name === 'store_btn') {
@@ -511,10 +527,10 @@ export class MergeUI extends Component {
         const targetRect = tg.getComponent(UITransform)?.getBoundingBoxToWorld();
         if (!storeRect || !targetRect) return false;
         return !(
-            storeRect.xMax < targetRect.xMin ||
-            storeRect.xMin > targetRect.xMax ||
-            storeRect.yMax < targetRect.yMin ||
-            storeRect.yMin > targetRect.yMax
+            storeRect.x + storeRect.width < targetRect.x ||
+            storeRect.x > targetRect.x + targetRect.width ||
+            storeRect.y + storeRect.height < targetRect.y ||
+            storeRect.y > targetRect.y + targetRect.height
         );
     }
 

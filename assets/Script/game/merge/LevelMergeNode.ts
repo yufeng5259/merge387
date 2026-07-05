@@ -1291,6 +1291,15 @@ export class LevelMergeNode extends Component {
         let startParts = this.touchStartPosName.split('_')
         let startPos = GameKit.MergeUtil.tile2px(startParts[0], startParts[1], this.getMergeBoardLayout())
         if (startMergeItem) {
+            if (this.itemCanDrag && !this._isTutorialClickGeneratorOnlyRule()) {
+                let touchPoint1 = this._getTouchLocalPoint(touch1)
+                this.touchStartNode.setPosition(touchPoint1)
+                if (GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(this.touchStartNode)) {
+                    let flyDuration = Vec3.distance(touchPoint1, new Vec3(startPos.x, startPos.y, 0)) / 300 * 0.1
+                    this._touchEndOutsideGrid(startPos, startMergeItem, flyDuration)
+                    return
+                }
+            }
             this._flyback(startPos, startMergeItem.node, 0.1, () => {
                 this.showRec(startMergeItem, startPos, this.touchStartPosName, true)
                 this.lastSelectMergeItem = startMergeItem
