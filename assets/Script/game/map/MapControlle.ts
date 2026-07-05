@@ -177,7 +177,7 @@ export class MapControlle extends Component {
         const touches = event.getTouches();
         if (touches.length === 1) {
             const touch = touches[0];
-            if (this.isMoving || touch.getDelta().mag() > 1) {
+            if (this.isMoving || touch.getDelta().length() > 1) {
                 this.isMoving = true;
                 this.isSingleTouchMoving = true;
                 this.isPinching = false;
