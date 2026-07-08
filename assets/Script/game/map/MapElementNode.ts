@@ -242,7 +242,7 @@ export class MapElementNode extends Component {
     }
 
     getBuildSpriteResName(buildID: any, spriteName: string) {
-        return BUILD_SPRITE_RES_BASE + '/' + buildID + '/res/' + spriteName;
+        return BUILD_SPRITE_RES_BASE + '/' + buildID + '/res/' + spriteName+"/spriteFrame";
     }
 
     loadBuildSpriteFrame(buildID: any, spriteName: string): Promise<SpriteFrame | null> {
