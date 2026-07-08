@@ -1,75 +1,75 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>angle</key>
-    <real>90</real>
+    <integer>90</integer>
     <key>angleVariance</key>
-    <real>10</real>
+    <integer>10</integer>
     <key>blendFuncDestination</key>
-    <integer>771</integer>
+    <integer>4</integer>
     <key>blendFuncSource</key>
-    <integer>770</integer>
+    <integer>2</integer>
     <key>duration</key>
-    <real>-1</real>
+    <integer>-1</integer>
     <key>emitterType</key>
     <integer>0</integer>
     <key>emissionRate</key>
-    <real>50</real>
+    <integer>50</integer>
     <key>finishColorAlpha</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>finishColorBlue</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>finishColorGreen</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>finishColorRed</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>finishColorVarianceAlpha</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>finishColorVarianceBlue</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>finishColorVarianceGreen</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>finishColorVarianceRed</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>rotationStart</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>rotationStartVariance</key>
-    <real>80</real>
+    <integer>80</integer>
     <key>rotationEnd</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>rotationEndVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>finishParticleSize</key>
-    <real>60</real>
+    <integer>60</integer>
     <key>finishParticleSizeVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>gravityx</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>gravityy</key>
     <real>-859.4</real>
     <key>maxParticles</key>
-    <real>50</real>
+    <integer>50</integer>
     <key>maxRadius</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>maxRadiusVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>minRadius</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>minRadiusVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>particleLifespan</key>
     <real>1.5</real>
     <key>particleLifespanVariance</key>
     <real>0.8553</real>
     <key>radialAcceleration</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>radialAccelVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>rotatePerSecond</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>rotatePerSecondVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>sourcePositionVariancex</key>
     <real>206.8</real>
     <key>sourcePositionVariancey</key>
@@ -77,33 +77,33 @@
     <key>speed</key>
     <real>517.4</real>
     <key>speedVariance</key>
-    <real>100</real>
+    <integer>100</integer>
     <key>startColorAlpha</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>startColorBlue</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>startColorGreen</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>startColorRed</key>
-    <real>1</real>
+    <integer>1</integer>
     <key>startColorVarianceAlpha</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>startColorVarianceBlue</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>startColorVarianceGreen</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>startColorVarianceRed</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>startParticleSize</key>
-    <real>30</real>
+    <integer>30</integer>
     <key>startParticleSizeVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>tangentialAcceleration</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>tangentialAccelVariance</key>
-    <real>0</real>
+    <integer>0</integer>
     <key>textureFileName</key>
-    <string>coins_1.png</string>    
+    <string>coins_1.png</string>
     <key>textureFileNames</key>
     <string>coins_0.png|coins_1.png|coins_2.png|coins_3.png|coins_4.png|coins_5.png|coins_6.png|coins_7.png</string>
     <key>texturesSpaceTime</key>

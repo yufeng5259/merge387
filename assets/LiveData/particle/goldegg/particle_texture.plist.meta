@@ -14,13 +14,13 @@
     "lifeVar": 0.4,
     "emissionRate": 188.37209302325581,
     "duration": 0.22,
-    "srcBlendFactor": 770,
+    "srcBlendFactor": 2,
     "dstBlendFactor": 1,
     "startColor": {
       "_data": {
-        "0": 255,
-        "1": 255,
-        "2": 102,
+        "0": 153,
+        "1": 153,
+        "2": 51,
         "3": 255
       },
       "r": 255,

@@ -1,4 +1,4 @@
-import { _decorator, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
+import { _decorator, find, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 
 const { ccclass, property } = _decorator;
@@ -30,7 +30,6 @@ export default class ApNotEnoughDialogWindow extends UIWindow {
         this.sdata = {};
         let req = SR.SRShop.GetCashBuyInfo();
         req.SetCallBack((res) => {
-            console.log('cash buy info', res);
             this.sdata = res || {};
             this.refrshUI();
         });
@@ -129,6 +128,8 @@ export default class ApNotEnoughDialogWindow extends UIWindow {
     getMainApIconNode() {
         if (typeof GameMainWindow === 'undefined' || !GameMainWindow.instance || !GameMainWindow.instance.userinfo) return null;
         let userInfo = GameMainWindow.instance.userinfo;
+        const apIconNode = find('spinbar/icon', userInfo.node);
+        if (apIconNode) return apIconNode;
         if (userInfo.labelAp && userInfo.labelAp.node) return userInfo.labelAp.node;
         if (userInfo.labelApFull && userInfo.labelApFull.node) return userInfo.labelApFull.node;
         return null;
