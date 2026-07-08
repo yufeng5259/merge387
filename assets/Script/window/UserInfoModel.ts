@@ -143,7 +143,9 @@ export class UserInfoModel extends Component {
         const cTime = GameKit.TimeUtil.getCurrentTime();
         const delta = this.lastUpdateTime ? cTime - this.lastUpdateTime : dt;
         this.lastUpdateTime = cTime;
-        this.updateAp(delta);
+        if (this.isApRecoverUpdater()) {
+            this.updateAp(delta);
+        }
     }
 
     public onClose() {
@@ -237,6 +239,33 @@ export class UserInfoModel extends Component {
         };
     }
 
+    public isApRecoverUpdater() {
+        if (this.apStop) return true;
+        if (!this.isSelf) return false;
+
+        let mainWindow: any = null;
+        try {
+            if (UIRoot && UIRoot.instance && UIRoot.instance.GetWindow) {
+                mainWindow = UIRoot.instance.GetWindow('GameMainWindow');
+            }
+        } catch (e) {
+        }
+        if (mainWindow && mainWindow.userinfo) {
+            return mainWindow.userinfo === this;
+        }
+        return true;
+    }
+
+    public getApRemainContainer() {
+        if (!this.labelApRemain || !this.labelApRemain.node) return null;
+        const node = this.labelApRemain.node;
+        const parent = node.parent;
+        if (!parent) return node;
+
+        const childCount = parent.children ? parent.children.length : ((parent as any)._children ? (parent as any)._children.length : 0);
+        return childCount === 1 ? parent : node;
+    }
+
     public setApWithNum(apNum: any) {
         const apRuntime = this.getApRuntimeConfig();
         const apMax = apRuntime.apMax;
@@ -257,20 +286,26 @@ export class UserInfoModel extends Component {
             this.labelAp.string = ap.toString();
         }
         if (this.labelApFull) {
-            this.labelApFull.string = Math.clamp(ap, 0, maxAp).toString() + ' / ' + apMax;
+            this.labelApFull.string = String(ap);
         }
         if (this.spriteApFull) {
             this.spriteApFull.fillRange = Math.clamp(ap / maxAp, 0, 1);
         }
         if (this.labelApRemain) {
+            const apRemainContainer = this.getApRemainContainer();
             if (ap < maxAp) {
-                this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(this.apRemainTime);
-            } else if (ap === maxAp) {
-                this.labelApRemain.string = GameKit.i18n.t('ApFull');
-            } else if (ap > maxAp) {
-                this.labelApRemain.string = (String as any).format(GameKit.i18n.t('ApPlus'), ap - maxAp);
+                if (apRemainContainer) apRemainContainer.active = true;
+                this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(Math.ceil(this.apRemainTime || 0));
+            } else {
+                if (apRemainContainer) apRemainContainer.active = false;
+                this.labelApRemain.string = '';
             }
         }
+    }
+
+    public recoverApByCountdown() {
+        if (!this.User || !this.User.UpdateApTime) return false;
+        return this.User.UpdateApTime();
     }
 
     public stopApAt(ap: any) {
@@ -311,13 +346,9 @@ export class UserInfoModel extends Component {
         if (this.apStop) {
             if (this.showAp < apMax) {
                 this.apRemainTime -= dt;
-                if (Math.ceil(this.apRemainTime) <= 0) {
-                    if (this.User && this.User.UpdateApTime && this.User.UpdateApTime()) {
-                        this.setApWithNum(this.User.Ap());
-                    } else {
-                        this.showAp += apRecoverSpins;
-                        this.setApWithNum(this.showAp);
-                    }
+                if (this.apRemainTime <= 0) {
+                    this.showAp = Math.min(apMax, this.showAp + apRecoverSpins);
+                    this.setApWithNum(this.showAp);
                 } else if (this.labelApRemain) {
                     this.labelApRemain.string = GameKit.TimeUtil.FormatRemainTimeSimple(Math.ceil(this.apRemainTime));
                 }
@@ -325,7 +356,11 @@ export class UserInfoModel extends Component {
         } else if (this.User.Ap() < apMax) {
             this.apRemainTime -= dt;
             if (Math.ceil(this.apRemainTime) <= 0) {
-                this._setAp();
+                if (this.recoverApByCountdown()) {
+                    this.setApWithNum(this.User.Ap());
+                } else {
+                    this._setAp();
+                }
                 if (SR && SR.SRMerge && SR.SRMerge.SaveLocalMergeSnapshot) {
                     SR.SRMerge.SaveLocalMergeSnapshot('apRecover');
                 }

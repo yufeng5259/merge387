@@ -20,7 +20,9 @@ export default class ServerRequest extends NetRequest {
 
         this.errorCallbacks.push(function() {
             let serverDown = G.GameConfig.serverDown
-            if (GameKit.TimeUtil.getCurrentTime() >= serverDown.startTime && GameKit.TimeUtil.getCurrentTime() <= serverDown.endTime) {
+            let hasServerDownConfig = serverDown && serverDown.startTime != null && serverDown.endTime != null
+            let currentTime = GameKit.TimeUtil.getCurrentTime()
+            if (hasServerDownConfig && currentTime >= serverDown.startTime && currentTime <= serverDown.endTime) {
                 this.netErrorCallbacks.forEach(function(x) {
                     if (x!=null)x()
                 })

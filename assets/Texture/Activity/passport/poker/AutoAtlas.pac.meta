@@ -20,9 +20,9 @@
     "contourBleed": true,
     "paddingBleed": true,
     "filterUnused": true,
-    "removeTextureInBundle": true,
-    "removeImageInBundle": true,
-    "removeSpriteAtlasInBundle": true,
+    "removeTextureInBundle": false,
+    "removeImageInBundle": false,
+    "removeSpriteAtlasInBundle": false,
     "compressSettings": {},
     "textureSetting": {
       "wrapModeS": "repeat",

@@ -55,6 +55,7 @@ const cceRuntime = cce as CceRuntime;
 
 const CARD_ROOT = 'Card/';
 const DEFAULT_CARD_RES = 'Playing cards';
+const SPRITE_FRAME_SUFFIX = '/spriteFrame';
 const CARD_UI_DIRS: Record<string, true> = {
     atlas: true,
     Change: true,
@@ -68,6 +69,24 @@ const CARD_UI_DIRS: Record<string, true> = {
 function getCoordinate(point: PointLike | null | undefined, key: 'x' | 'y'): number {
     const value = point ? point[key] : 0;
     return typeof value === 'number' ? value : 0;
+}
+
+function isSpriteFrameType(type: AssetType | undefined): boolean {
+    return type === SpriteFrame as unknown as AssetType;
+}
+
+function normalizeSpriteFrameResName<T extends Asset>(resName: string, type: AssetType<T> | undefined): string {
+    if (!isSpriteFrameType(type)) {
+        return resName;
+    }
+
+    let loadResName = resName.replace(/\.(png|jpg|jpeg)(?=\/spriteFrame$)/i, '');
+    if (loadResName.endsWith(SPRITE_FRAME_SUFFIX)) {
+        return loadResName;
+    }
+
+    loadResName = loadResName.replace(/\.(png|jpg|jpeg)$/i, '');
+    return `${loadResName}${SPRITE_FRAME_SUFFIX}`;
 }
 
 function getCardContentInfo(resName: string): CardContentInfo | null {
@@ -479,34 +498,46 @@ cceRuntime.loadRes = function <T extends Asset>(
     }
 
     const assetType = type || null;
-    const cardContentInfo = getCardContentInfo(resName);
+    const normalizedResName = normalizeSpriteFrameResName(resName, assetType);
     cceRuntime.loading++;
 
-    const loadFromTextureBundle = (): void => {
-        loadFromBundle('Texture', resName, assetType, onProgress, null, cb, resName);
+    const loadResourceChain = (loadResName: string, allowOriginalFallback: boolean): void => {
+        const cardContentInfo = getCardContentInfo(loadResName);
+        const loadOriginalIfNeeded = allowOriginalFallback && loadResName !== resName
+            ? (): void => loadResourceChain(resName, false)
+            : null;
+
+        const loadFromTextureBundle = (): void => {
+            loadFromBundle('Texture', loadResName, assetType, onProgress, loadOriginalIfNeeded, cb, resName);
+        };
+
+        const loadFromFallbacks = (): void => {
+            if (cardContentInfo && cardContentInfo.defaultResourcesPath) {
+                loadFromResources(cardContentInfo.defaultResourcesPath, assetType, onProgress, loadFromTextureBundle, cb, resName);
+                return;
+            }
+
+            if (cardContentInfo) {
+                loadFromBundle('Card', cardContentInfo.bundlePath, assetType, onProgress, loadFromTextureBundle, cb, resName);
+                return;
+            }
+
+            loadFromTextureBundle();
+        };
+
+        loadFromResources(loadResName, assetType, onProgress, loadFromFallbacks, cb, resName);
     };
 
-    const loadFromFallbacks = (): void => {
-        if (cardContentInfo && cardContentInfo.defaultResourcesPath) {
-            loadFromResources(cardContentInfo.defaultResourcesPath, assetType, onProgress, loadFromTextureBundle, cb, resName);
-            return;
-        }
-
-        if (cardContentInfo) {
-            loadFromBundle('Card', cardContentInfo.bundlePath, assetType, onProgress, loadFromTextureBundle, cb, resName);
-            return;
-        }
-
-        loadFromTextureBundle();
-    };
-
-    loadFromResources(resName, assetType, onProgress, loadFromFallbacks, cb, resName);
+    loadResourceChain(normalizedResName, normalizedResName !== resName);
 };
 
 cceRuntime.releaseRes = function <T extends Asset>(resName: string, type?: AssetType<T>): void {
     if (!resName) {
         return;
     }
+
+    const assetType = type || null;
+    const loadResName = normalizeSpriteFrameResName(resName, assetType);
 
     const releaseWhenIdle = (): void => {
         setTimeout(() => {
@@ -515,7 +546,10 @@ cceRuntime.releaseRes = function <T extends Asset>(resName: string, type?: Asset
                 return;
             }
 
-            performRelease(resName, type);
+            performRelease(loadResName, assetType);
+            if (loadResName !== resName) {
+                performRelease(resName, assetType);
+            }
         }, 100);
     };
 

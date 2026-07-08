@@ -9,6 +9,9 @@ import {
     PolygonCollider2D,
     Prefab,
     ProgressBar,
+    Sprite,
+    SpriteFrame,
+    sp,
     tween,
     UIOpacity,
     UITransform,
@@ -17,14 +20,19 @@ import {
 } from 'cc';
 import { UserMap } from './UserMap';
 const { ccclass, property } = _decorator;
-const BUILD_EFFECT_HAMMER1_TIME = 0.35;
-const BUILD_EFFECT_HAMMER2_TIME = 0.8;
-const BUILD_EFFECT_HAMMER3_TIME = 1.2;
+const BUILD_SPRITE_RES_BASE = 'res/village/buildPrefabs';
+const BUILD_SPRITE_FRAME_CACHE: Record<string, SpriteFrame> = {};
+const BUILD_SPRITE_FRAME_LOADING: Record<string, Promise<SpriteFrame | null>> = {};
+const BUILD_EFFECT_HAMMER1_TIME = 0.2667;
+const BUILD_EFFECT_HAMMER2_TIME = 0.9;
+const BUILD_EFFECT_HAMMER3_TIME = 1.5333;
 
 type LevelNodeView = {
     node: Node | null;
     normal: Node | null;
     damage: Node | null;
+    normalSprite: Sprite | null;
+    damageSprite: Sprite | null;
 };
 
 function getNodeTarget(target: any): Node | null {
@@ -97,6 +105,9 @@ export class MapElementNode extends Component {
     private _metaMaxLevel = 0;
     private _limitLvText = '';
     private camera: Camera | null = null;
+    private _currentBuildSpriteKey: string | null = null;
+    private _buildSpriteLoadToken = 0;
+    private _buildSoundToken = 0;
 
     onLoad() {
         this.initRuntimeState();
@@ -127,13 +138,17 @@ export class MapElementNode extends Component {
         this.cc_prelbl = null;
         this._levelNodeViews = null;
         this._missingLevelNodeLogged = {};
+        this._currentBuildSpriteKey = null;
+        this._buildSpriteLoadToken = 0;
+        this._buildSoundToken = 0;
     }
 
     start() {
     }
 
-    initData(buildID: any) {
+    initData(buildID: any, userCoin?: any, options?: any) {
         this.initRuntimeState();
+        options = options || {};
         this.buildID = buildID;
         this.mapID = Game.SUserVillage.MergeMapId();
         this.mbid = this.mapID + '_' + this.buildID;
@@ -148,7 +163,7 @@ export class MapElementNode extends Component {
         this.cc_bg = GameKit.ControllerTable.GetNode(this.coinBar, 'bg1');
         this.cc_prelbl = GameKit.ControllerTable.GetComponent(this.coinBar, 'perlbl', Label);
         this.cacheViewRefs();
-        this.updateElement();
+        return this.updateElement(userCoin, options.waitForSprite !== false);
     }
 
     cacheViewRefs() {
@@ -165,6 +180,8 @@ export class MapElementNode extends Component {
                 node: levelNode,
                 normal: this.getControllerNode(levelNode, 'normal'),
                 damage: this.getControllerNode(levelNode, 'damage'),
+                normalSprite: this.getBuildLevelSprite(levelNode, i + 1, false),
+                damageSprite: this.getBuildLevelSprite(levelNode, i + 1, true),
             };
         }
     }
@@ -182,6 +199,17 @@ export class MapElementNode extends Component {
         } catch (e) {
             return root.getChildByName ? root.getChildByName(name) : null;
         }
+    }
+
+    getBuildLevelSprite(levelNode: Node | null, level: number, isDamage: boolean) {
+        const root = this.getControllerNode(levelNode, isDamage ? 'damage' : 'normal');
+        if (!root || !root.getChildByName) {
+            return null;
+        }
+        const spriteNode = isDamage
+            ? (root.getChildByName('1z') || root.getChildByName(level + 'z'))
+            : root.getChildByName(String(level));
+        return spriteNode ? spriteNode.getComponent(Sprite) : null;
     }
 
     setNodeActive(node: any, active: any) {
@@ -213,7 +241,64 @@ export class MapElementNode extends Component {
         }
     }
 
-    updateElement(userCoin?: any) {
+    getBuildSpriteResName(buildID: any, spriteName: string) {
+        return BUILD_SPRITE_RES_BASE + '/' + buildID + '/res/' + spriteName+"/spriteFrame";
+    }
+
+    loadBuildSpriteFrame(buildID: any, spriteName: string): Promise<SpriteFrame | null> {
+        const key = buildID + '/' + spriteName;
+        if (BUILD_SPRITE_FRAME_CACHE[key]) {
+            return Promise.resolve(BUILD_SPRITE_FRAME_CACHE[key]);
+        }
+        if (BUILD_SPRITE_FRAME_LOADING[key]) {
+            return BUILD_SPRITE_FRAME_LOADING[key];
+        }
+
+        const resName = this.getBuildSpriteResName(buildID, spriteName);
+        BUILD_SPRITE_FRAME_LOADING[key] = new Promise((resolve) => {
+            cce.loadRes(resName, SpriteFrame, (err: any, spriteFrame: SpriteFrame | null) => {
+                delete BUILD_SPRITE_FRAME_LOADING[key];
+                if (err || !spriteFrame) {
+                    console.error('MapElementNode load build sprite failed', resName, err);
+                    resolve(null);
+                    return;
+                }
+                BUILD_SPRITE_FRAME_CACHE[key] = spriteFrame;
+                resolve(spriteFrame);
+            });
+        });
+
+        return BUILD_SPRITE_FRAME_LOADING[key];
+    }
+
+    updateDynamicBuildSprite(spriteName: string, sprite: Sprite | null, waitForSprite?: boolean) {
+        if (!spriteName || !sprite || !this.buildID) {
+            return Promise.resolve(null);
+        }
+
+        const key = this.buildID + '/' + spriteName;
+        if (this._currentBuildSpriteKey === key && sprite.spriteFrame) {
+            return Promise.resolve(sprite.spriteFrame);
+        }
+
+        this._currentBuildSpriteKey = key;
+        const token = ++this._buildSpriteLoadToken;
+        const loadPromise = this.loadBuildSpriteFrame(this.buildID, spriteName).then((spriteFrame) => {
+            if (!spriteFrame) return null;
+            if (token !== this._buildSpriteLoadToken || this._currentBuildSpriteKey !== key) return null;
+            if (!sprite || !sprite.node || !sprite.node.isValid) return null;
+
+            sprite.spriteFrame = spriteFrame;
+            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            (sprite as any).trim = false;
+            return spriteFrame;
+        });
+
+        return waitForSprite === false ? Promise.resolve(null) : loadPromise;
+    }
+
+    updateElement(userCoin?: any, waitForSprite?: boolean) {
+        waitForSprite = waitForSprite !== false;
         const element = Game.SUserMap.initElement(this.mbid);
         this.level = element.level;
         this.maxLevel = element.maxLv;
@@ -251,12 +336,16 @@ export class MapElementNode extends Component {
         }
 
         const showLevel = bought ? Math.max(1, this.level) : 0;
+        const activeLevelIndex = this.unlocked && bought ? showLevel - 1 : -1;
         for (let i = 0; i < this._metaMaxLevel; i++) {
             const view = this._levelNodeViews && this._levelNodeViews[i];
             if (view && view.node) {
-                this.setNodeActive(view.node, this.unlocked && bought && showLevel === i + 1);
-                this.setNodeActive(view.normal, true);
-                this.setNodeActive(view.damage, false);
+                const shouldActive = activeLevelIndex === i;
+                this.setNodeActive(view.node, shouldActive);
+                if (shouldActive) {
+                    this.setNodeActive(view.normal, true);
+                    this.setNodeActive(view.damage, false);
+                }
             } else if (!this._missingLevelNodeLogged[i]) {
                 this._missingLevelNodeLogged[i] = true;
                 console.log('MapElementNode levelNodes config mismatch', i);
@@ -269,6 +358,15 @@ export class MapElementNode extends Component {
             this.setNodeActive(firstLevelView.damage, true);
             this.setNodeActive(firstLevelView.normal, false);
         }
+
+        const activeView = this._levelNodeViews && activeLevelIndex >= 0 ? this._levelNodeViews[activeLevelIndex] : null;
+        if (activeView && activeView.normalSprite) {
+            return this.updateDynamicBuildSprite(String(activeLevelIndex + 1), activeView.normalSprite, waitForSprite);
+        }
+        if (this.unlocked && !bought && firstLevelView && firstLevelView.damageSprite) {
+            return this.updateDynamicBuildSprite('1z', firstLevelView.damageSprite, waitForSprite);
+        }
+        return Promise.resolve(null);
     }
 
     getActionPricePre(actionLevel: any, element: any, userCoin: any) {
@@ -298,27 +396,49 @@ export class MapElementNode extends Component {
         this.setNodeActive(this.cupLevel, canUpgrade);
     }
 
-    private scheduleBuildAnimationSound(delay: number, playFunc: (soundManager: any) => void) {
+    private getBuildEffectSkeleton(node: Node | null): sp.Skeleton | null {
+        if (!node) return null;
+        const skeleton = node.getComponent(sp.Skeleton);
+        if (skeleton) return skeleton;
+        const children = node.children || [];
+        for (let i = 0; i < children.length; i++) {
+            const childSkeleton = this.getBuildEffectSkeleton(children[i]);
+            if (childSkeleton) return childSkeleton;
+        }
+        return null;
+    }
+
+    private getBuildEffectDelay(effectNode: Node | null, animationTime: number) {
+        const skeleton = this.getBuildEffectSkeleton(effectNode);
+        const timeScale = skeleton && skeleton.timeScale ? skeleton.timeScale : 1;
+        return Math.max(0, animationTime / timeScale);
+    }
+
+    private scheduleBuildAnimationSound(effectNode: Node | null, animationTime: number, playFunc: (soundManager: any) => void) {
         if (!GameKit.SoundManager) return;
+        const token = this._buildSoundToken;
+        const delay = this.getBuildEffectDelay(effectNode, animationTime);
         this.scheduleOnce(() => {
+            if (token !== this._buildSoundToken) return;
             if (!this.node || !this.node.isValid || !GameKit.SoundManager) return;
             playFunc(GameKit.SoundManager);
         }, delay);
     }
 
-    private playBuildAnimationSounds() {
+    private playBuildAnimationSounds(effectNode: Node | null) {
+        this._buildSoundToken++;
         if (!GameKit.SoundManager) return;
         if (GameKit.SoundManager.loadSoundByPath && GameKit.SoundManager.SoundPaths) {
             GameKit.SoundManager.loadSoundByPath(GameKit.SoundManager.SoundPaths.BuildHammer1);
             GameKit.SoundManager.loadSoundByPath(GameKit.SoundManager.SoundPaths.BuildHammer2);
         }
-        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER1_TIME, (soundManager) => {
+        this.scheduleBuildAnimationSound(effectNode, BUILD_EFFECT_HAMMER1_TIME, (soundManager) => {
             if (soundManager.playBuildHammer1Sound) soundManager.playBuildHammer1Sound();
         });
-        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER2_TIME, (soundManager) => {
+        this.scheduleBuildAnimationSound(effectNode, BUILD_EFFECT_HAMMER2_TIME, (soundManager) => {
             if (soundManager.playBuildHammer2Sound) soundManager.playBuildHammer2Sound();
         });
-        this.scheduleBuildAnimationSound(BUILD_EFFECT_HAMMER3_TIME, (soundManager) => {
+        this.scheduleBuildAnimationSound(effectNode, BUILD_EFFECT_HAMMER3_TIME, (soundManager) => {
             if (soundManager.playBuildHammer2Sound) soundManager.playBuildHammer2Sound();
         });
     }
@@ -327,6 +447,19 @@ export class MapElementNode extends Component {
         if (GameKit.SoundManager && GameKit.SoundManager.playRenovateSound) {
             GameKit.SoundManager.playRenovateSound();
         }
+    }
+
+    finishBuildAnimation(callback: any) {
+        this.isbuild = false;
+        this.playRenovateFinishSound();
+        const readyPromise = this.updateElement();
+        if (readyPromise && readyPromise.then) {
+            readyPromise.then(() => {
+                if (callback) callback();
+            });
+            return;
+        }
+        if (callback) callback();
     }
 
     playUnlockAnimation() {
@@ -340,30 +473,36 @@ export class MapElementNode extends Component {
     playLevelUpAnimation(callback: any) {
         this.isbuild = true;
         const nd = this.buildEffect ? instantiate(this.buildEffect) : null;
+        if (!nd || !this.EffectNode) {
+            this.finishBuildAnimation(callback);
+            return;
+        }
         if (nd && this.EffectNode) {
             nd.parent = this.EffectNode;
         }
         const t = ((nd && (nd.getComponent('TimeDestroy') as any)?.t) || 0) / 1.2;
-        this.playBuildAnimationSounds();
+        this.playBuildAnimationSounds(nd);
         this.scheduleOnce(() => {
-            this.isbuild = false;
-            this.playRenovateFinishSound();
-            this.updateElement();
-            if (callback) {
-                callback();
-            }
+            this.finishBuildAnimation(callback);
         }, t);
     }
 
     playStageLevelUpAnimation(callback: any) {
         this.isbuild = true;
         const nd = this.buildEffect ? instantiate(this.buildEffect) : null;
+        if (!nd || !this.EffectNode) {
+            this.isbuild = false;
+            if (callback) callback();
+            return;
+        }
         if (nd && this.EffectNode) {
             nd.parent = this.EffectNode;
         }
         const t = ((nd && (nd.getComponent('TimeDestroy') as any)?.t) || 0) / 1.2;
+        this.playBuildAnimationSounds(nd);
         this.scheduleOnce(() => {
             this.isbuild = false;
+            this.playRenovateFinishSound();
             if (callback) {
                 callback();
             }
@@ -402,6 +541,18 @@ export class MapElementNode extends Component {
             console.log('MapElementNode cannot show level info while building', this.mbid, this.isbuild);
             return;
         }
+        const tutorialNodeKey = 'mapId=' + this.mapID + ';buildId=' + this.buildID;
+        if (Game.MergeTutorialManager && Game.MergeTutorialManager.CanOperate
+            && !Game.MergeTutorialManager.CanOperate(Game.MergeTutorialManager.EventTypes.NodeClick, {
+                nodeKey: tutorialNodeKey,
+                mapId: this.mapID,
+                buildId: this.buildID,
+            })) {
+            if (e && e.stopPropagation) {
+                e.stopPropagation();
+            }
+            return;
+        }
         const context = Game.SUserMap.GetBuildActionContext(this.mbid);
         if (!context || !context.windowName) {
             console.log('MapElementNode cannot show level info', this.mbid, context ? context.state : null);
@@ -418,7 +569,7 @@ export class MapElementNode extends Component {
         const obj = { meta: this.meta, mapData: this.mapData, mNode: this.node };
         UIRoot.instance.openChildWindow(context.windowName, obj);
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
-            Game.MergeTutorialManager.EmitNodeClick('mapId=' + this.mapID + ';buildId=' + this.buildID, {
+            Game.MergeTutorialManager.EmitNodeClick(tutorialNodeKey, {
                 mapId: this.mapID,
                 buildId: this.buildID,
             });

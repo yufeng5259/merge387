@@ -22,6 +22,18 @@ const RES_BUILD_BASE = 'res/village/buildPrefabs';
 const RES_TEX_LOCK_CLOUD = 'res/village/texture/lockbuilding';
 const RES_TEX_LOCK_BG = 'res/village/texture/lockBG';
 const FONT_RES_PATH = 'LiveData/PoetsenOne-Regular';
+const SPRITE_FRAME_SUFFIX = '/spriteFrame';
+
+function getSpriteFrameResUrl (resUrl: string) {
+    if (resUrl.endsWith(SPRITE_FRAME_SUFFIX)) {
+        return resUrl;
+    }
+    return `${resUrl}${SPRITE_FRAME_SUFFIX}`;
+}
+
+function getSpriteFrameDbUrl (dbUrl: string) {
+    return dbUrl.replace(/\.png\/[^/]+$/i, `.png${SPRITE_FRAME_SUFFIX}`);
+}
 
 function setNodeSize (node: Node, width: number, height: number) {
     const transform = node.getComponent(UITransform) || node.addComponent(UITransform);
@@ -138,7 +150,7 @@ export default class LoadElementNode extends Component {
     private loadSpriteFrame (dbUrl: string, resUrl: string): Promise<SpriteFrame> {
         return new Promise((resolve, reject) => {
             if (CC_EDITOR && typeof Editor !== 'undefined' && Editor.assetdb && Editor.assetdb.remote) {
-                const uuid = Editor.assetdb.remote.urlToUuid(dbUrl);
+                const uuid = Editor.assetdb.remote.urlToUuid(getSpriteFrameDbUrl(dbUrl));
                 if (!uuid) {
                     reject(new Error('LoadElementNode: urlToUuid failed ' + dbUrl));
                     return;
@@ -148,7 +160,7 @@ export default class LoadElementNode extends Component {
                     else resolve(spriteFrame);
                 });
             } else {
-                resources.load(resUrl, SpriteFrame, (err: Error | null, spriteFrame: SpriteFrame) => {
+                resources.load(getSpriteFrameResUrl(resUrl), SpriteFrame, (err: Error | null, spriteFrame: SpriteFrame) => {
                     if (err) reject(err);
                     else resolve(spriteFrame);
                 });
