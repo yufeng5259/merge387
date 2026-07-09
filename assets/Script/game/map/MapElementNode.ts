@@ -515,7 +515,7 @@ export class MapElementNode extends Component {
     }
 
     showLevelInfo(e: any) {
-        const cameraNode = find('Canvas/VillageCamera');
+        const cameraNode = find('Canvas/Main Camera') || find('Canvas/VillageCamera');
         this.camera = cameraNode ? cameraNode.getComponent(Camera) : null;
         const collider = this.node.getComponent(PolygonCollider2D);
         const hasPolygon = collider && collider.points && collider.points.length >= 3;

@@ -94,7 +94,7 @@ export class MapControlle extends Component {
         this.clickEffectMoved = false;
         this.clickEffectMultiTouch = false;
 
-        const cameraNode = find('Canvas/VillageCamera');
+        const cameraNode = find('Canvas/Main Camera') || find('Canvas/VillageCamera');
         this.camera = cameraNode ? cameraNode.getComponent(Camera) as Camera & { zoomRatio?: number } : null;
         if (!this.camera) {
             console.log('MapControlle: camera not found');
@@ -109,7 +109,7 @@ export class MapControlle extends Component {
         }
 
         this.setCameraZoomRatio(this.defaultScale);
-        this.camera.node.setPosition(new Vec3(0, 0, 0));
+        this.node.setPosition(new Vec3(0, 0, 0));
         this.node.on(Node.EventType.TOUCH_START, this.onStartTouch, this);
         this.node.on(Node.EventType.TOUCH_END, this.onMapClickEffectTouchEnd, this, true);
         this.node.on(Node.EventType.TOUCH_END, this.releaseTouchesEnd, this);
@@ -144,12 +144,12 @@ export class MapControlle extends Component {
 
     onStartTouch(event: any) {
         this.recordClickEffectTouchStart(event);
-        if (this.cameraMoveTween && this.camera) {
-            Tween.stopAllByTarget(this.camera.node);
+        if (this.cameraMoveTween) {
+            Tween.stopAllByTarget(this.node);
             this.cameraMoveTween = null;
         }
         this.stopInertia();
-        this.begin = this.camera ? this.camera.node.position.clone() : new Vec3();
+        this.begin = this.node.position.clone();
         this.isSingleTouchMoving = false;
         this.isPinching = false;
     }
@@ -181,9 +181,9 @@ export class MapControlle extends Component {
                 this.isMoving = true;
                 this.isSingleTouchMoving = true;
                 this.isPinching = false;
-                const cameraDelta = new Vec3(-event.getDeltaX(), -event.getDeltaY(), 0);
-                this.recordTouchDelta(cameraDelta);
-                this.begin = this.begin.add(cameraDelta);
+                const mapDelta = new Vec3(event.getDeltaX(), event.getDeltaY(), 0);
+                this.recordTouchDelta(mapDelta);
+                this.begin = this.begin.add(mapDelta);
                 this.applyCameraPosition(this.begin);
             }
         } else if (touches.length === 2) {
@@ -400,11 +400,11 @@ export class MapControlle extends Component {
             return;
         }
         targetScale = clamp(targetScale, this.minZoomRatio, this.maxZoomRatio);
-        const uiTouchPos = this.multiplyScalar(targetPos.clone().subtract(camera.node.position.clone()), this.getCameraZoomRatio());
+        const uiTouchPos = this.multiplyScalar(targetPos.clone().subtract(this.node.position.clone()), this.getCameraZoomRatio());
         let mapPos = targetPos.clone().subtract(this.divide(uiTouchPos, targetScale));
         mapPos = this.dealScalePos(mapPos, targetScale);
         this.setCameraZoomRatio(targetScale);
-        camera.node.setPosition(mapPos);
+        this.node.setPosition(mapPos);
         this.begin = mapPos.clone();
         if (this.descLabel && isValid(this.descLabel.node)) {
             this.descLabel.string = `${Math.floor(targetScale * 100)}%`;
@@ -427,12 +427,9 @@ export class MapControlle extends Component {
     }
 
     applyCameraPosition(pos: any) {
-        if (!this.camera) {
-            return new Vec3();
-        }
         let targetPos = pos.clone ? pos.clone() : new Vec3(pos.x, pos.y, pos.z || 0);
         targetPos = this.dealScalePos(targetPos, this.getCameraZoomRatio());
-        this.camera.node.setPosition(targetPos);
+        this.node.setPosition(targetPos);
         this.begin = targetPos.clone();
         return targetPos;
     }
@@ -466,7 +463,7 @@ export class MapControlle extends Component {
     }
 
     update(dt: any) {
-        if (this.isMoving || !this.camera || !this.inertiaVelocity) {
+        if (this.isMoving || !this.inertiaVelocity) {
             return;
         }
         const velocity = this.inertiaVelocity;
@@ -476,7 +473,7 @@ export class MapControlle extends Component {
             return;
         }
         dt = Math.min(dt, 1 / 30);
-        const currentPos = this.camera.node.position;
+        const currentPos = this.node.position;
         const targetX = currentPos.x + velocity.x * dt;
         const targetY = currentPos.y + velocity.y * dt;
         const targetPos = this.applyCameraPosition(new Vec3(targetX, targetY, currentPos.z));
@@ -529,17 +526,15 @@ export class MapControlle extends Component {
     }
 
     lookBuild(p: any) {
-        if (!this.camera) {
-            return;
-        }
         this.stopInertia();
         this.isMoving = false;
         let targetPos = p.clone ? p.clone() : new Vec3(p.x, p.y, p.z || 0);
+        targetPos = new Vec3(-targetPos.x, -targetPos.y, targetPos.z || 0);
         targetPos = this.dealScalePos(targetPos, this.getCameraZoomRatio());
         if (this.cameraMoveTween) {
-            Tween.stopAllByTarget(this.camera.node);
+            Tween.stopAllByTarget(this.node);
         }
-        this.cameraMoveTween = tween(this.camera.node)
+        this.cameraMoveTween = tween(this.node)
             .to(this.lookBuildDuration, { position: targetPos }, { easing: 'sineOut' })
             .call(() => {
                 this.cameraMoveTween = null;
