@@ -1,5 +1,7 @@
-import { _decorator, Animation, BlockInputEvents, Label, Mask, Node, Tween, tween, UIOpacity, UITransform, v2, Vec2, Vec3 } from 'cc';
+import { _decorator, Animation, BlockInputEvents, Label, Mask, Node, RichText, Tween, tween, UIOpacity, UITransform, v2, Vec2, Vec3 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import MaskRoundRect from '../../GameKit/ui/MaskRoundRect';
+import MergeEmptyTaskGuide from '../../game/merge/MergeEmptyTaskGuide';
 
 const { ccclass, property } = _decorator;
 
@@ -29,6 +31,8 @@ export default class MergeTutorialWindow extends UIWindow {
     @property(Node) startTitle: Node | null = null;
 
     @property(Node) guide: Node | null = null;
+    @property(Node) EmptyTaskGuide: Node | null = null;
+    @property(RichText) EmptyTaskLabel: RichText | null = null;
 
     meta: any = null;
     guideMeta: any = null;
@@ -36,6 +40,7 @@ export default class MergeTutorialWindow extends UIWindow {
     dragGuidePositionKey = '';
     private arrow4Tween: Tween<Node> | null = null;
     private highlightTween: Tween<any> | null = null;
+    private guideInputBlockers: Node[] = [];
 
     onShow() {
         Game.MergeTutorialManager.mainWindow = this;
@@ -46,6 +51,23 @@ export default class MergeTutorialWindow extends UIWindow {
         }
         this.dragGuidePositionKey = '';
         GameKit.BackKeyManager.registerBackEvent();
+        this.refreshEmptyTaskGuide();
+    }
+
+    refreshEmptyTaskGuide() {
+        const userMerge = Game.SUserMerge || Game.UserMerge;
+        const visible = MergeEmptyTaskGuide.shouldShowForUserMerge(userMerge);
+        if (this.EmptyTaskGuide) this.EmptyTaskGuide.active = visible;
+        if (visible && this.EmptyTaskLabel) this.EmptyTaskLabel.string = MergeEmptyTaskGuide.getTaskEmptyMessage(GameKit.i18n);
+    }
+
+    setRoundedHighlight(radius: number) {
+        const node = this.highLightMask?.node;
+        if (!node) return;
+        let rounded = node.getComponent(MaskRoundRect);
+        if (!rounded) rounded = node.addComponent(MaskRoundRect);
+        rounded.enabled = radius > 0;
+        if (radius > 0) rounded.setRadius(radius);
     }
 
     onClose() {
@@ -481,4 +503,30 @@ export default class MergeTutorialWindow extends UIWindow {
     private toVec3(point: Vec2 | Vec3 | any, z = 0) {
         return new Vec3(point.x || 0, point.y || 0, point.z || z || 0);
     }
+
+    ensureGuideInputBlockers() {
+        while (this.guideInputBlockers.length < 4) {
+            const node = new Node(`guideInputBlocker${this.guideInputBlockers.length}`);
+            node.addComponent(UITransform);
+            node.addComponent(BlockInputEvents);
+            node.parent = this.node;
+            this.guideInputBlockers.push(node);
+        }
+        return this.guideInputBlockers;
+    }
+    hideGuideInputBlockers() { this.guideInputBlockers.forEach(node => node.active = false); }
+    shouldBlockGuideInput() { return !!this.guideMeta && this.guideMeta.GuideType?.() !== 'fullscreen_click'; }
+    updateGuideInputBlockers(maskNode: Node | null) { if (!this.shouldBlockGuideInput() || !maskNode) return this.hideGuideInputBlockers(); this.ensureGuideInputBlockers().forEach(node => node.active = true); }
+    setBlockerRect(blocker: Node, parent: Node, left: number, bottom: number, width: number, height: number) { blocker.parent = parent; this.setNodeSize(blocker, width, height); this.setNodeXY(blocker, left + width / 2, bottom + height / 2); blocker.active = width > 0 && height > 0; }
+    getLocalizedDialogText(text: string) { return GameKit.i18n.sel ? GameKit.i18n.sel(text) : GameKit.i18n.t(text); }
+    getGuideDialogFollowX(dialog: any) { return dialog?.position.x || 0; }
+    updateDialogLabelWrap(_label: Label | null, _dialog: Node | null) { return; }
+    clampDialogRect(dialog: Node | null) { return dialog; }
+    getStaticTileWorldPos(tileKey: string) { return this.getTileWorldPos(tileKey); }
+    getOrderSubmitHighlightGeometry() { const pos = this.getOrderSubmitWorldPos(); return pos ? { center: pos, width: 120, height: 120, cornerRadius: 16 } : null; }
+    getMaskGraphics(mask: Mask | null) { return mask?.subComp || null; }
+    patchRoundedRectMask(mask: Mask | null) { if (mask) this.setRoundedRectMaskEnabled(mask, true, 16); }
+    setRoundedRectMaskEnabled(mask: Mask | null, enabled: boolean, cornerRadius = 16) { if (!mask) return; let rounded = mask.node.getComponent(MaskRoundRect); if (enabled) { if (!rounded) rounded = mask.node.addComponent(MaskRoundRect); (rounded as any).radius = cornerRadius; } else if (rounded) rounded.destroy(); }
+    drawRoundedRectMask(mask: Mask | null, cornerRadius = 16) { this.setRoundedRectMaskEnabled(mask, true, cornerRadius); }
+    applyRoundedRectMaskGeometry(mask: Mask | null, geometry: any, useCircle = false) { if (!mask || !geometry) return; this.setNodeSize(mask.node, geometry.width, geometry.height); this.setRoundedRectMaskEnabled(mask, !useCircle, geometry.cornerRadius || 16); }
 }

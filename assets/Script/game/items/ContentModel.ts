@@ -37,6 +37,7 @@ function parseColorCode (code: string) {
 
 @ccclass('ContentModel')
 export class ContentModel extends Component {
+    public showPlus = false;
     @property(Sprite)
     public icon: Sprite | null = null;
     @property(Label)
@@ -182,22 +183,26 @@ export class ContentModel extends Component {
             this.count.string = giftText || countText;
             if (this.oneUseName && content.Count() === 1) this.count.string = content.Name();
             if (this.oneHide && content.Count() === 1) this.count.string = '';
+            this.count.string = this.addPlus(this.count.string);
         }
         if (this.countXX) {
             this.countXX.string = countText;
             if (this.oneUseName && content.Count() === 1) this.countXX.string = content.Name();
             if (this.oneHide && content.Count() === 1) this.countXX.string = '';
             if (content.Type() === Game.Content.Types.Coin) this.countXX.string = content.Count() + '/' + Game.SUser.Coin();
+            this.countXX.string = this.addPlus(this.countXX.string);
         }
         if (this.countBignum) {
             this.countBignum.string = giftText || bigCountText;
             if (this.oneUseName && content.Count() === 1) this.countBignum.string = content.Name();
             if (this.oneHide && content.Count() === 1) this.countBignum.string = '';
+            this.countBignum.string = this.addPlus(this.countBignum.string);
         }
         if (this.countX) {
             this.countX.string = GameKit.i18n.t('multiplyx') + bigCountText;
             if (this.oneUseName && content.Count() === 1) this.countX.string = content.Name();
             if (this.oneHide && content.Count() === 1) this.countX.string = '';
+            this.countX.string = this.addPlus(this.countX.string);
         }
         if (this.countWithColor) {
             const labelTwoColor = this.countWithColor.node.getComponent('LabelTwoColor') || this.countWithColor.node.addComponent('LabelTwoColor');
@@ -206,6 +211,7 @@ export class ContentModel extends Component {
             this.countWithColor.string = giftText || bigCountText;
             if (this.oneUseName && content.Count() === 1) this.countWithColor.string = content.Name();
             if (this.oneHide && content.Count() === 1) this.countWithColor.string = '';
+            this.countWithColor.string = this.addPlus(this.countWithColor.string);
         }
         if (this.labelName) this.labelName.string = content.Name();
         if (this.desc) this.desc.string = content.Desc();
@@ -231,6 +237,10 @@ export class ContentModel extends Component {
         if (this.countWithColor) this.countWithColor.string = '';
         if (this.labelName) this.labelName.string = '';
         if (this.desc) this.desc.string = '';
+    }
+
+    addPlus (value: string) {
+        return this.showPlus && value ? ' + ' + value : value;
     }
 
     setNoCountGray (enable: any) {

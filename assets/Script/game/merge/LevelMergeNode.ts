@@ -503,6 +503,11 @@ export class LevelMergeNode extends Component {
         return new Vec2()
     }
 
+    /** @deprecated Kept for callers that still use the Cocos 2 method name. */
+    merge_check() {
+        this._syncMergeMapsFromSceneChildren();
+    }
+
     _getTouchLocalPoint(touchOrEvent?: any) {
         let pos = this._getTouchUILocation(touchOrEvent)
         return this.node.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(pos.x, pos.y, 0), new Vec3())
@@ -593,6 +598,10 @@ export class LevelMergeNode extends Component {
     _isMergeTutorialDragRuleActive() {
         let rule = this._getCurrentMergeTutorialRule()
         return !!(rule && rule.type === 'merge_drag')
+    }
+
+    _getTutorialDragMovePosition(touchPoint: any) {
+        return touchPoint;
     }
 
     scheduleTwoCanMergeHintAfterIdle(delay: any = 0) {

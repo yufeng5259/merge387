@@ -54,6 +54,19 @@ export class MergeOrderGroup extends Component {
         }
     }
 
+    _summarizeOrderData (order: any) {
+        if (!order) return null;
+        return {
+            orderId: order.orderId,
+            slotIndex: order.slotIndex,
+            roleName: order.roleName,
+            requiredPieces: order.requiredPieces,
+            completed: order.completed,
+            claimed: order.claimed,
+            matchedCells: order.matchedCells,
+        };
+    }
+
     _ensureRuntimeState () {
         if (!this._orderKeyByUuid) this._orderKeyByUuid = {};
         if (!this._lastCompleteStateByOrderKey) this._lastCompleteStateByOrderKey = {};

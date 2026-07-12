@@ -60,7 +60,11 @@ export default class ServerRequest extends NetRequest {
             if (res.timestamp != null) GameKit.TimeUtil.UpdateServerTime(res.timestamp)
             if (res.events != null) {
                 for (let type in res.events) {
-                    WebEvent.DispatcherEvent(type, res.events[type])
+                    let eventData = res.events[type]
+                    if (type === WebEvent.EventName.ApEvent && eventData && typeof eventData === 'object' && !Array.isArray(eventData)) {
+                        eventData.__serverEvent = true
+                    }
+                    WebEvent.DispatcherEvent(type, eventData)
                 }
             }
         }

@@ -36,22 +36,23 @@ const phrasesByLanguage = {
     zh_tw,
 };
 
-const supportList = Object.keys(phrasesByLanguage) as LanguageCode[];
+const supportList: LanguageCode[] = ['en', 'es', 'de', 'fr', 'zh_tw', 'ja', 'ko', 'it', 'pt', 'he'];
+const availableLanguages = Object.keys(phrasesByLanguage) as LanguageCode[];
 const polyglot = new Polyglot({ phrases: en, allowMissing: true });
 const polyglotEn = new Polyglot({ phrases: en, allowMissing: true });
 
-let lang = normalizeLanguage(sys.languageCode || sys.language);
+let lang = normalizeSystemLanguage(sys.languageCode || sys.language);
 let data = phrasesByLanguage[lang];
 
 const userLanguage = sys.localStorage.getItem('user_language');
-if (isSupportedLanguage(userLanguage)) {
+if (isAvailableLanguage(userLanguage)) {
     lang = userLanguage;
     data = phrasesByLanguage[lang];
 }
 
 polyglot.replace(data);
 
-function normalizeLanguage(language: string): LanguageCode {
+function normalizeSystemLanguage(language: string): LanguageCode {
     const normalized = language.toLowerCase().replace('-', '_');
     if (!EDITOR && isSupportedLanguage(normalized)) {
         return normalized;
@@ -59,8 +60,17 @@ function normalizeLanguage(language: string): LanguageCode {
     return 'en';
 }
 
+function normalizeAvailableLanguage(language: string): LanguageCode {
+    const normalized = language.toLowerCase().replace('-', '_');
+    return isAvailableLanguage(normalized) ? normalized : 'en';
+}
+
 function isSupportedLanguage(language: unknown): language is LanguageCode {
     return typeof language === 'string' && supportList.includes(language as LanguageCode);
+}
+
+function isAvailableLanguage(language: unknown): language is LanguageCode {
+    return typeof language === 'string' && availableLanguages.includes(language as LanguageCode);
 }
 
 function updateRightLanguage(this: RightLanguageText): void {
@@ -81,7 +91,7 @@ RichText.prototype.updateRightLanguage = updateRightLanguage;
 
 export const i18n = {
     init(language: string): void {
-        lang = normalizeLanguage(language);
+        lang = normalizeAvailableLanguage(language);
         data = phrasesByLanguage[lang];
         polyglot.replace(data);
         sys.localStorage.setItem('user_language', lang);
@@ -92,7 +102,7 @@ export const i18n = {
     },
 
     changeto(nextLanguage: string): void {
-        const normalized = normalizeLanguage(nextLanguage);
+        const normalized = normalizeAvailableLanguage(nextLanguage);
         if (lang === normalized) {
             return;
         }

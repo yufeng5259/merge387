@@ -160,11 +160,33 @@ export class MergeOrder extends Component {
 
     PlayComplete () {
         const roleComp = this._getRoleComp();
+        this._playCompleteLightOnce();
         if (roleComp && roleComp.playHappy) {
-            const skeleton = this.light ? this.light.getComponent(sp.Skeleton) : null;
-            if (skeleton) skeleton.setAnimation(0, 'JueSeWanChen_tx', false);
             roleComp.playHappy();
         }
+    }
+
+    _playCompleteLightOnce () {
+        if (!this.light) return;
+        this.light.active = true;
+        const skeleton = this.light.getComponent(sp.Skeleton);
+        if (!skeleton) return;
+        if (skeleton.setCompleteListener) {
+            skeleton.setCompleteListener(() => this._stopCompleteLight());
+        }
+        skeleton.setAnimation(0, 'JueSeWanChen_tx', false);
+    }
+
+    _stopCompleteLight () {
+        if (!this.light) return;
+        const skeleton = this.light.getComponent(sp.Skeleton);
+        if (skeleton) {
+            if (skeleton.setCompleteListener) skeleton.setCompleteListener(null);
+            skeleton.clearTracks();
+            skeleton.animation = '';
+            skeleton.setToSetupPose();
+        }
+        this.light.active = false;
     }
 
     PlayLeave () {
@@ -429,6 +451,7 @@ export class MergeOrder extends Component {
         if (this.light1) this.light1.active = false;
         this.isComplete = false;
         if (this.light) this.light.active = false;
+        this._stopCompleteLight();
     }
 
     PlayCompleteBtnEffect () {

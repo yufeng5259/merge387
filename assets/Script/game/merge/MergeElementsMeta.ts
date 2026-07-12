@@ -56,22 +56,22 @@ class MergeElementsMeta {
         return this._data.id
     }
     /**
-     * 图标路径
+     * 鍥炬爣璺緞
      * @returns 
      */
     Icon() {
         return this._data.icon
     }
     /**
-     * 图标spine路径
+     * 鍥炬爣spine璺緞
      * @returns 
      */
     Iconspine() {   
         return this._data.iconspine
     }
     /**
-     * 合成类型
-     * @returns {number} 合成类型
+     * 鍚堟垚绫诲瀷
+     * @returns {number} 鍚堟垚绫诲瀷
      */
     Type() {
         return this._data.type
@@ -85,77 +85,80 @@ class MergeElementsMeta {
     OrderScore() {
         return this._getFirst(['OrderScore', 'orderScore', 'orderscore'], 0)
     }
+    OrderLv() {
+        return this._getFirst(['OrderLv', 'orderLv', 'orderlv'], 0)
+    }
     /**
-     * 合成类型名称
-     * @returns {string} 合成类型名称
+     * 鍚堟垚绫诲瀷鍚嶇О
+     * @returns {string} 鍚堟垚绫诲瀷鍚嶇О
      */
     Name() {
         return GameKit.i18n.sel(this._data.name)
     }
     /**
-     * 下一个id
-     * @returns {number} 下一个id
+     * 涓嬩竴涓猧d
+     * @returns {number} 涓嬩竴涓猧d
      */
     NextId() {
         return this._data.nextid
     }
-    /**是否是最高级 */
+    /**鏄惁鏄渶楂樼骇 */
     IsMaxLevel() {
         return this._data.nextid < 0
     }
     /**
-     * 上一个id
-     * @returns {number} 上一个id
+     * 涓婁竴涓猧d
+     * @returns {number} 涓婁竴涓猧d
      */
     PrevId() {
         return this._data.preid
     }
-    /**是否可以出售 */
+    /**鏄惁鍙互鍑哄敭 */
     IfCanSell() {
         return this._data.ifCanSell;
     }
     /**
-     * 出售价格，如果出售价格为0则是删除物品1=0=1
-     * @returns {number} 出售价格
+     * 鍑哄敭浠锋牸锛屽鏋滃嚭鍞环鏍间负0鍒欐槸鍒犻櫎鐗╁搧1=0=1
+     * @returns {number} 鍑哄敭浠锋牸
      */
     SellPrice() {
         return this._data.sellPrice
     }
     /**
-     * 是否有出售数�?
-     * @returns {number} 出售数量
+     * 鏄惁鏈夊嚭鍞暟閲?
+     * @returns {number} 鍑哄敭鏁伴噺
      */
     HasSellCount() {
         return this._data.sellPrice == "0" ? false : true;
     }
-    /**出售类型 */
+    /**鍑哄敭绫诲瀷 */
     SellType() {
         return this._getFirst(['selltype', 'sellType'], undefined);
     }
-    /**是否稀�?*/
+    /**鏄惁绋€鏈?*/
     IsRare() {
         return this._data.israre;
     }
-    /**是否可以被剪 */
+    /**鏄惁鍙互琚壀 */
     IfCanCut() {
         return this._data.ifCanCut;
     }
     /**
-     * 描述
-     * @returns {string} 描述
+     * 鎻忚堪
+     * @returns {string} 鎻忚堪
      */
     Description() {
         return GameKit.i18n.sel(this._data.des)
     }
-    /**合成功能类型 */
+    /**鍚堟垚鍔熻兘绫诲瀷 */
     FunctionType() {
         return this._data.funcType;
     }
-    /**合成功能参数 */
+    /**鍚堟垚鍔熻兘鍙傛暟 */
     FunctionParams() {
         return this._data.funcParam;
     }
-    /**气泡产生概率 */
+    /**姘旀场浜х敓姒傜巼 */
     BubbleRate(){
         // return 100
         return this._getFirst([
@@ -164,7 +167,7 @@ class MergeElementsMeta {
             'bubbleChance', 'BubbleChance', 'bubbleCreateRate', 'bubbleSpawnRate'
         ], undefined)
     }
-    /**气泡棋子参数 */
+    /**姘旀场妫嬪瓙鍙傛暟 */
     BubbleParam(){
         let param = this._getFirst(['bubbleParam', 'bubbleparam', 'BubbleParam', 'bubble_param'], {})
         if (typeof param === 'string') {
@@ -176,7 +179,7 @@ class MergeElementsMeta {
         }
         return param || {}
     }
-    /**气泡棋子获取消�?*/
+    /**姘旀场妫嬪瓙鑾峰彇娑堣€?*/
     BubbleCost(){
         return this._getFirst(['bubbleCost', 'bubblecost', 'BubbleCost', 'bubble_cost'], '')
     }

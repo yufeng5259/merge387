@@ -462,6 +462,8 @@ class MenuWindow extends UIWindow {
         return skeleton.findBone(MAIN_BUTTON2A_BADGE.boneName)
     }
 
+    get_main_button2a_bone_position(bone) { return bone ? new Vec3(bone.worldX || 0, bone.worldY || 0, 0) : null }
+
     get_main_button2a_animation_duration(skeleton, animName, defaultDuration) {
         if (!skeleton || !skeleton.findAnimation) return defaultDuration
         let anim = skeleton.findAnimation(animName)

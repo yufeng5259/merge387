@@ -1,145 +1,145 @@
 
 Tris.png
-size: 330,269
+size: 326,270
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 back_hair
   rotate: true
-  xy: 2, 2
+  xy: 191, 31
   size: 96, 112
   orig: 96, 112
   offset: 0, 0
   index: -1
 eyebrow-l
   rotate: true
-  xy: 255, 16
+  xy: 175, 20
   size: 18, 12
   orig: 18, 12
   offset: 0, 0
   index: -1
 eyebrow-r
-  rotate: false
-  xy: 168, 109
+  rotate: true
+  xy: 305, 81
   size: 23, 17
   orig: 23, 17
   offset: 0, 0
   index: -1
 eyelash-l
   rotate: false
-  xy: 237, 34
+  xy: 305, 38
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
 eyelash-r
-  rotate: false
-  xy: 145, 107
+  rotate: true
+  xy: 305, 106
   size: 21, 19
   orig: 21, 19
   offset: 0, 0
   index: -1
 eyewhite-l
   rotate: true
-  xy: 237, 15
+  xy: 305, 19
   size: 17, 16
   orig: 17, 16
   offset: 0, 0
   index: -1
 eyewhite-r
   rotate: false
-  xy: 216, 111
+  xy: 138, 2
   size: 21, 15
   orig: 21, 15
   offset: 0, 0
   index: -1
 face
-  rotate: true
-  xy: 239, 110
+  rotate: false
+  xy: 108, 40
   size: 74, 84
   orig: 74, 84
   offset: 0, 0
   index: -1
 front_hair
-  rotate: false
-  xy: 239, 186
+  rotate: true
+  xy: 108, 126
   size: 89, 81
   orig: 89, 81
   offset: 0, 0
   index: -1
 handwear-l
   rotate: true
-  xy: 116, 54
+  xy: 2, 217
   size: 51, 194
   orig: 51, 194
   offset: 0, 0
   index: -1
 handwear-r
   rotate: false
-  xy: 108, 128
+  xy: 198, 129
   size: 107, 139
   orig: 107, 139
   offset: 0, 0
   index: -1
 irides-l
-  rotate: true
-  xy: 237, 2
+  rotate: false
+  xy: 161, 5
   size: 11, 12
   orig: 11, 12
   offset: 0, 0
   index: -1
 irides-r
   rotate: false
-  xy: 255, 2
+  xy: 175, 6
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 kaixinzui
-  rotate: true
-  xy: 116, 4
+  rotate: false
+  xy: 48, 7
   size: 48, 39
   orig: 48, 39
   offset: 0, 0
   index: -1
 mouth
   rotate: false
-  xy: 108, 107
+  xy: 138, 19
   size: 35, 19
   orig: 35, 19
   offset: 0, 0
   index: -1
 topwear
   rotate: false
-  xy: 2, 100
+  xy: 2, 48
   size: 104, 167
   orig: 104, 167
   offset: 0, 0
   index: -1
 toufa1
-  rotate: true
-  xy: 157, 8
+  rotate: false
+  xy: 2, 6
   size: 44, 40
   orig: 44, 41
   offset: 0, 1
   index: -1
 toufa2
-  rotate: false
-  xy: 199, 14
+  rotate: true
+  xy: 98, 2
   size: 36, 38
   orig: 37, 40
   offset: 1, 2
   index: -1
 youbiyan
   rotate: false
-  xy: 255, 36
+  xy: 189, 13
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 zuobiyan
-  rotate: false
-  xy: 193, 110
+  rotate: true
+  xy: 305, 58
   size: 21, 16
   orig: 21, 17
   offset: 0, 1

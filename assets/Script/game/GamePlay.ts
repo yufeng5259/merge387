@@ -57,6 +57,7 @@ export class GamePlay extends Component {
     public pressPos: any = null;
     public pressPosStart: any = null;
     public showCR: any = null;
+    private _villageBuildLoadingTimer: ReturnType<typeof setTimeout> | null = null;
 
     onLoad() {
         GamePlay.instance = this;
@@ -64,6 +65,7 @@ export class GamePlay extends Component {
     }
 
     onDestroy() {
+        this.clearVillageBuildLoadingTimer();
         GamePlay.instance = null;
     }
 
@@ -91,6 +93,7 @@ export class GamePlay extends Component {
         this.villageLoaded = false;
         this.villageProgress = 0;
         this.villageBuildLoadingStarted = false;
+        this.clearVillageBuildLoadingTimer();
         this.node.active = false;
     }
 
@@ -106,7 +109,7 @@ export class GamePlay extends Component {
                 this._updateScene();
                 setTimeout(() => {
                     GameMainWindow.instance.enterScene(this.currentScene);
-                    this.startVillageBuildLoading();
+                    this.scheduleVillageBuildLoading(0.5, 10);
                     if (callback) callback();
                 }, 100);
             }
@@ -165,8 +168,12 @@ export class GamePlay extends Component {
         });
     }
 
-    startVillageBuildLoading() {
-        if (!this.mapNode || !isValid(this.mapNode.node)) return;
+    startVillageBuildLoading(retryCount = 0) {
+        this.clearVillageBuildLoadingTimer();
+        if (!this.mapNode || !isValid(this.mapNode.node)) {
+            if (retryCount > 0) this.scheduleVillageBuildLoading(0.2, retryCount - 1);
+            return;
+        }
         if (this.villageBuildLoadingStarted) {
             if (this.mapNode.resumeProgressiveBuildLoading) {
                 this.mapNode.resumeProgressiveBuildLoading();
@@ -175,6 +182,19 @@ export class GamePlay extends Component {
         }
         this.villageBuildLoadingStarted = true;
         this.mapNode.showInfo();
+    }
+
+    scheduleVillageBuildLoading(delay: number, retryCount = 0) {
+        this.clearVillageBuildLoadingTimer();
+        this._villageBuildLoadingTimer = setTimeout(() => {
+            this._villageBuildLoadingTimer = null;
+            if (this.inGame) this.startVillageBuildLoading(retryCount);
+        }, Math.max(0, Number(delay) || 0) * 1000);
+    }
+
+    clearVillageBuildLoadingTimer() {
+        if (this._villageBuildLoadingTimer) clearTimeout(this._villageBuildLoadingTimer);
+        this._villageBuildLoadingTimer = null;
     }
 
     shouldKeepVillageBuildLoadingInBackground() {

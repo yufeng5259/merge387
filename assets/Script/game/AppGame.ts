@@ -342,8 +342,29 @@ export class AppGame extends Component {
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.PresentEvent, 'Game', function(data) {
-            GameKit.DataCache.SetData('UserPresentList', data);
+            const presentList = this.mergePresentList(GameKit.DataCache.GetData('UserPresentList'), data.list);
+            GameKit.DataCache.SetData('UserPresentList', presentList);
             GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.PresentEvent, data);
         }.bind(this));
+
+        GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.PendingRewardsUpdated, 'Game', function(data) {
+            Game.SUserMerge.UpdateMergePendingRewards(data.pendingRewards);
+            GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated, data);
+        }.bind(this));
+
+        GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.GetNewReward, 'Game', function(data) {
+            GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.GetNewReward, data);
+        }.bind(this));
+
+        GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.StarEvent, 'Game', function(data) {
+            GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.StarEvent, data);
+        }.bind(this));
+    }
+
+    mergePresentList(oldList: Record<string, any> | null, newList: Record<string, any> | null) {
+        const list: Record<string, any> = {};
+        for (const id in oldList || {}) if (id !== 'cid') list[id] = oldList![id];
+        for (const id in newList || {}) if (id !== 'cid') list[id] = newList![id];
+        return list;
     }
 }

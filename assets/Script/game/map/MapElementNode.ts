@@ -1,5 +1,6 @@
 import {
     _decorator,
+    assetManager,
     Camera,
     Component,
     find,
@@ -23,9 +24,47 @@ const { ccclass, property } = _decorator;
 const BUILD_SPRITE_RES_BASE = 'res/village/buildPrefabs';
 const BUILD_SPRITE_FRAME_CACHE: Record<string, SpriteFrame> = {};
 const BUILD_SPRITE_FRAME_LOADING: Record<string, Promise<SpriteFrame | null>> = {};
+const LOCK_MASK_RES_BASE = 'res/yun';
+const LOCK_MASK_DEFAULT_NAME = '3';
+const LOCK_MASK_BY_BUILD_ORDER: Record<number, string> = { 1:'5', 2:'4-1', 3:'1', 4:'3', 5:'1', 6:'4', 7:'4-1', 8:'9', 9:'5', 10:'3', 11:'6', 12:'8', 13:'7', 14:'6', 15:'9', 16:'3', 17:'7', 18:'5', 19:'4-1', 20:'3', 21:'2' };
+const LOCK_MASK_SPRITE_FRAME_CACHE: Record<string, SpriteFrame> = {};
+const LOCK_MASK_SPRITE_FRAME_LOADING: Record<string, Promise<SpriteFrame | null>> = {};
 const BUILD_EFFECT_HAMMER1_TIME = 0.2667;
 const BUILD_EFFECT_HAMMER2_TIME = 0.9;
 const BUILD_EFFECT_HAMMER3_TIME = 1.5333;
+const BUILD_COMPLETE_SPINE_BUNDLE = 'LiveData';
+const BUILD_COMPLETE_SPINE_BASE = 'anim/DaDiTu_WeiDang';
+const BUILD_COMPLETE_SPINE_ANIM = 'OK';
+const BUILD_COMPLETE_SPINE_FALLBACK_TIME = 4;
+const BUILD_COMPLETE_SPINE_BASE_WIDTH = 1388.63;
+const BUILD_COMPLETE_SPINE_EFFECTS = [
+    { name: 'DaDiTu_WeiDang_Hou', layer: 'behind', bounds: { x: -673.35, y: 614.2, width: 1302.37, height: 998.13 } },
+    { name: 'DaDiTu_WeiDang_CaiDai', layer: 'front', bounds: { x: -168.18, y: 881.66, width: 265.53, height: 396.37 } },
+    { name: 'DaDiTu_WeiDang_Qian', layer: 'front', bounds: { x: -731.51, y: 238.25, width: 1388.63, height: 1266.85 } },
+];
+const BUILD_COMPLETE_SPINE_DATA_CACHE: Record<string, sp.SkeletonData> = {};
+const BUILD_COMPLETE_SPINE_DATA_LOADING: Record<string, Promise<sp.SkeletonData | null>> = {};
+
+function loadBuildCompleteSpineData(effectName: string): Promise<sp.SkeletonData | null> {
+    if (BUILD_COMPLETE_SPINE_DATA_CACHE[effectName]) return Promise.resolve(BUILD_COMPLETE_SPINE_DATA_CACHE[effectName]);
+    if (BUILD_COMPLETE_SPINE_DATA_LOADING[effectName]) return BUILD_COMPLETE_SPINE_DATA_LOADING[effectName];
+    BUILD_COMPLETE_SPINE_DATA_LOADING[effectName] = new Promise((resolve) => {
+        const load = (bundle: any) => bundle.load(`${BUILD_COMPLETE_SPINE_BASE}/${effectName}`, sp.SkeletonData, (err: any, data: sp.SkeletonData | null) => {
+            delete BUILD_COMPLETE_SPINE_DATA_LOADING[effectName];
+            if (err || !data) {
+                console.warn('MapElementNode load build complete spine failed', effectName, err);
+                resolve(null);
+                return;
+            }
+            BUILD_COMPLETE_SPINE_DATA_CACHE[effectName] = data;
+            resolve(data);
+        });
+        const bundle = assetManager.getBundle(BUILD_COMPLETE_SPINE_BUNDLE);
+        if (bundle) load(bundle);
+        else assetManager.loadBundle(BUILD_COMPLETE_SPINE_BUNDLE, (err, loadedBundle) => err || !loadedBundle ? resolve(null) : load(loadedBundle));
+    });
+    return BUILD_COMPLETE_SPINE_DATA_LOADING[effectName];
+}
 
 type LevelNodeView = {
     node: Node | null;
@@ -102,15 +141,31 @@ export class MapElementNode extends Component {
     private _costBarRoot: Node | null = null;
     private _coinBarNode: Node | null = null;
     private _lockMask: Node | null = null;
+    private _lockMaskSprite: Sprite | null = null;
+    private _coinProgressSprite: Sprite | null = null;
+    private _currentLockMaskKey = '';
+    private _appliedLockMaskKey = '';
+    private _lockMaskLoadToken = 0;
+    private _upgradeIconClickNodes: Node[] = [];
     private _metaMaxLevel = 0;
     private _limitLvText = '';
     private camera: Camera | null = null;
     private _currentBuildSpriteKey: string | null = null;
     private _buildSpriteLoadToken = 0;
     private _buildSoundToken = 0;
+    private _buildCompleteEffectToken = 0;
+    private _buildCompleteEffectNodes: Node[] = [];
+    private _buildCompleteEffectPreloadPromise: Promise<(sp.SkeletonData | null)[]> | null = null;
 
     onLoad() {
         this.initRuntimeState();
+    }
+
+    onDestroy() {
+        this.clearBuildCompleteEffects();
+        this.unbindUpgradeIconClick();
+        this._buildSpriteLoadToken++;
+        this._lockMaskLoadToken++;
     }
 
     initRuntimeState() {
@@ -163,6 +218,7 @@ export class MapElementNode extends Component {
         this.cc_bg = GameKit.ControllerTable.GetNode(this.coinBar, 'bg1');
         this.cc_prelbl = GameKit.ControllerTable.GetComponent(this.coinBar, 'perlbl', Label);
         this.cacheViewRefs();
+        this.bindUpgradeIconClick();
         return this.updateElement(userCoin, options.waitForSprite !== false);
     }
 
@@ -170,6 +226,9 @@ export class MapElementNode extends Component {
         this._costBarRoot = this.costBar && this.costBar.node && this.costBar.node.parent ? this.costBar.node.parent : null;
         this._coinBarNode = getNodeTarget(this.coinBar);
         this._lockMask = this.lockIcon ? this.lockIcon.getChildByName('mask') : null;
+        this._lockMaskSprite = this._lockMask ? this._lockMask.getComponent(Sprite) : null;
+        const coinProgressNode = this.getControllerNode(this.coinBar, 'progress');
+        this._coinProgressSprite = coinProgressNode ? coinProgressNode.getComponent(Sprite) : null;
         this._metaMaxLevel = this.meta && this.meta.MaxLevel ? this.meta.MaxLevel() : (this.levelNodes ? this.levelNodes.length : 0);
         this._limitLvText = this.meta && this.meta.LimitLv ? 'LV.' + this.meta.LimitLv() : '';
         this._levelNodeViews = [];
@@ -198,6 +257,14 @@ export class MapElementNode extends Component {
             return GameKit.ControllerTable.GetNode(root, name);
         } catch (e) {
             return root.getChildByName ? root.getChildByName(name) : null;
+        }
+    }
+
+    getControllerComponent(root: any, name: string, componentType: any) {
+        try {
+            return GameKit.ControllerTable.GetComponent(root, name, componentType);
+        } catch (e) {
+            return this.getControllerNode(root, name)?.getComponent(componentType) || null;
         }
     }
 
@@ -241,8 +308,61 @@ export class MapElementNode extends Component {
         }
     }
 
+    setSpriteFillProgress(sprite: Sprite | null, progress: number) {
+        if (!sprite) return;
+        sprite.type = Sprite.Type.FILLED;
+        sprite.fillType = Sprite.FillType.HORIZONTAL;
+        sprite.fillStart = 0;
+        sprite.fillRange = progress;
+    }
+
     getBuildSpriteResName(buildID: any, spriteName: string) {
         return BUILD_SPRITE_RES_BASE + '/' + buildID + '/res/' + spriteName+"/spriteFrame";
+    }
+
+    getLockMaskSpriteName(buildID: any) {
+        const buildOrder = Number(buildID);
+        return buildOrder > 0 ? (LOCK_MASK_BY_BUILD_ORDER[buildOrder] || LOCK_MASK_DEFAULT_NAME) : LOCK_MASK_DEFAULT_NAME;
+    }
+
+    getLockMaskResName(buildID: any) {
+        return `${LOCK_MASK_RES_BASE}/${this.getLockMaskSpriteName(buildID)}/spriteFrame`;
+    }
+
+    loadLockMaskSpriteFrame(buildID: any): Promise<SpriteFrame | null> {
+        const spriteName = this.getLockMaskSpriteName(buildID);
+        if (LOCK_MASK_SPRITE_FRAME_CACHE[spriteName]) return Promise.resolve(LOCK_MASK_SPRITE_FRAME_CACHE[spriteName]);
+        if (LOCK_MASK_SPRITE_FRAME_LOADING[spriteName]) return LOCK_MASK_SPRITE_FRAME_LOADING[spriteName];
+        const resName = this.getLockMaskResName(buildID);
+        LOCK_MASK_SPRITE_FRAME_LOADING[spriteName] = new Promise((resolve) => {
+            cce.loadRes(resName, SpriteFrame, (err: any, spriteFrame: SpriteFrame | null) => {
+                delete LOCK_MASK_SPRITE_FRAME_LOADING[spriteName];
+                if (err || !spriteFrame) {
+                    console.warn('MapElementNode load lock mask failed', resName, err);
+                    resolve(null);
+                    return;
+                }
+                LOCK_MASK_SPRITE_FRAME_CACHE[spriteName] = spriteFrame;
+                resolve(spriteFrame);
+            });
+        });
+        return LOCK_MASK_SPRITE_FRAME_LOADING[spriteName];
+    }
+
+    updateLockMaskSprite() {
+        const sprite = this._lockMaskSprite || (this._lockMask ? this._lockMask.getComponent(Sprite) : null);
+        if (!sprite || !this.buildID) return;
+        const spriteName = this.getLockMaskSpriteName(this.buildID);
+        if (this._appliedLockMaskKey === spriteName && sprite.spriteFrame) return;
+        this._currentLockMaskKey = spriteName;
+        const token = ++this._lockMaskLoadToken;
+        this.loadLockMaskSpriteFrame(this.buildID).then((spriteFrame) => {
+            if (!spriteFrame || token !== this._lockMaskLoadToken || this._currentLockMaskKey !== spriteName || !sprite.node.isValid) return;
+            sprite.spriteFrame = spriteFrame;
+            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            (sprite as any).trim = false;
+            this._appliedLockMaskKey = spriteName;
+        });
     }
 
     loadBuildSpriteFrame(buildID: any, spriteName: string): Promise<SpriteFrame | null> {
@@ -319,6 +439,7 @@ export class MapElementNode extends Component {
             pricePre = this.getActionPricePre(actionLevel, element, userCoin);
             const pricePreText = Math.floor(pricePre * 1000) / 10 + '%';
             this.setProgress(this.costBar, pricePre);
+            this.setSpriteFillProgress(this._coinProgressSprite, pricePre);
             this.setLabelString(this.costlbl, pricePreText);
             this.setLabelString(this.cc_prelbl, pricePreText);
         }
@@ -327,6 +448,7 @@ export class MapElementNode extends Component {
         if (this.lockIcon) {
             this.setNodeActive(this.lockIcon, !this.unlocked);
             this.setNodeOpacity(this._lockMask, 255);
+            if (!this.unlocked) this.updateLockMaskSprite();
         }
         if (this.levelNode) {
             this.setNodeActive(this.levelNode, this.unlocked);
@@ -396,6 +518,38 @@ export class MapElementNode extends Component {
         this.setNodeActive(this.cupLevel, canUpgrade);
     }
 
+    bindUpgradeIconClick() {
+        this.unbindUpgradeIconClick();
+        this._upgradeIconClickNodes = this.getUpgradeIconClickNodes();
+        for (const node of this._upgradeIconClickNodes) node.on(Node.EventType.TOUCH_END, this.onUpgradeIconClick, this);
+    }
+
+    getUpgradeIconClickNodes() {
+        const root = this.cupLevel || getNodeTarget(this.coinBar);
+        if (!root) return [];
+        const nodes: Node[] = [];
+        const collect = (node: Node) => {
+            if (!node.isValid) return;
+            const transform = node.getComponent(UITransform);
+            if ((transform && transform.contentSize.width > 0 && transform.contentSize.height > 0) || node.children.length === 0) nodes.push(node);
+            node.children.forEach(collect);
+        };
+        collect(root);
+        return nodes.length > 0 ? nodes : [root];
+    }
+
+    unbindUpgradeIconClick() {
+        for (const node of this._upgradeIconClickNodes) {
+            if (node && node.isValid) node.off(Node.EventType.TOUCH_END, this.onUpgradeIconClick, this);
+        }
+        this._upgradeIconClickNodes = [];
+    }
+
+    onUpgradeIconClick(event: any) {
+        if (event && event.stopPropagation) event.stopPropagation();
+        this.showLevelInfo({ skipHitTest: true, stopPropagation() {} });
+    }
+
     private getBuildEffectSkeleton(node: Node | null): sp.Skeleton | null {
         if (!node) return null;
         const skeleton = node.getComponent(sp.Skeleton);
@@ -449,6 +603,101 @@ export class MapElementNode extends Component {
         }
     }
 
+    preloadBuildCompleteEffects() {
+        if (!this._buildCompleteEffectPreloadPromise) {
+            this._buildCompleteEffectPreloadPromise = Promise.all(BUILD_COMPLETE_SPINE_EFFECTS.map((effect) => loadBuildCompleteSpineData(effect.name)));
+        }
+        return this._buildCompleteEffectPreloadPromise;
+    }
+
+    getBuildCompleteEffectWorldPos() {
+        const source = this.getCurrentBuildViewNode() || this.node;
+        const transform = source.getComponent(UITransform);
+        return transform ? transform.convertToWorldSpaceAR(Vec3.ZERO) : source.worldPosition.clone();
+    }
+
+    getCurrentBuildViewNode() {
+        for (const view of this._levelNodeViews || []) {
+            if (!view || !view.node || !view.node.active) continue;
+            if (view.normal?.active && view.normalSprite?.node) return view.normalSprite.node;
+            if (view.damage?.active && view.damageSprite?.node) return view.damageSprite.node;
+            return view.node;
+        }
+        return this.levelNode || this.node;
+    }
+
+    getBuildCompleteEffectScale() {
+        const source = this.getCurrentBuildViewNode() || this.node;
+        const width = source.getComponent(UITransform)?.contentSize.width || 180;
+        return Math.max(0.08, Math.min(0.45, width / BUILD_COMPLETE_SPINE_BASE_WIDTH));
+    }
+
+    getBuildCompleteEffectOffset(effectInfo: any, scale: number) {
+        const bounds = effectInfo.bounds || {};
+        return new Vec3(-((Number(bounds.x) || 0) + (Number(bounds.width) || 0) / 2) * scale,
+            -((Number(bounds.y) || 0) + (Number(bounds.height) || 0) / 2) * scale, 0);
+    }
+
+    getBuildCompleteEffectParent(effectInfo: any) {
+        return effectInfo.layer === 'behind' ? this.node : (this.EffectNode || this.node);
+    }
+
+    applyBuildCompleteEffectLayer(effectNode: Node, effectInfo: any, parent: Node) {
+        effectNode.setSiblingIndex(effectInfo.layer === 'behind'
+            ? Math.max(0, this.levelNode?.parent === parent ? this.levelNode.getSiblingIndex() : 0)
+            : Math.max(0, parent.children.length - 1));
+    }
+
+    removeBuildCompleteEffectNode(effectNode: Node) {
+        const index = this._buildCompleteEffectNodes.indexOf(effectNode);
+        if (index >= 0) this._buildCompleteEffectNodes.splice(index, 1);
+    }
+
+    clearBuildCompleteEffects() {
+        this._buildCompleteEffectToken++;
+        this._buildCompleteEffectNodes.forEach((node) => { if (node.isValid) node.destroy(); });
+        this._buildCompleteEffectNodes = [];
+    }
+
+    createBuildCompleteSpineNode(effectInfo: any, skeletonData: sp.SkeletonData | null, worldPos: Vec3, token: number, scale: number) {
+        if (!skeletonData || token !== this._buildCompleteEffectToken || !this.node.isValid) return;
+        const parent = this.getBuildCompleteEffectParent(effectInfo);
+        if (!parent?.isValid) return;
+        const effectNode = new Node(effectInfo.name);
+        effectNode.parent = parent;
+        const transform = parent.getComponent(UITransform);
+        effectNode.setPosition((transform ? transform.convertToNodeSpaceAR(worldPos) : worldPos.clone()).add(this.getBuildCompleteEffectOffset(effectInfo, scale)));
+        effectNode.setScale(scale, scale, scale);
+        this.applyBuildCompleteEffectLayer(effectNode, effectInfo, parent);
+        const skeleton = effectNode.addComponent(sp.Skeleton);
+        skeleton.skeletonData = skeletonData;
+        skeleton.clearTracks();
+        skeleton.setToSetupPose();
+        this._buildCompleteEffectNodes.push(effectNode);
+        let finished = false;
+        const destroyEffect = () => {
+            if (finished) return;
+            finished = true;
+            this.removeBuildCompleteEffectNode(effectNode);
+            if (effectNode.isValid) effectNode.destroy();
+        };
+        skeleton.setCompleteListener(destroyEffect);
+        skeleton.setAnimation(0, BUILD_COMPLETE_SPINE_ANIM, false);
+        this.scheduleOnce(destroyEffect, BUILD_COMPLETE_SPINE_FALLBACK_TIME);
+    }
+
+    playBuildCompleteEffects() {
+        this.clearBuildCompleteEffects();
+        if (!this.node.isValid || !this.EffectNode) return;
+        const token = this._buildCompleteEffectToken;
+        const worldPos = this.getBuildCompleteEffectWorldPos();
+        const scale = this.getBuildCompleteEffectScale();
+        this.preloadBuildCompleteEffects().then((datas) => {
+            if (token !== this._buildCompleteEffectToken || !this.node.isValid) return;
+            BUILD_COMPLETE_SPINE_EFFECTS.forEach((effect, index) => this.createBuildCompleteSpineNode(effect, datas[index], worldPos, token, scale));
+        });
+    }
+
     finishBuildAnimation(callback: any) {
         this.isbuild = false;
         this.playRenovateFinishSound();
@@ -472,6 +721,7 @@ export class MapElementNode extends Component {
 
     playLevelUpAnimation(callback: any) {
         this.isbuild = true;
+        this.playBuildCompleteEffects();
         const nd = this.buildEffect ? instantiate(this.buildEffect) : null;
         if (!nd || !this.EffectNode) {
             this.finishBuildAnimation(callback);
@@ -488,6 +738,7 @@ export class MapElementNode extends Component {
     }
 
     playStageLevelUpAnimation(callback: any) {
+        this.playBuildCompleteEffects();
         this.isbuild = true;
         const nd = this.buildEffect ? instantiate(this.buildEffect) : null;
         if (!nd || !this.EffectNode) {

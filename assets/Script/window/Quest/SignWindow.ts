@@ -34,6 +34,10 @@ const C = {
     MONTH_BUBBLE_OFFSET_Y: -62,
     MONTH_BUBBLE_BORDER: 24,
     MONTH_BUBBLE_REWARD_Y: -35,
+    REWARD_FLOAT_SCALE: 0.6,
+    REWARD_FLOAT_MOVE_Y: 75,
+    REWARD_FLOAT_GAP: 56,
+    REWARD_FLOAT_DURATION: 0.8,
     DEBUG_SIGN_MONTH_DAY: null,
 };
 
@@ -627,6 +631,111 @@ export default class SignWindow extends UIWindow {
         this.restoreAwardValueStyle(contentModel, awardValueStyle);
     }
 
+    getRewardFloatTemplate() {
+        if (!this.week_box || !this.week_box.length) return null;
+        for (let i = 0; i < this.week_box.length; i += 1) {
+            const reward = GameKit.ControllerTable.GetNode(this.week_box[i], 'reward');
+            if (reward) return reward;
+        }
+        return null;
+    }
+
+    getRewardFloatParent() {
+        const root = typeof UIRoot !== 'undefined' && UIRoot.instance && UIRoot.instance.node ? UIRoot.instance.node : null;
+        if (root && root.getComponent(UITransform)) return root;
+        return this.node;
+    }
+
+    getRewardFloatSourceNode(sourceNode: Node | null) {
+        if (!sourceNode) return null;
+        let rewardNode: Node | null = null;
+        if (sourceNode.getChildByName) {
+            rewardNode = sourceNode.getChildByName('reward') || sourceNode.getChildByName('reward1');
+        }
+        if (!rewardNode) {
+            rewardNode = GameKit.ControllerTable.GetNode(sourceNode, 'reward') || GameKit.ControllerTable.GetNode(sourceNode, 'reward1');
+        }
+        return rewardNode || sourceNode;
+    }
+
+    showRewardFloat(contents: any[], sourceNode: Node | null, onComplete?: () => void) {
+        contents = Game.Content.Merge(contents || []);
+        if (!contents || contents.length <= 0) {
+            if (onComplete) onComplete();
+            return;
+        }
+
+        const template = this.getRewardFloatTemplate();
+        const parent = this.getRewardFloatParent();
+        const parentTransform = parent ? parent.getComponent(UITransform) : null;
+        const floatSourceNode = this.getRewardFloatSourceNode(sourceNode);
+        const sourceTransform = floatSourceNode ? floatSourceNode.getComponent(UITransform) : null;
+        if (!template || !parent || !parentTransform || !sourceNode || !sourceTransform) {
+            if (onComplete) this.scheduleOnce(onComplete, 0.2);
+            return;
+        }
+
+        const count = Math.min(3, contents.length);
+        const startX = -(count - 1) * C.REWARD_FLOAT_GAP / 2;
+        const worldPos = sourceTransform.convertToWorldSpaceAR(Vec3.ZERO);
+        const localPos = parentTransform.convertToNodeSpaceAR(worldPos);
+        let finished = 0;
+
+        for (let i = 0; i < count; i += 1) {
+            const content = Game.Content.FromContent(contents[i]);
+            const item = instantiate(template);
+            item.name = 'sign-reward-float';
+            item.parent = parent;
+            item.active = true;
+            item.setSiblingIndex(parent.children.length - 1);
+            item.setPosition(localPos.x + startX + i * C.REWARD_FLOAT_GAP, localPos.y, item.position.z);
+            item.setScale(C.REWARD_FLOAT_SCALE * 0.86, C.REWARD_FLOAT_SCALE * 0.86, item.scale.z);
+
+            const opacity = item.getComponent(UIOpacity) || item.addComponent(UIOpacity);
+            opacity.opacity = 0;
+
+            const contentModel = item.getComponent('ContentModel');
+            if (contentModel) {
+                this.showWeekReward(contentModel, content);
+                if (contentModel.icon && contentModel.icon.node) {
+                    const iconOpacity = contentModel.icon.node.getComponent(UIOpacity) || contentModel.icon.node.addComponent(UIOpacity);
+                    iconOpacity.opacity = 255;
+                    contentModel.icon.node.targetOff(contentModel);
+                }
+                if (contentModel.countWithColor && contentModel.countWithColor.node) {
+                    contentModel.countWithColor.node.active = true;
+                    const countOpacity = contentModel.countWithColor.node.getComponent(UIOpacity) || contentModel.countWithColor.node.addComponent(UIOpacity);
+                    countOpacity.opacity = 255;
+                    if (contentModel.countWithColor.string && contentModel.countWithColor.string.indexOf('+') !== 0) {
+                        contentModel.countWithColor.string = `+${contentModel.countWithColor.string}`;
+                    }
+                }
+            }
+
+            Tween.stopAllByTarget(item);
+            Tween.stopAllByTarget(opacity);
+            tween(opacity)
+                .to(0.08, { opacity: 255 })
+                .delay(0.32)
+                .to(C.REWARD_FLOAT_DURATION - 0.4, { opacity: 0 })
+                .start();
+            tween(item)
+                .to(C.REWARD_FLOAT_DURATION, {
+                    position: new Vec3(item.position.x, item.position.y + C.REWARD_FLOAT_MOVE_Y, item.position.z),
+                }, { easing: 'sineOut' })
+                .call(() => {
+                    item.destroy();
+                    finished += 1;
+                    if (finished >= count && onComplete) onComplete();
+                })
+                .start();
+            tween(item)
+                .to(0.12, { scale: new Vec3(C.REWARD_FLOAT_SCALE * 1.08, C.REWARD_FLOAT_SCALE * 1.08, item.scale.z) }, { easing: 'backOut' })
+                .to(0.16, { scale: new Vec3(C.REWARD_FLOAT_SCALE, C.REWARD_FLOAT_SCALE, item.scale.z) }, { easing: 'sineOut' })
+                .start();
+        }
+    }
+
     get_data() {
         return new Promise<any>((res) => {
             if (this.data) {
@@ -896,10 +1005,10 @@ export default class SignWindow extends UIWindow {
                 tween(spAnim).to(0.3, { angle: -10 }).start();
                 tween(spAnim)
                     .to(0.5, { position: new Vec3(nStartPos.x + 30, nStartPos.y - 50, nStartPos.z) })
-                    .call(() => this.showWeekRewardWindowAndContinue(currentWeekBox))
+                    .call(() => this.showWeekRewardFloatAndContinue(currentWeekBox))
                     .start();
             } else {
-                this.showWeekRewardWindowAndContinue(currentWeekBox);
+                this.showWeekRewardFloatAndContinue(currentWeekBox);
             }
             if (nOpacity) {
                 Tween.stopAllByTarget(nOpacity);
@@ -913,63 +1022,23 @@ export default class SignWindow extends UIWindow {
         }, () => {});
     }
 
-    showWeekRewardWindowAndContinue(currentWeekBox: Node) {
-        UIRoot.instance.openChildWindow('GetRewardWindow', {
-            contents: Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Week, this.data.signWeekDay).Reward(),
-            showCallback: (wnd: any) => {
-                wnd.addOnCloseFunc(() => {
-                    if (this.data.signMonthDay >= monthDays[3]) {
-                        this.scheduleOnce(() => this.closeAnim(), 0.5);
-                        return;
-                    }
-                    this.continueMonthProgressAfterWeekReward(currentWeekBox);
-                });
-            },
+    showWeekRewardFloatAndContinue(currentWeekBox: Node) {
+        const weekMeta = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Week, this.data.signWeekDay);
+        this.showRewardFloat(weekMeta ? weekMeta.Reward() : [], currentWeekBox, () => {
+            if (this.data.signMonthDay >= monthDays[3]) {
+                this.scheduleOnce(() => this.closeAnim(), 0.2);
+                return;
+            }
+            const spMonth = GameKit.ControllerTable.GetNode(currentWeekBox, 'spMonth');
+            if (spMonth) {
+                Tween.stopAllByTarget(spMonth);
+                spMonth.active = false;
+            }
+            this.continueMonthProgressAfterWeekReward();
         });
     }
 
-    continueMonthProgressAfterWeekReward(currentWeekBox: Node) {
-        const spMonth = GameKit.ControllerTable.GetNode(currentWeekBox, 'spMonth');
-        if (!spMonth || !this.month_StartSp) {
-            this.finishMonthProgressAfterWeekReward();
-            return;
-        }
-        spMonth.active = true;
-        spMonth.setScale(0.6, 0.6, spMonth.scale.z);
-        const spMonthOpacity = spMonth.getComponent(UIOpacity) || spMonth.addComponent(UIOpacity);
-        spMonthOpacity.opacity = 0;
-        Tween.stopAllByTarget(spMonth);
-        Tween.stopAllByTarget(spMonthOpacity);
-        tween(spMonthOpacity).to(0.3, { opacity: 255 }).start();
-        tween(spMonth)
-            .to(0.3, { scale: new Vec3(0.5, 0.5, spMonth.scale.z) }, { easing: 'bounceOut' })
-            .delay(0.3)
-            .call(() => {
-                const targetWorld = this.month_StartSp!.getWorldPosition();
-                const currentWorld = spMonth.getWorldPosition();
-                const moveTarget = new Vec3(
-                    spMonth.position.x + targetWorld.x - currentWorld.x,
-                    spMonth.position.y + targetWorld.y - currentWorld.y,
-                    spMonth.position.z,
-                );
-                tween(spMonth)
-                    .to(0.15, { scale: new Vec3(0, 0.75, spMonth.scale.z) })
-                    .to(0.15, { scale: new Vec3(-1, 1, spMonth.scale.z) })
-                    .to(0.15, { scale: new Vec3(0, 0.75, spMonth.scale.z) })
-                    .to(0.15, { scale: new Vec3(1, 1, spMonth.scale.z) })
-                    .start();
-                tween(spMonth)
-                    .to(0.6, { position: moveTarget })
-                    .call(() => {
-                        spMonth.active = false;
-                        this.finishMonthProgressAfterWeekReward();
-                    })
-                    .start();
-            })
-            .start();
-    }
-
-    finishMonthProgressAfterWeekReward() {
+    continueMonthProgressAfterWeekReward() {
         this.data.signMonthDay++;
         if (this.totalLab) this.totalLab.string = String(this.data.signMonthDay);
         const width = this.getMonthProgressWidth(this.data.signMonthDay);
@@ -1028,16 +1097,20 @@ export default class SignWindow extends UIWindow {
             const spBoxOpen = GameKit.ControllerTable.GetNode(monthBox, 'sp-box_open');
             if (spBoxOpen) {
                 spBoxOpen.active = true;
+                const spBoxOpenOpacity = spBoxOpen.getComponent(UIOpacity) || spBoxOpen.addComponent(UIOpacity);
+                spBoxOpenOpacity.opacity = 0;
                 this.fadeNode(spBoxOpen, 0.5, 255);
             }
-            this.moveDelayedRewardCache();
             if (light) light.active = false;
-            UIRoot.instance.openChildWindow('GetRewardWindow', {
-                contents: Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Month, days).Reward(),
-                showCallback: (wnd: any) => {
-                    wnd.addOnCloseFunc(() => this.scheduleOnce(() => this.closeAnim(), 0.5));
-                },
-            });
+            this.scheduleOnce(() => {
+                this.moveDelayedRewardCache();
+                const monthMeta = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Month, days);
+                this.showRewardFloat(monthMeta ? monthMeta.Reward() : [], monthBox, () => {
+                    this.scheduleOnce(() => {
+                        this.closeAnim();
+                    }, 0.2);
+                });
+            }, 1);
         }, 0.5);
     }
 

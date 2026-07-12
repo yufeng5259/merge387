@@ -1,40 +1,40 @@
 
 Leo.png
-size: 205,378
+size: 206,378
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 bizui
-  rotate: false
-  xy: 123, 149
+  rotate: true
+  xy: 186, 337
   size: 39, 18
   orig: 39, 18
   offset: 0, 0
   index: -1
 eyebrow-l
   rotate: true
-  xy: 186, 253
+  xy: 186, 212
   size: 19, 14
   orig: 19, 14
   offset: 0, 0
   index: -1
 eyebrow-r
   rotate: true
-  xy: 186, 345
+  xy: 186, 304
   size: 31, 15
   orig: 31, 15
   offset: 0, 0
   index: -1
 eyewhite-l
   rotate: true
-  xy: 186, 232
+  xy: 186, 191
   size: 19, 14
   orig: 19, 14
   offset: 0, 0
   index: -1
 eyewhite-r
   rotate: true
-  xy: 186, 295
+  xy: 186, 254
   size: 23, 14
   orig: 23, 14
   offset: 0, 0
@@ -55,14 +55,14 @@ handwear-r
   index: -1
 irides-l
   rotate: false
-  xy: 186, 203
+  xy: 186, 162
   size: 13, 12
   orig: 13, 12
   offset: 0, 0
   index: -1
 irides-r
   rotate: false
-  xy: 186, 217
+  xy: 186, 176
   size: 14, 13
   orig: 14, 13
   offset: 0, 0
@@ -76,7 +76,7 @@ kaixinzui
   index: -1
 mouth
   rotate: false
-  xy: 164, 148
+  xy: 123, 148
   size: 37, 19
   orig: 37, 19
   offset: 0, 0
@@ -97,14 +97,14 @@ tou
   index: -1
 youbiyan
   rotate: true
-  xy: 186, 274
+  xy: 186, 233
   size: 19, 16
   orig: 21, 16
   offset: 0, 0
   index: -1
 zuobiyan
   rotate: true
-  xy: 186, 320
+  xy: 186, 279
   size: 23, 17
   orig: 23, 17
   offset: 0, 0

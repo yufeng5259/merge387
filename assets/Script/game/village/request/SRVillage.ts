@@ -1,11 +1,11 @@
 import '../../../LegacyGlobals';
 
-var SRVillage = {}
+var SRVillage: any = {}
 
 SRVillage.getUserVillage = function() {
     let req = new GameKit.ServerRequest("getUserVillage")
     req.SetCallBack(function(res) {
-        console.log("小镇信息",res);
+        console.log("灏忛晣淇℃伅",res);
         
         Game.SUserVillage.updateData(res.userVillage)
     })
@@ -30,14 +30,33 @@ SRVillage.getPresentList = function() {
     return req
 }
 
+SRVillage.applyPendingRewards = function(res) {
+    if (!res || !res.pendingRewards || typeof Game === 'undefined' || !Game.SUserMerge) return
+    Game.SUserMerge.UpdateMergePendingRewards(res.pendingRewards)
+    GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated, {
+        pendingRewards: res.pendingRewards,
+    })
+}
+
+SRVillage.collectPresentBatch = function() {
+    let req = new GameKit.ServerRequest("collectPresentBatch")
+    req.SetCallBack(function(res) {
+        SRVillage.applyPendingRewards(res)
+        if (res && res.list) GameKit.DataCache.SetData("UserPresentList", res.list)
+    })
+    return req
+}
+
 SRVillage.collectPresent = function(id) {
     let req = new GameKit.ServerRequest("collectPresent")
     req.SetRequestBody("presentId", id)
     req.SetCallBack(function(res) {
+        SRVillage.applyPendingRewards(res)
         let presentList = GameKit.DataCache.GetData("UserPresentList")
-        if (presentList) {
+        if (presentList && presentList[id]) {
             presentList[id].received = true
             GameKit.DataCache.SetData("UserPresentList", presentList)
+            GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.PresentEvent, presentList)
         }
     })
     return req

@@ -1,5 +1,6 @@
 import { _decorator, instantiate, isValid, Label, Node, RichText, sp, Sprite, UITransform, Vec3 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import LevelUpDisplayLock from '../../game/user/LevelUpDisplayLock';
 
 const { ccclass, property } = _decorator;
 
@@ -39,6 +40,9 @@ export default class LevelUpGetRewardWindow extends UIWindow {
     _levelBoneSkeleton: sp.Skeleton | null = null;
     _levelBone: any = null;
     _levelBoneLabelNode: Node | null = null;
+    showParams: any = null;
+    _levelRewardFlowFinished = false;
+    _closingLevelRewardFlow = false;
 
     private fitByHeight(sprite: Sprite, height: number) {
         const spriteFrame = sprite.spriteFrame;
@@ -57,23 +61,26 @@ export default class LevelUpGetRewardWindow extends UIWindow {
     }
 
     onShow(showParams: any) {
+        this.showParams = showParams || {};
+        this._levelRewardFlowFinished = false;
+        this._closingLevelRewardFlow = false;
         UIRoot.instance.closeChildWindow('GetRewardWindow');
         if (GameKit.SoundManager && GameKit.SoundManager.playNewAreaUnlockSound) {
             GameKit.SoundManager.playNewAreaUnlockSound();
         }
         this.prepareSpineShow(this.SpineOk);
         this.prepareSpineShow(this.SpineBg);
-        let contents = showParams.contents;
+        let contents = this.showParams.contents || [];
         contents = Game.Content.Merge(contents);
-        this.oldCoin = showParams.oldCoin;
-        this.noChest = showParams.noChest;
+        this.oldCoin = this.showParams.oldCoin;
+        this.noChest = this.showParams.noChest;
 
         if (!this.item || !this.labelDes || !this.labelLV) return;
         this.item.active = false;
 
         let rewardStr = '';
         let count = Math.min(3, contents.length);
-        this.labelLV.string = Game.SUser.Level().toString();
+        this.labelLV.string = String(LevelUpDisplayLock.GetLevelWindowText(this.showParams, Game.SUser));
         this.attachLevelLabelToSpineBg();
         this.playShowSpinesAfterWindowEnter();
         /*let addAps = 0
@@ -278,6 +285,14 @@ export default class LevelUpGetRewardWindow extends UIWindow {
         this._levelBoneLabelNode.setPosition(localPos);
     }
 
+    findLevelBone(skeleton: any) { try { this.updateSkeletonWorldTransform(skeleton); return skeleton?.findBone?.('Level') || null; } catch { return null; } }
+    getLevelBonePosition(bone: any) { return bone ? new Vec3(bone.worldX || 0, bone.worldY || 0, 0) : null; }
+    playMergeRewardsToBoardButton(done: () => void) { this.createMergeRewardFlyPlan(plan => this.playMergeRewardFlyPlan(plan, done)); }
+    getMergeRewards(rewards: any[]) { return (rewards || []).map(value => Game.Content.FromContent(value)).filter(value => value && (value.Type() === Game.Content.Types.MergeIcon || value.Type() === Game.Content.Types.NewGiftPack)); }
+    getLevelRewardFlyFromNode() { return this.item?.parent?.children.find(child => child.active && child !== this.item) || this.node; }
+    getMergeBoardButtonNode() { return GameMainWindow.instance?.node?.getChildByPath?.('town/merge') || null; }
+    getRewardIconFrame(reward: any, done: (frame: any) => void) { const node = new Node('level_reward_fly_icon'); const sprite = node.addComponent(Sprite); reward.Icon(sprite, () => { done(sprite.spriteFrame); node.destroy(); }); }
+
     clearLevelLabelBone() {
         this._levelBoneSkeleton = null;
         this._levelBone = null;
@@ -304,7 +319,6 @@ export default class LevelUpGetRewardWindow extends UIWindow {
         this.clearLevelLabelBone();
 
         this._icons.forEach(x => { cce.releaseSpriteFrame(x); });
-
         if (this.oldCoin != null) {
             if (GameMainWindow.instance) GameMainWindow.instance.userinfo.changeCoin(this.oldCoin, Game.SUser.Coin(), 0.8);
         }
@@ -318,18 +332,18 @@ export default class LevelUpGetRewardWindow extends UIWindow {
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
             Game.MergeTutorialManager.EmitNodeClick('level_reward_button');
         }
+        if (this._closingLevelRewardFlow) return;
         if (this.chestCard.length > 0) {
-            if (!this.noChest && CardChestOpenWindow.tryShow(null, this.chestCard && this.chestCard.length > 0 ? this.chestCard.shift() : null)) {
+            if (!this.noChest && CardChestOpenWindow.tryShow(() => this.continueCloseAfterChest(), this.chestCard.shift())) {
                 return;
             }
         } else if (this.randomPackChest.length > 0) {
-            if (!this.noChest && CardChestOpenWindow.tryShow()) {
+            if (!this.noChest && CardChestOpenWindow.tryShow(() => this.continueCloseAfterChest())) {
                 this.randomPackChest = [];
                 return;
             }
         }
-
-        this.closeAnim();
+        this.continueCloseAfterChest();
 
         /*if (this.oldCoin != null && GameMainWindow.instance) {
             GameMainWindow.instance.playAddCoinAnim()
@@ -345,5 +359,59 @@ export default class LevelUpGetRewardWindow extends UIWindow {
             })
             slot.showSpinAddNumAnim(Game.SUser.Ap() - this.oldAp)
         }*/
+    }
+
+    private continueCloseAfterChest() {
+        if (this._closingLevelRewardFlow) return;
+        this._closingLevelRewardFlow = true;
+        this.createMergeRewardFlyPlan((plan: any) => {
+            this.closeAnim(() => this.playMergeRewardFlyPlan(plan, () => this.finishLevelRewardFlow()));
+        });
+    }
+
+    private createMergeRewardFlyPlan(done: (plan: any) => void) {
+        const rewards = (LevelUpDisplayLock.GetRewards() || []).map((reward: any) => Game.Content.FromContent(reward))
+            .filter((reward: any) => reward && (reward.Type() === Game.Content.Types.MergeIcon || reward.Type() === Game.Content.Types.NewGiftPack));
+        const from = this.item?.parent?.children.find(child => child.active && child !== this.item) || this.node;
+        const target = GameMainWindow.instance?.node?.getChildByPath?.('town/merge');
+        if (!rewards.length || !from || !target) return done(null);
+        const plan: any = { from: from.worldPosition.clone(), to: target.worldPosition.clone(), entries: [] };
+        let index = 0;
+        const next = () => {
+            if (index >= rewards.length) return done(plan);
+            const reward = rewards[index++];
+            const holder = new Node('level_reward_fly_icon');
+            const sprite = holder.addComponent(Sprite);
+            let finished = false;
+            const finish = () => {
+                if (finished) return;
+                finished = true;
+                if (sprite.spriteFrame) plan.entries.push({ spriteFrame: sprite.spriteFrame, count: Math.max(1, Math.min(8, Math.ceil(reward.Count?.() || reward.count || 1))) });
+                holder.destroy();
+                next();
+            };
+            reward.Icon(sprite, finish);
+            if (sprite.spriteFrame) finish();
+        };
+        next();
+    }
+
+    private playMergeRewardFlyPlan(plan: any, done: () => void) {
+        const player = GameMainWindow.instance?.coinFlyToTargetAnim;
+        if (!plan?.entries?.length || !player?.PlayCollectAnim) return done();
+        let index = 0;
+        const next = () => {
+            if (index >= plan.entries.length) return done();
+            const entry = plan.entries[index++];
+            player.PlayCollectAnim(entry.spriteFrame, plan.from, plan.to, entry.count, next);
+        };
+        next();
+    }
+
+    private finishLevelRewardFlow() {
+        if (this._levelRewardFlowFinished) return;
+        this._levelRewardFlowFinished = true;
+        LevelUpDisplayLock.Release();
+        this.showParams?.rewardDoneCallback?.();
     }
 }

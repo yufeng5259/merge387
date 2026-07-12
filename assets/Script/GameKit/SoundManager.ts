@@ -29,6 +29,7 @@ SoundManager.SoundPaths = {
     GeneratorBoardFull: "audio/youjian/SfxColdingClick",
     OrderNew: "audio/dingdan/sfxOrderCompleteNew",
     OrderComplete: "audio/dingdan/sfxOrderComplete",
+    BpCoinFly: "audio/dingdan/SfxBpCoinFly",
     CollectCoins: "audio/dingdan/SfxMergeCollectCoins",
     CollectDiamond: "audio/dingdan/SfxMergeCollectDiamond",
     CollectExperience: "audio/dingdan/SfxMergeCollectExperience",
@@ -420,6 +421,10 @@ SoundManager.playOrderCompleteSound = function() {
     SoundManager.playSoundByPath(SoundManager.SoundPaths.OrderComplete, false, SoundManager.SoundExts.WAV);
 };
 
+SoundManager.playBpCoinFlySound = function() {
+    SoundManager.playSoundByPath(SoundManager.SoundPaths.BpCoinFly, false, SoundManager.SoundExts.WAV);
+};
+
 SoundManager.playRewardCollectSoundByContentType = function(contentType) {
     if (typeof Game === "undefined" || !Game.Content || !Game.Content.Types) return;
     if (contentType === Game.Content.Types.Coin || contentType === Game.Content.Types.ShopCoin) {
@@ -656,6 +661,7 @@ SoundManager.loadSoundByPath = function(soundPath) {
 };
 
 SoundManager.preloadSound = function() {
+    SoundManager.loadSoundByPath(SoundManager.SoundPaths.BpCoinFly);
     SoundManager.loadSoundByPath(SoundManager.SoundPaths.RestaurantLevelUp);
     SoundManager.loadSoundByPath(SoundManager.SoundPaths.NewAreaUnlock);
     SoundManager.loadSoundByPath(SoundManager.SoundPaths.GhostReward);

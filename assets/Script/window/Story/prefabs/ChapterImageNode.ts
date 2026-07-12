@@ -61,7 +61,6 @@ export class ChapterImageNode extends Component {
         if (!data) {
             return;
         }
-        console.log('绔犺妭', data.ChapterName());
         this.ChapterNameLbl.string = data.ChapterName() || 'error' + data.Id();
 
         const chapterImage = data.ChapterImage ? data.ChapterImage() : '';
@@ -110,6 +109,7 @@ export class ChapterImageNode extends Component {
         if (sameBody) {
             Tween.stopAllByTarget(targetNode);
             targetNode.setPosition(isLeft ? this.leftTargetPosX : this.rightTargetPosX, targetNode.position.y, targetNode.position.z);
+            this.updateRoleDirection(targetNode, isLeft);
             return;
         }
 
@@ -136,7 +136,7 @@ export class ChapterImageNode extends Component {
         if (resName.indexOf('/') >= 0) {
             return 'res/' + resName;
         }
-        return 'res/Town/avatar/' + resName;
+        return 'res/Town/body/' + resName;
     }
 
     public showRoleSprite(targetNode: Node, spriteFrame: SpriteFrame, isLeft: boolean, noMove: boolean) {
@@ -148,6 +148,7 @@ export class ChapterImageNode extends Component {
         const roleNode = this.getRoleSpriteNode(targetNode);
         this.clearGeneratedRoleChildren(targetNode, roleNode);
         roleNode.active = true;
+        this.updateRoleDirection(targetNode, isLeft);
         if (roleNode !== targetNode) {
             roleNode.setPosition(0, 0, roleNode.position.z);
         }
@@ -161,6 +162,13 @@ export class ChapterImageNode extends Component {
         tween(targetNode)
             .to(0.25, { position: new Vec3(targetX, targetNode.position.y, targetNode.position.z) }, { easing: easing.backOut })
             .start();
+    }
+
+    public updateRoleDirection(targetNode: Node, isLeft: boolean) {
+        const roleNode = this.getRoleSpriteNode(targetNode);
+        if (roleNode) {
+            roleNode.setScale(isLeft ? 1 : -1, roleNode.scale.y, roleNode.scale.z);
+        }
     }
 
     public hasRoleSprite(targetNode: Node) {

@@ -672,7 +672,7 @@ export default class LoginWindow extends UIWindow {
                     if (playVideo) {
                         this.OpenTutorialWindow()
                     } else {
-                        this.OpenMainMenuWindow()
+                        this.GoGame()
                     }
                 })
             }
@@ -689,15 +689,19 @@ export default class LoginWindow extends UIWindow {
             }
         })
     }
+    GoGame() {
+        UIRoot.instance.openWindow("GameMainWindow", {
+            showCallback: function () {
+                GamePlay.instance.EnterGame()
+                AppKit.LogEventWrap.logEvent("LoadDetail", { phase: "enterMainWindow" })
+            }
+        })
+    }
     OpenMainMenuWindow() {
         this.setProgress(0.95)
-        
-        
-        UIRoot.instance.openWindow("GameMainWindow", {showCallback: function() {
-
-            GamePlay.instance.EnterGame()
-            AppKit.LogEventWrap.logEvent("LoadDetail", {phase:"enterMainWindow"})
-        }})
+        this.TryPlayOpeningVideoBeforeEnter((playVideo) => {
+            if (!playVideo) this.GoGame()
+        })
     }
     RecordGame() {
         if (G.GameConfig.closeRecordGame) return

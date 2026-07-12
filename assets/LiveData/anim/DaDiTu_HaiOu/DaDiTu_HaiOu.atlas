@@ -1,0 +1,48 @@
+
+DaDiTu_HaiOu.png
+size: 268,71
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+gezi2_cb1
+  rotate: true
+  xy: 54, 4
+  size: 65, 48
+  orig: 65, 49
+  offset: 0, 1
+  index: -1
+gezi2_cb2
+  rotate: false
+  xy: 196, 35
+  size: 70, 34
+  orig: 71, 34
+  offset: 1, 0
+  index: -1
+gezi2_st
+  rotate: true
+  xy: 154, 9
+  size: 60, 40
+  orig: 100, 48
+  offset: 40, 8
+  index: -1
+niao1_cb1
+  rotate: false
+  xy: 196, 6
+  size: 67, 27
+  orig: 68, 27
+  offset: 0, 0
+  index: -1
+niao1_cb2
+  rotate: false
+  xy: 104, 4
+  size: 48, 65
+  orig: 50, 66
+  offset: 1, 1
+  index: -1
+niao1_st
+  rotate: true
+  xy: 2, 2
+  size: 67, 50
+  orig: 67, 50
+  offset: 0, 0
+  index: -1

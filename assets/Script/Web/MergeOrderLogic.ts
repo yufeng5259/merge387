@@ -257,6 +257,28 @@ MergeOrderLogic._getAllNewbieOrderMetas = function (configProvider) {
     return list;
 };
 
+MergeOrderLogic._getNewbieMetaLevel = function (meta) {
+    var level = MergeOrderLogic._toInt(meta && meta.level, 0);
+    return level > 0 ? level : 0;
+};
+
+MergeOrderLogic._filterNewbieMetasForPlayerLevel = function (metas, playerLevel) {
+    var level = MergeOrderLogic._toInt(playerLevel, 1);
+    return metas.filter(function (meta) {
+        var metaLevel = MergeOrderLogic._getNewbieMetaLevel(meta);
+        return metaLevel > 0 && metaLevel <= level;
+    });
+};
+
+MergeOrderLogic._hasLockedNewbieMetas = function (configProvider, playerLevel) {
+    var level = MergeOrderLogic._toInt(playerLevel, 1);
+    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    for (var i = 0; i < metas.length; i++) {
+        if (MergeOrderLogic._getNewbieMetaLevel(metas[i]) > level) return true;
+    }
+    return false;
+};
+
 MergeOrderLogic._getActiveNewbieIds = function (orderState) {
     var ids = [];
     for (var i = 0; i < orderState.orders.length; i++) {
@@ -269,8 +291,9 @@ MergeOrderLogic._getActiveNewbieIds = function (orderState) {
     return ids;
 };
 
-MergeOrderLogic._normalizeNewbieNextOrderId = function (orderState, configProvider) {
-    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+MergeOrderLogic._normalizeNewbieNextOrderId = function (orderState, configProvider, playerLevel) {
+    var allMetas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    var metas = playerLevel == null ? allMetas : MergeOrderLogic._filterNewbieMetasForPlayerLevel(allMetas, playerLevel);
     if (metas.length <= 0) return 0;
     var current = parseInt(orderState.newbieNextOrderId) || 0;
     if (current > 0) return current;
@@ -296,11 +319,12 @@ MergeOrderLogic._normalizeNewbieNextOrderId = function (orderState, configProvid
     return orderState.newbieNextOrderId;
 };
 
-MergeOrderLogic._findNextNewbieMeta = function (orderState, configProvider) {
-    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+MergeOrderLogic._findNextNewbieMeta = function (orderState, configProvider, playerLevel) {
+    var allMetas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    var metas = playerLevel == null ? allMetas : MergeOrderLogic._filterNewbieMetasForPlayerLevel(allMetas, playerLevel);
     if (metas.length <= 0) return null;
     var activeIds = MergeOrderLogic._getActiveNewbieIds(orderState);
-    var nextId = MergeOrderLogic._normalizeNewbieNextOrderId(orderState, configProvider);
+    var nextId = MergeOrderLogic._normalizeNewbieNextOrderId(orderState, configProvider, playerLevel);
     for (var i = 0; i < metas.length; i++) {
         var meta = metas[i];
         if (Number(meta.id) < Number(nextId)) continue;
@@ -309,6 +333,45 @@ MergeOrderLogic._findNextNewbieMeta = function (orderState, configProvider) {
         return meta;
     }
     return null;
+};
+
+MergeOrderLogic._getLevelNewbieMetas = function (configProvider, playerLevel) {
+    var level = MergeOrderLogic._toInt(playerLevel, 1);
+    return MergeOrderLogic._getAllNewbieOrderMetas(configProvider).filter(function (meta) {
+        return MergeOrderLogic._getNewbieMetaLevel(meta) === level;
+    });
+};
+
+MergeOrderLogic._hasActiveNewbieOrderForLevel = function (orderState, playerLevel, configProvider) {
+    var level = MergeOrderLogic._toInt(playerLevel, 1);
+    for (var i = 0; i < orderState.orders.length; i++) {
+        var order = orderState.orders[i];
+        if (!order || order.claimed) continue;
+        if (order.orderType !== MergeOrderLogic.ORDER_TYPE_NEWBIE && order.mode !== MergeOrderLogic.ORDER_MODE_NEWBIE) continue;
+        var orderLevel = MergeOrderLogic._toInt(order.level, 0);
+        if (!orderLevel && configProvider && typeof configProvider.getOrderMeta === 'function') {
+            orderLevel = MergeOrderLogic._getNewbieMetaLevel(configProvider.getOrderMeta(order.orderId));
+        }
+        if (orderLevel === level) return true;
+    }
+    return false;
+};
+
+MergeOrderLogic._isPlayerLevelNewbieComplete = function (orderState, playerLevel, configProvider) {
+    var metas = MergeOrderLogic._getLevelNewbieMetas(configProvider, playerLevel);
+    if (metas.length <= 0) return false;
+    for (var i = 0; i < metas.length; i++) {
+        if (!MergeOrderLogic._hasId(orderState.completedOrderIds, metas[i].id)) return false;
+    }
+    return !MergeOrderLogic._hasActiveNewbieOrderForLevel(orderState, playerLevel, configProvider);
+};
+
+MergeOrderLogic._markLevelOrderAllComplete = function (orderState, playerLevel) {
+    var level = MergeOrderLogic._toInt(playerLevel, 1);
+    if (!orderState.levelOrderAllCompleteNotified) orderState.levelOrderAllCompleteNotified = {};
+    if (orderState.levelOrderAllCompleteNotified[String(level)]) return false;
+    orderState.levelOrderAllCompleteNotified[String(level)] = true;
+    return true;
 };
 
 MergeOrderLogic._advanceNewbiePointer = function (orderState, meta, configProvider) {
@@ -989,6 +1052,7 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
     var levelConfig = MergeOrderLogic._getOrderLevelConfig(level, configProvider);
     var orderMax = MergeOrderLogic._getOrderMax(levelConfig, slots);
     var addedOrders = [];
+    var levelOrderAllComplete = false;
 
     orderState.playerLevel = level;
     MergeOrderLogic._cleanOrders(orderState);
@@ -1004,15 +1068,19 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
         var slot = activeSlots[slotIndex];
         if (MergeOrderLogic._findOrderBySlotId(orderState, slot.id)) continue;
         if (!MergeOrderLogic._isSlotReady(orderState, slot, now)) continue;
-        var meta = MergeOrderLogic._findNextNewbieMeta(orderState, configProvider);
+        var meta = MergeOrderLogic._findNextNewbieMeta(orderState, configProvider, level);
         if (!meta) break;
         var newbieOrder = MergeOrderLogic._createNewbieOrderFromMeta(meta, slot, slotIndex, orderState, configProvider);
         orderState.orders.push(newbieOrder);
         addedOrders.push(newbieOrder);
     }
 
-    var hasNextNewbie = !!MergeOrderLogic._findNextNewbieMeta(orderState, configProvider);
-    if (!hasNextNewbie) {
+    var hasNextNewbie = !!MergeOrderLogic._findNextNewbieMeta(orderState, configProvider, level);
+    var hasLockedNewbie = MergeOrderLogic._hasLockedNewbieMetas(configProvider, level);
+    if (!hasNextNewbie && MergeOrderLogic._isPlayerLevelNewbieComplete(orderState, level, configProvider)) {
+        levelOrderAllComplete = MergeOrderLogic._markLevelOrderAllComplete(orderState, level);
+    }
+    if (!hasNextNewbie && !hasLockedNewbie) {
         orderState.mode = MergeOrderLogic.ORDER_MODE_NORMAL;
         for (slotIndex = 0; slotIndex < activeSlots.length && MergeOrderLogic._getActiveOrderCount(orderState) < orderMax; slotIndex++) {
             var recycleSlot = activeSlots[slotIndex];
@@ -1044,7 +1112,13 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
     } else {
         MergeOrderLogic.sortOrdersForDisplay(orderState);
     }
-    return { orderState: orderState, addedOrders: addedOrders, mode: orderState.mode };
+    return {
+        orderState: orderState,
+        addedOrders: addedOrders,
+        mode: orderState.mode,
+        levelOrderAllComplete: levelOrderAllComplete,
+        levelOrderAllCompleteLevel: level
+    };
 };
 
 MergeOrderLogic.generateSingleOrder = function (orderState, slotIndex, configProvider) {

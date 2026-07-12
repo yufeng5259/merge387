@@ -2,7 +2,7 @@
   "ver": "1.0.27",
   "importer": "image",
   "imported": true,
-  "uuid": "2c71b37c-2d50-4069-9858-7ab4bee29746",
+  "uuid": "00210f55-3780-4f01-aa33-2cd8bfe709d4",
   "files": [
     ".json",
     ".png"
@@ -10,7 +10,7 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "2c71b37c-2d50-4069-9858-7ab4bee29746@6c48a",
+      "uuid": "00210f55-3780-4f01-aa33-2cd8bfe709d4@6c48a",
       "displayName": "Nora4",
       "id": "6c48a",
       "name": "texture",
@@ -20,7 +20,7 @@
         "wrapModeT": "clamp-to-edge",
         "wrapModeS": "clamp-to-edge",
         "mipfilter": "none",
-        "imageUuidOrDatabaseUri": "2c71b37c-2d50-4069-9858-7ab4bee29746",
+        "imageUuidOrDatabaseUri": "00210f55-3780-4f01-aa33-2cd8bfe709d4",
         "isUuid": true,
         "visible": false,
         "anisotropy": 0
@@ -34,28 +34,28 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "2c71b37c-2d50-4069-9858-7ab4bee29746@f9941",
+      "uuid": "00210f55-3780-4f01-aa33-2cd8bfe709d4@f9941",
       "displayName": "Nora4",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
         "importer": "sprite-frame",
-        "trimType": "auto",
+        "trimType": "none",
         "trimThreshold": 1,
         "rotated": false,
         "offsetX": 0,
         "offsetY": 0,
         "trimX": 0,
         "trimY": 0,
-        "width": 66,
-        "height": 186,
-        "rawWidth": 66,
-        "rawHeight": 186,
+        "width": 200,
+        "height": 228,
+        "rawWidth": 200,
+        "rawHeight": 228,
         "borderTop": 0,
         "borderBottom": 0,
         "borderLeft": 0,
         "borderRight": 0,
-        "imageUuidOrDatabaseUri": "2c71b37c-2d50-4069-9858-7ab4bee29746@6c48a",
+        "imageUuidOrDatabaseUri": "00210f55-3780-4f01-aa33-2cd8bfe709d4@6c48a",
         "packable": true,
         "pixelsToUnit": 100,
         "pivotX": 0.5,
@@ -63,17 +63,17 @@
         "meshType": 0,
         "vertices": {
           "rawPosition": [
-            -33,
-            -93,
+            -100,
+            -114,
             0,
-            33,
-            -93,
+            100,
+            -114,
             0,
-            -33,
-            93,
+            -100,
+            114,
             0,
-            33,
-            93,
+            100,
+            114,
             0
           ],
           "indexes": [
@@ -86,12 +86,12 @@
           ],
           "uv": [
             0,
-            186,
-            66,
-            186,
+            228,
+            200,
+            228,
             0,
             0,
-            66,
+            200,
             0
           ],
           "nuv": [
@@ -105,13 +105,13 @@
             1
           ],
           "minPos": [
-            -33,
-            -93,
+            -100,
+            -114,
             0
           ],
           "maxPos": [
-            33,
-            93,
+            100,
+            114,
             0
           ]
         },
@@ -129,7 +129,7 @@
   "userData": {
     "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "2c71b37c-2d50-4069-9858-7ab4bee29746@6c48a",
+    "redirect": "00210f55-3780-4f01-aa33-2cd8bfe709d4@6c48a",
     "hasAlpha": true
   }
 }

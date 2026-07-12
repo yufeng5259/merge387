@@ -195,7 +195,7 @@ export default class StoryWindow extends UIWindow {
         let cNode = instantiate(prefab);
         cNode.parent = this.talkScr.content;
         let sMsg: any = cNode.getComponent('ChapterTalkNode');
-        if (sMsg) sMsg.showInfo(element);
+        if (sMsg) sMsg.showInfo(element, this.preLeft);
         if (this.chapterImageNode && this.chapterImageNode.showTalkRole) {
             this.chapterImageNode.showTalkRole(element, this.preLeft);
         }

@@ -328,6 +328,7 @@ class MergeTypeWindow extends UIWindow {
     }
 
     updateBaseScrollViewHeight(baseContent) {
+        if (!baseContent) this.updateAllMergeTypeLayouts();
         if(baseContent){
             let innerLayout = baseContent.getComponent(Layout);
             if(innerLayout){
@@ -370,6 +371,21 @@ class MergeTypeWindow extends UIWindow {
             let bgTransform = bgNode.getComponent(UITransform)
             bgTransform.height = scrollHeight;
             bgNode.setPosition(bgNode.position.x, (bgTransform.anchorY - scrollTransform.anchorY) * scrollHeight, bgNode.position.z);
+        }
+    }
+
+    updateAllMergeTypeLayouts() {
+        const layoutNodes = [this.layoutbase, this.layoutfrom, this.layoutcangenerate, this.layoutcanbuild, this.layoutadditional];
+        for (const layoutNode of layoutNodes) {
+            if (!layoutNode || !layoutNode.active) continue;
+            const content = GameKit.ControllerTable.GetNode(layoutNode, 'content');
+            if (!content) continue;
+            const innerLayout = content.getComponent(Layout);
+            if (innerLayout) {
+                this.updateSingleRowBaseContentPadding(content, innerLayout);
+                innerLayout.updateLayout();
+            }
+            layoutNode.getComponent(Layout)?.updateLayout();
         }
     }
 

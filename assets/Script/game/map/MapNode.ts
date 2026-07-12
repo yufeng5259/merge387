@@ -14,6 +14,8 @@ import {
     view,
 } from 'cc';
 const { ccclass, property } = _decorator;
+const BUILD_RENDER_ORDER_Y_SCALE = 1;
+const BUILD_PREFAB_POSITION_OVERRIDE_MAX_ID = 21;
 
 const BUILD_LAYOUT: Record<number, { x: number; y: number; index: number }> = {
     1: { x: 267.845, y: -1436.43, index: 1 },
@@ -88,11 +90,14 @@ export class MapNode extends Component {
     public buildObj: Record<string, any> = {};
     public dynamicBuilds: Record<number, Node> = {};
     public loadingBuildPromises: Record<number, Promise<Node | null>> = {};
+    public loadingBuildPrefabPromises: Record<number, Promise<Prefab | null>> = {};
     public loadedBuildPrefabs: Record<number, Prefab> = {};
     public visibleCheckHalfSize = 150;
     public visibleCheckInterval = 0.2;
     public visibleFadeDuration = 0.4;
     public progressiveLoadInterval = 0.05;
+    public initialBuildLoadInterval = 0;
+    public buildPrefabPreloadConcurrency = 2;
     public pendingBuildIds: number[] = [];
     public buildLayout: Record<number, BuildLayoutItem> | null = null;
 
@@ -107,6 +112,10 @@ export class MapNode extends Component {
     private _loadBuildQueueCallback: (() => void) | null = null;
     private _refreshBuildElementCallback: (() => void) | null = null;
     private _openBuildActionToken = 0;
+    private _buildLoadTimer: ReturnType<typeof setTimeout> | null = null;
+    private _buildPrefabPreloadQueue: number[] = [];
+    private _buildPrefabPreloadActiveCount = 0;
+    private _shadowRoot: Node | null = null;
 
     onLoad() {
         this.buildCount = this.buildNode ? this.buildNode.children.length : 0;
@@ -115,10 +124,13 @@ export class MapNode extends Component {
         this.dynamicBuilds = {};
         this.loadingBuildPromises = {};
         this.loadedBuildPrefabs = {};
+        this.loadingBuildPrefabPromises = {};
         this.visibleCheckHalfSize = 150;
         this.visibleCheckInterval = 0.2;
         this.visibleFadeDuration = 0.4;
         this.progressiveLoadInterval = 0.05;
+        this.initialBuildLoadInterval = this.isNativeRuntime() ? 0.02 : 0;
+        this.buildPrefabPreloadConcurrency = this.isNativeRuntime() ? 1 : 2;
         this._buildLoadVersion = 0;
         this._buildQueueLoading = false;
         this._buildLoadingComplete = false;
@@ -150,6 +162,18 @@ export class MapNode extends Component {
             this._loadBuildQueueCallback = null;
         }
         this._buildQueueLoading = false;
+        this.clearBuildLoadTimer();
+        this._buildPrefabPreloadQueue = [];
+        this._buildPrefabPreloadActiveCount = 0;
+    }
+
+    isNativeRuntime() {
+        return typeof AppKit !== 'undefined' && AppKit.SdkManager && AppKit.SdkManager.IsNative && AppKit.SdkManager.IsNative();
+    }
+
+    clearBuildLoadTimer() {
+        if (this._buildLoadTimer) clearTimeout(this._buildLoadTimer);
+        this._buildLoadTimer = null;
     }
 
     cancelBuildElementRefresh() {
@@ -202,6 +226,7 @@ export class MapNode extends Component {
         this.mapControlle = this.node.getComponent('MapControlle');
         GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.MapElementLevelUp, 'MapNode', () => {
             this.onCanLevelUpEffect();
+            this.updateBuildShadows();
             if (Game.MergeTutorialManager && Game.MergeTutorialManager.RefreshCurrentWindow) {
                 Game.MergeTutorialManager.RefreshCurrentWindow();
             }
@@ -223,6 +248,7 @@ export class MapNode extends Component {
             req.SetCallBack(() => {
                 Game.SUserMap.initMapData();
                 this.onCanLevelUpEffect();
+                this.updateBuildShadows();
                 if (delayLookBuild) return;
                 this.scheduleOnce(() => {
                     if (Object.keys(data.housesUnderUpgrade).length > 0) {
@@ -235,10 +261,12 @@ export class MapNode extends Component {
             req.Send();
         });
         Game.SUserMap.initMapData();
+        this.updateBuildShadows();
     }
 
     initMapElements() {
         this.prepareDefaultUnlockedBuild();
+        this.updateBuildShadows();
         GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.CoinEvent, Game.SUser.Coin());
         this.lookBuild(Game.SUserVillage.GetFirstBuildID());
     }
@@ -266,14 +294,18 @@ export class MapNode extends Component {
         const loadVersion = this._buildLoadVersion;
         this.dynamicBuilds = {};
         this.loadingBuildPromises = {};
+        this.loadingBuildPrefabPromises = {};
+        this.loadedBuildPrefabs = {};
+        const positionOverrides = this.getPrefabBuildPositionOverrides();
         if (this.buildNode) {
             this.buildNode.removeAllChildren();
         }
-        this.buildLayout = this.getBuildLayout();
-        this.pendingBuildIds = this.getBuildIds().filter((buildID) => buildID > 5);
-        const firstBuildIds = this.getBuildIds().filter((buildID) => buildID <= 5);
-        const tasks = firstBuildIds.map((buildID) => this.createBuildNode(buildID, loadVersion));
-        Promise.all(tasks)
+        this.buildLayout = this.getBuildLayout(positionOverrides);
+        const buildIds = this.getBuildIds();
+        if (!this.useCommonBuildPrefab()) this.preloadBuildPrefabs(buildIds, loadVersion);
+        this.pendingBuildIds = buildIds.filter((buildID) => buildID > 5);
+        const firstBuildIds = buildIds.filter((buildID) => buildID <= 5);
+        this.loadInitialBuilds(firstBuildIds, loadVersion)
             .then(() => {
                 if (!this.isBuildLoadVersionActive(loadVersion)) return;
                 this.buildCount = this.buildNode ? this.buildNode.children.length : 0;
@@ -291,7 +323,30 @@ export class MapNode extends Component {
             });
     }
 
-    getBuildLayout() {
+    loadInitialBuilds(buildIds: number[], loadVersion: number) {
+        return new Promise<void>((resolve) => {
+            let index = 0;
+            const loadNext = () => {
+                if (!this.isBuildLoadVersionActive(loadVersion) || index >= buildIds.length) return resolve();
+                this.createBuildNode(buildIds[index++], loadVersion).then(() => {
+                    if (!this.isBuildLoadVersionActive(loadVersion) || index >= buildIds.length) return resolve();
+                    this.scheduleBuildLoadTimer(loadNext, this.initialBuildLoadInterval);
+                });
+            };
+            loadNext();
+        });
+    }
+
+    getPrefabBuildPositionOverrides() {
+        const overrides: Record<number, { x: number; y: number }> = {};
+        for (const child of this.buildNode?.children || []) {
+            const buildID = Number(child.name);
+            if (buildID > 0 && buildID <= BUILD_PREFAB_POSITION_OVERRIDE_MAX_ID) overrides[buildID] = { x: child.position.x, y: child.position.y };
+        }
+        return overrides;
+    }
+
+    getBuildLayout(positionOverrides?: Record<number, { x: number; y: number }>) {
         const json = this.mapData && this.mapData.json;
         const source = (json && typeof json === 'object' && Object.keys(json).length > 0 ? json : BUILD_LAYOUT) as Record<string, BuildLayoutSourceItem>;
         const layout: Record<number, BuildLayoutItem> = {};
@@ -305,6 +360,10 @@ export class MapNode extends Component {
                 y: Number(item.y) || 0,
                 index: Number(item.index || buildID),
             };
+        }
+        for (const key in positionOverrides || {}) {
+            const buildID = Number(key);
+            if (layout[buildID]) Object.assign(layout[buildID], positionOverrides![buildID]);
         }
         return layout;
     }
@@ -331,42 +390,33 @@ export class MapNode extends Component {
         if (!item) {
             return Promise.resolve(null);
         }
-        const resName = 'res/village/buildPrefabs/' + buildID + '/' + buildID;
-        const loadPromise = new Promise<Node | null>((resolve) => {
-            cce.loadRes(resName, Prefab, (err: any, prefab: Prefab) => {
+        const resName = this.getBuildPrefabResName(buildID);
+        const loadPromise = this.requestBuildPrefab(buildID, loadVersion).then((prefab) => {
                 if (!this.isBuildLoadVersionActive(loadVersion)) {
-                    resolve(null);
-                    return;
+                    return null;
                 }
-                if (err || !prefab) {
-                    error('MapNode load build prefab failed', resName, err);
-                    resolve(null);
-                    return;
-                }
+                if (!prefab) return null;
                 if (this.dynamicBuilds[buildID]) {
-                    resolve(this.dynamicBuilds[buildID]);
-                    return;
+                    return this.dynamicBuilds[buildID];
                 }
                 const node = instantiate(prefab);
                 if (!this.isBuildLoadVersionActive(loadVersion)) {
                     node.destroy();
-                    resolve(null);
-                    return;
+                    return null;
                 }
                 node.parent = this.buildNode;
                 node.name = String(buildID);
                 node.setPosition(item.x, item.y);
-                node.setSiblingIndex(Math.max(0, item.index - 1));
                 this.dynamicBuilds[buildID] = node;
                 const mapElementNode = this.getMapElementNode(node);
                 if (mapElementNode) {
-                    mapElementNode.initData(buildID);
+                    mapElementNode.initData(buildID, undefined, { waitForSprite: !this.useCommonBuildPrefab() });
                 } else {
                     error('MapNode missing MapElementNode', buildID, resName);
                 }
+                this.refreshBuildRenderOrder();
                 this.updateOneBuildVisibility(node);
-                resolve(node);
-            });
+                return node;
         });
         this.loadingBuildPromises[buildID] = loadPromise;
         return loadPromise.then((node) => {
@@ -375,6 +425,60 @@ export class MapNode extends Component {
             }
             return node;
         });
+    }
+
+    getBuildPrefabResName(buildID: number) { return `res/village/buildPrefabs/${buildID}/${buildID}`; }
+    useCommonBuildPrefab() { return !!this.buildPrefab; }
+
+    requestBuildPrefab(buildID: number, loadVersion: number): Promise<Prefab | null> {
+        if (this.buildPrefab) return Promise.resolve(this.buildPrefab);
+        if (this.loadedBuildPrefabs[buildID]) return Promise.resolve(this.loadedBuildPrefabs[buildID]);
+        if (this.loadingBuildPrefabPromises[buildID]) return this.loadingBuildPrefabPromises[buildID];
+        this.removeBuildIdFromPreloadQueue(buildID);
+        const resName = this.getBuildPrefabResName(buildID);
+        const promise = new Promise<Prefab | null>((resolve) => cce.loadRes(resName, Prefab, (err: any, prefab: Prefab | null) => {
+            if (!this.isBuildLoadVersionActive(loadVersion) || err || !prefab) {
+                if (err) error('MapNode load build prefab failed', resName, err);
+                resolve(null);
+                return;
+            }
+            this.loadedBuildPrefabs[buildID] = prefab;
+            resolve(prefab);
+        }));
+        this.loadingBuildPrefabPromises[buildID] = promise;
+        return promise.then((prefab) => {
+            delete this.loadingBuildPrefabPromises[buildID];
+            return prefab;
+        }, (err) => {
+            delete this.loadingBuildPrefabPromises[buildID];
+            throw err;
+        });
+    }
+
+    preloadBuildPrefabs(buildIds: number[], loadVersion: number) {
+        this._buildPrefabPreloadQueue = this.useCommonBuildPrefab() ? [] : buildIds.slice();
+        this._buildPrefabPreloadActiveCount = 0;
+        this.loadNextBuildPrefabInBackground(loadVersion);
+    }
+
+    removeBuildIdFromPreloadQueue(buildID: number) {
+        this._buildPrefabPreloadQueue = this._buildPrefabPreloadQueue.filter((id) => id !== buildID);
+    }
+
+    loadNextBuildPrefabInBackground(loadVersion: number) {
+        if (!this.isBuildLoadVersionActive(loadVersion)) return;
+        while (this._buildPrefabPreloadActiveCount < this.buildPrefabPreloadConcurrency && this._buildPrefabPreloadQueue.length) {
+            const buildID = this._buildPrefabPreloadQueue.shift()!;
+            if (this.loadedBuildPrefabs[buildID]) continue;
+            this._buildPrefabPreloadActiveCount++;
+            this.requestBuildPrefab(buildID, loadVersion).then(() => {
+                this._buildPrefabPreloadActiveCount = Math.max(0, this._buildPrefabPreloadActiveCount - 1);
+                this.loadNextBuildPrefabInBackground(loadVersion);
+            }, () => {
+                this._buildPrefabPreloadActiveCount = Math.max(0, this._buildPrefabPreloadActiveCount - 1);
+                this.loadNextBuildPrefabInBackground(loadVersion);
+            });
+        }
     }
 
     startProgressiveBuildLoading(loadVersion: any) {
@@ -411,10 +515,70 @@ export class MapNode extends Component {
                 this.finishProgressiveBuildLoading(loadVersion);
                 return;
             }
-            if (this._loadBuildQueueCallback) {
-                this.scheduleOnce(this._loadBuildQueueCallback, this.progressiveLoadInterval);
-            }
+            this.scheduleNextBuildLoad(loadVersion, this.progressiveLoadInterval);
         });
+    }
+
+    scheduleNextBuildLoad(loadVersion: number, delay: number) {
+        if (!this.isBuildLoadVersionActive(loadVersion)) return;
+        if (!this._loadBuildQueueCallback) this._loadBuildQueueCallback = () => this.loadNextBuildFromQueue(loadVersion);
+        this.scheduleBuildLoadTimer(this._loadBuildQueueCallback, delay);
+    }
+
+    scheduleBuildLoadTimer(callback: () => void, delay: number) {
+        this.clearBuildLoadTimer();
+        let timeout = Math.max(0, Number(delay) || 0) * 1000;
+        if (timeout <= 0 && this.useCommonBuildPrefab() && this.isNativeRuntime()) timeout = 16;
+        this._buildLoadTimer = setTimeout(() => {
+            this._buildLoadTimer = null;
+            if (!this._destroyed) callback();
+        }, timeout);
+    }
+
+    getBuildRenderOrder(node: Node, layoutItem?: BuildLayoutItem | null) {
+        const y = Number(layoutItem?.y ?? node.position.y) || 0;
+        const tieIndex = Number(layoutItem?.index ?? node.name) || 0;
+        return Math.round(-y * BUILD_RENDER_ORDER_Y_SCALE) + tieIndex;
+    }
+
+    refreshBuildRenderOrder() {
+        if (!this.buildNode) return;
+        const children = this.buildNode.children.slice().sort((a, b) => {
+            const aItem = this.buildLayout?.[Number(a.name)];
+            const bItem = this.buildLayout?.[Number(b.name)];
+            const delta = this.getBuildRenderOrder(a, aItem) - this.getBuildRenderOrder(b, bItem);
+            return delta || Number(a.name) - Number(b.name);
+        });
+        children.forEach((child, index) => child.setSiblingIndex(index));
+    }
+
+    getCurrentMapID() {
+        if (Game.SUserVillage?.MergeMapId) return Game.SUserVillage.MergeMapId();
+        if (Game.SUserVillage?.MapId) return Game.SUserVillage.MapId();
+        return 1;
+    }
+
+    getBuildShadowRoot() {
+        if (this._shadowRoot?.isValid) return this._shadowRoot;
+        const parent = this.buildNode?.parent || this.node;
+        this._shadowRoot = parent.getChildByName('yinying');
+        return this._shadowRoot;
+    }
+
+    isBuildShadowUnlocked(buildID: number) {
+        return !!(Game.SUserMap?.IsLevelUnlocked && Game.SUserMap.IsLevelUnlocked(`${this.getCurrentMapID()}_${buildID}`));
+    }
+
+    updateBuildShadows() {
+        for (const shadowNode of this.getBuildShadowRoot()?.children || []) {
+            const buildID = Number(shadowNode.name);
+            if (buildID) shadowNode.active = this.isBuildShadowUnlocked(buildID);
+        }
+    }
+
+    getWorldToScreenPoint(camera: any, worldPos: Vec3) {
+        const output = new Vec3();
+        return camera?.worldToScreen ? camera.worldToScreen(worldPos, output) : worldPos.clone();
     }
 
     shouldContinueBuildLoading() {

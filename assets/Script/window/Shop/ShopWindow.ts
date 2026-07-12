@@ -118,6 +118,12 @@ export default class ShopWindow extends UIWindow {
     @property(Node)
     testActivityPageNode: Node | null = null;
 
+    @property(Node)
+    shopMainNode: Node | null = null;
+
+    @property(Node)
+    shopLoadingNode: Node | null = null;
+
     showCash = false;
     hotServerMeta: any[] = [];
     saleServerMeta: any[] = [];
@@ -134,6 +140,7 @@ export default class ShopWindow extends UIWindow {
     _mergeTutorialNodeClickHandler: any = null;
     _mergeTutorialNodeClickTargets: any[] | null = null;
     _shopRefreshing = false;
+    _shopContentReady = false;
     gemInited = false;
     saleInited = false;
     hotInited = false;
@@ -144,6 +151,7 @@ export default class ShopWindow extends UIWindow {
     treatInited = false;
 
     onShow(showParams: any = {}) {
+        this.setShopContentReady(false);
         this.showCash = showParams.showCash || false;
         if (this.userInfo) this.userInfo.show(Game.SUser);
         this.hotServerMeta = [];
@@ -274,6 +282,24 @@ export default class ShopWindow extends UIWindow {
             if (label) label.string = String.format(GameKit.i18n.t('ShopTreatDisable'), G.GameConstance.servantSystemStartLevel);
         }
         this.updateRefreshLabel();
+        this.setShopContentReady(true);
+    }
+
+    setShopContentReady(ready: boolean) {
+        this._shopContentReady = ready;
+        const mainNode = this.getShopMainNode();
+        if (mainNode?.isValid) mainNode.active = ready;
+        this.setShopLoadingVisible(!ready);
+        if (ready) LoadingWindow.Hide();
+    }
+
+    setShopLoadingVisible(visible: boolean) {
+        if (this.shopLoadingNode?.isValid) this.shopLoadingNode.active = visible;
+    }
+
+    getShopMainNode() {
+        if (this.shopMainNode?.isValid) return this.shopMainNode;
+        return find('node', this.node);
     }
 
     event_change_to_tab(index = 0) {
@@ -312,6 +338,18 @@ export default class ShopWindow extends UIWindow {
             this._shopTabLayoutDirty = false;
             this.refreshCurrentTabLayout();
         }, 0);
+        const delay = this.getShopEnterAnimDelay();
+        if (delay > 0) this.scheduleOnce(() => this.refreshCurrentTabLayout(), delay);
+    }
+
+    getShopEnterAnimDelay() {
+        let maxDelay = 0;
+        const anims = (this.node as any).getComponentsInChildren('EnterCloseAnim') || [];
+        anims.forEach((anim: any) => {
+            if (!anim?.enabled || !anim.node?.active || !anim.e_playAwake || !anim.enterAnimType) return;
+            maxDelay = Math.max(maxDelay, Number(anim.e_DelayTime || 0) + Number(anim.e_AnimTime || 0));
+        });
+        return maxDelay > 0 ? maxDelay + 0.02 : 0;
     }
 
     refreshCurrentTabLayout() {

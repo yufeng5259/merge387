@@ -86,6 +86,7 @@ export default class ShopBuySucessWindow extends UIWindow {
             ? this.rewardNodeScrollView.content
             : this.rewardNodeParent;
         if (!parent) return;
+        this.clearRewardNodes();
         this.rewardNode.active = false;
         let rewards = Game.Content.FromContents(this.data);
         rewards.forEach((reward: any) => {
@@ -96,6 +97,17 @@ export default class ShopBuySucessWindow extends UIWindow {
             if (contentModel) contentModel.show(reward);
         });
         this.updateRewardContentAlign();
+    }
+
+    clearRewardNodes() {
+        const content = this.rewardNodeScrollView?.content;
+        if (!content || !this.rewardNode) return;
+        for (let i = content.children.length - 1; i >= 0; i--) {
+            const child = content.children[i];
+            if (child === this.rewardNode) continue;
+            child.removeFromParent();
+            child.destroy();
+        }
     }
 
     updateRewardContentAlign() {

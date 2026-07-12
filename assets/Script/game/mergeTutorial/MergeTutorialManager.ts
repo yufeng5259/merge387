@@ -15,6 +15,7 @@ function getNodeContentSize(node: any) {
 MergeTutorialManager.finish_report_id = 1000130
 MergeTutorialManager.MainTutorialGroupId = 100
 MergeTutorialManager.StartId = 1000010
+MergeTutorialManager.MainTutorialLocalStepKey = 'MergeTutorial_MainForcedStep'
 MergeTutorialManager.currentId = 0
 MergeTutorialManager.currentMeta = null
 MergeTutorialManager.currentGuideMeta = null
@@ -48,6 +49,7 @@ MergeTutorialManager.triggerReportRetryTimer = null
 MergeTutorialManager.triggerReportRetryDelay = 3000
 MergeTutorialManager.completedTriggerReports = {}
 MergeTutorialManager.EnableDynamicDragCircleHighlight = false
+MergeTutorialManager.MainTutorialUseCircleHighlight = false
 MergeTutorialManager.MergeDragGuidePreset = {
     baseSize: 150,
     sizeFactor: 0.6,
@@ -122,6 +124,66 @@ MergeTutorialManager.Clear = function() {
 
 MergeTutorialManager.GetCurrentId = function() {
     return this.currentId || this.StartId
+}
+
+MergeTutorialManager.IsMainForcedTutorialStep = function(stepMeta) {
+    if (!stepMeta || !stepMeta.Id) return false
+    var id = parseInt(stepMeta.Id(), 10)
+    return id >= this.StartId && id < this.finish_report_id
+}
+
+MergeTutorialManager.GetPlayerPrefs = function() {
+    return typeof GameKit !== 'undefined' && GameKit.PlayerPrefs ? GameKit.PlayerPrefs : null
+}
+
+MergeTutorialManager.IsValidMainTutorialLocalStepId = function(stepId) {
+    stepId = parseInt(stepId, 10)
+    if (!stepId) return false
+    var meta = this.GetMeta(stepId)
+    if (!meta) return false
+    if (stepId === this.finish_report_id) return !!(meta.IsEnd && meta.IsEnd())
+    return this.IsMainForcedTutorialStep(meta)
+}
+
+MergeTutorialManager.SaveLocalMainTutorialStep = function(stepId) {
+    stepId = parseInt(stepId, 10)
+    if (!this.IsValidMainTutorialLocalStepId(stepId)) return false
+    var prefs = this.GetPlayerPrefs()
+    if (!prefs || !prefs.SetInt) return false
+    prefs.SetInt(this.MainTutorialLocalStepKey, stepId)
+    return true
+}
+
+MergeTutorialManager.LoadLocalMainTutorialStep = function() {
+    var prefs = this.GetPlayerPrefs()
+    if (!prefs || !prefs.GetInt) return 0
+    var stepId = parseInt(prefs.GetInt(this.MainTutorialLocalStepKey, 0), 10) || 0
+    if (!stepId) return 0
+    if (this.IsValidMainTutorialLocalStepId(stepId)) return stepId
+    this.ClearLocalMainTutorialStep()
+    return 0
+}
+
+MergeTutorialManager.ClearLocalMainTutorialStep = function() {
+    var prefs = this.GetPlayerPrefs()
+    if (prefs && prefs.DeleteKey) prefs.DeleteKey(this.MainTutorialLocalStepKey)
+}
+
+MergeTutorialManager.ResolveMainTutorialStartId = function() {
+    return this.LoadLocalMainTutorialStep() || this.StartId
+}
+
+MergeTutorialManager.IsMainForcedTutorialActive = function() {
+    return !this.activeTriggerStepMeta && this.IsMainForcedTutorialStep(this.currentMeta)
+}
+
+MergeTutorialManager.GetHighlightShape = function(defaultShape) {
+    if (this.IsMainForcedTutorialActive()) return this.MainTutorialUseCircleHighlight ? 'circle' : 'rect'
+    return defaultShape || 'circle'
+}
+
+MergeTutorialManager.IsLocalTestDataEnabled = function() {
+    return !!(LocalMergeTutorialTestData && LocalMergeTutorialTestData.EnableLocalTestData)
 }
 
 MergeTutorialManager.ShouldUseLocalP4Meta = function(id) {
@@ -1036,10 +1098,14 @@ MergeTutorialManager.ScheduleTriggerReportRetry = function() {
 }
 
 MergeTutorialManager.init = function() {
-    if (this.IsFinished()) return
+    if (this.IsFinished()) {
+        this.ClearLocalMainTutorialStep()
+        return
+    }
     this.ClearPendingMergeSaveOps()
     this.BackupAndHideNormalOrders()
-    this.currentId = this.StartId
+    this.currentId = this.ResolveMainTutorialStartId()
+    this.SaveLocalMainTutorialStep(this.currentId)
     this.currentDragStartTile = ''
     if (Game.SUserMergeTutorial && Game.SUserMergeTutorial.SetTutorialId) {
         Game.SUserMergeTutorial.SetTutorialId(this.MainTutorialGroupId, this.currentId)
@@ -1110,6 +1176,7 @@ MergeTutorialManager.nextStep = function() {
     }
     var nextId = this.currentMeta.NextId()
     if (!nextId) return
+    this.SaveLocalMainTutorialStep(nextId)
     var nextMeta = this.GetMeta(nextId)
     this.currentId = nextId
     if (nextMeta && nextMeta.IsEnd && nextMeta.IsEnd()) {
@@ -1292,6 +1359,7 @@ MergeTutorialManager.GetCurrentDragGuideTiles = function() {
 
 MergeTutorialManager.UpdateMergeDragGuideStartTile = function(tileKey, oldTileKey) {
     if (!this.currentMeta || this.currentMeta.CompleteType() !== this.CompleteTypes.MergeDrag) return false
+    if (this.ShouldUseStaticMergeDragGuideTiles()) return false
     if (oldTileKey && !this.CanOperate(this.EventTypes.MergeDragStart, { from: oldTileKey })) return false
     tileKey = this.NormalizeTileKey(tileKey)
     if (!tileKey) return false
@@ -1352,6 +1420,19 @@ MergeTutorialManager.BuildDynamicHighlightGeometry = function(worldA, worldB, pr
         height: diameter,
         tweenDuration: preset.tweenDuration || 0.25,
     }
+}
+
+MergeTutorialManager.ShouldUseStaticMergeDragGuideTiles = function() {
+    return this.IsMainForcedTutorialActive() && this.currentMeta && this.currentMeta.CompleteType &&
+        this.currentMeta.CompleteType() === this.CompleteTypes.MergeDrag
+}
+
+MergeTutorialManager.ShouldAllowMergeDragMove = function(tileKey) {
+    if (!this.ShouldUseStaticMergeDragGuideTiles()) return true
+    var drag = this.GetCurrentMergeDragParam()
+    if (!drag) return true
+    tileKey = this.NormalizeTileKey(tileKey)
+    return tileKey === drag.from || tileKey === drag.to
 }
 
 MergeTutorialManager.GetMergeTileWorldSize = function() {
@@ -1841,6 +1922,121 @@ MergeTutorialManager.getInfo = function(successCallback, errorCallback) {
         if (errorCallback) errorCallback(error)
     })
     req.Send()
+}
+
+MergeTutorialManager.BuildRectHighlightGeometry = function(worldA, worldB, preset) {
+    if (!worldA) return null
+    worldB = worldB || worldA
+    preset = preset || this.MergeDragGuidePreset || {}
+    var tileSize = this.GetMergeTileWorldSize()
+    if (tileSize <= 0) tileSize = preset.rectFallbackTileSize || 80
+    var padding = preset.rectPadding || 24
+    var minSize = preset.rectMinSize || tileSize
+    var width = Math.max(Math.abs(worldB.x - worldA.x) + tileSize + padding, minSize)
+    var height = Math.max(Math.abs(worldB.y - worldA.y) + tileSize + padding, minSize)
+    return {
+        shape: 'rect',
+        x: (worldA.x + worldB.x) / 2,
+        y: (worldA.y + worldB.y) / 2,
+        width: width,
+        height: height,
+        cornerRadius: Math.min(preset.cornerRadius || 18, width / 2, height / 2),
+        tweenDuration: preset.tweenDuration || 0.25,
+    }
+}
+
+MergeTutorialManager.BuildOrderHighlightGeometry = function(worldPos, preset) {
+    if (!worldPos) return null
+    preset = preset || {}
+    var size = preset.size || 120
+    var shape = this.GetHighlightShape('circle')
+    return {
+        shape: shape,
+        x: worldPos.x,
+        y: worldPos.y,
+        width: size,
+        height: size,
+        cornerRadius: shape === 'circle' ? undefined : Math.min(preset.cornerRadius || 18, size / 2),
+        tweenDuration: preset.tweenDuration || 0.25,
+    }
+}
+
+MergeTutorialManager.GetOrderSubmitOrder = function() {
+    var mergeUI = this.GetMergeUI()
+    if (!mergeUI || !mergeUI.node) return null
+    var ordersRoot = this.GetNodeByPath(mergeUI.node, 'topUI/table/view/content/orders') ||
+        (mergeUI.topUI && this.GetNodeByPath(mergeUI.topUI, 'table/view/content/orders'))
+    if (!ordersRoot) return null
+    var children = ordersRoot.children || []
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i]
+        if (!this.IsNodeActive(child)) continue
+        var order = child.getComponent ? child.getComponent('MergeOrder') : null
+        if (order && this.IsNodeActive(order.completeBtn)) return order
+        return { node: child, completeBtn: null }
+    }
+    return { node: children[0] || ordersRoot, completeBtn: null }
+}
+
+MergeTutorialManager.GetOrderSubmitTargetNode = function() {
+    var order = this.GetOrderSubmitOrder()
+    return order ? (this.IsNodeActive(order.completeBtn) ? order.completeBtn : order.node) : null
+}
+
+MergeTutorialManager.GetOrderSubmitHighlightNode = function() {
+    var order = this.GetOrderSubmitOrder()
+    return order ? order.node : null
+}
+
+MergeTutorialManager.GetNodeWorldRect = function(node) {
+    if (!node) return null
+    var transform = node.getComponent ? node.getComponent(UITransform) : null
+    return transform ? transform.getBoundingBoxToWorld() : null
+}
+
+MergeTutorialManager.MergeWorldRects = function(rects) {
+    if (!rects || rects.length <= 0) return null
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
+    for (var i = 0; i < rects.length; i++) {
+        var rect = rects[i]
+        if (!rect) continue
+        minX = Math.min(minX, rect.x)
+        minY = Math.min(minY, rect.y)
+        maxX = Math.max(maxX, rect.x + rect.width)
+        maxY = Math.max(maxY, rect.y + rect.height)
+    }
+    if (!isFinite(minX)) return null
+    return { x: minX, y: minY, width: maxX - minX, height: maxY - minY }
+}
+
+MergeTutorialManager.GetOrderSubmitHighlightRect = function() {
+    var order = this.GetOrderSubmitOrder()
+    if (!order) return null
+    var rects = []
+    var roleNode = order.currentRoleNode || (order.mergeRoleNode ? order.mergeRoleNode.node : null)
+    var roleRect = this.GetNodeWorldRect(roleNode)
+    var btnRect = this.GetNodeWorldRect(order.completeBtn)
+    if (roleRect) rects.push(roleRect)
+    if (btnRect) rects.push(btnRect)
+    return rects.length ? this.MergeWorldRects(rects) : this.GetNodeWorldRect(order.node)
+}
+
+MergeTutorialManager.BuildRectHighlightGeometryFromWorldRect = function(rect, preset) {
+    if (!rect) return null
+    preset = preset || {}
+    var padding = preset.padding || 0
+    var width = Math.max(0, rect.width + padding)
+    var height = Math.max(0, rect.height + padding)
+    return {
+        shape: 'rect', x: rect.x + rect.width / 2, y: rect.y + rect.height / 2,
+        width: width, height: height,
+        cornerRadius: Math.min(preset.cornerRadius || 18, width / 2, height / 2),
+        tweenDuration: preset.tweenDuration || 0.25,
+    }
+}
+
+MergeTutorialManager.GetOrderSubmitHighlightGeometry = function(preset) {
+    return this.BuildRectHighlightGeometryFromWorldRect(this.GetOrderSubmitHighlightRect(), preset)
 }
 
 Game.MergeTutorialManager = MergeTutorialManager

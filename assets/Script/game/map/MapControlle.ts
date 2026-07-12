@@ -120,6 +120,10 @@ export class MapControlle extends Component {
     }
 
     onStartWheel(event: any) {
+        if (this.isMapControlBlocked()) {
+            stopTouchPropagation(event);
+            return;
+        }
         if (!this.camera) {
             return;
         }
@@ -143,6 +147,14 @@ export class MapControlle extends Component {
     }
 
     onStartTouch(event: any) {
+        if (this.isMapControlBlocked()) {
+            this.stopInertia();
+            this.isMoving = false;
+            this.isSingleTouchMoving = false;
+            this.isPinching = false;
+            stopTouchPropagation(event);
+            return;
+        }
         this.recordClickEffectTouchStart(event);
         if (this.cameraMoveTween) {
             Tween.stopAllByTarget(this.node);
@@ -155,6 +167,14 @@ export class MapControlle extends Component {
     }
 
     releaseTouchesEnd(event: any) {
+        if (this.isMapControlBlocked()) {
+            this.stopInertia();
+            this.isMoving = false;
+            this.isSingleTouchMoving = false;
+            this.isPinching = false;
+            stopTouchPropagation(event);
+            return;
+        }
         const touches = event.getTouches();
         if (touches.length <= 1) {
             if (this.isMoving && this.isSingleTouchMoving && !this.isPinching) {
@@ -170,6 +190,14 @@ export class MapControlle extends Component {
     }
 
     onTouchMove(event: any) {
+        if (this.isMapControlBlocked()) {
+            this.stopInertia();
+            this.isMoving = false;
+            this.isSingleTouchMoving = false;
+            this.isPinching = false;
+            stopTouchPropagation(event);
+            return;
+        }
         if (!this.camera) {
             return;
         }
@@ -276,6 +304,9 @@ export class MapControlle extends Component {
     }
 
     onMapClickEffectTouchEnd(event: any) {
+        if (this.isMapControlBlocked()) {
+            return;
+        }
         if (!event || !event.getLocation) {
             return;
         }
@@ -395,6 +426,13 @@ export class MapControlle extends Component {
         return defaultDuration;
     }
 
+    getScreenToWorldPoint(screenPos: any) {
+        const worldPos = new Vec3();
+        if (!this.camera) return worldPos;
+        this.camera.screenToWorld(new Vec3(screenPos.x, screenPos.y, screenPos.z || 0), worldPos);
+        return worldPos;
+    }
+
     smoothOperate(camera: Camera & { zoomRatio?: number }, targetPos: Vec3, targetScale: number) {
         if (targetScale > this.maxZoomRatio || targetScale < this.minZoomRatio) {
             return;
@@ -440,6 +478,22 @@ export class MapControlle extends Component {
         this.lastTouchDelta = new Vec3(0, 0, 0);
         this.lastTouchTime = 0;
         this.lastTouchDeltaTime = 0;
+    }
+
+    isMergeTutorialMapControlBlocked() {
+        return !!(Game.MergeTutorialManager
+            && Game.MergeTutorialManager.ShouldBlockMapControl
+            && Game.MergeTutorialManager.ShouldBlockMapControl());
+    }
+
+    isTownUpgradeFlowMapControlBlocked() {
+        return !!(Game.TownUpgradeFlow
+            && Game.TownUpgradeFlow.isRunning
+            && Game.TownUpgradeFlow.isRunning());
+    }
+
+    isMapControlBlocked() {
+        return this.isMergeTutorialMapControlBlocked() || this.isTownUpgradeFlowMapControlBlocked();
     }
 
     startInertia() {

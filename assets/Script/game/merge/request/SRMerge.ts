@@ -291,7 +291,7 @@ SRMerge.LocalServerRequest = (method, result) => {
     }
 }
 
-// 获取地图
+// 鑾峰彇鍦板浘
 SRMerge.TrackSaveMapLitePromise = (promise) => {
     if (!promise || typeof promise.then !== "function") return promise
 
@@ -319,9 +319,9 @@ SRMerge.GetSaveMapLiteInFlightPromise = () => {
 }
 
 /**
- * 单机架构：直接把整盘 mergemap 快照上报服务器保存（服务器不校验，只存）
- * 在关键节点调用：完成订单、领取资源奖励、切换场景、退后台�?
- * @param {string} reason 触发原因（仅日志�?
+ * 鍗曟満鏋舵瀯锛氱洿鎺ユ妸鏁寸洏 mergemap 蹇収涓婃姤鏈嶅姟鍣ㄤ繚瀛橈紙鏈嶅姟鍣ㄤ笉鏍￠獙锛屽彧瀛橈級
+ * 鍦ㄥ叧閿妭鐐硅皟鐢細瀹屾垚璁㈠崟銆侀鍙栬祫婧愬鍔便€佸垏鎹㈠満鏅€侀€€鍚庡彴绛?
+ * @param {string} reason 瑙﹀彂鍘熷洜锛堜粎鏃ュ織锛?
  * @returns {Promise|null}
  */
 SRMerge.saveMergeSnapshot = (reason) => {
@@ -353,10 +353,10 @@ SRMerge.saveMergeSnapshot = (reason) => {
 }
 
 /**
- * 构造一个「本地结果」的链式请求 stub，兼容旧�?req.SetCallBack().Send() 调用方式�?
- * 公共代码已在本地完成运算，这里同步把本地结果回调给调用方，并在后台上报整盘快照�?
- * @param {Object} localRes 传给 SetCallBack 的本地结�?
- * @param {string} reason 快照上报原因
+ * 鏋勯€犱竴涓€屾湰鍦扮粨鏋溿€嶇殑閾惧紡璇锋眰 stub锛屽吋瀹规棫鐨?req.SetCallBack().Send() 璋冪敤鏂瑰紡銆?
+ * 鍏叡浠ｇ爜宸插湪鏈湴瀹屾垚杩愮畻锛岃繖閲屽悓姝ユ妸鏈湴缁撴灉鍥炶皟缁欒皟鐢ㄦ柟锛屽苟鍦ㄥ悗鍙颁笂鎶ユ暣鐩樺揩鐓с€?
+ * @param {Object} localRes 浼犵粰 SetCallBack 鐨勬湰鍦扮粨鏋?
+ * @param {string} reason 蹇収涓婃姤鍘熷洜
  */
 SRMerge.LocalResultRequest = (localRes, reason, options) => {
     options = options || {}
@@ -736,7 +736,7 @@ SRMerge.ApplyLocalConsume = (content) => {
     return contents
 }
 
-SRMerge.ApplyLocalContentDelta = (content) => {
+SRMerge.ApplyLocalContentDelta = (content, options: any = {}) => {
     let contents = SRMerge.MergeContentDeltaList(content)
     for (let i = 0; i < contents.length; i++) {
         let item = contents[i]
@@ -766,6 +766,10 @@ SRMerge.ApplyLocalContentDelta = (content) => {
                 data = { shield: next }
             }
             if (eventName && data) {
+                data.__from = before
+                data.__to = next
+                data.__resourceAnim = true
+                if (options.animOnArrive === true) data.__animOnArrive = true
                 GameKit.WebEvent.DispatcherEvent(eventName, data)
             }
         }
@@ -1001,11 +1005,24 @@ SRMerge.ApplyPendingRewardSideEffects = (result, actionType) => {
     return SRMerge.applyContentReward(rewards, actionType || "mergePendingReward")
 }
 
+SRMerge.ShouldPlayResourceAnimOnArrive = (actionType) => {
+    return actionType === "collect" || actionType === "sell" || actionType === "claimOrder" || actionType === "claimReward"
+}
+
+SRMerge.DispatchLocalOrderEvents = (result) => {
+    if (!result || result.levelOrderAllComplete !== true) return
+    let level = result.levelOrderAllCompleteLevel
+    if (level == null || isNaN(parseInt(level))) level = SRMerge.GetLocalPlayerLevel()
+    if (GameKit.GameEvent && GameKit.GameEvent.EventName) {
+        GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.LevelOrderAllComplete, parseInt(level))
+    }
+}
+
 SRMerge.ApplyResultSideEffects = (result, actionType) => {
     if (!result || result.__resourceSideEffectsApplied) return []
     let deltas = SRMerge.GetSideEffectContentDeltas(result)
     if (deltas.length > 0) {
-        SRMerge.ApplyLocalContentDelta(deltas)
+        SRMerge.ApplyLocalContentDelta(deltas, { animOnArrive: SRMerge.ShouldPlayResourceAnimOnArrive(actionType) })
         SRMerge.AddPendingContentDelta(deltas, actionType || "mergeSideEffect")
     }
     Object.defineProperty(result, "__resourceSideEffectsApplied", {
@@ -1069,7 +1086,7 @@ SRMerge.getMergeMap = () => {
     return req
 }
 
-// // 保存地图
+// // 淇濆瓨鍦板浘
 SRMerge.saveMap = (args) => {
     // let req = new GameKit.ServerRequest("saveMap")
     let { actionType, fromGid, slotIndex, orderId, cellKey, cellKey1, fromKey, toKey, cellKey2, instanceId, remainingCount, generatedCellKey, generatedPieceData, toolCellKey, ingredientCellKeys, ingredientIndex, targetCellKeys, recipeId, funcAction, pickPieceData, targetCellKey, forceServer, method, rewardIndex, opId, bubbleId } = args
@@ -1095,7 +1112,7 @@ SRMerge.saveMap = (args) => {
         } else if (actionType == "generate") {
             result = Game.MergeBoardLogic.generate(Game.SUserMerge.Data(), args, MergeBoardLogicConfigProvider)
             if (result.success) {
-                //在没有给服务器发送之前先同步�?
+                //鍦ㄦ病鏈夌粰鏈嶅姟鍣ㄥ彂閫佷箣鍓嶅厛鍚屾涓?
             }
             // console.log(result,"result++++++++++++++++++");
             // console.log(Game.SUser.Ap(), "aaa");
@@ -1128,7 +1145,7 @@ SRMerge.saveMap = (args) => {
             } else if (funcAction == "cookingClaim") {
                 result = Game.MergeBoardLogic.cookingClaim(Game.SUserMerge.Data(), toolCellKey, targetCellKey, MergeBoardLogicConfigProvider)
             } else if (funcAction == "cookingQuickFinish") {
-                //跳过烹饪
+                //璺宠繃鐑归オ
                 result = Game.MergeBoardLogic.cookingQuickFinish(Game.SUserMerge.Data(), toolCellKey, MergeBoardLogicConfigProvider)
             } else if (funcAction == "cookingBackToLoaded") {
                 result = Game.MergeBoardLogic.cookingBackToLoaded(Game.SUserMerge.Data(), toolCellKey, MergeBoardLogicConfigProvider)
@@ -1148,7 +1165,7 @@ SRMerge.saveMap = (args) => {
             //     pieceCounts: SRMerge.DebugCountPieces(boardData, warehouseData),
             //     boardData: SRMerge.DebugClone(boardData),
             //     warehouseData: SRMerge.DebugClone(warehouseData),
-            //     playerLevel: Game.SUser.Level()          //增加人物等级
+            //     playerLevel: Game.SUser.Level()          //澧炲姞浜虹墿绛夌骇
             // })
             result = Game.MergeOrderLogic.claimOrder(orderState, { slotIndex: slotIndex, orderId: orderId }, boardData, warehouseData, MergeOrderLogicConfigProvider, Game.SUser.Level())
             // let orderAfter = orderState && orderState.orders ? orderState.orders.find(item => item.slotIndex == slotIndex) : null
@@ -1261,10 +1278,10 @@ SRMerge.saveMap = (args) => {
                 }
             }
         } else if (actionType == "bubbleClaim") {
-            // 领取
+            // 棰嗗彇
             result = Game.MergeBoardLogic.bubbleClaim(Game.SUserMerge.Data(), bubbleId || cellKey, method, MergeBoardLogicConfigProvider)
         } else if (actionType == "bubbleBreak") {
-            // 打破
+            // 鎵撶牬
             result = Game.MergeBoardLogic.bubbleBreak(Game.SUserMerge.Data(), bubbleId || cellKey, MergeBoardLogicConfigProvider)
         }
         // console.log(actionType, result, "args", args);
@@ -1311,9 +1328,9 @@ SRMerge.saveMap = (args) => {
 
     return null
 }
-//最大操作次数（保留字段，单机不再批量上报）
+//鏈€澶ф搷浣滄鏁帮紙淇濈暀瀛楁锛屽崟鏈轰笉鍐嶆壒閲忎笂鎶ワ級
 SRMerge.MaxOpsCount = 5
-// 关键操作类型：完成订�?/ 领取奖励 等节点立即上报快�?
+// 鍏抽敭鎿嶄綔绫诲瀷锛氬畬鎴愯鍗?/ 棰嗗彇濂栧姳 绛夎妭鐐圭珛鍗充笂鎶ュ揩鐓?
 SRMerge.KeyActionTypes = {
     claimOrder: 1,
     claimReward: 1,
@@ -1325,9 +1342,9 @@ SRMerge.KeyActionTypes = {
     bubbleBreak: 1
 }
 /**
- * 单机架构下的保存：公共代码已把操作写入本�?Game.SUserMerge�?
- * 仅在关键节点（强制保�?forceSend/forceServer，或完成订单/领取奖励）直接上报整盘快照；
- * 普通操作（拖动/合成等）只留在本地，由切场景 / 退后台 / 关键节点统一落盘�?
+ * 鍗曟満鏋舵瀯涓嬬殑淇濆瓨锛氬叕鍏变唬鐮佸凡鎶婃搷浣滃啓鍏ユ湰鍦?Game.SUserMerge銆?
+ * 浠呭湪鍏抽敭鑺傜偣锛堝己鍒朵繚瀛?forceSend/forceServer锛屾垨瀹屾垚璁㈠崟/棰嗗彇濂栧姳锛夌洿鎺ヤ笂鎶ユ暣鐩樺揩鐓э紱
+ * 鏅€氭搷浣滐紙鎷栧姩/鍚堟垚绛夛級鍙暀鍦ㄦ湰鍦帮紝鐢卞垏鍦烘櫙 / 閫€鍚庡彴 / 鍏抽敭鑺傜偣缁熶竴钀界洏銆?
  * @param {*} actionType
  * @param {*} args
  * @returns {Promise|null}
@@ -1350,27 +1367,27 @@ SRMerge.AutoSendSaveMapLite = () => {
         SRMerge.ClearPendingOps()
         return null
     }
-    // 单机：场景切�?/ 退后台等节点上报整盘快�?
+    // 鍗曟満锛氬満鏅垏鎹?/ 閫€鍚庡彴绛夎妭鐐逛笂鎶ユ暣鐩樺揩鐓?
     return SRMerge.PersistMergeSnapshot("auto")
 }
 /**
- * 保存地图lite请求（单机：改为上报整盘快照；保留链式接口兼容旧调用�?
+ * 淇濆瓨鍦板浘lite璇锋眰锛堝崟鏈猴細鏀逛负涓婃姤鏁寸洏蹇収锛涗繚鐣欓摼寮忔帴鍙ｅ吋瀹规棫璋冪敤锛?
  * @param {*} actionType
  * @param {*} args
- * @returns {Object} 链式请求 stub
+ * @returns {Object} 閾惧紡璇锋眰 stub
  */
 SRMerge.saveMapLite = (actionType, args) => {
     if (SRMerge.ShouldBlockMergeTutorialSave()) {
         SRMerge.ClearPendingOps()
     }
-    // 公共代码已在本地处理，直接上报整盘快�?
+    // 鍏叡浠ｇ爜宸插湪鏈湴澶勭悊锛岀洿鎺ヤ笂鎶ユ暣鐩樺揩鐓?
     if (actionType === "init" && args && args.mapData) {
         SRMerge.InitLocalMergeMap(args.mapData)
     }
     return SRMerge.LocalResultRequest({ success: true }, actionType || "saveMapLite")
 }
 
-// // 增加金币
+// // 澧炲姞閲戝竵
 SRMerge.addCoin = (coin) => {
     let req = new GameKit.ServerRequest("addCoin")
     req.SetRequestBody("coin", coin)
@@ -1381,15 +1398,15 @@ SRMerge.addCoin = (coin) => {
     return req
 }
 
-// id:-1 为添加格�?-2为空�?-3为锁定格�?>0为合并格�?
-// 获取仓库数据（单机：直接读取本地，不再请求服务器�?
+// id:-1 涓烘坊鍔犳牸瀛?-2涓虹┖鏍?-3涓洪攣瀹氭牸瀛?>0涓哄悎骞舵牸瀛?
+// 鑾峰彇浠撳簱鏁版嵁锛堝崟鏈猴細鐩存帴璇诲彇鏈湴锛屼笉鍐嶈姹傛湇鍔″櫒锛?
 SRMerge.GetStoreData = () => {
     return SRMerge.LocalResultRequest({
         success: true,
         warehouse: Game.SUserMerge.GetStoreData ? Game.SUserMerge.GetStoreData() : null
     }, "getWarehouse", { persist: false })
 }
-//解锁仓库数据（单机：本地扩容 + 快照；钻石消耗由调用方在调用前校�?扣除�?
+//瑙ｉ攣浠撳簱鏁版嵁锛堝崟鏈猴細鏈湴鎵╁ + 蹇収锛涢捇鐭虫秷鑰楃敱璋冪敤鏂瑰湪璋冪敤鍓嶆牎楠?鎵ｉ櫎锛?
 SRMerge.UpgradeWarehouse = (priceContent) => {
     let beforeSnapshot = SRMerge.DebugClone(Game.SUserMerge.Data())
     let res = Game.MergeBoardLogic.upgradeWarehouseCapacity(Game.SUserMerge.Data())
@@ -1415,8 +1432,8 @@ SRMerge.UpgradeWarehouse = (priceContent) => {
     return SRMerge.WaitResultRequest(res, promise)
 }
 /**
- * 棋盘格子移动到仓库（单机：本地公共代�?+ 快照�?
- * @param {*} pieceData 是tile坐标 "1_0"
+ * 妫嬬洏鏍煎瓙绉诲姩鍒颁粨搴擄紙鍗曟満锛氭湰鍦板叕鍏变唬鐮?+ 蹇収锛?
+ * @param {*} pieceData 鏄痶ile鍧愭爣 "1_0"
  */
 SRMerge.MovePieceFromGridToWarehouse = (pieceData) => {
     let res = Game.MergeBoardLogic.movePieceFromGridToWarehouse(Game.SUserMerge.Data(), pieceData)
@@ -1430,7 +1447,7 @@ SRMerge.MovePieceToWarehouse = (pieceData) => {
 }
 SRMerge.movePieceToWarehouse = SRMerge.MovePieceToWarehouse
 /**
- * 仓库数据移动到格子（单机：本地公共代�?+ 快照�?
+ * 浠撳簱鏁版嵁绉诲姩鍒版牸瀛愶紙鍗曟満锛氭湰鍦板叕鍏变唬鐮?+ 蹇収锛?
  * @param {*} warehouseIndex
  */
 SRMerge.MovePieceFromWarehouseToGrid = (warehouseIndex) => {
@@ -1460,15 +1477,15 @@ SRMerge.AddToPendingRewards = (entries) => {
 }
 SRMerge.addToPendingRewards = SRMerge.AddToPendingRewards
 /**
- * 领取临时奖励
- * index:奖励索引
+ * 棰嗗彇涓存椂濂栧姳
+ * index:濂栧姳绱㈠紩
  */
 // SRMerge.ExtractMergeClaimReward = (rewardIndex, cellKey) => {
 //     let req = new GameKit.ServerRequest("claimReward")
 //     req.SetRequestBody("rewardIndex", rewardIndex)
 //     req.SetRequestBody("cellKey", cellKey)
 //     req.SetCallBack(res => {
-//         console.log('领取临时奖励', res);
+//         console.log('棰嗗彇涓存椂濂栧姳', res);
 //         Game.SUserMerge.updateData(res.mergeMapData)
 //         // Game.SUserMerge.UpdateMergeMap(res.mergeMapData.data)
 //         // Game.SUserMerge.UpdateMergePendingRewards(res.mergeMapData.pendingRewards)
@@ -1481,8 +1498,8 @@ SRMerge.addToPendingRewards = SRMerge.AddToPendingRewards
 //     return req
 // }
 /**
- * 获取任务列表
- * [deprecated]这个接口已经废弃了，前端不再调用，后端保留一段时间后也会删除
+ * 鑾峰彇浠诲姟鍒楄〃
+ * [deprecated]杩欎釜鎺ュ彛宸茬粡搴熷純浜嗭紝鍓嶇涓嶅啀璋冪敤锛屽悗绔繚鐣欎竴娈垫椂闂村悗涔熶細鍒犻櫎
  * @returns 
  */
 // SRMerge.getOrders = () => {
@@ -1493,14 +1510,14 @@ SRMerge.addToPendingRewards = SRMerge.AddToPendingRewards
 //     return req;
 // }
 /**
- * 领取任务奖励
- * [deprecated]这个接口已经废弃了，前端不再调用，后端保留一段时间后也会删除
+ * 棰嗗彇浠诲姟濂栧姳
+ * [deprecated]杩欎釜鎺ュ彛宸茬粡搴熷純浜嗭紝鍓嶇涓嶅啀璋冪敤锛屽悗绔繚鐣欎竴娈垫椂闂村悗涔熶細鍒犻櫎
  * @param {*} taskId 
  * @returns 
  */
 /**
- * 领取任务奖励
- * [deprecated]前端�?saveMap(actionType:"claimOrder") 本地公共代码处理；此处保留兼容，改为本地快照
+ * 棰嗗彇浠诲姟濂栧姳
+ * [deprecated]鍓嶇璧?saveMap(actionType:"claimOrder") 鏈湴鍏叡浠ｇ爜澶勭悊锛涙澶勪繚鐣欏吋瀹癸紝鏀逛负鏈湴蹇収
  * @param {*} slotIndex
  * @returns
  */
@@ -1541,7 +1558,7 @@ SRMerge._getConstValue = (key, def) => {
     return (v === undefined || v === null || v === '') ? def : v
 }
 
-/**公共面板 */
+/**鍏叡闈㈡澘 */
 SRMerge.MergeBoardLogicConfigProvider = {
     getBubbleConfig() {
         return {
@@ -1666,7 +1683,7 @@ SRMerge._getPieceLevel = (meta) => {
 
 
 
-/**公共訂單 */
+/**鍏叡瑷傚柈 */
 SRMerge.MergeOrderLogiConfigProvider = () => {
     let userId = Game.SUser.Id()
     let activeGameActivities = Game.ActivityManager.GetActiveGameActivities(userId)

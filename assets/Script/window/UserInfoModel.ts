@@ -1,6 +1,7 @@
-import { _decorator, Button, Color, Component, ImageAsset, Label, LabelOutline, Node, ProgressBar, Sprite, SpriteFrame, Texture2D, Tween, tween, Vec3 } from 'cc';
+import { _decorator, Button, Color, Component, ImageAsset, Label, LabelOutline, Node, ProgressBar, Sprite, SpriteFrame, Texture2D, Tween, tween, UITransform, Vec3 } from 'cc';
 import NumAnim from '../GameKit/ui/NumAnim';
 import { bindGuardedClick } from '../GameKit/ui/TouchClickGuard';
+import LevelUpDisplayLock from '../game/user/LevelUpDisplayLock';
 
 import { User } from '../game/user/User';
 const { ccclass, property } = _decorator;
@@ -60,6 +61,9 @@ export class UserInfoModel extends Component {
     @property(Label)
     public cashLabel: Label | null = null;
 
+    @property(Sprite)
+    public cashIcon: Sprite | null = null;
+
     @property(Button)
     public btnCashAdd: Button | null = null;
 
@@ -82,6 +86,7 @@ export class UserInfoModel extends Component {
     public apRemainTime: number | null = null;
     public apDisplayLocked = false;
     public lockedShowAp: any = null;
+    private _pendingResourceNumAnims: Record<string, { from: number; to: number; duration: number }> = {};
     public genderMale: Node | null = null;
     public genderFemale: Node | null = null;
 
@@ -102,7 +107,7 @@ export class UserInfoModel extends Component {
         if (this.avatarNode) {
             const icon = GameKit.ControllerTable.GetComponent(this.avatarNode, 'icon', Sprite);
             const frame = GameKit.ControllerTable.GetComponent(this.avatarNode, 'frame', Sprite);
-            UserInfoModel.SetAvatar(icon, frame, this.User);
+            UserInfoModel.SetAvatar(icon, frame, this.User, this.isSelf);
         }
 
         if (this.isSelf) {
@@ -110,7 +115,7 @@ export class UserInfoModel extends Component {
                 if (this.avatarNode) {
                     const icon = GameKit.ControllerTable.GetComponent(this.avatarNode, 'icon', Sprite);
                     const frame = GameKit.ControllerTable.GetComponent(this.avatarNode, 'frame', Sprite);
-                    UserInfoModel.SetAvatar(icon, frame, this.User);
+                    UserInfoModel.SetAvatar(icon, frame, this.User, this.isSelf);
                 }
                 this.updateBaseInfo();
             });
@@ -168,8 +173,8 @@ export class UserInfoModel extends Component {
     public setAp() {
         if ((this.labelAp || this.labelApFull || this.labelApRemain || this.spriteApFull) && this.isSelf) {
             this._setAp();
-            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ApEvent, this.uuid, () => {
-                this._setAp();
+            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ApEvent, this.uuid, (data: any) => {
+                if (!this.playResourceNumAnimFromEvent(data, Game.Content.Types.Ap)) this._setAp();
             });
         }
     }
@@ -189,6 +194,7 @@ export class UserInfoModel extends Component {
         } else if (this.User.UpdateApTime) {
             this.User.UpdateApTime();
         }
+        if (this.getPendingResourceNumAnim(Game.Content.Types.Ap)) return;
         const apNum = this.User.Ap();
         this.setApWithNum(apNum);
     }
@@ -196,8 +202,8 @@ export class UserInfoModel extends Component {
     public setCash() {
         this.updateCash();
         if (this.cashLabel && this.isSelf) {
-            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CashEvent, this.uuid, () => {
-                this.updateCash();
+            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CashEvent, this.uuid, (data: any) => {
+                if (!this.playResourceNumAnimFromEvent(data, Game.Content.Types.Cash)) this.updateCash();
             });
         }
         if (this.btnCashAdd && this.isSelf) {
@@ -211,8 +217,9 @@ export class UserInfoModel extends Component {
     }
 
     public updateCash() {
+        if (this.getPendingResourceNumAnim(Game.Content.Types.Cash)) return;
         if (this.cashLabel) {
-            this.cashLabel.string = this.User.Cash();
+            this.cashLabel.string = String(this.User.Cash());
         }
     }
 
@@ -314,6 +321,15 @@ export class UserInfoModel extends Component {
         this.setApWithNum(ap);
     }
 
+    public changeAp(from: number, to: number, duration: number) {
+        if (from === to && duration !== 0) return;
+        this.apStop = false;
+        this.setApWithNum(from);
+        this.playLabelNumAnim(this.labelAp || this.labelApFull, from, to, duration);
+        if (duration > 0) this.scheduleOnce(() => this.setApWithNum(to), duration);
+        else this.setApWithNum(to);
+    }
+
     public lockApDisplay(ap: any) {
         this.apDisplayLocked = true;
         this.lockedShowAp = ap;
@@ -379,8 +395,8 @@ export class UserInfoModel extends Component {
     public setCoin() {
         this.updateCoin();
         if (this.labelCoin && this.isSelf) {
-            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CoinEvent, this.uuid, () => {
-                this.updateCoin();
+            GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CoinEvent, this.uuid, (data: any) => {
+                if (!this.playResourceNumAnimFromEvent(data, Game.Content.Types.Coin)) this.updateCoin();
             });
         }
         if (this.btnCoinAdd) {
@@ -401,9 +417,21 @@ export class UserInfoModel extends Component {
     }
 
     public updateCoin() {
+        if (this.getPendingResourceNumAnim(Game.Content.Types.Coin)) return;
         if (this.labelCoin) {
             this.labelCoin.string = GameKit.StringUtil.formatNumber(this.User.Coin());
         }
+    }
+
+    public formatResourceNum(contentType: any, value: any) {
+        if (contentType === Game.Content.Types.Coin) return GameKit.StringUtil.formatNumber(value);
+        return value != null ? String(value) : '';
+    }
+
+    public setResourceLabelNum(contentType: any, value: any) {
+        if (contentType === Game.Content.Types.Coin && this.labelCoin) this.labelCoin.string = this.formatResourceNum(contentType, value);
+        else if (contentType === Game.Content.Types.Ap) this.setApWithNum(value);
+        else if (contentType === Game.Content.Types.Cash && this.cashLabel) this.cashLabel.string = this.formatResourceNum(contentType, value);
     }
 
     public changeCoin(from: number, to: number, duration: number) {
@@ -411,12 +439,7 @@ export class UserInfoModel extends Component {
             return;
         }
         if (this.labelCoin) {
-            let numAnim = this.labelCoin.getComponent(NumAnim);
-            if (numAnim == null) {
-                numAnim = this.labelCoin.addComponent(NumAnim);
-                numAnim.targetLabel = this.labelCoin;
-            }
-            numAnim.playAnim(from, to, duration);
+            this.playLabelNumAnim(this.labelCoin, from, to, duration);
         }
         if (this.spriteCoin && duration > 0) {
             Tween.stopAllByTarget(this.spriteCoin.node);
@@ -431,6 +454,91 @@ export class UserInfoModel extends Component {
                 tween(this.spriteCoin.node).to(0.1, { scale: new Vec3(1, 1, this.spriteCoin.node.scale.z) }).start();
             }, duration);
         }
+    }
+
+    private playLabelNumAnim(label: Label | null, from: number, to: number, duration: number) {
+        if (!label) return;
+        let numAnim = label.getComponent(NumAnim);
+        if (!numAnim) {
+            numAnim = label.addComponent(NumAnim);
+            numAnim.targetLabel = label;
+        }
+        numAnim.playAnim(from, to, duration);
+    }
+
+    public changeCash(from: number, to: number, duration: number) {
+        if (from === to && duration !== 0) return;
+        this.playLabelNumAnim(this.cashLabel, from, to, duration);
+    }
+
+    public playResourceNumAnimFromEvent(data: any, contentType: any) {
+        if (!data || data.__resourceAnim !== true || data.__from == null || data.__to == null || data.__from === data.__to) return false;
+        const duration = this.getResourceNumAnimDuration(data.__from, data.__to, data.__animDuration);
+        if (data.__animOnArrive === true) {
+            this.queueResourceNumAnim(contentType, data.__from, data.__to, duration);
+            return true;
+        }
+        return this.playResourceNumAnim(contentType, data.__from, data.__to, duration);
+    }
+
+    public getPendingResourceNumAnim(contentType: any) {
+        return contentType == null ? null : this._pendingResourceNumAnims[String(contentType)] || null;
+    }
+
+    public queueResourceNumAnim(contentType: any, from: number, to: number, duration: number) {
+        this._pendingResourceNumAnims[String(contentType)] = { from, to, duration };
+    }
+
+    public playPendingResourceNumAnim(contentType: any) {
+        const key = String(contentType);
+        const anim = this._pendingResourceNumAnims[key];
+        if (!anim) return false;
+        delete this._pendingResourceNumAnims[key];
+        const current = this.getCurrentResourceLabelNum(contentType);
+        const from = current == null ? anim.from : current;
+        return this.playResourceNumAnim(contentType, from, anim.to, this.getResourceNumAnimDuration(from, anim.to, anim.duration));
+    }
+
+    private playResourceNumAnim(contentType: any, from: number, to: number, duration: number) {
+        if (contentType === Game.Content.Types.Coin) this.changeCoin(from, to, duration);
+        else if (contentType === Game.Content.Types.Ap) this.changeAp(from, to, duration);
+        else if (contentType === Game.Content.Types.Cash) this.changeCash(from, to, duration);
+        else return false;
+        return true;
+    }
+
+    private getCurrentResourceLabelNum(contentType: any) {
+        const text = this.getResourceLabelString(contentType);
+        if (text == null) return null;
+        const value = Number(String(text).replace(/[^\d.-]/g, ''));
+        return isFinite(value) ? value : null;
+    }
+
+    public getResourceLabelString(contentType: any) {
+        if (contentType === Game.Content.Types.Coin) return this.labelCoin ? this.labelCoin.string : null;
+        if (contentType === Game.Content.Types.Ap) return this.labelAp ? this.labelAp.string : (this.labelApFull ? this.labelApFull.string : null);
+        if (contentType === Game.Content.Types.Cash) return this.cashLabel ? this.cashLabel.string : null;
+        return null;
+    }
+
+    private getResourceNumAnimDuration(from: number, to: number, maxDuration?: number) {
+        const delta = Math.abs(Number(to) - Number(from));
+        if (!isFinite(delta)) return 0.8;
+        if (delta <= 0) return 0;
+        const limit = isFinite(Number(maxDuration)) && Number(maxDuration) > 0 ? Number(maxDuration) : this.getResourceNumAnimMaxDuration();
+        return Math.min(Math.max(delta / this.getResourceNumAnimSpeed(), this.getResourceNumAnimMinDuration()), limit);
+    }
+
+    public getResourceNumAnimSpeed() {
+        return 45;
+    }
+
+    public getResourceNumAnimMinDuration() {
+        return 0.15;
+    }
+
+    public getResourceNumAnimMaxDuration() {
+        return 0.8;
     }
 
     public setStar() {
@@ -526,10 +634,13 @@ export class UserInfoModel extends Component {
             this.labelName.string = this.User.Name();
         }
         if (this.labelLevel) {
-            this.labelLevel.string = this.User.Level().toString();
+            const level = this.isSelf ? LevelUpDisplayLock.GetDisplayLevel(this.User) : this.User.Level();
+            this.labelLevel.string = String(level);
         }
         if (this.expProgress) {
-            if (this.User.GetLevelExpInfo) {
+            if (this.isSelf) {
+                this.expProgress.progress = LevelUpDisplayLock.GetDisplayExpInfo(this.User).progress;
+            } else if (this.User.GetLevelExpInfo) {
                 this.expProgress.progress = this.User.GetLevelExpInfo().progress;
             } else {
                 const levelExp = Meta.MetaManager.GetMeta(Meta.MetaType.Level, this.User.Level()).Exp();
@@ -538,27 +649,59 @@ export class UserInfoModel extends Component {
         }
     }
 
-    public static SetAvatar(sprite: Sprite | null, frame: Sprite | null, User: any) {
+    public static SetAvatar(sprite: Sprite | null, frame: Sprite | null, User: any, useProfileAvatarScale = false) {
         if (sprite == null) {
             return;
         }
 
         try {
+            if (User == null && frame && (frame as any).Avatar) {
+                User = frame;
+                frame = null;
+            }
+            if (User == null) return;
+            const roleDir = 'res/profile_role';
+            const frameDir = 'res/profileframe';
             const avatarArrData = User.Avatar().split(';');
-            const avatar = avatarArrData[0];
-            const frameName = avatarArrData[1] || '1';
+            let avatar = avatarArrData[0] || `${roleDir}/Ava`;
+            let frameName = avatarArrData[1] || `${frameDir}/profile frame_1`;
+            if (avatar.indexOf('http') !== 0 && avatar.indexOf('/') < 0) avatar = `${roleDir}/${avatar}`;
+            if (/^\d+$/.test(frameName)) {
+                const index = parseInt(frameName, 10);
+                frameName = index <= 1 ? `${frameDir}/profile frame_1` : `${frameDir}/profile-frame_${index}`;
+            } else if (frameName.indexOf('/') < 0) {
+                frameName = `${frameDir}/${frameName}`;
+            }
             if (frame) {
-                frame.spriteFrame = CommonAssets.instance.getByAtlas(CommonAssets.Atlases.AvatarFrames, frameName);
+                (frame as any)._avatarFrame = frameName;
+                cce.loadRes(frameName, SpriteFrame, (err: any, spriteFrame: SpriteFrame) => {
+                    if (!err && spriteFrame && (frame as any)._avatarFrame === frameName) frame.spriteFrame = spriteFrame;
+                });
             }
 
             (sprite as any)._avatar = avatar;
-            sprite.spriteFrame = CommonAssets.instance.avatar_default;
-            if (avatar != null && avatar.length > 0) {
+            const applyAvatar = (spriteFrame: SpriteFrame) => {
+                if (spriteFrame) sprite.spriteFrame = spriteFrame;
+                if (useProfileAvatarScale && spriteFrame) {
+                    const fitSize = sprite.getComponent('SpriteFitSize') as any;
+                    if (fitSize) fitSize.enabled = false;
+                    sprite.trim = false;
+                    sprite.sizeMode = Sprite.SizeMode.RAW;
+                    const transform = sprite.node.getComponent(UITransform);
+                    const originalSize = spriteFrame.originalSize;
+                    if (transform && originalSize) transform.setContentSize(originalSize);
+                    sprite.node.setScale(0.4, 0.4, sprite.node.scale.z);
+                }
+            };
+            applyAvatar(CommonAssets.instance.avatar_default);
+            if (avatar.indexOf(`${roleDir}/`) === 0) {
+                cce.loadRes(avatar, SpriteFrame, (err: any, spriteFrame: SpriteFrame) => {
+                    if (!err && spriteFrame && (sprite as any)._avatar === avatar) applyAvatar(spriteFrame);
+                });
+            } else if (avatar.length > 0) {
                 cce.loaderLoad({ url: avatar, type: 'jpg' }, (err: any, tex: ImageAsset) => {
                     if (err == null && tex != null && (sprite as any)._avatar === (tex as any)._rawUrl) {
-                        if (sprite.node) {
-                            sprite.spriteFrame = createSpriteFrame(tex);
-                        }
+                        if (sprite.node) applyAvatar(createSpriteFrame(tex));
                     }
                 }, true);
             }

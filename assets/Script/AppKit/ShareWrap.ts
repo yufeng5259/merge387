@@ -107,7 +107,9 @@ ShareWrap.getScreen = function(rect) {
     var camera = snapCameraNode.getComponent(Camera) as SnapshotCamera | null
     if (!camera) return null
     var snapCameraWasActive = snapCameraNode.active
-    snapCameraNode.active = true
+    var oldVisibility = camera.visibility
+    var oldTargetTexture = camera.targetTexture
+    snapCameraNode.active = false
 
     // 璁剧疆浣犳兂瑕佺殑鎴浘鍐呭鐨?cullingMask
     camera.visibility = 0xffffffff;
@@ -120,11 +122,19 @@ ShareWrap.getScreen = function(rect) {
     camera.targetTexture = texture;
 
     // 娓叉煋涓€娆℃憚鍍忔満锛屽嵆鏇存柊涓€娆″唴瀹瑰埌 RenderTexture 涓?
-    camera.render?.();
+    var data = null
+    snapCameraNode.active = true
+    try {
+        camera.render?.();
 
-    // 杩欐牱鎴戜滑灏辫兘浠?RenderTexture 涓幏鍙栧埌鏁版嵁浜?
-    var data = texture.readPixels(visibleSize.width/2+rect.x-rect.width/2, visibleSize.height/2+rect.y-rect.height/2, rect.width, rect.height);
-    snapCameraNode.active = snapCameraWasActive
+        // 杩欐牱鎴戜滑灏辫兘浠?RenderTexture 涓幏鍙栧埌鏁版嵁浜?
+        data = texture.readPixels(visibleSize.width/2+rect.x-rect.width/2, visibleSize.height/2+rect.y-rect.height/2, rect.width, rect.height);
+    } finally {
+        snapCameraNode.active = false
+        camera.targetTexture = oldTargetTexture
+        camera.visibility = oldVisibility
+        snapCameraNode.active = snapCameraWasActive
+    }
     if (!data) return null
 
     var filpYImage = function (data, width, height) {

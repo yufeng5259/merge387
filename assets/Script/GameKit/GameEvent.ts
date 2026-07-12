@@ -27,6 +27,7 @@ export default class GameEvent {
         PendingRewardsUpdated: 'pendingRewardsUpdated',
         UserInfoEvent: 'userInfoEvent',
         ShopWindowrefresh: 'ShopWindowrefresh',
+        LevelOrderAllComplete: 'LevelOrderAllComplete',
     };
 
     private static _data: Record<string, Record<string, any>> = {};

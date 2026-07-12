@@ -1,5 +1,4 @@
 import '../../LegacyGlobals';
-import { TextAsset } from 'cc';
 
 export default class UserStory {
     public data: any;
@@ -54,9 +53,6 @@ export default class UserStory {
 
     getStoryPortal () {
         let portal = G.GameConfig.storyPortal;
-        if (G.GameConfig.GAME_TEST === true) {
-            portal = 'resources://res/Story/mapstory/mapstory';
-        }
         return portal;
     }
 
@@ -73,14 +69,8 @@ export default class UserStory {
         }
 
         url = this.getStoryUrl(bid);
-        let portal = this.getStoryPortal();
-        if (portal && portal.indexOf('resources://') === 0) {
-            this.loadLocalStory(url, bid, callback);
-            return;
-        }
-
         let req: any = null;
-        if (this.isLocalPortal(portal)) {
+        if (this.isLocalPortal(url) || url.indexOf('//47.239.') >= 0) {
             req = new GameKit.NetRequest(url);
             req.SetSilence(true);
             req.SetCallBack(function(this: UserStory, _res: any) {
@@ -105,27 +95,6 @@ export default class UserStory {
             Logs.Error('load story data error', url);
         }.bind(this));
         req.Send();
-    }
-
-    loadLocalStory (url: any, bid: any, callback?: (success: boolean) => void) {
-        let resName = url.replace('resources://', '');
-        resName = resName.replace(/\.(txt|json)$/i, '');
-        cce.loadRes(resName, TextAsset, function(this: UserStory, err: any, asset: TextAsset | null) {
-            if (err || !asset) {
-                if (callback) callback(false);
-                Logs.Error('load local story data error', url);
-                return;
-            }
-            try {
-                let text = asset.text || asset.toString();
-                let res = JSON.parse(text);
-                Game.SUserStory.initData(res, bid);
-                if (callback) callback(true);
-            } catch (e) {
-                if (callback) callback(false);
-                Logs.Error('local story JSON.parse error', url);
-            }
-        }.bind(this));
     }
 
     getContenListAll (bid: any) {

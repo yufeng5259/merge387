@@ -8,6 +8,7 @@ import {
     NodePool,
     Sprite,
     SpriteFrame,
+    sp,
     Tween,
     tween,
     UIOpacity,
@@ -46,6 +47,7 @@ interface ResourceCollectOptions {
     textures?: SpriteFrame[];
     spriteFrame?: SpriteFrame | null;
     targetNode?: Node | null;
+    spineAnimIndex?: number;
 }
 
 function toNumber(value: unknown, fallback: number): number {
@@ -112,11 +114,16 @@ export class CoinFlyToTargetAnim extends Component {
     @property(Node)
     public flyerTemplate: Node | null = null;
 
+    @property([sp.Skeleton])
+    public spineAnim: sp.Skeleton[] = [];
+
     private flyPool = new NodePool();
+    private flyPools: Record<string, NodePool> = {};
     private flyPrototypeNode: Node | null = null;
 
     public onLoad(): void {
         this.flyPool = new NodePool();
+        this.flyPools = { default: this.flyPool };
         this.flyPrototypeNode = null;
 
         if (this.anims && this.anims.length > 0) {
@@ -134,7 +141,7 @@ export class CoinFlyToTargetAnim extends Component {
     }
 
     protected onDestroy(): void {
-        this.flyPool.clear();
+        Object.keys(this.flyPools).forEach((key) => this.flyPools[key].clear());
     }
 
     public SetAnimationTextures(textures: SpriteFrame[]): void {
@@ -144,6 +151,36 @@ export class CoinFlyToTargetAnim extends Component {
         });
     }
 
+    private _getFlyPool(poolKey = 'default') {
+        return this.flyPools[poolKey] || (this.flyPools[poolKey] = new NodePool());
+    }
+
+    private _getSpineFlyTemplateNode(spineAnimIndex?: number) {
+        const index = Number(spineAnimIndex);
+        if (!Number.isInteger(index) || index < 0) return null;
+        const skeleton = this.spineAnim[index];
+        return skeleton && isValid(skeleton.node) ? skeleton.node : null;
+    }
+
+    private _getFlyPoolKey(options?: ResourceCollectOptions) {
+        return options?.spineAnimIndex == null ? 'default' : `spine:${Number(options.spineAnimIndex)}`;
+    }
+
+    private _getFlyTemplateNode(options?: ResourceCollectOptions) {
+        return this._getSpineFlyTemplateNode(options?.spineAnimIndex)
+            || (this.flyerTemplate && isValid(this.flyerTemplate) ? this.flyerTemplate : null)
+            || (this.flyPrototypeNode && isValid(this.flyPrototypeNode) ? this.flyPrototypeNode : null);
+    }
+
+    private _acquireFlyNode(options?: ResourceCollectOptions) { return this.acquireFlyNode(options); }
+    private _releaseFlyNode(node: Node) { this.releaseFlyNode(node); }
+    private _applyTexturesToFlyNode(node: Node, textures?: SpriteFrame[]) { this.applyTexturesToFlyNode(node, textures); }
+    private _toWorldVec2(pos: any) { return makeVec3(pos); }
+    private _toLocalPos(pos: any) { return this.toLocalPos(makeVec3(pos)); }
+    private _getResourceCollectProfile(contentType?: string | number, level?: string | number, count?: number) { return this.getResourceCollectProfile(contentType, level, count); }
+    private _prepareResourceFlyNode(node: Node, textures?: SpriteFrame[], spriteFrame?: SpriteFrame | null) { this.prepareResourceFlyNode(node, textures, spriteFrame || null); }
+    private _playTargetFeedback(node: Node | null, profile: ResourceCollectProfile) { this.playTargetFeedback(node, profile); }
+
     public PlayResourceCollectAnim(options: ResourceCollectOptions = {}): void {
         const cb = options.cb;
         const fromWorldPos = makeVec3(options.globalFromPos || options.fromWorldPos);
@@ -152,7 +189,7 @@ export class CoinFlyToTargetAnim extends Component {
         const toLocalPos = this.toLocalPos(toWorldPos);
         const profile = this.getResourceCollectProfile(options.contentType, options.level, options.animCount);
         const wantedCount = Math.max(1, profile.count);
-        const flyNodes = this.acquireFlyNodes(wantedCount);
+        const flyNodes = this.acquireFlyNodes(wantedCount, options);
 
         if (flyNodes.length === 0) {
             if (cb) cb();
@@ -249,6 +286,7 @@ export class CoinFlyToTargetAnim extends Component {
         textures?: SpriteFrame[],
         cb?: FlyCallback,
         arriveCb?: ArriveCallback,
+        options: ResourceCollectOptions = {},
     ): void {
         const fromWorldPos = makeVec3(globalFromPos);
         const toWorldPos = makeVec3(globalToPos);
@@ -263,7 +301,7 @@ export class CoinFlyToTargetAnim extends Component {
         const editorCount = this.anims && this.anims.length > 0 ? this.anims.length : 0;
         const defaultCount = editorCount > 0 ? editorCount : 8;
         const wantCount = animCount !== undefined && animCount !== null ? Math.max(1, animCount) : defaultCount;
-        const flyNodes = this.acquireFlyNodes(wantCount);
+        const flyNodes = this.acquireFlyNodes(wantCount, options);
 
         if (flyNodes.length === 0) {
             if (cb) cb();
@@ -277,7 +315,7 @@ export class CoinFlyToTargetAnim extends Component {
             flyNode.children.forEach((child) => {
                 child.active = true;
             });
-            this.applyTexturesToFlyNode(flyNode, textures);
+            if (options.spineAnimIndex == null) this.applyTexturesToFlyNode(flyNode, textures);
 
             flyNode.setPosition(fromLocalPos);
             flyNode.setScale(Vec3.ONE);
@@ -408,10 +446,10 @@ export class CoinFlyToTargetAnim extends Component {
         }
     }
 
-    private acquireFlyNodes(count: number): Node[] {
+    private acquireFlyNodes(count: number, options?: ResourceCollectOptions): Node[] {
         const flyNodes: Node[] = [];
         for (let i = 0; i < count; i++) {
-            const flyNode = this.acquireFlyNode();
+            const flyNode = this.acquireFlyNode(options);
             if (!flyNode) {
                 break;
             }
@@ -420,14 +458,14 @@ export class CoinFlyToTargetAnim extends Component {
         return flyNodes;
     }
 
-    private acquireFlyNode(): Node | null {
-        let node = this.flyPool.get();
+    private acquireFlyNode(options?: ResourceCollectOptions): Node | null {
+        const poolKey = this._getFlyPoolKey(options);
+        const pool = this._getFlyPool(poolKey);
+        let node = pool.get();
         if (!node) {
-            if (this.flyerTemplate && isValid(this.flyerTemplate)) {
-                node = instantiate(this.flyerTemplate);
-            } else if (this.flyPrototypeNode && isValid(this.flyPrototypeNode)) {
-                node = instantiate(this.flyPrototypeNode);
-            } else {
+            const template = this._getFlyTemplateNode(options);
+            if (template) node = instantiate(template);
+            else {
                 warn('CoinFlyToTargetAnim: unable to create fly node');
                 return null;
             }
@@ -435,6 +473,7 @@ export class CoinFlyToTargetAnim extends Component {
 
         node.parent = this.node;
         node.active = true;
+        (node as any)._coinFlyPoolKey = poolKey;
         return node;
     }
 
@@ -454,7 +493,7 @@ export class CoinFlyToTargetAnim extends Component {
         }
 
         node.active = false;
-        this.flyPool.put(node);
+        this._getFlyPool((node as any)._coinFlyPoolKey || 'default').put(node);
     }
 
     private applyTexturesToFlyNode(flyNode: Node, textures?: SpriteFrame[]): void {

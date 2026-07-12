@@ -1,124 +1,124 @@
 
 Daniel.png
-size: 262,269
+size: 206,347
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 dagaomao
-  rotate: true
-  xy: 178, 76
+  rotate: false
+  xy: 93, 61
   size: 100, 57
   orig: 100, 57
   offset: 0, 0
   index: -1
 eyebrow-l
   rotate: false
-  xy: 32, 3
+  xy: 172, 4
   size: 18, 11
   orig: 18, 11
   offset: 0, 0
   index: -1
 eyebrow-r
   rotate: false
-  xy: 2, 3
+  xy: 152, 29
   size: 28, 11
   orig: 28, 11
   offset: 0, 0
   index: -1
 eyelash-l
-  rotate: true
-  xy: 237, 158
+  rotate: false
+  xy: 182, 17
   size: 18, 17
   orig: 18, 17
   offset: 0, 0
   index: -1
 eyelash-r
-  rotate: true
-  xy: 213, 17
+  rotate: false
+  xy: 161, 42
   size: 23, 17
   orig: 23, 17
   offset: 0, 0
   index: -1
 eyewhite-l
-  rotate: true
-  xy: 232, 4
+  rotate: false
+  xy: 93, 20
   size: 20, 18
   orig: 20, 18
   offset: 0, 0
   index: -1
 eyewhite-r
   rotate: true
-  xy: 219, 51
+  xy: 186, 36
   size: 23, 17
   orig: 23, 17
   offset: 0, 0
   index: -1
 handwear-l
-  rotate: false
-  xy: 127, 77
+  rotate: true
+  xy: 2, 120
   size: 49, 190
   orig: 49, 190
   offset: 0, 0
   index: -1
 handwear-r
   rotate: true
-  xy: 2, 16
+  xy: 2, 171
   size: 49, 194
   orig: 49, 194
   offset: 0, 0
   index: -1
 irides-l
   rotate: false
-  xy: 67, 2
+  xy: 115, 14
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 irides-r
-  rotate: false
-  xy: 52, 2
+  rotate: true
+  xy: 192, 2
   size: 13, 12
   orig: 13, 12
   offset: 0, 0
   index: -1
 kaixinzui
-  rotate: true
-  xy: 198, 42
+  rotate: false
+  xy: 93, 40
   size: 32, 19
   orig: 32, 19
   offset: 0, 0
   index: -1
 lian
-  rotate: false
-  xy: 178, 178
+  rotate: true
+  xy: 2, 36
   size: 82, 89
   orig: 82, 89
   offset: 0, 0
   index: -1
 mouth
-  rotate: true
-  xy: 198, 8
+  rotate: false
+  xy: 127, 46
   size: 32, 13
   orig: 32, 13
   offset: 0, 0
   index: -1
 topwear
-  rotate: false
-  xy: 2, 67
+  rotate: true
+  xy: 2, 222
   size: 123, 200
   orig: 123, 200
   offset: 0, 0
   index: -1
 youbiyan
-  rotate: true
-  xy: 237, 138
+  rotate: false
+  xy: 152, 12
   size: 18, 15
   orig: 18, 17
   offset: 0, 1
   index: -1
 zuobiyan
-  rotate: true
-  xy: 232, 26
+  rotate: false
+  xy: 127, 28
   size: 23, 16
   orig: 24, 17
   offset: 0, 1

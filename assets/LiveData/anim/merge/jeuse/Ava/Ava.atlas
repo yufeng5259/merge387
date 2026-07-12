@@ -1,6 +1,6 @@
 
 Ava.png
-size: 189,473
+size: 190,473
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -26,8 +26,8 @@ eyebrow-r
   offset: 0, 0
   index: -1
 eyelash-l
-  rotate: false
-  xy: 126, 191
+  rotate: true
+  xy: 171, 197
   size: 20, 17
   orig: 20, 17
   offset: 0, 0
@@ -40,8 +40,8 @@ eyelash-r
   offset: 0, 0
   index: -1
 eyewhite-l
-  rotate: false
-  xy: 171, 203
+  rotate: true
+  xy: 155, 200
   size: 16, 14
   orig: 16, 14
   offset: 0, 0
@@ -55,7 +55,7 @@ eyewhite-r
   index: -1
 face
   rotate: true
-  xy: 109, 2
+  xy: 109, 6
   size: 80, 77
   orig: 80, 77
   offset: 0, 0
@@ -69,7 +69,7 @@ front_hair
   index: -1
 handwear-l
   rotate: false
-  xy: 121, 84
+  xy: 126, 88
   size: 56, 105
   orig: 56, 105
   offset: 0, 0
@@ -83,14 +83,14 @@ handwear-r
   index: -1
 irides-l
   rotate: true
-  xy: 155, 204
+  xy: 126, 196
   size: 12, 13
   orig: 12, 13
   offset: 0, 0
   index: -1
 irides-r
-  rotate: true
-  xy: 106, 179
+  rotate: false
+  xy: 141, 195
   size: 12, 13
   orig: 12, 13
   offset: 0, 0

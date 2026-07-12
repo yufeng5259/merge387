@@ -3,6 +3,7 @@ import { UIWindow } from '../GameKit/ui/UIWindow';
 import { UserInfoModel } from './UserInfoModel';
 import { EnterCloseAnim } from '../GameKit/ui/EnterCloseAnim';
 import { BadgeItem } from '../GameKit/Editor/BadgeItem';
+import LevelUpDisplayLock from '../game/user/LevelUpDisplayLock';
 
 import { User } from '../game/user/User';
 import { UserItems } from '../game/items/UserItems';
@@ -450,10 +451,6 @@ export default class GameMainWindow extends UIWindow {
         })*/
         
 
-        chain.add("NewPlayerPackWindow", () => {
-            return Game.SUserStatus.GetNewPlayerLeftTime() != 0
-        })
-
         // 支付活动
         payActivities.sort((a,b) => {
             return a.SubType() - b.SubType()
@@ -624,7 +621,14 @@ export default class GameMainWindow extends UIWindow {
         }.bind(this))
         //等级
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.LevelUpEvent, "GameMainWindow", function(data) {
+            const oldLevel = Game.SUser.Level()
+            const oldExpInfo = Game.SUser.GetLevelExpInfo()
             Game.SUser.updateData(data)
+            const newLevel = Game.SUser.Level()
+            const levelRewards = data.rewards || []
+            if (levelRewards.length > 0) {
+                LevelUpDisplayLock.Begin({ oldLevel, newLevel, oldExpInfo, rewards: levelRewards })
+            }
             if (typeof SR !== 'undefined' && SR.SRMerge && SR.SRMerge.SyncLocalOrders) {
                 SR.SRMerge.SyncLocalOrders('LevelUpEvent')
             }
@@ -870,6 +874,18 @@ export default class GameMainWindow extends UIWindow {
             if (this.isFreeShopMetaAvailable(meta, shopData.dailyState[i])) return true
         }
         return false
+    }
+    getShopFreeRewardBadgeCount() {
+        return Number(this._shopFreeRewardCount) || 0
+    }
+    getShopFreeRewardCount(shopData) {
+        if (!shopData || !shopData.daily || !shopData.dailyState || typeof Meta === "undefined") return 0
+        let count = 0
+        for (let i = 0; i < shopData.daily.length; i++) {
+            const meta = Meta.MetaManager.GetMeta(Meta.MetaType.ShopDaily, shopData.daily[i])
+            if (this.isFreeShopMetaAvailable(meta, shopData.dailyState[i])) count++
+        }
+        return count
     }
     isFreeShopMetaAvailable(meta, state) {
         if (!meta || !state || !meta.CurrencyType) return false
@@ -1128,6 +1144,14 @@ export default class GameMainWindow extends UIWindow {
         if (!skeleton || !skeleton.findBone) return null
         if (skeleton.updateWorldTransform) skeleton.updateWorldTransform()
         return skeleton.findBone(MAIN_BUTTON2A_BADGE.boneName)
+    }
+    getMainButton2aBonePosition(bone) {
+        if (!bone) return null
+        try {
+            return new Vec2(bone.worldX || 0, bone.worldY || 0)
+        } catch (e) {
+            return null
+        }
     }
     getMainButton2aAnimationDuration(skeleton, animName, defaultDuration) {
         if (!skeleton || !skeleton.findAnimation) return defaultDuration

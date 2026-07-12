@@ -1,4 +1,6 @@
 ﻿import { _decorator, Camera, Canvas, Component, Node, Prefab, Rect, UITransform, instantiate, isValid, js, view } from 'cc';
+import { BlockInputEvents, Button, UIOpacity } from 'cc';
+
 const { ccclass, property } = _decorator;
 
 let canMultiWindow = ["DialogWindow", "GetRewardWindow", "SimpleRewardWindow", "MergeTypeWindow"];
@@ -108,10 +110,17 @@ export class UIRoot extends Component {
         const resName = 'window/' + windowPath;
         cce.loadRes(resName, Prefab, (err: any, winPre: Prefab) => {
             if (err || !winPre) return;
+            (winPre as any).data.active = false;
             const wnd = instantiate(winPre);
             wnd.parent = this.node;
             wnd.setPosition(3000, 3000);
             wnd.getComponent(UITransform)!.setContentSize(2, 2);
+
+            const opacity = wnd.getComponent(UIOpacity) || wnd.addComponent(UIOpacity);
+            opacity.opacity = 0;
+            wnd.getComponentsInChildren(Button).forEach(button => button.enabled = false);
+            wnd.getComponentsInChildren(BlockInputEvents).forEach(blockInput => blockInput.enabled = false);
+
             wnd.active = true;
             AppMain.instance.scheduleOnce(() => {
                 wnd.active = false;
