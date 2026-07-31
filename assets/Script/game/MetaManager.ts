@@ -4,11 +4,15 @@ import '../GameKit/ui/meta/WindowOrderMeta'
 import './mergeTutorial/meta/MergeTutorialMeta'
 import './mergeTutorial/meta/MergeTutorialGuideMeta'
 import './mergeTutorial/meta/MergeTutorialTriggerMeta'
+import './weakGuide/meta/WeakGuideMeta'
+import './weakGuide/meta/WeakGuideConditionMeta'
 import './shop/meta/ShopDailyMeta'
 import './shop/meta/ShopHotMeta'
 import './merge/OrderMeta'
 import './merge/OrderSlotMeta'
 import './story/meta/StoryMeta'
+import './user/meta/CashShopMeta'
+import './user/meta/CashTaskMeta'
 
 const MetaManager: any = {_data:{}}
 
@@ -87,6 +91,8 @@ Meta.MetaType = {
     MergeTutorial:"mergeTutorial",
     MergeTutorialGuide:"mergeTutorialGuide",
     MergeTutorialTrigger:"mergeTutorialTrigger",
+    WeakGuide:"weakGuide",
+    WeakGuideCondition:"weakGuideCondition",
 
     Story:"Story"
 
@@ -137,6 +143,8 @@ MetaManager.init = function(rawMetaData: any) {
     this.SetTypeData(Meta.MetaType.MergeTutorial, Meta.MergeTutorialMeta.MakeEntity, metaData[Meta.MetaType.MergeTutorial] || {})
     this.SetTypeData(Meta.MetaType.MergeTutorialGuide, Meta.MergeTutorialGuideMeta.MakeEntity, metaData[Meta.MetaType.MergeTutorialGuide] || {})
     this.SetTypeData(Meta.MetaType.MergeTutorialTrigger, Meta.MergeTutorialTriggerMeta.MakeEntity, metaData[Meta.MetaType.MergeTutorialTrigger] || {})
+    this.SetTypeData(Meta.MetaType.WeakGuide, Meta.WeakGuideMeta.MakeEntity, metaData[Meta.MetaType.WeakGuide] || {})
+    this.SetTypeData(Meta.MetaType.WeakGuideCondition, Meta.WeakGuideConditionMeta.MakeEntity, metaData[Meta.MetaType.WeakGuideCondition] || {})
     this.SetTypeData(Meta.MetaType.DailyBonusReward, Meta.DailyBonusRewardMeta.MakeEntity, metaData[Meta.MetaType.DailyBonusReward] || {})
     this.SetTypeData(Meta.MetaType.CardSets, Meta.CardSetsMeta.MakeEntity, metaData[Meta.MetaType.CardSets] || {})
     this.SetTypeData(Meta.MetaType.Card, Meta.CardMeta.MakeEntity, metaData[Meta.MetaType.Card] || {})

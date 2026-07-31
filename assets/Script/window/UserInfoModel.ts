@@ -1,4 +1,4 @@
-import { _decorator, Button, Color, Component, ImageAsset, Label, LabelOutline, Node, ProgressBar, Sprite, SpriteFrame, Texture2D, Tween, tween, UITransform, Vec3 } from 'cc';
+import { _decorator, Button, Color, Component, ImageAsset, isValid, Label, LabelOutline, Node, ProgressBar, Sprite, SpriteFrame, Texture2D, Tween, tween, UITransform, Vec3 } from 'cc';
 import NumAnim from '../GameKit/ui/NumAnim';
 import { bindGuardedClick } from '../GameKit/ui/TouchClickGuard';
 import LevelUpDisplayLock from '../game/user/LevelUpDisplayLock';
@@ -87,6 +87,13 @@ export class UserInfoModel extends Component {
     public apDisplayLocked = false;
     public lockedShowAp: any = null;
     private _pendingResourceNumAnims: Record<string, { from: number; to: number; duration: number }> = {};
+    private _deferredResourceNumAnims: Record<string, { from: number; to: number; duration: number }> = {};
+    private _resourceGainHolds: Record<string, boolean> = {};
+    private _resourceGainHoldValues: Record<string, number> = {};
+    private _resourceGainFlights: Record<string, { target: number }> = {};
+    private _resourceGainAutoPlay: Record<string, () => void> = {};
+    private _displayedResourceValues: Record<string, number> = {};
+    private _lastPresentedResourceTargets: Record<string, number> = {};
     public genderMale: Node | null = null;
     public genderFemale: Node | null = null;
 
@@ -94,6 +101,13 @@ export class UserInfoModel extends Component {
     }
 
     public onLoad() {
+    }
+
+    public canOperateP4GlobalUi() {
+        const tutorialManager = Game.MergeTutorialManager;
+        if (tutorialManager?.ShouldBlockForceGuideGlobalUi?.()) return false;
+        if (tutorialManager?.ShouldBlockP4GlobalUi?.()) return false;
+        return true;
     }
 
     public show(User: any) {
@@ -122,6 +136,7 @@ export class UserInfoModel extends Component {
 
             if (this.avatarSprite) {
                 bindGuardedClick(this.avatarSprite.node, this, () => {
+                    if (!this.canOperateP4GlobalUi()) return;
                     UIRoot.instance.openChildWindow('AvatarWindow', { user: this.User });
                 });
             }
@@ -142,6 +157,7 @@ export class UserInfoModel extends Component {
         this.setStar();
         this.setShield();
         this.setVip();
+        this.refreshLevelUpResourceDisplay();
     }
 
     public update(dt: number) {
@@ -154,10 +170,27 @@ export class UserInfoModel extends Component {
     }
 
     public onClose() {
+        this.clearResourceGainPresentation();
+        this.closeUserInfo();
         this.closeCoin();
         this.closeAp();
+        this.closeCash();
         this.closeShield();
         this.closeVip();
+    }
+
+    public onDestroy() {
+        this.onClose();
+    }
+
+    public closeUserInfo() {
+        GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.UserInfoEvent, this.uuid);
+    }
+
+    public closeCash() {
+        if (this.cashLabel && this.isSelf) {
+            GameKit.WebEvent.UnRegisterEvent(GameKit.WebEvent.EventName.CashEvent, this.uuid);
+        }
     }
 
     public onDisable() {
@@ -181,6 +214,14 @@ export class UserInfoModel extends Component {
 
     public _setAp() {
         if (!this.User) {
+            return;
+        }
+        const lockedValue = this.getLevelUpLockedResourceValue(Game.Content.Types.Ap);
+        if (lockedValue != null) {
+            this.apStop = true;
+            this.showAp = lockedValue;
+            this.stopResourceNumAnimAt(Game.Content.Types.Ap, lockedValue);
+            this.setApWithNum(lockedValue);
             return;
         }
         if (this.apDisplayLocked) {
@@ -208,6 +249,7 @@ export class UserInfoModel extends Component {
         }
         if (this.btnCashAdd && this.isSelf) {
             this.btnCashAdd.node.on('click', () => {
+                if (!this.canOperateP4GlobalUi()) return;
                 if (GamePlay.instance.isBusy()) {
                     return;
                 }
@@ -217,6 +259,12 @@ export class UserInfoModel extends Component {
     }
 
     public updateCash() {
+        const lockedValue = this.getLevelUpLockedResourceValue(Game.Content.Types.Cash);
+        if (lockedValue != null) {
+            this.stopResourceNumAnimAt(Game.Content.Types.Cash, lockedValue);
+            if (this.cashLabel) this.cashLabel.string = String(lockedValue);
+            return;
+        }
         if (this.getPendingResourceNumAnim(Game.Content.Types.Cash)) return;
         if (this.cashLabel) {
             this.cashLabel.string = String(this.User.Cash());
@@ -352,6 +400,14 @@ export class UserInfoModel extends Component {
     }
 
     public updateAp(dt: number) {
+        const lockedValue = this.getLevelUpLockedResourceValue(Game.Content.Types.Ap);
+        if (lockedValue != null) {
+            this.apStop = true;
+            this.showAp = lockedValue;
+            this.stopResourceNumAnimAt(Game.Content.Types.Ap, lockedValue);
+            this.setApWithNum(lockedValue);
+            return;
+        }
         if (this.apRemainTime == null) {
             return;
         }
@@ -401,6 +457,7 @@ export class UserInfoModel extends Component {
         }
         if (this.btnCoinAdd) {
             this.btnCoinAdd.node.on('click', () => {
+                if (!this.canOperateP4GlobalUi()) return;
                 if (GamePlay.instance.isBusy()) {
                     return;
                 }
@@ -417,6 +474,12 @@ export class UserInfoModel extends Component {
     }
 
     public updateCoin() {
+        const lockedValue = this.getLevelUpLockedResourceValue(Game.Content.Types.Coin);
+        if (lockedValue != null) {
+            this.stopResourceNumAnimAt(Game.Content.Types.Coin, lockedValue);
+            if (this.labelCoin) this.labelCoin.string = GameKit.StringUtil.formatNumber(lockedValue);
+            return;
+        }
         if (this.getPendingResourceNumAnim(Game.Content.Types.Coin)) return;
         if (this.labelCoin) {
             this.labelCoin.string = GameKit.StringUtil.formatNumber(this.User.Coin());
@@ -471,7 +534,256 @@ export class UserInfoModel extends Component {
         this.playLabelNumAnim(this.cashLabel, from, to, duration);
     }
 
+    public normalizeResourceContentType(contentType: any) {
+        const type = Number(contentType);
+        if (type === Game.Content.Types.ShopCoin) return Game.Content.Types.Coin;
+        return type === Game.Content.Types.Coin || type === Game.Content.Types.Ap || type === Game.Content.Types.Cash ? type : null;
+    }
+
+    public getResourceKey(contentType: any) {
+        const type = this.normalizeResourceContentType(contentType);
+        return type == null ? null : String(type);
+    }
+
+    public isMainResourceUserInfo() {
+        return typeof GameMainWindow !== 'undefined' && GameMainWindow.instance?.userinfo === this;
+    }
+
+    public getUserResourceValue(contentType: any) {
+        const type = this.normalizeResourceContentType(contentType);
+        const user = this.User || Game.SUser;
+        if (!user || type == null) return null;
+        if (type === Game.Content.Types.Coin && user.Coin) return Number(user.Coin());
+        if (type === Game.Content.Types.Ap && user.Ap) return Number(user.Ap());
+        if (type === Game.Content.Types.Cash && user.Cash) return Number(user.Cash());
+        return null;
+    }
+
+    public getResourceValueFromEvent(data: any, contentType: any) {
+        if (!data) return this.getUserResourceValue(contentType);
+        if (data.__to != null) return Number(data.__to);
+        const type = this.normalizeResourceContentType(contentType);
+        if (type === Game.Content.Types.Coin && data.coin != null) return Number(data.coin);
+        if (type === Game.Content.Types.Ap && data.ap != null) return Number(data.ap);
+        if (type === Game.Content.Types.Cash && data.cash != null) return Number(data.cash);
+        return this.getUserResourceValue(type);
+    }
+
+    public setDisplayedResourceValue(contentType: any, value: number) {
+        const key = this.getResourceKey(contentType);
+        const numericValue = Number(value);
+        if (key != null && isFinite(numericValue)) this._displayedResourceValues[key] = numericValue;
+    }
+
+    public isResourceGainHeld(contentType: any) {
+        const key = this.getResourceKey(contentType);
+        return key != null && this._resourceGainHolds[key] === true;
+    }
+
+    public getResourceGainHoldValue(contentType: any) {
+        const key = this.getResourceKey(contentType);
+        if (key == null) return null;
+        const value = Number(this._resourceGainHoldValues[key]);
+        return isFinite(value) ? value : null;
+    }
+
+    public holdResourceGain(contentType: any, from: number) {
+        const type = this.normalizeResourceContentType(contentType);
+        const key = this.getResourceKey(type);
+        if (key == null) return false;
+        this._resourceGainHolds[key] = true;
+        this.cancelAutoResourceGain(type);
+        const value = Number(from);
+        if (isFinite(value)) {
+            this._resourceGainHoldValues[key] = value;
+            this.stopResourceNumAnimAt(type, value, true);
+            if (type === Game.Content.Types.Ap) { this.apStop = true; this.showAp = value; }
+        }
+        return true;
+    }
+
+    public releaseResourceGainHold(contentType: any) {
+        const key = this.getResourceKey(contentType);
+        if (key == null) return;
+        delete this._resourceGainHolds[key];
+        delete this._resourceGainHoldValues[key];
+    }
+
+    public prepareResourceGain(contentType: any, options: any = {}) {
+        const type = this.normalizeResourceContentType(contentType);
+        const key = this.getResourceKey(type);
+        if (key == null) return false;
+        const to = options.to != null ? Number(options.to) : Number(this.getUserResourceValue(type));
+        const pending = this.getPendingResourceNumAnim(type);
+        let from = options.from != null ? Number(options.from) : Number(pending?.from ?? this.getCurrentResourceLabelNum(type));
+        const count = Number(options.count);
+        if (!isFinite(from) && isFinite(to) && isFinite(count)) from = to - count;
+        if (!isFinite(from) || !isFinite(to) || to <= from) return false;
+        if (pending && to <= Number(pending.to)) return true;
+        const presentedTarget = Number(this._lastPresentedResourceTargets[key]);
+        if (!pending && isFinite(presentedTarget) && to <= presentedTarget) return true;
+        const flight = this._resourceGainFlights[key];
+        if (flight && pending && to > Number(flight.target)) {
+            const deferred = this._deferredResourceNumAnims[key];
+            const deferredFrom = deferred ? Math.min(deferred.from, flight.target) : flight.target;
+            this._deferredResourceNumAnims[key] = { from: deferredFrom, to, duration: this.getResourceNumAnimDuration(deferredFrom, to, options.duration) };
+            return true;
+        }
+        this.stopResourceNumAnimAt(type, from, true);
+        this.queueResourceNumAnim(type, from, to, this.getResourceNumAnimDuration(from, to, options.duration));
+        if (type === Game.Content.Types.Ap) { this.apStop = true; this.showAp = from; }
+        if (options.hold === true) this.holdResourceGain(type, from);
+        if (options.autoPlay === true && !this.isResourceGainHeld(type)) this.scheduleAutoResourceGain(type);
+        return true;
+    }
+
+    public prepareResourceGains(contents: any[], options: any = {}) {
+        const totals: Record<string, { contentType: any; count: number }> = {};
+        for (const rawContent of contents || []) {
+            const content = Game.Content.FromContent(rawContent);
+            if (!content) continue;
+            const type = this.normalizeResourceContentType(content.Type());
+            const key = this.getResourceKey(type);
+            const count = Number(content.Count());
+            if (key == null || !isFinite(count) || count <= 0) continue;
+            totals[key] ||= { contentType: type, count: 0 };
+            totals[key].count += count;
+        }
+        const plans: any[] = [];
+        for (const key in totals) {
+            const total = totals[key];
+            const to = Number(options.toValues?.[key] ?? this.getUserResourceValue(total.contentType));
+            const pending = this.getPendingResourceNumAnim(total.contentType);
+            const from = Number(options.fromValues?.[key] ?? pending?.from ?? Math.max(0, to - total.count));
+            if (!isFinite(from) || !isFinite(to) || to <= from) continue;
+            this.prepareResourceGain(total.contentType, { from, to, count: total.count, hold: options.hold !== false, autoPlay: options.autoPlay === true });
+            plans.push({ contentType: total.contentType, count: total.count, from, to });
+        }
+        return plans;
+    }
+
+    public scheduleAutoResourceGain(contentType: any) {
+        const type = this.normalizeResourceContentType(contentType);
+        const key = this.getResourceKey(type);
+        if (key == null || this.isResourceGainHeld(type)) return;
+        this.cancelAutoResourceGain(type);
+        const play = () => {
+            delete this._resourceGainAutoPlay[key];
+            if (!isValid(this.node) || this.isResourceGainHeld(type)) return;
+            const pending = this.getPendingResourceNumAnim(type);
+            if (pending) this.playResourceGainAnim(type, { count: pending.to - pending.from });
+        };
+        this._resourceGainAutoPlay[key] = play;
+        this.scheduleOnce(play, 0);
+    }
+
+    public cancelAutoResourceGain(contentType: any) {
+        const key = this.getResourceKey(contentType);
+        if (key == null) return;
+        const play = this._resourceGainAutoPlay[key];
+        if (play) this.unschedule(play);
+        delete this._resourceGainAutoPlay[key];
+    }
+
+    public getResourceGainFallbackWorldPos() {
+        return isValid(UIRoot.instance?.node) ? UIRoot.instance.node.worldPosition.clone() : null;
+    }
+
+    public playResourceGainAnim(contentType: any, options: any = {}) {
+        const type = this.normalizeResourceContentType(contentType);
+        const key = this.getResourceKey(type);
+        if (key == null) { options.cb?.(); return false; }
+        this.cancelAutoResourceGain(type);
+        this.releaseResourceGainHold(type);
+        let pending = this.getPendingResourceNumAnim(type);
+        const requestedTo = Number(options.to ?? this.getUserResourceValue(type));
+        if (!pending) {
+            const lastTarget = Number(this._lastPresentedResourceTargets[key]);
+            if (isFinite(lastTarget) && isFinite(requestedTo) && requestedTo <= lastTarget) { options.cb?.(); return false; }
+            this.prepareResourceGain(type, { from: options.from, to: requestedTo, count: options.count, duration: options.duration });
+            pending = this.getPendingResourceNumAnim(type);
+        }
+        if (!pending) { options.cb?.(); return false; }
+        if (this._resourceGainFlights[key]) { options.cb?.(); return true; }
+        const fromWorldPos = options.fromWorldPos || (isValid(options.fromNode) ? options.fromNode.worldPosition.clone() : this.getResourceGainFallbackWorldPos());
+        const mergeNodeUI = GamePlay.instance?.mergeRoot?.mergeNodeUI;
+        const mainWindow = GameMainWindow.instance;
+        const targetNode = mergeNodeUI?.getUserInfoResourceTargetNode?.(this, type);
+        let count = Number(options.count);
+        if (!isFinite(count) || count <= 0) count = pending.to - pending.from;
+        if (!fromWorldPos || !mergeNodeUI?.PlayCoinFlyToTargetAnimNew || !mainWindow?.coinFlyToTargetAnim || !targetNode) {
+            this.playPendingResourceNumAnim(type);
+            options.cb?.();
+            return false;
+        }
+        const flightTarget = Number(pending.to);
+        this._resourceGainFlights[key] = { target: flightTarget };
+        const finish = () => {
+            delete this._resourceGainFlights[key];
+            const deferred = this._deferredResourceNumAnims[key];
+            if (deferred) { delete this._deferredResourceNumAnims[key]; this.queueResourceNumAnim(type, deferred.from, deferred.to, deferred.duration); }
+            const nextPending = this.getPendingResourceNumAnim(type);
+            const presented = Number(this._lastPresentedResourceTargets[key]);
+            if (nextPending && isFinite(presented) && presented >= flightTarget && nextPending.to > presented) {
+                this.playResourceGainAnim(type, { count: nextPending.to - presented, cb: options.cb });
+                return;
+            }
+            if (nextPending) this.playPendingResourceNumAnim(type);
+            options.cb?.();
+        };
+        mergeNodeUI.PlayCoinFlyToTargetAnimNew(fromWorldPos, count, options.textures || null, type, options.toWorldPos, finish, options.flyOptions);
+        return true;
+    }
+
+    public cancelResourceGain(contentType: any, refresh = true) {
+        const type = this.normalizeResourceContentType(contentType);
+        const key = this.getResourceKey(type);
+        if (key == null) return;
+        this.cancelAutoResourceGain(type);
+        delete this._resourceGainHolds[key]; delete this._resourceGainHoldValues[key]; delete this._resourceGainFlights[key];
+        delete this._pendingResourceNumAnims[key]; delete this._deferredResourceNumAnims[key];
+        const value = Number(this.getUserResourceValue(type));
+        if (isFinite(value)) this._lastPresentedResourceTargets[key] = value;
+        if (refresh && isFinite(value)) this.setResourceLabelNum(type, value);
+    }
+
+    public clearResourceGainPresentation() {
+        for (const key in this._resourceGainAutoPlay) this.unschedule(this._resourceGainAutoPlay[key]);
+        this._pendingResourceNumAnims = {};
+        this._deferredResourceNumAnims = {};
+        this._resourceGainHolds = {};
+        this._resourceGainHoldValues = {};
+        this._resourceGainFlights = {};
+        this._resourceGainAutoPlay = {};
+    }
+
+    public getLevelUpLockedResourceValue(contentType: any) {
+        if (!this.isSelf || !LevelUpDisplayLock.IsResourceLocked(contentType)) return null;
+        return LevelUpDisplayLock.GetDisplayResourceValue(this.User, contentType);
+    }
+
+    public refreshLevelUpResourceDisplay() {
+        if (!this.isSelf) return;
+        for (const type of [Game.Content.Types.Ap, Game.Content.Types.Coin, Game.Content.Types.Cash]) {
+            const value = this.getLevelUpLockedResourceValue(type);
+            if (value != null) { this.stopResourceNumAnimAt(type, value); this.setResourceLabelNum(type, value); }
+        }
+        this.updateCoin();
+        this.updateCash();
+    }
+
+    public stopResourceNumAnimAt(contentType: any, value: number, keepPending = false) {
+        const key = this.getResourceKey(contentType);
+        if (!keepPending && key != null) delete this._pendingResourceNumAnims[key];
+        const label = contentType === Game.Content.Types.Coin ? this.labelCoin : contentType === Game.Content.Types.Ap ? (this.labelAp || this.labelApFull) : contentType === Game.Content.Types.Cash ? this.cashLabel : null;
+        const numAnim = label?.getComponent(NumAnim);
+        if (!numAnim) return;
+        numAnim.stopAt(Number(value) || 0);
+    }
+
     public playResourceNumAnimFromEvent(data: any, contentType: any) {
+        const lockedValue = this.getLevelUpLockedResourceValue(contentType);
+        if (lockedValue != null) { this.stopResourceNumAnimAt(contentType, lockedValue); this.setResourceLabelNum(contentType, lockedValue); return true; }
         if (!data || data.__resourceAnim !== true || data.__from == null || data.__to == null || data.__from === data.__to) return false;
         const duration = this.getResourceNumAnimDuration(data.__from, data.__to, data.__animDuration);
         if (data.__animOnArrive === true) {
@@ -486,7 +798,17 @@ export class UserInfoModel extends Component {
     }
 
     public queueResourceNumAnim(contentType: any, from: number, to: number, duration: number) {
-        this._pendingResourceNumAnims[String(contentType)] = { from, to, duration };
+        const key = this.getResourceKey(contentType);
+        if (key == null || !isFinite(from) || !isFinite(to) || to <= from) return null;
+        const existing = this._pendingResourceNumAnims[key];
+        if (existing && to >= existing.to) {
+            existing.from = Math.min(existing.from, from);
+            existing.to = to;
+            existing.duration = this.getResourceNumAnimDuration(existing.from, to, duration);
+            return existing;
+        }
+        this._pendingResourceNumAnims[key] = { from, to, duration };
+        return this._pendingResourceNumAnims[key];
     }
 
     public playPendingResourceNumAnim(contentType: any) {
@@ -494,8 +816,12 @@ export class UserInfoModel extends Component {
         const anim = this._pendingResourceNumAnims[key];
         if (!anim) return false;
         delete this._pendingResourceNumAnims[key];
+        this.cancelAutoResourceGain(contentType);
+        this.releaseResourceGainHold(contentType);
         const current = this.getCurrentResourceLabelNum(contentType);
         const from = current == null ? anim.from : current;
+        LevelUpDisplayLock.UpdateDisplayResourceValue(contentType, anim.to);
+        this._lastPresentedResourceTargets[key] = Number(anim.to);
         return this.playResourceNumAnim(contentType, from, anim.to, this.getResourceNumAnimDuration(from, anim.to, anim.duration));
     }
 

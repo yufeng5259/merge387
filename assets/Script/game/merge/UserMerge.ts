@@ -105,7 +105,11 @@ export class UserMerge {
             hardSequenceIndex: 0,
             nextRandomOrderId: 100000000,
             nextRecycleOrderId: 200000000,
+            slotChargePolicyVersion: 2,
             slotStates: {},
+            slotTypeStates: {},
+            waitingForLevelUpgrade: false,
+            levelOrderAllCompleteNotified: {},
             lastCompletedOrder: null
         }
     }
@@ -203,10 +207,14 @@ export class UserMerge {
             this.NormalizeSnapshotData()
             return this
         }
+        let prevPendingRewards = Object.prototype.hasOwnProperty.call(data, 'pendingRewards')
+            ? this.ClonePendingRewardsForTutorial(this.data.pendingRewards)
+            : null
         for (var key in data) {
             this.data[key] = data[key]
         }
         this.NormalizeSnapshotData()
+        if (prevPendingRewards) this.NotifyPendingRewardsUpdatedForTutorial(prevPendingRewards)
         return this
     }
     Data() {
@@ -606,10 +614,27 @@ export class UserMerge {
     }
     /**更新临时数据 */
     UpdateMergePendingRewards(pendingRewards) {
+        let prevPendingRewards = this.ClonePendingRewardsForTutorial(this.data.pendingRewards)
         if (pendingRewards !== undefined && pendingRewards !== null) {
             this.data.pendingRewards = pendingRewards
         }
         this.NormalizeSnapshotData()
+        this.NotifyPendingRewardsUpdatedForTutorial(prevPendingRewards)
+    }
+    NotifyPendingRewardsUpdatedForTutorial(prevPendingRewards) {
+        if (global.Game && Game.MergeTutorialManager && Game.MergeTutorialManager.NotifyPendingRewardsUpdated) {
+            Game.MergeTutorialManager.NotifyPendingRewardsUpdated(this.data.pendingRewards, prevPendingRewards)
+        }
+    }
+    ClonePendingRewardsForTutorial(pendingRewards) {
+        let clone = {}
+        if (!pendingRewards || typeof pendingRewards !== 'object') return clone
+        for (let key in pendingRewards) {
+            if (!Object.prototype.hasOwnProperty.call(pendingRewards, key)) continue
+            let reward = pendingRewards[key]
+            clone[key] = reward && typeof reward === 'object' ? Object.assign({}, reward) : reward
+        }
+        return clone
     }
     /**
      * "1_-1_-1"

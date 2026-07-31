@@ -89,6 +89,10 @@ class MergeGeneratorCapability {
         return !!(this.tile && this.tile.clock && this.tile.clock.node.active)
     }
 
+    shouldUpdate() {
+        return !!(this.tile && this.tile.clock && this.tile.clock.node.active)
+    }
+
     GetGeneratorInstanceId() {
         return this.generatorInstanceId
     }

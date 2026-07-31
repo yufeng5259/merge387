@@ -68,6 +68,7 @@ export default class SignWindow extends UIWindow {
 
     data: any = null;
     needSign = false;
+    private _isClaimingSignReward = false;
 
     private _clickTxNode: Node | null = null;
     private _monthBubbleOutsideTouchBinded = false;
@@ -967,6 +968,8 @@ export default class SignWindow extends UIWindow {
             return;
         }
 
+        this._isClaimingSignReward = true;
+
         const DD = this.data.signMonthDay + 1;
         const weekMeta = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Week, this.data.signWeekDay);
         const monthMeta = Meta.SignMeta.GetByTypeDay(Meta.SignMeta.Types.Month, DD);
@@ -990,6 +993,7 @@ export default class SignWindow extends UIWindow {
                     res(v);
                 });
                 sr.SetErrorCallBack(() => {
+                    this._isClaimingSignReward = false;
                     if (this.btn) this.btn.interactable = true;
                     rej();
                 });
@@ -1138,9 +1142,15 @@ export default class SignWindow extends UIWindow {
     }
 
     onClose() {
+        this._isClaimingSignReward = false;
         if (this.node) this.node.off(Node.EventType.TOUCH_END, this.onMonthBubbleOutsideTouchEnd, this, true);
         this._monthBubbleOutsideTouchBinded = false;
         this.hideMonthRewardBubbles();
         this.hideClickTx();
+    }
+
+    close() {
+        if (this._isClaimingSignReward && !this.closing) return;
+        super.close();
     }
 }

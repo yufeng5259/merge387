@@ -1,0 +1,400 @@
+{
+  "generatedAt": "2026-07-30T13:53:54.829Z",
+  "counts": {
+    "total": 43,
+    "inScriptScope": 43,
+    "currentSourceMissing": 3,
+    "only-project": 3,
+    "only-external": 10,
+    "modified": 30
+  },
+  "entries": [
+    {
+      "category": "only-project",
+      "reportPath": "Script/window/Menu/InviteAndShareWindow.js",
+      "sourcePath": "assets/Script/window/Menu/InviteAndShareWindow.js",
+      "targetPath": "assets/Script/window/Menu/InviteAndShareWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": false,
+      "targetExists": false
+    },
+    {
+      "category": "only-project",
+      "reportPath": "Script/window/Shop/SuperShieldOpenWindow.js",
+      "sourcePath": "assets/Script/window/Shop/SuperShieldOpenWindow.js",
+      "targetPath": "assets/Script/window/Shop/SuperShieldOpenWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": false,
+      "targetExists": false
+    },
+    {
+      "category": "only-project",
+      "reportPath": "Script/window/Sys/FacebookBindWindow.js",
+      "sourcePath": "assets/Script/window/Sys/FacebookBindWindow.js",
+      "targetPath": "assets/Script/window/Sys/FacebookBindWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": false,
+      "targetExists": false
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/map/BuildingFocusEffect.js",
+      "sourcePath": "assets/Script/game/map/BuildingFocusEffect.js",
+      "targetPath": "assets/Script/game/map/BuildingFocusEffect.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeGuideHooks.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeGuideHooks.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeGuideHooks.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialBusinessAdapter.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialBusinessAdapter.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialBusinessAdapter.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialOperationGuard.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialOperationGuard.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialOperationGuard.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialStateMachine.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialStateMachine.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialStateMachine.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialTargetResolver.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialTargetResolver.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialTargetResolver.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialUIController.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialUIController.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialUIController.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/weakGuide/meta/WeakGuideConditionMeta.js",
+      "sourcePath": "assets/Script/game/weakGuide/meta/WeakGuideConditionMeta.js",
+      "targetPath": "assets/Script/game/weakGuide/meta/WeakGuideConditionMeta.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/game/weakGuide/meta/WeakGuideMeta.js",
+      "sourcePath": "assets/Script/game/weakGuide/meta/WeakGuideMeta.js",
+      "targetPath": "assets/Script/game/weakGuide/meta/WeakGuideMeta.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "only-external",
+      "reportPath": "Script/window/Other/WeakGuideWindow.js",
+      "sourcePath": "assets/Script/window/Other/WeakGuideWindow.js",
+      "targetPath": "assets/Script/window/Other/WeakGuideWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/AppKit/NotificationWrap.js",
+      "sourcePath": "assets/Script/AppKit/NotificationWrap.js",
+      "targetPath": "assets/Script/AppKit/NotificationWrap.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/AppGame.js",
+      "sourcePath": "assets/Script/game/AppGame.js",
+      "targetPath": "assets/Script/game/AppGame.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/GamePlay.js",
+      "sourcePath": "assets/Script/game/GamePlay.js",
+      "targetPath": "assets/Script/game/GamePlay.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/map/MapControlle.js",
+      "sourcePath": "assets/Script/game/map/MapControlle.js",
+      "targetPath": "assets/Script/game/map/MapControlle.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/map/MapElementNode.js",
+      "sourcePath": "assets/Script/game/map/MapElementNode.js",
+      "targetPath": "assets/Script/game/map/MapElementNode.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/map/MapNode.js",
+      "sourcePath": "assets/Script/game/map/MapNode.js",
+      "targetPath": "assets/Script/game/map/MapNode.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/map/TownUpgradeFlow.js",
+      "sourcePath": "assets/Script/game/map/TownUpgradeFlow.js",
+      "targetPath": "assets/Script/game/map/TownUpgradeFlow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/merge/LevelMergeNode.js",
+      "sourcePath": "assets/Script/game/merge/LevelMergeNode.js",
+      "targetPath": "assets/Script/game/merge/LevelMergeNode.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/merge/MergeDes.js",
+      "sourcePath": "assets/Script/game/merge/MergeDes.js",
+      "targetPath": "assets/Script/game/merge/MergeDes.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/merge/MergeOrder.js",
+      "sourcePath": "assets/Script/game/merge/MergeOrder.js",
+      "targetPath": "assets/Script/game/merge/MergeOrder.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/merge/MergeUI.js",
+      "sourcePath": "assets/Script/game/merge/MergeUI.js",
+      "targetPath": "assets/Script/game/merge/MergeUI.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/merge/UserMerge.js",
+      "sourcePath": "assets/Script/game/merge/UserMerge.js",
+      "targetPath": "assets/Script/game/merge/UserMerge.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/mergeTutorial/MergeTutorialManager.js",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialManager.js",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialManager.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/game/MetaManager.js",
+      "sourcePath": "assets/Script/game/MetaManager.js",
+      "targetPath": "assets/Script/game/MetaManager.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/GameKit/extentions/ccExtention.js",
+      "sourcePath": "assets/Script/GameKit/extentions/ccExtention.js",
+      "targetPath": "assets/Script/GameKit/extentions/ccExtention.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/GameKit/global.js",
+      "sourcePath": "assets/Script/GameKit/global.js",
+      "targetPath": "assets/Script/GameKit/global.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Card/CardChestOpenWindow.js",
+      "sourcePath": "assets/Script/window/Card/CardChestOpenWindow.js",
+      "targetPath": "assets/Script/window/Card/CardChestOpenWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Common/GetRewardWindow.js",
+      "sourcePath": "assets/Script/window/Common/GetRewardWindow.js",
+      "targetPath": "assets/Script/window/Common/GetRewardWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Common/LevelUpGetRewardWindow.js",
+      "sourcePath": "assets/Script/window/Common/LevelUpGetRewardWindow.js",
+      "targetPath": "assets/Script/window/Common/LevelUpGetRewardWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/GameMainWindow.js",
+      "sourcePath": "assets/Script/window/GameMainWindow.js",
+      "targetPath": "assets/Script/window/GameMainWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/LoginWindow.js",
+      "sourcePath": "assets/Script/window/LoginWindow.js",
+      "targetPath": "assets/Script/window/LoginWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Map/MapBuildMaxLevelWindow.js",
+      "sourcePath": "assets/Script/window/Map/MapBuildMaxLevelWindow.js",
+      "targetPath": "assets/Script/window/Map/MapBuildMaxLevelWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Map/MapBuildStageUpgradeWindow.js",
+      "sourcePath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.js",
+      "targetPath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Map/MapBuildUpgradeWindow.js",
+      "sourcePath": "assets/Script/window/Map/MapBuildUpgradeWindow.js",
+      "targetPath": "assets/Script/window/Map/MapBuildUpgradeWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Map/MapBuyBuildWindow.js",
+      "sourcePath": "assets/Script/window/Map/MapBuyBuildWindow.js",
+      "targetPath": "assets/Script/window/Map/MapBuyBuildWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Menu/MenuWindow.js",
+      "sourcePath": "assets/Script/window/Menu/MenuWindow.js",
+      "targetPath": "assets/Script/window/Menu/MenuWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Merge/StoreWindow.js",
+      "sourcePath": "assets/Script/window/Merge/StoreWindow.js",
+      "targetPath": "assets/Script/window/Merge/StoreWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Shop/ShopWindow.js",
+      "sourcePath": "assets/Script/window/Shop/ShopWindow.js",
+      "targetPath": "assets/Script/window/Shop/ShopWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/Story/StoryWindow.js",
+      "sourcePath": "assets/Script/window/Story/StoryWindow.js",
+      "targetPath": "assets/Script/window/Story/StoryWindow.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    },
+    {
+      "category": "modified",
+      "reportPath": "Script/window/UserInfoModel.js",
+      "sourcePath": "assets/Script/window/UserInfoModel.js",
+      "targetPath": "assets/Script/window/UserInfoModel.ts",
+      "inScriptScope": true,
+      "sourceExists": true,
+      "targetExists": true
+    }
+  ]
+}

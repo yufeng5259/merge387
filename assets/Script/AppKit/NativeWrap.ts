@@ -152,6 +152,14 @@ NativeWrap.Vibrate=function(duration=200){
     if (sw != null && !(sw == "true" || sw > 0)) return
     return NativeWrap.call("SDKHandleClass", "Vibrate",{duration:duration})
 }
+NativeWrap.VibrateShortSequence = function(count = 3, duration = 45, interval = 150) {
+    count = Math.min(4, Math.max(2, Math.floor(Number(count) || 3)))
+    duration = Math.max(1, Math.floor(Number(duration) || 45))
+    interval = Math.max(duration, Math.floor(Number(interval) || 150))
+    ;(NativeWrap._vibrateSequenceTimers || []).forEach((timer: ReturnType<typeof setTimeout>) => clearTimeout(timer))
+    NativeWrap._vibrateSequenceTimers = []
+    for (let i = 0; i < count; i++) NativeWrap._vibrateSequenceTimers.push(setTimeout(() => NativeWrap.Vibrate(duration), i * interval))
+}
 
 NativeWrap.openComment = function() {
     let appId = ""

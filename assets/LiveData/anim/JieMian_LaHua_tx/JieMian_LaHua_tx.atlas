@@ -1,48 +1,118 @@
 
 JieMian_LaHua_tx.png
-size: 145,142
+size: 758,296
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-k1
-  rotate: true
-  xy: 121, 44
-  size: 96, 22
-  orig: 100, 22
-  offset: 4, 0
-  index: -1
 konfi_1
   rotate: false
-  xy: 59, 45
-  size: 60, 95
-  orig: 60, 95
+  xy: 340, 104
+  size: 120, 190
+  orig: 120, 190
   offset: 0, 0
+  index: -1
+konfi_10
+  rotate: true
+  xy: 294, 101
+  size: 193, 44
+  orig: 194, 44
+  offset: 1, 0
+  index: -1
+konfi_11
+  rotate: true
+  xy: 462, 130
+  size: 164, 102
+  orig: 164, 102
+  offset: 0, 0
+  index: -1
+konfi_12
+  rotate: false
+  xy: 560, 11
+  size: 78, 117
+  orig: 100, 117
+  offset: 5, 0
+  index: -1
+konfi_13
+  rotate: true
+  xy: 640, 150
+  size: 144, 116
+  orig: 144, 116
+  offset: 0, 0
+  index: -1
+konfi_14
+  rotate: true
+  xy: 401, 16
+  size: 86, 102
+  orig: 86, 102
+  offset: 0, 0
+  index: -1
+konfi_15
+  rotate: false
+  xy: 505, 10
+  size: 53, 118
+  orig: 86, 118
+  offset: 21, 0
+  index: -1
+konfi_16
+  rotate: true
+  xy: 98, 10
+  size: 56, 136
+  orig: 86, 136
+  offset: 11, 0
   index: -1
 konfi_2
   rotate: false
-  xy: 2, 37
-  size: 55, 103
-  orig: 55, 103
+  xy: 182, 88
+  size: 110, 206
+  orig: 110, 206
   offset: 0, 0
   index: -1
-konfi__kr_1
+konfi_3
   rotate: false
-  xy: 2, 2
-  size: 39, 33
-  orig: 39, 33
+  xy: 2, 10
+  size: 94, 284
+  orig: 94, 284
   offset: 0, 0
   index: -1
-konfi__kr_2
+konfi_4
   rotate: false
-  xy: 59, 3
-  size: 41, 40
-  orig: 41, 40
+  xy: 305, 3
+  size: 94, 96
+  orig: 94, 96
   offset: 0, 0
   index: -1
-konfi__kr_3
-  rotate: false
-  xy: 102, 2
-  size: 41, 40
-  orig: 41, 40
+konfi_5
+  rotate: true
+  xy: 640, 42
+  size: 106, 112
+  orig: 106, 112
   offset: 0, 0
+  index: -1
+konfi_6
+  rotate: false
+  xy: 98, 68
+  size: 82, 226
+  orig: 82, 226
+  offset: 0, 0
+  index: -1
+konfi_7
+  rotate: true
+  xy: 566, 132
+  size: 78, 66
+  orig: 78, 66
+  offset: 0, 0
+  index: -1
+konfi_8
+  rotate: true
+  xy: 566, 212
+  size: 82, 70
+  orig: 82, 80
+  offset: 0, 5
+  index: -1
+konfi_9
+  rotate: false
+  xy: 236, 2
+  size: 67, 84
+  orig: 82, 85
+  offset: 3, 1
   index: -1

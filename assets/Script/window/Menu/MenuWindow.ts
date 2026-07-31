@@ -1,7 +1,7 @@
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import BadgeItem from '../../GameKit/Editor/BadgeItem';
 import { UserInfoModel } from '../UserInfoModel';
-import VillageNewsWindow from './VillageNewsWindow';
+import MessageInBoxWindow from '../Message/MessageInBoxWindow';
 import { _decorator, Button, Color, find, game, instantiate, Label, LabelOutline, Node, ProgressBar, RichText, Sprite, SpriteFrame, sys, tween, Tween, UITransform, Vec2, Vec3, v2, Widget, sp } from 'cc';
 import Guild from '../../game/guild/Guild';
 /**
@@ -119,7 +119,7 @@ class MenuWindow extends UIWindow {
 
         let NewMessageNum = GameKit.DataCache.GetData("NewMessageNum")
         if (NewMessageNum == null) NewMessageNum = 0
-        let presentNum = VillageNewsWindow.getPresentNum()
+        let presentNum = MessageInBoxWindow.getPresentNum()
         this.badge_villagenews.SetNum(NewMessageNum + presentNum)
 
         let GiftsNum = GameKit.DataCache.GetData("GiftsNum")
@@ -513,7 +513,7 @@ class MenuWindow extends UIWindow {
 
     /** 点击事件： */
     event_5_news() {
-        this.event_back(null, () => { UIRoot.instance.openChildWindow("VillageNewsWindow") }, C.IN_ANIMATION_TIME * 1000)
+        this.event_back(null, () => { UIRoot.instance.openChildWindow("MessageInBoxWindow") }, C.IN_ANIMATION_TIME * 1000)
         AppKit.LogEventWrap.logEvent("menu_news")
     }
 
@@ -548,8 +548,6 @@ class MenuWindow extends UIWindow {
         this.event_back(null, () => { UIRoot.instance.openChildWindow("InviteWindow") }, C.IN_ANIMATION_TIME * 1000)
         AppKit.LogEventWrap.logEvent("menu_invite")
 
-        // this.event_back(null, () => { UIRoot.instance.openChildWindow("InviteAndShareWindow") }, C.IN_ANIMATION_TIME * 1000)
-        // AppKit.LogEventWrap.logEvent("menu_InviteAndShareWindow")
     }
 
     /** 点击事件： */

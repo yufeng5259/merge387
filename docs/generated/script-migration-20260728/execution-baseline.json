@@ -1,0 +1,995 @@
+{
+  "generatedAt": "2026-07-28T09:39:57.949Z",
+  "source": {
+    "root": "F:/qiguobing/git/creator/test/coinbeach2415",
+    "commit": "9fcc805bfed66bae23f047cc72c2dc15faee6972",
+    "statusRows": [
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/HotUpdate.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/NativeWrap.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/NotificationWrap.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/PaymentWrap.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/UserWrap.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/AppMain.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/BackKeyManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/GameEvent.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/SoundManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/extentions/ccExtention.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/global.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/ar.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/de.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/en.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/es.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/fr.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/he.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/it.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/ja.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/ko.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/pt.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/zh.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/i18n/data/zh_tw.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/AutoWindowQueue.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/ChangeSceneManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/ChildWindowChain.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/UICantClick.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/UIWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/list/List.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/UIRoot.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/BatchRequest.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/MergeBoardLogic.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/MergeOrderLogic.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/NetRequest.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/ServerRequest.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/WebEvent.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/__game__.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/AppGame.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/GamePlay.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/MetaManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/activity/ActivityManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/activity/meta/giftActivityMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/activity/meta/packrewardMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/card/UserCard.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/items/CommonAssets.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/items/Content.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/items/ContentCheck.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/items/ContentModel.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/items/request/SRItems.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/AStarPathfinder.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/AStarPathfinder.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapControlle.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapElementNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapNode.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathExample.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathExample.js.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathManager.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathManager.js.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MovableElement.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MovableElement.js.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/PathFollower.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/PathFollower.js.meta"
+      },
+      {
+        "status": " D",
+        "path": "\"assets/Script/game/map/README_/347/247/273/345/212/250/345/205/203/347/264/240/347/263/273/347/273/237.md\""
+      },
+      {
+        "status": " D",
+        "path": "\"assets/Script/game/map/README_/347/247/273/345/212/250/345/205/203/347/264/240/347/263/273/347/273/237.md.meta\""
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/TownUpgradeFlow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/UserMap.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/LevelMergeNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeDes.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeEffectManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeElementsMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeGeneraterMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeItem.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeOrder.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeOrderGroup.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeOrdersMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeRoleNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeTempLibary.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeTypes.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeUI.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeUtil.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/OrderSlotMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/UserMerge.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/effect/ShouJiJinBi_tx.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/request/SRMerge.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/mergeTutorial/MergeTutorialManager.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/quest/meta/SignMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/quest/request/SRSign.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/shop/ShopIconNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/shop/request/SRShop.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/slot/UserSlot.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/story/UserStory.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/user/User.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/user/request/SRLogin.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/village/request/SRVillage.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Card/CardAllSetWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Card/CardChestOpenWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Common/GetRewardWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Common/LevelUpGetRewardWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Common/OpeningVideoWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Common/OpeningVideoWindow.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/GameMainWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Item/LimitCardDesWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/LoginWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Map/MapBuildStageUpgradeWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Map/MapBuildUpgradeWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Map/MapBuyBuildWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Map/MapElementWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Map/MapElementWindow.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/InviteWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/MenuWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Menu/MessageMailDetailWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Menu/MessageMailDetailWindow.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/SettingLanguageWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/VillageNewsWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Merge/MergeTypeWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Merge/StoreWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Other/MergeTutorialWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Other/RichText.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Other/WatchGetSpinWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Quest/CashTaskWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Quest/SignWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ApNotEnoughDialogWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Shop/CashShopWindow.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Shop/CashShopWindow.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/PaySuccessWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopBuySucessWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopChestItem.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopHotItem.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopSaleItem.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/StoryWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/prefabs/ChapterImageNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/prefabs/ChapterTalkNode.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Story/prefabs/StoryRole.js"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Story/prefabs/StoryRole.js.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/prefabs/TalkUpgradeNode.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Sys/AccountSwitchWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Sys/AvatarWindow.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/UserInfoModel.js"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/VIP/VIPDailyRewardWindow.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/SoundVolumeConfig.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/SoundVolumeConfig.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/SoundVolumeItem.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/SoundVolumeItem.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/ui/MaskRoundRect.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/GameKit/ui/MaskRoundRect.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/Web/IdentityTrace.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/Web/IdentityTrace.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/map/TownUpgradeTransactionState.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/map/TownUpgradeTransactionState.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/MergeEmptyTaskGuide.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/MergeEmptyTaskGuide.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/CangKu_tx.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/CangKu_tx.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/shop/ShopData.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/shop/ShopData.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/story/meta/StoryMeta.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/story/meta/StoryMeta.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/user/LevelUpDisplayLock.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/user/LevelUpDisplayLock.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Message.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Message/MessageInBoxWindow.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Message/MessageInBoxWindow.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Message/MessageMailDetailWindow.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Message/MessageMailDetailWindow.js.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Story/GeneralStotyWindow.js"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/window/Story/GeneralStotyWindow.js.meta"
+      }
+    ]
+  },
+  "target": {
+    "root": "H:/projects/test/test1",
+    "commit": "763955e67384604169bd5dc5af91c446557463bc",
+    "statusRows": [
+      {
+        "status": " M",
+        "path": "assets/Script/AppKit/HotUpdate.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/BackKeyManager.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/NumAnim.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/GameKit/ui/UICantClick.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/BatchRequest.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/MergeOrderLogic.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/NetRequest.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/Web/ServerRequest.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/AppGame.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/MetaManager.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/AStarPathfinder.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/AStarPathfinder.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapControlle.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapElementNode.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/MapNode.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathExample.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathExample.ts.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathManager.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MapPathManager.ts.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MovableElement.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/MovableElement.ts.meta"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/PathFollower.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/map/PathFollower.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/TownUpgradeFlow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/map/UserMap.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/LevelMergeNode.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeDes.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeEffectManager.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeEmptyTaskGuide.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeGeneraterMeta.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeItem.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeOrder.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeRoleNode.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/MergeUI.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/OrderSlotMeta.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/UserMerge.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/merge/request/SRMerge.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/mergeTutorial/MergeTutorialManager.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/user/LevelUpDisplayLock.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/game/user/User.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/GameMainWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/InviteWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Menu/MenuWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Merge/MergeTypeWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Message/MessageInBoxWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Message/MessageInBoxWindow.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Message/MessageMailDetailWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Message/MessageMailDetailWindow.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Other/MergeTutorialWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Quest/CashTaskWindow.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Shop/CashShopWindow.ts"
+      },
+      {
+        "status": " D",
+        "path": "assets/Script/window/Shop/CashShopWindow.ts.meta"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Shop/ShopWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/GeneralStotyWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Story/prefabs/ChapterTalkNode.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/Sys/AvatarWindow.ts"
+      },
+      {
+        "status": " M",
+        "path": "assets/Script/window/UserInfoModel.ts"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/Web/IdentityTrace.ts"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/Web/IdentityTrace.ts.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/map/TownUpgradeTransactionState.ts"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/map/TownUpgradeTransactionState.ts.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/CangKu_tx.ts"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/CangKu_tx.ts.meta"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.ts"
+      },
+      {
+        "status": "??",
+        "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.ts.meta"
+      }
+    ]
+  },
+  "report": {
+    "path": "F:/qiguobing/git/creator/test/coinbeach2415/docs/assets-diff-report.md",
+    "lastWriteTime": "2026-07-27T09:59:12.967Z"
+  },
+  "exclusions": [
+    {
+      "sourcePath": "assets/Script/GameKit/ui/list/List.js",
+      "targetPath": "assets/Script/GameKit/ui/list/List.ts",
+      "sha256": "82B007A3BABB43C4B4A5247616EA8F82107592E102CDE8ECD1D17ECF85215FB5"
+    },
+    {
+      "sourcePath": "assets/Script/GameKit/ui/list/ListItem.js",
+      "targetPath": "assets/Script/GameKit/ui/list/ListItem.ts",
+      "sha256": "AD14D99C9122366116CFF91658737D7D46E4F3286319B1B09A4FF8AC09357563"
+    }
+  ]
+}

@@ -33,19 +33,41 @@ export class UserMap {
         this.data[key] = value
         return this
     }
+    resetElementFromMeta(muserMap: any, meta: any) {
+        muserMap.mapID = meta.MapId()
+        muserMap.id = meta.BuildID()
+        muserMap.maxLv = meta.MaxLevel()
+        muserMap.level = 0
+        muserMap.stage = -1
+        muserMap.stageShow = 0
+        muserMap.activated = false
+        muserMap.unlocked = false
+        muserMap.complte = false
+    }
+    applyVillageElementData(muserMap: any, element: any, completed: boolean) {
+        const mapID = element.mapId != null ? element.mapId : (element.mapID != null ? element.mapID : element.map_id)
+        const buildID = element.buildId != null ? element.buildId : (element.buildID != null ? element.buildID : element.build_id)
+        if (mapID != null) muserMap.mapID = mapID
+        if (buildID != null) muserMap.id = buildID
+        muserMap.level = Number(element.level) || 0
+        let stage = element.stage != null ? Number(element.stage) : 0
+        if (isNaN(stage)) stage = 0
+        muserMap.stage = stage
+        muserMap.stageShow = stage
+        muserMap.activated = element.activated != null ? !!element.activated : (completed || muserMap.level > 0)
+        muserMap.unlocked = true
+        muserMap.complte = completed
+    }
     //初始化服务器数据
     initMapData(){
         let obj = Meta.MetaManager.GetMetas(Meta.MetaType.Map)
-        let buildObj= Game.SUserVillage.GetBuildings();
-        let comObj=Game.SUserVillage.GetComplete();
+        let buildObj= Game.SUserVillage.GetBuildings() || {};
+        let comObj=Game.SUserVillage.GetComplete() || {};
         for (const key in obj) {
             if (Object.hasOwnProperty.call(obj, key)) {
                 const element = obj[key];
                 var muserMap = this.initElement(element.MBId());
-                muserMap.maxLv = element.MaxLevel();
-                muserMap.stage=-1;
-                muserMap.stageShow=0;
-                //muserMap.unlocked = true;
+                this.resetElementFromMeta(muserMap, element);
             }
         }
         for (const key in buildObj) {
@@ -53,13 +75,7 @@ export class UserMap {
                 const element = buildObj[key];
                 var muserMap = this.initElement(key)
                 //{"1_2":{mapId:1,buildId:1,level:0}}
-                muserMap.mapID = element.mapId;
-                muserMap.id = element.buildId;
-                muserMap.level = element.level;
-                muserMap.stage = Number(element.stage) || 0;
-                muserMap.stageShow=muserMap.stage;
-                muserMap.activated = element.activated != null ? !!element.activated : muserMap.level > 0;
-                muserMap.unlocked = true;
+                this.applyVillageElementData(muserMap, element, false);
             }
         }
         for (const key in comObj) {
@@ -67,14 +83,7 @@ export class UserMap {
                 const element = comObj[key];
                 var muserMap = this.initElement(key)
                 //{"1_2":{mapId:1,buildId:1,level:0}}
-                muserMap.mapID = element.mapId;
-                muserMap.id = element.buildId;
-                muserMap.level = element.level;
-                muserMap.stage = Number(element.stage) || 0;
-                muserMap.stageShow=muserMap.stage;
-                muserMap.activated = element.activated != null ? !!element.activated : true;
-                muserMap.unlocked = true;
-                muserMap.complte = true;
+                this.applyVillageElementData(muserMap, element, true);
             }
         }
         console.log("init building data", Game.SUserMap.data);
@@ -167,7 +176,7 @@ export class UserMap {
         let element = this.initElement(sid);
         let meta = Meta.MapMeta.GetMetaById(element.mapID, element.id);
         if (!meta) return false;
-        return Game.SUser.Level() >= meta.LimitLv();
+        return !!element.unlocked;
     }
 
     IsBought(sid: any) {
@@ -242,6 +251,18 @@ export class UserMap {
         for (let i = 0; i < parts.length; i++) {
             if (!parts[i]) continue;
             let content = Game.Content.FromString(parts[i]);
+            if (content) rewards.push(content);
+        }
+        return rewards;
+    }
+
+    ParseBuildRewards(rewardStr: any) {
+        const rewards = [];
+        if (!rewardStr) return rewards;
+        const parts = String(rewardStr).split(/[;_]/);
+        for (let i = 0; i < parts.length; i++) {
+            if (!parts[i]) continue;
+            const content = Game.Content.FromString(parts[i]);
             if (content) rewards.push(content);
         }
         return rewards;

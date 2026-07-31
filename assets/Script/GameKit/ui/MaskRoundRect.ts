@@ -37,14 +37,28 @@ export default class MaskRoundRect extends Component {
     }
 
     public refreshMask() {
-        const mask = this.node.getComponent(Mask) || this.node.addComponent(Mask);
+        const mask = this.getMask();
         mask.type = Mask.Type.GRAPHICS_STENCIL;
+        this.patchMask(mask);
         this.drawMask();
+    }
+
+    public getMask() {
+        return this.node.getComponent(Mask) || this.node.addComponent(Mask);
+    }
+
+    public getGraphics(mask?: Mask) {
+        const node = mask?.node || this.node;
+        return node.getComponent(Graphics) || node.addComponent(Graphics);
+    }
+
+    public patchMask(mask: Mask) {
+        mask.type = Mask.Type.GRAPHICS_STENCIL;
     }
 
     public drawMask() {
         const transform = this.node.getComponent(UITransform);
-        const graphics = this.node.getComponent(Graphics) || this.node.addComponent(Graphics);
+        const graphics = this.getGraphics();
         if (!transform || !graphics) return false;
         const size = transform.contentSize;
         if (size.width <= 0 || size.height <= 0) return false;
@@ -61,6 +75,21 @@ export default class MaskRoundRect extends Component {
         this.lastAnchorY = anchor.y;
         this.lastRadius = this.radius;
         return true;
+    }
+
+    public drawRoundRectPath(graphics: Graphics, x: number, y: number, width: number, height: number, radius: number) {
+        const right = x + width;
+        const top = y + height;
+        graphics.moveTo(x + radius, y);
+        graphics.lineTo(right - radius, y);
+        graphics.quadraticCurveTo(right, y, right, y + radius);
+        graphics.lineTo(right, top - radius);
+        graphics.quadraticCurveTo(right, top, right - radius, top);
+        graphics.lineTo(x + radius, top);
+        graphics.quadraticCurveTo(x, top, x, top - radius);
+        graphics.lineTo(x, y + radius);
+        graphics.quadraticCurveTo(x, y, x + radius, y);
+        graphics.close();
     }
 
     public setRadius(radius: number) {

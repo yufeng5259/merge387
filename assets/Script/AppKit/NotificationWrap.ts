@@ -26,6 +26,16 @@ NotificationWrap.Init = function() {
     this.inited = true
 }
 
+NotificationWrap.RequestAuthorization = function() {
+    if (this.authorizationRequested) return
+    this.authorizationRequested = true
+
+    if (AppKit.SdkManager.IsNative() && AppKit.SdkManager.IsIos()) {
+        AppKit.NativeWrap.call("NotificationClass", "RequestAuthorization", null, () => {
+        })
+    }
+}
+
 NotificationWrap.SetMessage = function(time, title, message) {
     let obj: any = {}
     obj.title = title

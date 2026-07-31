@@ -1,69 +1,90 @@
 
 DaDiTu_HaiLang_01.png
-size: 1037,1130
+size: 2764,1856
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 01
-  rotate: true
-  xy: 621, 2
+  rotate: false
+  xy: 2293, 6
   size: 345, 243
   orig: 345, 243
   offset: 0, 0
   index: -1
 02
-  rotate: true
-  xy: 704, 592
+  rotate: false
+  xy: 2374, 1007
   size: 226, 331
   orig: 241, 331
   offset: 0, 0
   index: -1
 03
   rotate: true
-  xy: 2, 12
+  xy: 2064, 30
   size: 806, 227
   orig: 806, 260
   offset: 0, 33
   index: -1
 04
-  rotate: true
-  xy: 507, 349
+  rotate: false
+  xy: 2293, 251
   size: 469, 195
   orig: 469, 214
   offset: 0, 0
   index: -1
 05
-  rotate: false
-  xy: 2, 820
+  rotate: true
+  xy: 2064, 838
   size: 1016, 308
   orig: 1016, 308
   offset: 0, 0
   index: -1
 06
   rotate: true
-  xy: 231, 304
+  xy: 2374, 1340
   size: 514, 274
   orig: 514, 278
   offset: 0, 4
   index: -1
 07
-  rotate: false
-  xy: 231, 8
+  rotate: true
+  xy: 2293, 448
   size: 388, 294
   orig: 388, 294
   offset: 0, 0
   index: -1
 08
   rotate: false
-  xy: 704, 424
+  xy: 2374, 839
   size: 318, 166
   orig: 318, 166
   offset: 0, 0
   index: -1
 09
   rotate: true
-  xy: 866, 89
+  xy: 2589, 504
   size: 333, 152
   orig: 333, 152
+  offset: 0, 0
+  index: -1
+huaban10
+  rotate: false
+  xy: 2, 1238
+  size: 2060, 616
+  orig: 2060, 616
+  offset: 0, 0
+  index: -1
+huaban11
+  rotate: false
+  xy: 2, 620
+  size: 2060, 616
+  orig: 2060, 616
+  offset: 0, 0
+  index: -1
+huaban12
+  rotate: false
+  xy: 2, 2
+  size: 2060, 616
+  orig: 2060, 616
   offset: 0, 0
   index: -1

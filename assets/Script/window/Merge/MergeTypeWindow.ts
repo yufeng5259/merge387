@@ -1,4 +1,4 @@
-import { _decorator, instantiate, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
+import { _decorator, instantiate, isValid, Label, Layout, Node, NodePool, ScrollView, UITransform, view, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { ScrollViewTool } from '../../GameKit/ui/ScrollViewTool';
 import List from '../../GameKit/ui/list/List';
@@ -47,6 +47,7 @@ class MergeTypeWindow extends UIWindow {
     baseNodeItem = null
     baseItemNodePool = new NodePool()
     mergeId: any = null
+    playSourceGeneratorHintOnClose = false
 
     onLoad() {
         this.baseItemNodePool=new NodePool();
@@ -62,6 +63,7 @@ class MergeTypeWindow extends UIWindow {
         this.baseItemNodePool=new NodePool();
         let mergeId=showParams.mergeId;
         this.mergeId=mergeId;
+        this.playSourceGeneratorHintOnClose = showParams.playSourceGeneratorHintOnClose === true;
         //当前选中物品meta
         let meta=Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements,mergeId);
         this.nameLabel.string=meta.Name();
@@ -80,6 +82,15 @@ class MergeTypeWindow extends UIWindow {
         this.initlayoutcanbuild(mergeId,3);
         //额外奖励
         this.initlayoutadditional(generateMeta,3);
+    }
+
+    onClose() {
+        if (!this.playSourceGeneratorHintOnClose) return;
+        const gamePlay = GamePlay.instance;
+        if (!gamePlay || gamePlay.currentScene !== GamePlay.Scenes.Slot) return;
+        const mergeUI = gamePlay.mergeRoot?.mergeNodeUI;
+        if (!mergeUI || !isValid(mergeUI.node) || !mergeUI.PlayMergeSourceGeneratorHint) return;
+        mergeUI.PlayMergeSourceGeneratorHint(this.mergeId);
     }
     /**初始化基础物品布局
      * 不显示隐藏，全部显示

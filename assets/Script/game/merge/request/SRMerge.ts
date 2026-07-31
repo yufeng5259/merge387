@@ -6,6 +6,30 @@ const SRMerge: any = {}
 
 SRMerge.DebugMergeOrder = true
 
+SRMerge.NormalizeObtainedPiecesFromSnapshot = (snapshot, reason) => {
+    if (!snapshot || typeof Game === 'undefined' || !Game.MergeBoardLogic?.recordObtainedPiecesFromContainers) return false
+    try {
+        return Game.MergeBoardLogic.recordObtainedPiecesFromContainers(snapshot)
+    } catch (error) {
+        console.warn('NormalizeObtainedPiecesFromSnapshot error', reason, error)
+        return false
+    }
+}
+
+SRMerge.GetNextOrderChargeAt = () => {
+    if (typeof Game === 'undefined' || !Game.SUserMerge || !Game.MergeOrderLogic?.getNextOrderChargeAt) return 0
+    try {
+        return Game.MergeOrderLogic.getNextOrderChargeAt(
+            Game.SUserMerge.GetOrderData(),
+            SRMerge.GetLocalPlayerLevel(),
+            SRMerge.MergeOrderLogiConfigProvider(),
+        ) || 0
+    } catch (error) {
+        console.warn('GetNextOrderChargeAt error', error)
+        return 0
+    }
+}
+
 SRMerge.DebugClone = (value) => {
     try {
         return JSON.parse(JSON.stringify(value))

@@ -1,75 +1,89 @@
 
 HecHengJieMian_beijing.png
-size: 1048,664
+size: 1193,645
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 baolei
-  rotate: false
-  xy: 681, 280
+  rotate: true
+  xy: 681, 76
   size: 266, 227
   orig: 270, 231
   offset: 3, 1
   index: -1
 di
   rotate: true
-  xy: 561, 22
-  size: 640, 118
+  xy: 2, 2
+  size: 641, 118
   orig: 642, 144
-  offset: 1, 4
+  offset: 0, 4
   index: -1
 tiankong
   rotate: true
-  xy: 2, 22
+  xy: 122, 3
   size: 640, 557
   orig: 642, 562
   offset: 1, 4
   index: -1
 youshu
-  rotate: false
-  xy: 858, 2
+  rotate: true
+  xy: 910, 23
   size: 142, 244
   orig: 147, 248
   offset: 5, 2
   index: -1
 youxiaoshu1
   rotate: true
-  xy: 949, 317
+  xy: 1114, 438
   size: 62, 77
   orig: 68, 83
   offset: 3, 3
   index: -1
 youxiaoshu2
-  rotate: false
-  xy: 949, 248
+  rotate: true
+  xy: 681, 3
   size: 71, 67
   orig: 78, 76
   offset: 3, 5
   index: -1
 youxiaoshu3
-  rotate: true
-  xy: 949, 381
+  rotate: false
+  xy: 1114, 344
   size: 72, 92
   orig: 78, 98
   offset: 3, 3
   index: -1
 yun1
   rotate: false
-  xy: 949, 455
-  size: 95, 52
-  orig: 105, 60
-  offset: 4, 4
+  xy: 681, 502
+  size: 459, 141
+  orig: 471, 163
+  offset: 6, 4
   index: -1
 yun2
   rotate: false
-  xy: 681, 509
-  size: 365, 153
-  orig: 370, 163
-  offset: 1, 4
+  xy: 681, 369
+  size: 431, 131
+  orig: 444, 143
+  offset: 1, 5
+  index: -1
+yun4
+  rotate: false
+  xy: 750, 14
+  size: 130, 60
+  orig: 150, 75
+  offset: 10, 8
+  index: -1
+yun5
+  rotate: true
+  xy: 1142, 558
+  size: 85, 39
+  orig: 100, 51
+  offset: 8, 6
   index: -1
 zuoshu
-  rotate: false
-  xy: 681, 12
+  rotate: true
+  xy: 910, 167
   size: 175, 266
   orig: 179, 269
   offset: 0, 3

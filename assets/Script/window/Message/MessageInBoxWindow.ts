@@ -7,6 +7,17 @@ const { ccclass, property } = _decorator;
 export default class MessageInBoxWindow extends UIWindow {
     static windowPath = 'Message/MessageInBoxWindow';
 
+    static getPresentNum() {
+        const presentList = GameKit.DataCache.GetData('UserPresentList') || {};
+        const currentTime = GameKit.TimeUtil.getCurrentTime();
+        return Object.keys(presentList).reduce((count, id) => {
+            if (id === 'cid') return count;
+            const present = presentList[id];
+            if (!present || (present.expire > 0 && currentTime > present.expire) || present.received) return count;
+            return count + 1;
+        }, 0);
+    }
+
     @property(Component) list: any = null;
     @property(Node) bg: Node | null = null;
     @property(Label) label_no_messge: Label | null = null;
@@ -73,7 +84,10 @@ export default class MessageInBoxWindow extends UIWindow {
     event_collectPresentBatch() {
         const req = SR.SRVillage.collectPresentBatch();
         req.SetCallBack((res: any) => {
-            Object.values(this.presentList).forEach((mail: any) => { if (mail) mail.received = true; });
+            Object.keys(this.presentList).forEach(key => {
+                const mail = this.presentList[key];
+                this.applyReceivedState(mail);
+            });
             GameKit.DataCache.SetData('UserPresentList', this.presentList);
             this.update_mail_item(this.presentList);
             UIRoot.instance.openChildWindow('ShopBuySucessWindow', { rewards: res.rewards, nextWindow: 'none' });
@@ -87,9 +101,21 @@ export default class MessageInBoxWindow extends UIWindow {
     onPresentReceivedFromDetail(present: any) { this.markPresentReceived(present); this.update_mail_item(this.get_mail_data()); }
     hasMailRewards(present: any) { return !!present && !!(present.rewards || present.reward || present.contents); }
     collectPresent(present: any, callback?: Function) { if (!present || present.received) return; const req = SR.SRVillage.collectPresent(present.id); req.SetCallBack((res: any) => { this.markPresentReceived(present); callback?.(res); }); req.Send(); }
-    markPresentReceived(present: any) { if (!present) return; present.received = true; this.updatePresentCache(present); }
+    markPresentReceived(present: any) {
+        if (!present) return;
+        this.applyReceivedState(present);
+        this.updatePresentCache(present);
+    }
+    applyReceivedState(present: any) {
+        if (!present) return;
+        present.received = true;
+        if (present.unread !== undefined) present.unread = false;
+        if (present.read !== undefined) present.read = true;
+        if (present.isRead !== undefined) present.isRead = true;
+        if (present.readed !== undefined) present.readed = true;
+    }
     updatePresentCache(present: any) { const cache = GameKit.DataCache.GetData('UserPresentList') || this.presentList || {}; if (present?.id != null) cache[present.id] = present; GameKit.DataCache.SetData('UserPresentList', cache); }
-    updatePresentBatchCache(res: any) { const cache = res?.presentList || res?.data?.presentList || this.presentList; Object.keys(cache || {}).forEach(id => { if (id !== 'cid' && cache[id]) cache[id].received = true; }); GameKit.DataCache.SetData('UserPresentList', cache || {}); }
+    updatePresentBatchCache(res: any) { const cache = res?.presentList || res?.data?.presentList || this.presentList; Object.keys(cache || {}).forEach(id => { if (id !== 'cid') this.applyReceivedState(cache[id]); }); GameKit.DataCache.SetData('UserPresentList', cache || {}); }
     updateMailStateNodes(itemNode: Node, present: any) { const red = this.getItemNode(itemNode, 'red'); if (red) red.active = this.isMailUnread(present); }
     getItemComponent(root: Node, name: string, comp: any) { return this.getItemNode(root, name)?.getComponent(comp) || null; }
     getItemNode(root: Node, name: string) { return this.find(root, name); }

@@ -109,6 +109,9 @@ export default class GameMainWindow extends UIWindow {
     mapId: any = null;
     haveJokerCard = false;
     shopRedNode: any = null;
+    shopEntryButton: any = null;
+    private _shopFreeRewardCount = 0;
+    btnFirstPurchase: Node | null = null;
     coinAdCache: any = null;
     spinAdCache: any = null;
     oldCoin: any = null;
@@ -143,8 +146,6 @@ export default class GameMainWindow extends UIWindow {
             this.setNodeOpacity(this.btnActivityCenter, 0)
             this.setNodeScale(this.btnLuckyDraw, 0)
             this.setNodeScale(this.labelLuckyDrawTime.node, 0)
-            this.setNodeScale(this.userinfo.btnCoinAdd.node, 0)
-            this.setNodeScale(this.userinfo.btnApAdd.node, 0)
         }
     }
     onShow() {
@@ -176,19 +177,19 @@ export default class GameMainWindow extends UIWindow {
         this.updateInfo()
 
         if (!AppKit.PaymentWrap.PayVisiable()) {
-            this.userinfo.btnCoinAdd.node.active = false
             this.btnNewPlayerPack.active = false
             this.btnCongrats.active = false
             this.btnVip.active = false
-            this.userinfo.btnApAdd.node.active = false
         } else {
             this.btnNewPlayerPack.active = Game.SUserStatus.GetNewPlayerLeftTime() != 0
             this.NewPlayerPackLeftTime = Game.SUserStatus.GetNewPlayerLeftTime()
             this.btnCongrats.active = Game.SUserStatus.DoubleTicketTime() > GameKit.TimeUtil.getCurrentTime()
             this.CongratsLeftTime = Game.SUserStatus.DoubleTicketTime() - GameKit.TimeUtil.getCurrentTime()
             this.btnVip.active = !Game.SUserStatus.IsVip() && AppKit.SdkManager.IsNative() && !G.GameConfig.closeVIP
-            this.userinfo.btnApAdd.node.active = false//!this.btnNewPlayerPack.active && !this.btnVip.active && this.activityLeft.children.length <= 4
         }
+
+        this.refreshNewPlayerPackEntry()
+        this.refreshFirstPurchaseEntry()
 
         this.adshieldAnim.stop()
         this.updateADShieldTip(true)
@@ -379,6 +380,8 @@ export default class GameMainWindow extends UIWindow {
             return GameKit.DataCache.GetData("vipDailyReward") != null
         }, {vipDailyReward: GameKit.DataCache.GetData("vipDailyReward")})
 
+        chain.add("FirstPurchaseWindow", () => false)
+
         //收集排行
         if (GameKit.DataCache.GetData("SlotCollectRankEnd")) {
             let addAps = 0
@@ -424,10 +427,7 @@ export default class GameMainWindow extends UIWindow {
             chain.add("ActivitySlotSymbolRankRewardWindow")
         }
 
-        chain.add("SignWindow", () => {
-            let signData = GameKit.DataCache.GetData("signData")
-            return signData.signWeekDay > signData.signWeekRewards
-        })
+        chain.add("SignWindow", () => this.canAutoOpenSignWindow())
 
         // 新系统开放
         /*chain.add("CardSystemOpenWindow", () => {
@@ -439,19 +439,12 @@ export default class GameMainWindow extends UIWindow {
             }
             return false
         })
-        chain.add("SuperShieldOpenWindow", () => {
-            if (!AppKit.ADWrap.AdEnabled()) return false
-            let systemOpen = GameKit.PlayerPrefs.GetInt("NewSystemOpen_SuperShield", 0)
-            if (systemOpen < 3) {
-                systemOpen++
-                GameKit.PlayerPrefs.SetInt("NewSystemOpen_SuperShield", systemOpen)
-                return true
-            }
-            return false
-        })*/
+        */
         
 
         // 支付活动
+        chain.add("NewPlayerPackWindow", () => this.canAutoOpenNewPlayerPack())
+
         payActivities.sort((a,b) => {
             return a.SubType() - b.SubType()
         })
@@ -660,14 +653,9 @@ export default class GameMainWindow extends UIWindow {
         }.bind(this))
         this.updateActivityBadge()
 
-        GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.StatusEvent, "GameMainWindow", function(data) {
-            this.btnNewPlayerPack.active = Game.SUserStatus.GetNewPlayerLeftTime() != 0
-            this.NewPlayerPackLeftTime = Game.SUserStatus.GetNewPlayerLeftTime()
-            this.btnCongrats.active = Game.SUserStatus.DoubleTicketTime() > GameKit.TimeUtil.getCurrentTime()
-            this.CongratsLeftTime = Game.SUserStatus.DoubleTicketTime() - GameKit.TimeUtil.getCurrentTime()
-            this.btnVip.active = !Game.SUserStatus.IsVip() && AppKit.SdkManager.IsNative() && !G.GameConfig.closeVIP
-            this.userinfo.btnApAdd.node.active = !this.btnNewPlayerPack.active && !this.btnCongrats.active && !this.btnVip.active && this.activityLeft.children.length <= 4
-            this.labelLevelBonus.string = this.getLevelBonusShowLevelString()
+        GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.StatusEvent, "GameMainWindow", function() {
+            this.refreshFirstPurchaseEntry()
+            this.refreshNewPlayerPackEntry()
         }.bind(this))
         
         //礼物事件
@@ -788,11 +776,13 @@ export default class GameMainWindow extends UIWindow {
         AppKit.LeaderBoardWrap.setScore("User_Star", star)
     }
     openFlyToSkyWindow(e,winName){
+        if (!this.canOperateP4GlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow(winName)
     }
     //回调
     openMenu() {
+        if (!this.canOperateP4GlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("MenuWindow")
     }
@@ -823,6 +813,8 @@ export default class GameMainWindow extends UIWindow {
         // AppKit.LogEventWrap.logEvent("GetInviteRewardsWindow")
     }
     openSpinShop() {
+        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateMergeTutorialNodeClick('shop_entry')) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("ShopWindow")
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
@@ -912,6 +904,19 @@ export default class GameMainWindow extends UIWindow {
         let shopBtn = this.findChildByName(this.node, "btnShop")
         this.shopRedNode = shopBtn ? shopBtn.getChildByName("red") : null
         return this.shopRedNode
+    }
+    getShopEntryButton() {
+        if (this.shopEntryButton && isValid(this.shopEntryButton)) return this.shopEntryButton
+        this.shopEntryButton = this.findChildByName(this.node, "btnShop")
+        return this.shopEntryButton
+    }
+    canShowShopEntry() {
+        const manager = Game.MergeTutorialManager
+        return !(manager?.ShouldShowShopEntryButton && !manager.ShouldShowShopEntryButton())
+    }
+    refreshShopEntryVisibility() {
+        const button = this.getShopEntryButton()
+        if (button) button.active = this.canShowShopEntry()
     }
     findChildByName(root, name) {
         if (!root) return null
@@ -1167,7 +1172,65 @@ export default class GameMainWindow extends UIWindow {
         if (!node || !isValid(node) || !node.setSiblingIndex) return
         node.setSiblingIndex(0)
     }
+    canOperateMergeTutorialNodeClick(nodeKey: string) {
+        const tutorialManager = Game.MergeTutorialManager
+        return tutorialManager?.CanOperateNodeClick ? tutorialManager.CanOperateNodeClick(nodeKey) : true
+    }
+    canAutoOpenSignWindow() {
+        const tutorialManager = Game.MergeTutorialManager
+        if (tutorialManager?.CanAutoOpenSignWindow && !tutorialManager.CanAutoOpenSignWindow()) return false
+        if (tutorialManager?.ShouldBlockForceGuideGlobalUi?.()) return false
+        const signData = GameKit.DataCache.GetData("signData")
+        return !!(signData && signData.signWeekDay > signData.signWeekRewards)
+    }
+    canOperateP4GlobalUi() {
+        const tutorialManager = Game.MergeTutorialManager
+        if (tutorialManager?.ShouldBlockForceGuideGlobalUi?.()) return false
+        if (tutorialManager?.ShouldBlockP4GlobalUi?.()) return false
+        return true
+    }
+    getFirstPurchaseButton() {
+        if (!this.btnFirstPurchase || !isValid(this.btnFirstPurchase)) {
+            this.btnFirstPurchase = this.activityLeft?.getChildByName("FirstPurchase") || null
+        }
+        return this.btnFirstPurchase
+    }
+    canShowFirstPurchase() {
+        const tutorialManager = Game.MergeTutorialManager
+        if (tutorialManager?.IsFinished?.() && tutorialManager?.GetTriggerMeta?.(tutorialManager.P4TriggerId) &&
+            tutorialManager?.IsP4Completed && !tutorialManager.IsP4Completed()) return false
+        return false
+    }
+    refreshFirstPurchaseEntry() {
+        const button = this.getFirstPurchaseButton()
+        if (button) button.active = this.canShowFirstPurchase()
+    }
+    canAutoOpenNewPlayerPack() {
+        if (!this.canShowNewPlayerPack()) return false
+        const manager = Game.MergeTutorialManager
+        if (!manager) return true
+        if (manager.IsFinished?.() === false) return false
+        if (manager.GetTriggerMeta?.(manager.P4TriggerId) && manager.IsP4Completed?.() === false) return false
+        if (manager.GetTriggerMeta?.(manager.P5GeneratorTriggerId) && manager.IsP5GeneratorCompleted?.() === false) return false
+        return !manager.ShouldBlockForceGuideGlobalUi?.()
+    }
+    canShowNewPlayerPack() {
+        return !!(AppKit.PaymentWrap.PayVisiable() && Game.SUserStatus && Game.SUserStatus.GetNewPlayerLeftTime() > 0)
+    }
+    refreshNewPlayerPackEntry() {
+        if (!this.btnNewPlayerPack || !Game.SUserStatus) return
+        this.NewPlayerPackLeftTime = Game.SUserStatus.GetNewPlayerLeftTime()
+        this.btnNewPlayerPack.active = this.canShowNewPlayerPack()
+    }
+    formatNewPlayerPackEntryTime(remain) {
+        const value = GameKit.TimeUtil.GetRemainTimeTable(remain)
+        if (value.day > 0) return value.day + "d " + value.hour + "h"
+        if (value.hour > 0) return value.hour + "h " + value.minute + "min"
+        if (value.minute > 0) return value.minute + "min"
+        return value.second + "s"
+    }
     openMerge(){
+        if (!this.canOperateMergeTutorialNodeClick('back_to_board_button')) return false
         GamePlay.instance.changeScene(GamePlay.Scenes.Slot)
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
             Game.MergeTutorialManager.EmitNodeClick('back_to_board_button')
@@ -1385,8 +1448,6 @@ export default class GameMainWindow extends UIWindow {
             this.btnAdSpin.parent.active = false
             Tween.stopAllByTarget(this.btnLuckyDraw.parent)
             this.btnLuckyDraw.parent.active = false
-            this.userinfo.btnCoinAdd.node.active = false
-            this.userinfo.btnApAdd.node.active = false
             if (!CLOSE_Card) this.btnCard.active = false
             this.btnNewPlayerPack.active = false
             this.btnCongrats.active = false
@@ -1413,11 +1474,9 @@ export default class GameMainWindow extends UIWindow {
 
                 Game.ActivityManager.logined()
                 if (AppKit.PaymentWrap.PayVisiable()) {
-                    this.userinfo.btnCoinAdd.node.active = true
                     this.btnNewPlayerPack.active = Game.SUserStatus.GetNewPlayerLeftTime() != 0
                     this.NewPlayerPackLeftTime = Game.SUserStatus.GetNewPlayerLeftTime()
                     this.btnVip.active = !Game.SUserStatus.IsVip() && AppKit.SdkManager.IsNative() && !G.GameConfig.closeVIP
-                    this.userinfo.btnApAdd.node.active = !this.btnNewPlayerPack.active && !this.btnVip.active && this.activityLeft.children.length <= 4
                 }
                 //EnterCloseAnim.playEnter(this.userinfo.btnApAdd.node)
                 if (this.currentScene === GamePlay.Scenes.Village) {
@@ -1441,10 +1500,7 @@ export default class GameMainWindow extends UIWindow {
                             //UIRoot.instance.openChildWindow("NewPlayerPackWindow")
 
                             let chain = new ChildWindowChain()
-                            chain.add("SignWindow", () => {
-                                let signData = GameKit.DataCache.GetData("signData")
-                                return signData.signWeekDay > signData.signWeekRewards
-                            })
+                            chain.add("SignWindow", () => this.canAutoOpenSignWindow())
                             chain.add("CardSystemOpenWindow", () => {
                                 return !this.isCardFeatureClosed()
                             })
@@ -1482,7 +1538,6 @@ export default class GameMainWindow extends UIWindow {
         this.activityBadgeData[badge.meta.Id()] = badge
         if (isleft) {
             badge.node.parent = this.activityLeft
-            this.userinfo.btnApAdd.node.active = false
         } else {
             badge.node.parent = this.activityRight
         }
@@ -1507,7 +1562,6 @@ export default class GameMainWindow extends UIWindow {
             this.activityBadgeData[id].node.destroy()
             this.activityBadgeData[id] = null
         }
-        this.userinfo.btnApAdd.node.active = !this.btnNewPlayerPack.active && !this.btnCongrats.active && !this.btnVip.active && this.activityLeft.children.length <= 4
     }
     openQuestWindow() {
         if (GamePlay.instance.isBusy()) return
@@ -1596,11 +1650,21 @@ export default class GameMainWindow extends UIWindow {
         Game.ActivityManager.checkSubjectCard()
     }
     openFirstPurchase() {
+        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canShowFirstPurchase()) {
+            this.refreshFirstPurchaseEntry()
+            return
+        }
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("FirstPurchaseWindow")
     }
     // NewPlayerPack
     openNewPlayerPack() {
+        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canShowNewPlayerPack()) {
+            this.refreshNewPlayerPackEntry()
+            return
+        }
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("NewPlayerPackWindow")
     }
@@ -1983,8 +2047,6 @@ export default class GameMainWindow extends UIWindow {
     /** 点击事件： */
     event_10_invite() {
         UIRoot.instance.openChildWindow("InviteWindow")//
-
-        //UIRoot.instance.openChildWindow("InviteAndShareWindow")
     }
     /** 点击事件： */
     event_11_setting() {

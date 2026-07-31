@@ -1,4 +1,4 @@
-﻿import { _decorator, Camera, Canvas, Component, Node, Prefab, Rect, UITransform, instantiate, isValid, js, view } from 'cc';
+﻿import { _decorator, Camera, Canvas, Component, Node, Prefab, Rect, UITransform, Vec3, instantiate, isValid, js, tween, view } from 'cc';
 import { BlockInputEvents, Button, UIOpacity } from 'cc';
 
 const { ccclass, property } = _decorator;
@@ -354,6 +354,22 @@ export class UIRoot extends Component {
     }
 
     ScreenShake() {
+        const target = GamePlay.instance?.node as Node | undefined;
+        if (!target) return;
+        const origin = target.position.clone();
+        const duration = 0.03;
+        const distance = 6;
+        const offsets = [
+            [distance, -distance], [-distance, -distance], [-distance, distance], [distance, distance],
+            [distance, -distance], [-distance, -distance], [-distance, distance], [distance, distance],
+            [distance, -distance], [-distance, -distance], [-distance, distance], [distance, distance],
+            [distance, -distance], [-distance, -distance], [-distance, distance], [distance, distance],
+        ];
+        let sequence = tween(target);
+        offsets.forEach(([x, y]) => {
+            sequence = sequence.by(duration, { position: new Vec3(x, y, 0) });
+        });
+        sequence.call(() => target.setPosition(origin)).start();
     }
 
     ShowToast(message: any, params: any = {}, toastViewName?: string) {

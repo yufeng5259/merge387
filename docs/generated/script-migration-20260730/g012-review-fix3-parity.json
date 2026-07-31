@@ -1,0 +1,5927 @@
+{
+  "summary": {
+    "generatedAt": "2026-07-30T14:24:08.810Z",
+    "files": 1,
+    "sourceMethods": 80,
+    "mappedMethods": 80,
+    "missingMethods": 0,
+    "duplicateMethods": 0,
+    "methodsWithFeatureDeltas": 31
+  },
+  "report": [
+    {
+      "rel": "window/Other/MergeTutorialWindow",
+      "sourceMethodCount": 80,
+      "targetMethodCount": 92,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": [
+        {
+          "method": "addFullScreenOnClick",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "addFullScreenOnClick",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "once"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9FAB93EEDCA016E940BEE63477922E11C052F352EC93D0F37FCA970925DB019F"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "once"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "566AF6994B43E26EF12EF402831E95C10A270BB1925A4AB4B13BA7CA8C9648B3"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "applyClickGuidePosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "applyClickGuidePosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal",
+              "getClickGuideTransform"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "324A912B6DD5E7157A1D208233703E6B17769BA48E2B4F529FB7D25A4B91B1CE"
+          },
+          "target": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal",
+              "getClickGuideTransform",
+              "setNodeXY"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A8E06CBEAC9D3F7B652961AFF0A8E40423F0605AE35069568929A2C23E84E78E"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeXY"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "applyDynamicHighlightGeometry",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "applyDynamicHighlightGeometry",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "circleLightMask",
+              "highLightMask"
+            ],
+            "calls": [
+              "applyRoundedRectMaskGeometry",
+              "call",
+              "convertWorldPositionToNodeParentLocal",
+              "setRoundedRectMaskEnabled",
+              "setVisualMaskBlockInputEnabled",
+              "start",
+              "stopDynamicHighlightTween",
+              "to",
+              "toLowerCase",
+              "tween",
+              "updateGuideInputBlockers",
+              "updateHighlightFrame",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "FE05E6DE0549DD93E2DC3324D72F4A4F96A22394BD0F71AB20E39A818D12A0D9"
+          },
+          "target": {
+            "stateWrites": [
+              "circleLightMask",
+              "highLightMask",
+              "highlightTween"
+            ],
+            "calls": [
+              "applyRoundedRectMaskGeometry",
+              "call",
+              "convertWorldPositionToNodeParentLocal",
+              "getOrAddTransform",
+              "setNodeSize",
+              "setNodeXY",
+              "setRoundedRectMaskEnabled",
+              "setVisualMaskBlockInputEnabled",
+              "start",
+              "stopDynamicHighlightTween",
+              "to",
+              "toLowerCase",
+              "tween",
+              "updateGuideInputBlockers",
+              "updateHighlightFrame",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "DE40368C31BC1C827109F19280EECD5CA5E0F3398AFAC3DA9F9082E8B32F7676"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "highlightTween"
+            ],
+            "callsAdded": [
+              "getOrAddTransform",
+              "setNodeSize",
+              "setNodeXY"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "applyGeneratorMergeDragRectHighlight",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "applyGeneratorMergeDragRectHighlight",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "BuildGeneratorMergeDragHighlightGeometry",
+              "applyDynamicHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0179F805490E05725F06A503E1E9D57EA290DB7F70AFD2152C7A174C95CA3E01"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "BuildGeneratorMergeDragHighlightGeometry",
+              "applyDynamicHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AD29206F1746FF884E9A2DAA6CB6D1E077DF1D46844CC2C8B5A40C47609B4EC3"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "applyRoundedRectMaskGeometry",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "applyRoundedRectMaskGeometry",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "setRoundedRectMaskEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "909DA9C8353714489BE6D987626686C195BA69D6E3E4E8889E70E523B7DED59F"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "setNodeSize",
+              "setRoundedRectMaskEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9D8AE4EE75D544416E75B01CA6086ECFC95A47FA139A65F72B483012C8363D29"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeSize"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "applyTwoPointHighlight",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "applyTwoPointHighlight",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "BuildDynamicHighlightGeometry",
+              "applyDynamicHighlightGeometry",
+              "applyGeneratorMergeDragRectHighlight",
+              "shouldUseGeneratorMergeDragRectHighlight"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FAD2E72F3B5DCF74579E1695B1550C255A4B63257FF8389E2F5679C8320DFBF4"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "BuildDynamicHighlightGeometry",
+              "applyDynamicHighlightGeometry",
+              "applyGeneratorMergeDragRectHighlight",
+              "shouldUseGeneratorMergeDragRectHighlight"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "DE8E78BD0F0EBDA23F393B7862F9EDE9073C30EC1F6F7C50D3853AF53EB8774A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "bringSkipNodeToTop",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "bringSkipNodeToTop",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "skipNode"
+            ],
+            "calls": [
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "81F15F7A4CCDE27501DA377DA1E08E3F047D17141A1091E229EB01F2B0E261DB"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "733C95DDB2B6FEB2CAC5FCA703439BF23E5BF5DC60473251D7D57F0CA3BDB36A"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "skipNode"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "clampDialogRect",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "clampDialogRect",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "max",
+              "min"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F796DDE811A71418AC46F810C3C6A6F90DF2A3E390E829F1463F8B5BA992F280"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getComponent",
+              "getVisibleSize",
+              "max",
+              "min",
+              "setContentSize",
+              "setPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0D98B15CAADFC28DD5A22536156A4A629408988737CC3B83B553C4F33AF09240"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent",
+              "getVisibleSize",
+              "setContentSize",
+              "setPosition"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "clearView",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "clearView",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "circleLightMask",
+              "dragGuidePositionKey",
+              "highLightMask"
+            ],
+            "calls": [
+              "forEach",
+              "getGuideGenNode",
+              "hideGuideInputBlockers",
+              "hideHighlightFrame",
+              "hideSkipNode",
+              "off",
+              "stopAllActions",
+              "stopDynamicHighlightTween"
+            ],
+            "events": [
+              "click"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 12,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "10E7D214B155E0212857631FFFD3A4C3A9D6AB9EB5699A96AF855595BD281646"
+          },
+          "target": {
+            "stateWrites": [
+              "circleLightMask",
+              "dragGuidePositionKey",
+              "highLightMask"
+            ],
+            "calls": [
+              "forEach",
+              "getGuideGenNode",
+              "hideGuideInputBlockers",
+              "hideHighlightFrame",
+              "hideSkipNode",
+              "off",
+              "setOpacity",
+              "setScale",
+              "stopAllByTarget",
+              "stopArrow4Tween",
+              "stopDynamicHighlightTween"
+            ],
+            "events": [
+              "click"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 12,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "1F81BBF613205D58282C2AFFD947D71F3C8F36FF9AD0E09D8393EC6977B02E67"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "stopAllActions"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setOpacity",
+              "setScale",
+              "stopAllByTarget",
+              "stopArrow4Tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "convertGuidePositionsToLocal",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "convertGuidePositionsToLocal",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1D7BFD32EA2D37BA22B81BA5915088F776B3367D1EB2BEB9243FC5C0679DC7E0"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1FAD8BF1241F7322CD96E78FFCD29E5E23B7CD3E77FE631A59190E689D16E89A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "convertWorldPositionToNodeParentLocal",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "convertWorldPositionToNodeParentLocal",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "convertToNodeSpaceAR"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B0C0150BF78F2C60D1550DE24AA6199A9A9F8473D84ADD2B2105CC4D9286264C"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "convertToNodeSpaceAR",
+              "getComponent",
+              "toVec3"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A30E927F458B916B1EA2D93A10AECD5DC7C14F87C88FCD3C8E3602F7B4FE5620"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent",
+              "toVec3"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "drawHighlightFrame",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "drawHighlightFrame",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "circle",
+              "clear",
+              "getHighlightFrameColor",
+              "getHighlightFrameLineWidth",
+              "getHighlightFramePadding",
+              "max",
+              "rect",
+              "roundRect",
+              "stroke"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A39C236DDC20007958CE6ED0DE092C3C2FF35947185F8A5BE374EACB8786FB9E"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "circle",
+              "clear",
+              "getHighlightFrameColor",
+              "getHighlightFrameLineWidth",
+              "getHighlightFramePadding",
+              "max",
+              "roundRect",
+              "stroke"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1AFF5DB76CE6D99914343AC3D013BEBC2968C24F62D075B10078690B2D329865"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "rect"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "drawRoundedRectMask",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "drawRoundedRectMask",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "clear",
+              "fill",
+              "getAnchorPoint",
+              "getMaskGraphics",
+              "max",
+              "min",
+              "rect",
+              "roundRect",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BCD1BEB6479257694AC52B0EE8EC179F11D3608BF84820F1367F604E7C077F46"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "setRoundedRectMaskEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "288B0BD294F76F6E47F4700C638FAE3A9135028B43651ED3280740F5C540B46A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "clear",
+              "fill",
+              "getAnchorPoint",
+              "getMaskGraphics",
+              "max",
+              "min",
+              "rect",
+              "roundRect",
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -6,
+              "loops": 0,
+              "returns": -4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setRoundedRectMaskEnabled"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "ensureGuideInputBlockers",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "ensureGuideInputBlockers",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "circleLightMask",
+              "guideInputBlockers"
+            ],
+            "calls": [
+              "addComponent",
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B6AB910F672FB312EE01DD97547296402BE7E229616E1B9C9164E1A977564C69"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "addComponent",
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "83292F4BF79B3D088DB0809F869B552DA97DFDFDFED721F01D7A3A00E01BDBC6"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "circleLightMask",
+              "guideInputBlockers"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "ensureHighlightFrameNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "ensureHighlightFrameNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "highlightFrameGraphics",
+              "highlightFrameNode",
+              "node"
+            ],
+            "calls": [
+              "addComponent",
+              "isValid",
+              "refreshHighlightFrameLayer"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B60C44A9A8A01B07F59B2D2D357117AB3D671BB8F8E8B02E2E51DCFB4193A278"
+          },
+          "target": {
+            "stateWrites": [
+              "highlightFrameGraphics",
+              "highlightFrameNode"
+            ],
+            "calls": [
+              "addComponent",
+              "isValid",
+              "refreshHighlightFrameLayer"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1EEE055568EBFAF4DD6C50552EB33EB2A8EDA8475D81CB598DB39FFEB07889CE"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "node"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getClickGuideTransform",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getClickGuideTransform",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "normalizeGuideTargetKey"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FE631FA7752F06688D058EC7519A9413D9C86EA1C3E591C5BC5B0D2F7D6FC986"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "normalizeGuideTargetKey"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B425C52723014C9BFB76D13CC459C50C951C3DF2E192EFB3947FCB9D69FE10D4"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getDragGuidePositionKey",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getDragGuidePositionKey",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "join",
+              "round"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3DCB3DBE2E33B476E6C3C3054673D2E9467C63B593E8B5CEC677134765C007E1"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "join",
+              "round"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AADDE5FA6F005B18E0C3D72177570CFE4E209466E3C68E9AABD68A4BA15E32A5"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getDragGuidePositions",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getDragGuidePositions",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GetCurrentDragGuideTiles",
+              "ShouldUseStaticMergeDragGuideTiles",
+              "TargetFrom",
+              "TargetTo",
+              "TargetType",
+              "getNodeWorldPos",
+              "getStaticTileWorldPos",
+              "getTileWorldPos"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 9,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F19CB447714C98EBE74C745EE0C34740CAC71ACE944F88AD0BD9F8C40C260307"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GetCurrentDragGuideTiles",
+              "ShouldUseStaticMergeDragGuideTiles",
+              "TargetFrom",
+              "TargetTo",
+              "TargetType",
+              "getNodeWorldPos",
+              "getStaticTileWorldPos",
+              "getTileWorldPos",
+              "resolve"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "852E6B4ED7E3036997865EB66F52BE7AA7C2B72BEC08AC79466B5FA33E41BDD1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "resolve"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getGuideDialogFollowX",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getGuideDialogFollowX",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "ECF3C98192E4DEDF0A89FBE77AA2A27E9476B0D2EA1CAB775DE224B7BB30D58A"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getComponent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "15E624F5983BC49918A009EBD18CC9172CB022E60EFB4A1112A6EC924721303E"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getGuideGenIconSprite",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getGuideGenIconSprite",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "addComponent",
+              "getChildByName",
+              "getComponent",
+              "getGuideGenNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BD63ECE95D2030E699B0AF916697F94C20E40500EE3B0C27DDEB65D155DA1AB2"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "addComponent",
+              "getChildByName",
+              "getComponent",
+              "getGuideGenNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8EB81E658380F7A51BB8DD691D9524B59194FBD6C0889862F174BFA350DC7AE7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getGuideGenNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getGuideGenNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideGenNode",
+              "node"
+            ],
+            "calls": [
+              "getChildByName",
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "714CC26F34660026BC1451ABE43B38C0AB57EEECF2C6C351B6F0BC9515F0655F"
+          },
+          "target": {
+            "stateWrites": [
+              "guideGenNode"
+            ],
+            "calls": [
+              "getChildByName",
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "53DB795EB24CF6CAE865C87FD2EA6944643F51C787419A1A74B9B553F5C98F93"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "node"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getHighlightFrameColor",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getHighlightFrameColor",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "color"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "77D03309179EFEA432BB3C4637218F60A569198750D2E993902C378D7FD34F2C"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "78B7B6830202597EEC7BED3AE8482896D6B987F7B99C06B7001771C46E498DEE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "color"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getHighlightFrameLineWidth",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getHighlightFrameLineWidth",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B29A08D7939DC39F7D8443A98847DC4D9EBE72CD0D9EA0AAB0223D5FC6AA8228"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EE8D00BE40B30F885BB314B62296958E126342077DB161F683DACCCE4369791E"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getHighlightFramePadding",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getHighlightFramePadding",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FBD820F3633E97C578E102A4F98BF8F0DCC749FBC239D21E98E9EDD0B4F327F9"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A94F821AD25D9E093564F8F6825A143FFBD93CC5101DA0D321A4664D0911C0C2"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getHighlightFrameSiblingIndex",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getHighlightFrameSiblingIndex",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "circleLightMask",
+              "highLightMask",
+              "highLightSpecial",
+              "highlightFrameNode"
+            ],
+            "calls": [
+              "apply",
+              "concat",
+              "filter",
+              "getSiblingIndex",
+              "indexOf",
+              "map"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 6
+            },
+            "bodySha256": "D9580EEFBC0E078B6FEEA648F94E307B925DD304742B239C4AABC420BF820989"
+          },
+          "target": {
+            "stateWrites": [
+              "highLightSpecial"
+            ],
+            "calls": [
+              "filter",
+              "getSiblingIndex",
+              "map",
+              "max",
+              "min"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 4
+            },
+            "bodySha256": "A622B0ADA08C672C4A19CA163BB5326BBBD594F520FC2CC6381B767D3040F013"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "circleLightMask",
+              "highLightMask",
+              "highlightFrameNode"
+            ],
+            "callsMissing": [
+              "apply",
+              "concat",
+              "indexOf"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": -2
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "max",
+              "min"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getLocalizedDialogText",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getLocalizedDialogText",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "log",
+              "parse",
+              "sel",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "81948B6166D164E2E7A27109FFF9A3D2C5185924262F59E181ECECF822E80936"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "parse",
+              "sel",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C59ADEE90838167FF1F17BC8FF39FE33444DA54D7070AAFA5252E4877BB1B37D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "log"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getMaskGraphics",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getMaskGraphics",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "addComponent",
+              "getComponent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A07118DE5E3B5AF6B31779391C0548705A0FC471E533BAEEDDF0522FE30529A3"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9842618145A70C45D7F25C0A302D1B8B825FA3C34EAEDE54D423F8D602EEC2FD"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "addComponent",
+              "getComponent"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getMetaId",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getMetaId",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Id",
+              "String"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "357E7BD88F285FCBFD23340C939F007AFF309ACFE443E176E845CBF9108B72C9"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Id",
+              "String"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EAB975E2379F1E157932B19C97D2DBBFFCA211D6E6E7CE073F609B0C4A9CE31D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getNodeHighlightGeometry",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getNodeHighlightGeometry",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetNodeHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FD25C5FEC927437EDFC5AC28D4ACE2A641B9DD5EBEC400E768227036DC468D7A"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetNodeHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E50421AA7F1A7C5F15A493F9FD6F77168AD3A9E514D48CB089A155F48E6CE084"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getNodeWorldPos",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getNodeWorldPos",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetNodeWorldPos"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5507021C1FFBFC74E70EBB2C05208ADE15B60A096DAA2111C78F7A44BDB99274"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetNodeWorldPos"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9D82FB036421841457AC7B803A70DACA767F91EB5D82D3EE1A5842D2AAF143E1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getOrderSubmitHighlightGeometry",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getOrderSubmitHighlightGeometry",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetOrderSubmitHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "20968A7BFD544A9E544D23FCB37603513CC471AA1E429A21345740C95B34EF76"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetOrderSubmitHighlightGeometry"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "70253361600FE510683C52E6D8509850EF9E0FFC51D74477C745CA8DB08D0E73"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getOrderSubmitWorldPos",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getOrderSubmitWorldPos",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetOrderSubmitTargetNode",
+              "convertToWorldSpaceAR",
+              "getBoundingBoxToWorld",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8BC827D8C9107EDAA06646480175E83C4D5572AA895A28C9D70585925F303EA7"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetMergeUI",
+              "GetSlotIndex",
+              "GetTutorialOrderBySlotIndex",
+              "convertNodeLocalToWorld"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "47FD44690838386F2C913485AFDB5191125A0C0B6746D8F4F58111604779EE8B"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "GetOrderSubmitTargetNode",
+              "convertToWorldSpaceAR",
+              "getBoundingBoxToWorld",
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 1,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "GetMergeUI",
+              "GetSlotIndex",
+              "GetTutorialOrderBySlotIndex",
+              "convertNodeLocalToWorld"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getStaticTileWorldPos",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getStaticTileWorldPos",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetMergeLevelNode",
+              "NormalizeTileKey",
+              "convertToWorldSpaceAR",
+              "getMergeBoardLayout",
+              "isNaN",
+              "parseInt",
+              "split",
+              "tile2px"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1BE162F4421C66D25D6471C9EA99058CD279BF16038DF0B50437A53C5E633E98"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetMergeLevelNode",
+              "NormalizeTileKey",
+              "convertNodeLocalToWorld",
+              "getMergeBoardLayout",
+              "isNaN",
+              "parseInt",
+              "split",
+              "tile2px",
+              "toVec3"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D7CE5D6CE4CB804E9C424A01667F2E68F99A41C21ADDE8C0FD7B9CC488E1B193"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "convertToWorldSpaceAR"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "convertNodeLocalToWorld",
+              "toVec3"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getTileWorldPos",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getTileWorldPos",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetMergeLevelNode",
+              "NormalizeTileKey",
+              "convertToWorldSpaceAR",
+              "getChildByName",
+              "getMergeBoardLayout",
+              "parseInt",
+              "split",
+              "tile2px",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5E031EB4C461D462A3225289F4C497CE3381EA5B27F9C8062DB109CAF6C8657D"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetMergeLevelNode",
+              "NormalizeTileKey",
+              "convertNodeLocalToWorld",
+              "getChildByName",
+              "getMergeBoardLayout",
+              "parseInt",
+              "split",
+              "tile2px",
+              "toVec3"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "15E52942A052EC21E34FFC59376E583CF43CDBE2A0384E9A3D6A072E97F980AA"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "convertToWorldSpaceAR",
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "convertNodeLocalToWorld",
+              "toVec3"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getTutorialViewKey",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getTutorialViewKey",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "getMetaId"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3A306C823962FA8C0FC495142631ADD15331E383755698FC47253262460D0488"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getMetaId"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4C8C8DC70CA13E38F2C9EB57064450E0241E0588054204172E50E29ED5BA15EB"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hideForSkipConfirm",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hideForSkipConfirm",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "node"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "CB16AF2610CEA9EF3ADA5E996A431FF8ECF9C68B6BDA9543FB68572920C13D7F"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "23699FACCAD6A6FFDC8C76E618CBB58DBC932DF1981AEFFDA19F5ABE48330A13"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "node"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hideGuideInputBlockers",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hideGuideInputBlockers",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideInputBlockers"
+            ],
+            "calls": [
+              "forEach"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "C27904E08714F3C7B5D93F1B2960789DBC97B5B5A53A5365C451D47D9823AD1D"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "forEach"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "539D6D06BD88D7E0964317CBDA6F0BD519AD6F7EE8B915AB7F0A496B57B0C748"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "guideInputBlockers"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hideHighlightFrame",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hideHighlightFrame",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "highlightFrameNode"
+            ],
+            "calls": [
+              "clear"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "58308BE7ABA1B9E8A3BD2710836E95ED8B4815D4FEBB4E24521C67E8C6D0BF9E"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "clear"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E1A3286B07B128CF0D577EBC011D009EA2DE71CEC67B735503F4F84C35479858"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "highlightFrameNode"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hideSkipNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hideSkipNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "skipConfirmShowing",
+              "skipNode"
+            ],
+            "calls": [
+              "off"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "54586A845F555279D40E5D5118C7F2194DB71292395DD7DD6DF07C0279426460"
+          },
+          "target": {
+            "stateWrites": [
+              "skipConfirmShowing",
+              "skipNode"
+            ],
+            "calls": [
+              "off"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4C3CCE59B006B3D34615CA8415525144E39CB6494CEC4B962EBC48722911A6B9"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isHighlightFrameEnabled",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isHighlightFrameEnabled",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8F549569AB9FCB679A1D49C3E6EF3E727E1C8FE0CB1A7B3EF5904F9FBFC48D86"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BB55A83B56078394978AE812EC1975B00CEBF381F915B25E0E4B0D6D6BF74786"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isMainForcedTutorialMeta",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isMainForcedTutorialMeta",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "IsMainForcedTutorialStep"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2BB8C4F29C98A1895DB5FAD3E04E1400C36CEA5BB54FEFBF6A466605BFDA6C35"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "IsMainForcedTutorialStep"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0DF857FC9C31752973BC1FB37F4A7BAA616472D6287E437B4C2A703633705BC7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isNodeGuide",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isNodeGuide",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "HighlightType",
+              "TargetType"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BD067C437A855014EB3ECDC155932F2E3F393E01BCBEAFC44072FE57136A50AE"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "HighlightType",
+              "TargetType"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F619BED921B787DDCF8A8CC1B7EFDB59294B3BFA5FFEBFB892454A7A59C4B3AF"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isSameTutorialView",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isSameTutorialView",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "meta"
+            ],
+            "calls": [
+              "getTutorialViewKey"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "539D13346ECFF1CC9554B5F168732CF760CF571AB374E9AD163C02A253602211"
+          },
+          "target": {
+            "stateWrites": [
+              "meta"
+            ],
+            "calls": [
+              "getTutorialViewKey"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "46AE96850E2727F69920494A292EA5E1348CA1B434CC029F95F95E7EB3C42527"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "normalizeGuideTargetKey",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "normalizeGuideTargetKey",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "NormalizeOrderParam",
+              "String",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5D7C65CADFF4BDA30447C7E2E9D021D13AE248D47FFDAE96CD5A5C0FCC20393B"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "NormalizeOrderParam",
+              "String",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "195751A3009798A4B49CCB97B9DC1F140AF7337DE15790777F8956EC0A97EEE1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onClose",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onClose",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "clearView",
+              "unregisterBackEvent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B6B1BDA3AC53995F0F1B8E90D0961AFB7342EC724DF363BCA247A81B3B8602C4"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "clearView",
+              "unregisterBackEvent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C819785CA49FBA57EA9D5D7CC9C9C1D066BAFF240E00D8C2F618A91B56D49F75"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onShow",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onShow",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "dragGuidePositionKey",
+              "guideInputBlockers",
+              "guidepos"
+            ],
+            "calls": [
+              "registerBackEvent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "79D9BB62037B51DFD5A4F8FBCFB8BAE369FA628C775D97429937B4D8AA7B658D"
+          },
+          "target": {
+            "stateWrites": [
+              "dragGuidePositionKey",
+              "guidepos"
+            ],
+            "calls": [
+              "WidgetUpdateAlignment",
+              "clone",
+              "refreshEmptyTaskGuide",
+              "registerBackEvent",
+              "setNodeXY"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "30D35143F49AA8CE215BA2293B0E6AF02F078EB00EFB9FC28933601A34605DBB"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "guideInputBlockers"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "WidgetUpdateAlignment",
+              "clone",
+              "refreshEmptyTaskGuide",
+              "setNodeXY"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onSkipTouchEnd",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onSkipTouchEnd",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "skipConfirmShowing",
+              "skipNode"
+            ],
+            "calls": [
+              "bind",
+              "hideForSkipConfirm",
+              "openChildWindow",
+              "restoreFromSkipConfirm",
+              "skipCurrentTutorial",
+              "t"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "731FD34F0EB91D7FDB810CF177790E76B694DC9BB3C57FF7FFE9E78D7E1E4971"
+          },
+          "target": {
+            "stateWrites": [
+              "skipConfirmShowing"
+            ],
+            "calls": [
+              "hideForSkipConfirm",
+              "openChildWindow",
+              "restoreFromSkipConfirm",
+              "skipCurrentTutorial",
+              "t"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EB091C730C4008121E3EB8AC0BB32E0E9ED9FBABCB1FBD65243FF6C1E92BC17A"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "skipNode"
+            ],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "parseDialogRect",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "parseDialogRect",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "String",
+              "indexOf",
+              "isFinite",
+              "map",
+              "parseInt",
+              "slice",
+              "split",
+              "test",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 1,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "07486E5E744C4584B488ED31E4C2D0F1C10A541E4BC1D528BD1CB02EE0533F45"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "String",
+              "every",
+              "includes",
+              "map",
+              "parseInt",
+              "slice",
+              "split",
+              "test",
+              "trim"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "D0C2F381D61BE58A70DD7BCB39EFFE1AC7B8617971284E4A3E200EAA8570AF94"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "indexOf",
+              "isFinite"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": -1,
+              "returns": -3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "every",
+              "includes"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "patchRoundedRectMask",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "patchRoundedRectMask",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "apply",
+              "drawRoundedRectMask"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A2C10BBD827B8E6B1BCCCA2EA51B08B78DE26CD477831B7737B658DF2793260E"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "setRoundedRectMaskEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E3433896E86A417074D3D1E5E3A8A773AA1C24AEA91DB86E9DA2890AE29131EE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "apply",
+              "drawRoundedRectMask"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setRoundedRectMaskEnabled"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "playGeneratorRewardFly",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "playGeneratorRewardFly",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "DebugGeneratorGuideLog",
+              "GetGeneratorRewardFlyPoints",
+              "LogGeneratorRewardFly",
+              "SetTempRewardVisibleForGuide",
+              "callFunc",
+              "cb",
+              "convertWorldPositionToNodeParentLocal",
+              "delayTime",
+              "getChildByName",
+              "getGuideGenNode",
+              "moveTo",
+              "retryGeneratorRewardFly",
+              "runAction",
+              "scaleTo",
+              "sequence",
+              "setGuideGenIcon",
+              "setPosition",
+              "stopAllActions"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 16,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "B3768A07CF27D61795CACC1D525884ACD47E45B6B3FFFC39B86685F75FBD13B6"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetGeneratorRewardFlyPoints",
+              "SetTempRewardVisibleForGuide",
+              "call",
+              "cb",
+              "convertWorldPositionToNodeParentLocal",
+              "delay",
+              "getChildByName",
+              "getGuideGenNode",
+              "retryGeneratorRewardFly",
+              "setGuideGenIcon",
+              "setPosition",
+              "setScale",
+              "start",
+              "stopAllByTarget",
+              "to",
+              "toVec3",
+              "tween"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "6ADEBF47EDA6CA84C832A9CD38482B5968B3950FF8C85721619CC752B86877F4"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "DebugGeneratorGuideLog",
+              "LogGeneratorRewardFly",
+              "callFunc",
+              "delayTime",
+              "moveTo",
+              "runAction",
+              "scaleTo",
+              "sequence",
+              "stopAllActions"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -12,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "call",
+              "delay",
+              "setScale",
+              "start",
+              "stopAllByTarget",
+              "to",
+              "toVec3",
+              "tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshDragGuidePosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshDragGuidePosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "arrow4"
+            ],
+            "calls": [
+              "convertGuidePositionsToLocal",
+              "getDragGuidePositionKey",
+              "getDragGuidePositions",
+              "showDragGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "721DEE4320779D9FB33991686BEC0A02AE6CF66D2A981D72F2B5E4FE976BFFCA"
+          },
+          "target": {
+            "stateWrites": [
+              "arrow4"
+            ],
+            "calls": [
+              "convertGuidePositionsToLocal",
+              "getDragGuidePositionKey",
+              "getDragGuidePositions",
+              "showDragGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "657A27332BEB21EA5EEEAD5BD6277F782BA762807D3CA21E56C034FD5A4516B2"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshDragHighlightPosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshDragHighlightPosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "HighlightType",
+              "applyTwoPointHighlight",
+              "getDragGuidePositions",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FBD19EDC5C2D882831A23506094FFF75C0407F9946CC1A98A67E4638A9B12AB1"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "HighlightType",
+              "applyTwoPointHighlight",
+              "getDragGuidePositions",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A27A6397A87DEBCCEAC155FC26265BBCC1AE571B920378F7916C5F3694D78632"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshFullScreenGuideBlocker",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshFullScreenGuideBlocker",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "clickFullScreen"
+            ],
+            "calls": [
+              "ShouldUseFullScreenGuideBlocker"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "359648BF556E508A74E272E41FF258C3B41842A06FDAB4851A6E48003E1289CF"
+          },
+          "target": {
+            "stateWrites": [
+              "clickFullScreen"
+            ],
+            "calls": [
+              "ShouldUseFullScreenGuideBlocker"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5D967EF6043B3A72159403C5313648E91C2F62076A3396F62BA12D955A5CDF36"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshHighlightFrameLayer",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshHighlightFrameLayer",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "highlightFrameNode"
+            ],
+            "calls": [
+              "getHighlightFrameSiblingIndex",
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "27B9EA9231B32C6B90012D04A2BC9B06AD5474DE9B04D2A4E5E287D795554042"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getHighlightFrameSiblingIndex",
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E0AFDEE4ABB316B48933BE75077DD843A30D63E576491973ACCBC5A5B93426FA"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "highlightFrameNode"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshNodeGuidePosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshNodeGuidePosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GuideType",
+              "TargetFrom",
+              "applyClickGuidePosition",
+              "getNodeWorldPos",
+              "showGuidePointer",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C23D5ECEF7D8FF0AFD712F394C42D40FCF263374B0617A2324035407C863EC5B"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GuideType",
+              "TargetFrom",
+              "applyClickGuidePosition",
+              "getNodeWorldPos",
+              "showGuidePointer",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A088E146A27518E10E913056BFC930F8D9AB4915644B5742CDA185D365A2C717"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshOrderGuidePosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshOrderGuidePosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal",
+              "getOrderSubmitWorldPos",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8C7FF862EA5BE090574BFF749CBE15FEDC0DC02B49C43BDA94D9656AD2CC66DE"
+          },
+          "target": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "convertWorldPositionToNodeParentLocal",
+              "getOrderSubmitWorldPos",
+              "setNodeXY",
+              "showHighlightByGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "30DF4DAFD93399EE0620DE3EEC8AEE27EC3157253DD513D94777745A6028BB99"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeXY"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "restoreFromSkipConfirm",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "restoreFromSkipConfirm",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "node"
+            ],
+            "calls": [
+              "isValid",
+              "showMeta"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4372234BE353BE91D33E8694DF4E489785D2051811ECDD5424460403ABC8E391"
+          },
+          "target": {
+            "stateWrites": [
+              "node"
+            ],
+            "calls": [
+              "isValid",
+              "showMeta"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "431240CAB2418D7481A9DF199EF3685D5DA32F86BEF14B29E0443959D56842C1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "retryGeneratorRewardFly",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "retryGeneratorRewardFly",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "cb",
+              "isValid",
+              "playGeneratorRewardFly",
+              "scheduleOnce",
+              "setTimeout"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce",
+              "setTimeout"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0A06B0DD10D3C8DE88024A1C394A7FB55BB5549C8EF662FD31928A1DD4ADEBA7"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "cb",
+              "isValid",
+              "playGeneratorRewardFly",
+              "scheduleOnce"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "F4C67DA3B399C2EB1C772BD59F600062FAD7496C43DE9C4612D70E550197AC11"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "setTimeout"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [
+              "setTimeout"
+            ],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "setBlockerRect",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "setBlockerRect",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B94A8E7C75FFB62B83A713240863CA0E1DE266EE93B99A88056F19764FC51BFA"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "setNodeSize",
+              "setNodeXY",
+              "setSiblingIndex"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C482571431566F9B77ED80E8145353FA3861981C10079C2EAA6E3B662FCFF046"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeSize",
+              "setNodeXY"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "setGuideGenIcon",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "setGuideGenIcon",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetSpriteFrameByMergeId",
+              "getGuideGenIconSprite",
+              "getOriginalSize",
+              "getRect"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C040EB5C5B0C18E9A58533906622E330D52E3085E50308FB4E64DBAC43977D42"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetSpriteFrameByMergeId",
+              "addComponent",
+              "getComponent",
+              "getGuideGenIconSprite",
+              "setContentSize"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4B7765A5F29B3E2446116FC8053274A8ACE685E92CE0BB987CF82C9555E7B11C"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "getOriginalSize",
+              "getRect"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -3,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "addComponent",
+              "getComponent",
+              "setContentSize"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "setRoundedRectMaskEnabled",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "setRoundedRectMaskEnabled",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "call",
+              "drawRoundedRectMask",
+              "patchRoundedRectMask"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "ABE750F265DAA635927A5157FA386131E81A374E467F216A231947E33D76E7E3"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "addComponent",
+              "destroy",
+              "getComponent"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "854EFE3850EBCAE2A958CE7A7EC3B3F001D551426E3F58D779C4B5FC25B6EC7F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "call",
+              "drawRoundedRectMask",
+              "patchRoundedRectMask"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "addComponent",
+              "destroy",
+              "getComponent"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "setVisualMaskBlockInputEnabled",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "setVisualMaskBlockInputEnabled",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "forEach",
+              "getComponentsInChildren"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "1AD760B2E5727501EF6D813E8278C59E9946BBC1BE3D3FD63ED5A31036C9853B"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "forEach",
+              "getComponentsInChildren"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "F5A50D55C3E83D75ED46D8D8007235C8161C8949D97680EAC00413A22C81DC2A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "shouldBlockGuideInput",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "shouldBlockGuideInput",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "ShouldBlockGuideInput"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "62C05558E9E1C1D0061D27DF7995423AA4C92FB614F8CB9D5F16267E0A4A81A6"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "ShouldBlockGuideInput"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1139176FDB90E339734395095BA40E37222BB7CC743DB9425B665E38D7D9C638"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "shouldShowSkipNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "shouldShowSkipNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "ShouldShowSkipButton",
+              "isMainForcedTutorialMeta"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "10DD7162A49B3CF0BEC5455F4C9FA4C50D6AE6978AA6E328140579CDD2790FD6"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "ShouldShowSkipButton",
+              "isMainForcedTutorialMeta"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "391AAA4BCD40827BE62F904DC777AF5117A079E7CE39599B87A7B8C0C222924D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "shouldUseGeneratorMergeDragRectHighlight",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "shouldUseGeneratorMergeDragRectHighlight",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta",
+              "meta"
+            ],
+            "calls": [
+              "CompleteParam",
+              "GuideType",
+              "Id",
+              "String"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "44D1E6260D4CECC8DAEE1E44BD9CD9FF2E64DE2A4A8C15431CD44CC59AB75BB0"
+          },
+          "target": {
+            "stateWrites": [
+              "meta"
+            ],
+            "calls": [
+              "CompleteParam",
+              "GuideType",
+              "Id",
+              "String"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "228D3DD07EBAC25E524AF067D3D79829679F0694819579F220D5F1B4C09E73CA"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "guideMeta"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -3,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showClickGuide",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showClickGuide",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "applyClickGuidePosition",
+              "getComponent",
+              "setCurrentTime"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EBE01ADF1752A823AE887517129E7A0D9654B1FA2AF295C47FA3E81359F2D0FA"
+          },
+          "target": {
+            "stateWrites": [
+              "arrow5"
+            ],
+            "calls": [
+              "applyClickGuidePosition",
+              "getComponent",
+              "setCurrentTime"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F139055439F8F6A2E425782C5333551EF16F5915EB8102F4CB3C8B03C1EEDA11"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showDialog",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showDialog",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "dialog",
+              "dialogLabel",
+              "guide"
+            ],
+            "calls": [
+              "clampDialogRect",
+              "getGuideDialogFollowX",
+              "getLocalizedDialogText",
+              "log",
+              "moveTo",
+              "parseDialogRect",
+              "replace",
+              "runAction",
+              "scaleTo",
+              "stopAllActions",
+              "updateDialogLabelWrap"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F169E251FACC2B6BDF8C234A69AA7A8D4DC6E0EAB938B60E9841F64FB23555DF"
+          },
+          "target": {
+            "stateWrites": [
+              "dialog",
+              "dialogLabel",
+              "guide"
+            ],
+            "calls": [
+              "clampDialogRect",
+              "getGuideDialogFollowX",
+              "getLocalizedDialogText",
+              "parseDialogRect",
+              "replace",
+              "setNodeSize",
+              "setNodeXY",
+              "setPosition",
+              "setScale",
+              "start",
+              "stopAllByTarget",
+              "to",
+              "tween",
+              "updateDialogLabelWrap"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9495456EEF7768EB739EEE3020CAD8619FC89C2708A7D77F44F04AD326E79C02"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "log",
+              "moveTo",
+              "runAction",
+              "scaleTo",
+              "stopAllActions"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeSize",
+              "setNodeXY",
+              "setPosition",
+              "setScale",
+              "start",
+              "stopAllByTarget",
+              "to",
+              "tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showDragGuide",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showDragGuide",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "arrow4",
+              "dragGuidePositionKey"
+            ],
+            "calls": [
+              "callFunc",
+              "convertGuidePositionsToLocal",
+              "delayTime",
+              "fadeIn",
+              "fadeOut",
+              "getDragGuidePositionKey",
+              "getDragGuidePositions",
+              "moveTo",
+              "repeatForever",
+              "runAction",
+              "scaleTo",
+              "sequence",
+              "setPosition",
+              "spawn",
+              "stopAllActions"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "0A040D525C4F329182715CBB7D9FB842803BC5E20ACC62671A287D7E78BB8CA2"
+          },
+          "target": {
+            "stateWrites": [
+              "arrow4",
+              "dragGuidePositionKey"
+            ],
+            "calls": [
+              "convertGuidePositionsToLocal",
+              "getDragGuidePositionKey",
+              "getDragGuidePositions",
+              "playDragGuideTween",
+              "setNodePositionFromPoint",
+              "setOpacity",
+              "setScale",
+              "stopArrow4Tween"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "812E0E8FBF20141F65F275984B5C9514482CA9BB544E9E80B847F64F41312CD9"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "callFunc",
+              "delayTime",
+              "fadeIn",
+              "fadeOut",
+              "moveTo",
+              "repeatForever",
+              "runAction",
+              "scaleTo",
+              "sequence",
+              "setPosition",
+              "spawn",
+              "stopAllActions"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": -1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "playDragGuideTween",
+              "setNodePositionFromPoint",
+              "setOpacity",
+              "setScale",
+              "stopArrow4Tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showGuidePointer",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showGuidePointer",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GuideType",
+              "TargetFrom",
+              "TargetType",
+              "getNodeWorldPos",
+              "getOrderSubmitWorldPos",
+              "getTileWorldPos",
+              "showClickGuide",
+              "showDragGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C25CE6673912AE735BDC5F9BA8E0903D81C40D3B0245F7EC6230DDF5C0F292E9"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "GuideType",
+              "TargetFrom",
+              "TargetType",
+              "getNodeWorldPos",
+              "getOrderSubmitWorldPos",
+              "getTileWorldPos",
+              "showClickGuide",
+              "showDragGuide"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D3A16AFBF1A88B95426DA75C8DA6DDAD3360E6B4A5B3F93B337D27113614A564"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showHighlightByGuide",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showHighlightByGuide",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "BuildOrderHighlightGeometry",
+              "BuildTileHighlightGeometry",
+              "GuideType",
+              "HighlightParam",
+              "HighlightParamList",
+              "HighlightType",
+              "TargetFrom",
+              "applyDynamicHighlightGeometry",
+              "applyTwoPointHighlight",
+              "getDragGuidePositions",
+              "getNodeHighlightGeometry",
+              "getOrderSubmitHighlightGeometry",
+              "getOrderSubmitWorldPos",
+              "getTileWorldPos"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 18,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F65D4BC1CE0ED2F7575D9458C919B923DFE06740B0BA15363185E498B6D778DC"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta"
+            ],
+            "calls": [
+              "BuildOrderHighlightGeometry",
+              "BuildTileHighlightGeometry",
+              "GuideType",
+              "HighlightParam",
+              "HighlightParamList",
+              "HighlightType",
+              "TargetFrom",
+              "applyDynamicHighlightGeometry",
+              "applyTwoPointHighlight",
+              "getDragGuidePositions",
+              "getNodeHighlightGeometry",
+              "getOrderSubmitHighlightGeometry",
+              "getOrderSubmitWorldPos",
+              "getTileWorldPos"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 14,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "89369CB64CA01F55024EF14E4F1E5F7C8BBCC5CACE1719ACC68DA7ABFBC00979"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showMask",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showMask",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "highLightMask"
+            ],
+            "calls": [
+              "setVisualMaskBlockInputEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E5494AF88739D0903E9D4BEA3C9E92DEE07DDD53193067857AD5329E687B2C84"
+          },
+          "target": {
+            "stateWrites": [
+              "highLightMask"
+            ],
+            "calls": [
+              "setVisualMaskBlockInputEnabled"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C73BDA7CBBADCFC3C46C987773AD5F5B9E815732AE7180F3012A66B9AF7915C2"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showMeta",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showMeta",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta",
+              "meta"
+            ],
+            "calls": [
+              "CompleteType",
+              "DialogRect",
+              "DialogText",
+              "Emit",
+              "Mask",
+              "addFullScreenOnClick",
+              "clearView",
+              "isSameTutorialView",
+              "log",
+              "refreshFullScreenGuideBlocker",
+              "setVisualMaskBlockInputEnabled",
+              "showDialog",
+              "showGuidePointer",
+              "showHighlightByGuide",
+              "showMask",
+              "showSkipNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "61744266A80CFD2224B1681D91D56848E18658491C5C072AD70219FEDADCDC12"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta",
+              "meta"
+            ],
+            "calls": [
+              "CompleteType",
+              "DialogRect",
+              "DialogText",
+              "Emit",
+              "Mask",
+              "addFullScreenOnClick",
+              "clearView",
+              "isSameTutorialView",
+              "refreshFullScreenGuideBlocker",
+              "setVisualMaskBlockInputEnabled",
+              "showDialog",
+              "showGuidePointer",
+              "showHighlightByGuide",
+              "showMask",
+              "showSkipNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "43BAAF211E2804DA74C85EC28251D4364BAB6799E686FFA35FE981E04B6D1AD7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "log"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showSkipNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showSkipNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "skipNode"
+            ],
+            "calls": [
+              "bringSkipNodeToTop",
+              "hideSkipNode",
+              "on",
+              "shouldShowSkipNode",
+              "updateSkipNodeBottomRightPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FD0DC29DFF200C1DF823553A82C3A7F8DC5AD17625298DBFCA6064FEDE7628AD"
+          },
+          "target": {
+            "stateWrites": [
+              "skipNode"
+            ],
+            "calls": [
+              "bringSkipNodeToTop",
+              "hideSkipNode",
+              "on",
+              "shouldShowSkipNode",
+              "updateSkipNodeBottomRightPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8C7BE41A88A4BDB89CD4D89335BED9F18A4902ECBBB0A6BE3AB4FF26A87DD739"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "skipCurrentTutorial",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "skipCurrentTutorial",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "SkipCurrentTutorial",
+              "SkipForcedTutorial"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7957D122209A3AC4861F38A5264841D38A1C182CECBD797982B13A1C0DEF7B14"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "SkipCurrentTutorial",
+              "SkipForcedTutorial"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5751EDCE22244643AF2E96D164E45989547F17773F59CF3A77C222DCC0D59292"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "stopDynamicHighlightTween",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "stopDynamicHighlightTween",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "circleLightMask",
+              "highLightMask"
+            ],
+            "calls": [
+              "stopAllByTarget"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "84C8823A11B55036DC503982AD3FAA6C7873717639D2AF6D865008140E9C2828"
+          },
+          "target": {
+            "stateWrites": [
+              "circleLightMask",
+              "highLightMask",
+              "highlightTween"
+            ],
+            "calls": [
+              "stop",
+              "stopAllByTarget"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "28D763E6BA38A5F8A59CFDDD3DA6E1AC00477D234594653E228D1CEE9C0A7116"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "highlightTween"
+            ],
+            "callsAdded": [
+              "stop"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "update",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "update",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "guideMeta",
+              "meta"
+            ],
+            "calls": [
+              "GuideType",
+              "isNodeGuide",
+              "refreshDragGuidePosition",
+              "refreshDragHighlightPosition",
+              "refreshNodeGuidePosition",
+              "refreshOrderGuidePosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2D9E90CB97CFF849D30FB43D9FFCB02497FCD635D168A232409EA670055C82A9"
+          },
+          "target": {
+            "stateWrites": [
+              "guideMeta",
+              "meta"
+            ],
+            "calls": [
+              "GuideType",
+              "isNodeGuide",
+              "refreshDragGuidePosition",
+              "refreshDragHighlightPosition",
+              "refreshNodeGuidePosition",
+              "refreshOrderGuidePosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7E6A2CA25CBE30D13679F35497B307C9A4AB068255DDF851AD2198CF02C2F717"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateDialogLabelWrap",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateDialogLabelWrap",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "max"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3E01BC6331B80AB46038A8089316238664A18929C8EF6E2A9D91E510B4A892B8"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getComponent",
+              "max",
+              "setContentSize",
+              "setPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "CE061D1050D68741DC842230E1DCFD61AC98948032546EEDB36541EF2B9BD919"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent",
+              "setContentSize",
+              "setPosition"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateGuideInputBlockers",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateGuideInputBlockers",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "abs",
+              "bringSkipNodeToTop",
+              "ensureGuideInputBlockers",
+              "hideGuideInputBlockers",
+              "max",
+              "refreshHighlightFrameLayer",
+              "setBlockerRect",
+              "shouldBlockGuideInput"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "321DEDB32A0CD9684C77B6041E6B71D2F85258D31B6EE0B0656D75A17EC8CE05"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "abs",
+              "bringSkipNodeToTop",
+              "ensureGuideInputBlockers",
+              "getComponent",
+              "getVisibleSize",
+              "hideGuideInputBlockers",
+              "max",
+              "refreshHighlightFrameLayer",
+              "setBlockerRect",
+              "shouldBlockGuideInput"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "36817BDED11A494E15BBFCB15E1239860DA415846ABC27BF51BB8F80E1EEAB58"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent",
+              "getVisibleSize"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateHighlightFrame",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateHighlightFrame",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "highlightFrameGraphics"
+            ],
+            "calls": [
+              "bringSkipNodeToTop",
+              "convertToNodeSpaceAR",
+              "convertToWorldSpaceAR",
+              "drawHighlightFrame",
+              "ensureHighlightFrameNode",
+              "getComponent",
+              "hideHighlightFrame",
+              "isHighlightFrameEnabled",
+              "refreshHighlightFrameLayer",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3110845237D78CC4BCD30CD854789E67A67518D3A09CB07D51B9160EEF3499A1"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "bringSkipNodeToTop",
+              "convertToNodeSpaceAR",
+              "convertToWorldSpaceAR",
+              "drawHighlightFrame",
+              "ensureHighlightFrameNode",
+              "getComponent",
+              "hideHighlightFrame",
+              "isHighlightFrameEnabled",
+              "refreshHighlightFrameLayer",
+              "setNodeSize",
+              "setPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "385D945556365A178DB9D817DF5B967D5F0BF3D1117D52F9F37C0A0F63742DCF"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "highlightFrameGraphics"
+            ],
+            "callsMissing": [
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setNodeSize",
+              "setPosition"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateSkipNodeBottomRightPosition",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateSkipNodeBottomRightPosition",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "skipNode"
+            ],
+            "calls": [
+              "abs",
+              "setPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "566B470F732AD2DFA86BE92F33316774C9D1EAAFF513E111D3B07A40D7E0E73F"
+          },
+          "target": {
+            "stateWrites": [
+              "skipNode"
+            ],
+            "calls": [
+              "abs",
+              "getComponent",
+              "setPosition"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6541C6FA6C556E39E845D3CF6C73DD249C9BA63D9B997788A1F2B5E8497EC2C1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        }
+      ]
+    }
+  ]
+}

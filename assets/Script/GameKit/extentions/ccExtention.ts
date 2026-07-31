@@ -32,12 +32,20 @@ type RemoteCallback = (err: unknown, asset?: unknown) => void;
 
 type CceRuntime = {
     DepList: Record<string, number>;
+    BundleResLoading: Record<string, Array<(err: Error | null, bundle: Bundle | null) => void>>;
     loading: number;
     pDistance: (p1: PointLike | null | undefined, p2: PointLike | null | undefined) => number;
     Window: <T extends LegacyWindowConfig>(config?: T) => T;
     loadRes: <T extends Asset>(
         resName: string,
         type: AssetType<T> | undefined,
+        cb?: LoadCallback<T>,
+        onProgress?: ProgressCallback | null,
+    ) => void;
+    loadBundleRes: <T extends Asset>(
+        bundleName: string,
+        resName: string,
+        type: AssetType<T>,
         cb?: LoadCallback<T>,
         onProgress?: ProgressCallback | null,
     ) => void;
@@ -484,6 +492,7 @@ cceRuntime.Window = function <T extends LegacyWindowConfig>(config?: T): T {
 };
 
 cceRuntime.DepList = cceRuntime.DepList || {};
+cceRuntime.BundleResLoading = cceRuntime.BundleResLoading || {};
 cceRuntime.loading = cceRuntime.loading || 0;
 
 cceRuntime.loadRes = function <T extends Asset>(
@@ -529,6 +538,73 @@ cceRuntime.loadRes = function <T extends Asset>(
     };
 
     loadResourceChain(normalizedResName, normalizedResName !== resName);
+};
+
+cceRuntime.loadBundleRes = function <T extends Asset>(
+    bundleName: string,
+    resName: string,
+    type: AssetType<T>,
+    cb?: LoadCallback<T>,
+    onProgress?: ProgressCallback | null,
+): void {
+    cceRuntime.loading++;
+    let finished = false;
+
+    const finish = (err: Error | null, asset: T | null, bundle: Bundle | null): void => {
+        if (finished) return;
+        finished = true;
+        if (err || !asset || !bundle) {
+            if (err) logLoadFailure(resName, err);
+            cceRuntime.loading--;
+            console.log('cce.loadBundleRes-Error:', bundleName, resName);
+            cb?.(err || new Error(`resource not found in ${bundleName} bundle`), null);
+            return;
+        }
+
+        trackLoadedAsset(asset, `${bundleName}/${resName}`, resName, bundle, type);
+        cceRuntime.loading--;
+        cb?.(null, asset);
+    };
+
+    const runLoad = (bundle: Bundle): void => {
+        const done = (err: Error | null, asset: T | null): void => finish(err, asset, bundle);
+        try {
+            if (onProgress) bundle.load<T>(resName, type, onProgress, done);
+            else bundle.load<T>(resName, type, done);
+        } catch (error) {
+            finish(normalizeError(error, `${bundleName} bundle load failed`), null, bundle);
+        }
+    };
+
+    const existingBundle = assetManager.getBundle(bundleName);
+    if (existingBundle) {
+        runLoad(existingBundle);
+        return;
+    }
+
+    const onBundleLoaded = (err: Error | null, bundle: Bundle | null): void => {
+        if (err || !bundle) finish(err || new Error(`${bundleName} bundle load failed`), null, null);
+        else runLoad(bundle);
+    };
+    const waiters = cceRuntime.BundleResLoading[bundleName];
+    if (waiters) {
+        waiters.push(onBundleLoaded);
+        return;
+    }
+
+    cceRuntime.BundleResLoading[bundleName] = [onBundleLoaded];
+    try {
+        assetManager.loadBundle(bundleName, (err, bundle) => {
+            const pending = cceRuntime.BundleResLoading[bundleName] || [];
+            delete cceRuntime.BundleResLoading[bundleName];
+            pending.forEach(waiter => waiter(err, bundle));
+        });
+    } catch (error) {
+        const pending = cceRuntime.BundleResLoading[bundleName] || [];
+        delete cceRuntime.BundleResLoading[bundleName];
+        const normalized = normalizeError(error, `${bundleName} bundle load failed`);
+        pending.forEach(waiter => waiter(normalized, null));
+    }
 };
 
 cceRuntime.releaseRes = function <T extends Asset>(resName: string, type?: AssetType<T>): void {

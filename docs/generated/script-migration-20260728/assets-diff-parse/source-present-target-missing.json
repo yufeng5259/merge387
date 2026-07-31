@@ -1,0 +1,1334 @@
+[
+  {
+    "sourceRel": "LiveData/COMICZ.TTF",
+    "targetRel": "LiveData/COMICZ.TTF",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "LiveData/COMICZ.TTF.meta",
+    "targetRel": "LiveData/COMICZ.TTF.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "other/wx.meta",
+    "targetRel": "other/wx.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "other/wx/.gitkeep",
+    "targetRel": "other/wx/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/editor.meta",
+    "targetRel": "resources/editor.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/editor/.gitkeep",
+    "targetRel": "resources/editor/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/centerImages.meta",
+    "targetRel": "resources/res/Activity/centerImages.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/centerImages/.gitkeep",
+    "targetRel": "resources/res/Activity/centerImages/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/extraPrefab.meta",
+    "targetRel": "resources/res/Activity/extraPrefab.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/extraPrefab/.gitkeep",
+    "targetRel": "resources/res/Activity/extraPrefab/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/taskicon.meta",
+    "targetRel": "resources/res/Activity/taskicon.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/Activity/taskicon/.gitkeep",
+    "targetRel": "resources/res/Activity/taskicon/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/event/ico.meta",
+    "targetRel": "resources/res/event/ico.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/event/ico/.gitkeep",
+    "targetRel": "resources/res/event/ico/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/gift/icons/toolIcon.tps",
+    "targetRel": "resources/res/gift/icons/toolIcon.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/gift/icons/toolIcon.tps.meta",
+    "targetRel": "resources/res/gift/icons/toolIcon.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/merge/skyfox/skyfox.tps",
+    "targetRel": "resources/res/merge/skyfox/skyfox.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/merge/skyfox/skyfox.tps.meta",
+    "targetRel": "resources/res/merge/skyfox/skyfox.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/user/avatar.meta",
+    "targetRel": "resources/res/user/avatar.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/user/avatar/.gitkeep",
+    "targetRel": "resources/res/user/avatar/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/user/avatarframe/avatarframe.tps",
+    "targetRel": "resources/res/user/avatarframe/avatarframe.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/user/avatarframe/avatarframe.tps.meta",
+    "targetRel": "resources/res/user/avatarframe/avatarframe.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/1/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/1/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/1/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/1/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/10/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/10/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/10/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/10/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/11/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/11/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/11/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/11/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/12/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/12/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/12/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/12/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/13/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/13/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/13/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/13/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/14/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/14/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/14/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/14/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/15/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/15/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/15/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/15/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/16/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/16/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/16/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/16/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/17/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/17/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/17/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/17/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/18/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/18/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/18/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/18/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/19/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/19/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/19/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/19/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/2/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/2/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/2/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/2/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/20/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/20/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/20/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/20/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/21/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/21/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/21/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/21/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/22/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/22/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/22/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/22/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/23/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/23/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/23/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/23/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/24/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/24/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/24/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/24/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/25/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/25/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/25/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/25/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/26/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/26/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/26/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/26/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/27/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/27/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/27/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/27/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/28/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/28/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/28/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/28/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/29/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/29/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/29/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/29/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/3/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/3/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/3/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/3/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/30/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/30/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/30/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/30/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/31/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/31/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/31/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/31/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/32/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/32/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/32/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/32/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/33/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/33/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/33/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/33/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/34/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/34/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/34/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/34/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/35/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/35/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/35/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/35/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/36/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/36/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/36/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/36/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/37/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/37/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/37/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/37/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/38/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/38/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/38/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/38/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/39/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/39/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/39/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/39/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/4/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/4/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/4/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/4/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/5/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/5/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/5/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/5/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/6/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/6/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/6/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/6/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/7/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/7/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/7/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/7/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/8/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/8/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/8/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/8/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/9/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/9/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/9/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/9/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z0/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/z0/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z0/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/z0/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z0/res.meta",
+    "targetRel": "resources/res/village/buildPrefabs/z0/res.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z0/res/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/z0/res/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z1/anim.meta",
+    "targetRel": "resources/res/village/buildPrefabs/z1/anim.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "resources/res/village/buildPrefabs/z1/anim/.gitkeep",
+    "targetRel": "resources/res/village/buildPrefabs/z1/anim/.gitkeep",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "add-or-migrate",
+    "reason": "Source exists but mapped target file is missing."
+  },
+  {
+    "sourceRel": "Script/__game__.js",
+    "targetRel": "Script/__game__.ts",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "covered-by-legacyglobals-review",
+    "reason": "Legacy global bootstrap is covered by TS migration infrastructure."
+  },
+  {
+    "sourceRel": "Script/__game__.js.meta",
+    "targetRel": "Script/__game__.ts.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "covered-by-legacyglobals-review",
+    "reason": "Legacy global bootstrap is covered by TS migration infrastructure."
+  },
+  {
+    "sourceRel": "Texture/Activity/activityItem/itemAtlas.tps",
+    "targetRel": "Texture/Activity/activityItem/itemAtlas.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Activity/activityItem/itemAtlas.tps.meta",
+    "targetRel": "Texture/Activity/activityItem/itemAtlas.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Activity/gameshow_img/gameshow_img.tps",
+    "targetRel": "Texture/Activity/gameshow_img/gameshow_img.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Activity/gameshow_img/gameshow_img.tps.meta",
+    "targetRel": "Texture/Activity/gameshow_img/gameshow_img.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps",
+    "targetRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps.meta",
+    "targetRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Card/chest/cardChestAtlas.tps",
+    "targetRel": "Texture/Card/chest/cardChestAtlas.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Card/chest/cardChestAtlas.tps.meta",
+    "targetRel": "Texture/Card/chest/cardChestAtlas.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Guild/Badge/badge.tps",
+    "targetRel": "Texture/Guild/Badge/badge.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Guild/Badge/badge.tps.meta",
+    "targetRel": "Texture/Guild/Badge/badge.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Guild/GuildBoss/guildBoss.tps",
+    "targetRel": "Texture/Guild/GuildBoss/guildBoss.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Guild/GuildBoss/guildBoss.tps.meta",
+    "targetRel": "Texture/Guild/GuildBoss/guildBoss.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/items/itemAtlas.tps",
+    "targetRel": "Texture/item/items/itemAtlas.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/items/itemAtlas.tps.meta",
+    "targetRel": "Texture/item/items/itemAtlas.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/presentPack/presentPackAtlas.tps",
+    "targetRel": "Texture/item/presentPack/presentPackAtlas.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/presentPack/presentPackAtlas.tps.meta",
+    "targetRel": "Texture/item/presentPack/presentPackAtlas.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/randomPack/randomPackAtlas.tps",
+    "targetRel": "Texture/item/randomPack/randomPackAtlas.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/item/randomPack/randomPackAtlas.tps.meta",
+    "targetRel": "Texture/item/randomPack/randomPackAtlas.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Town/ui/town.tps",
+    "targetRel": "Texture/Town/ui/town.tps",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "texturepacker-list-key"
+    ],
+    "action": "skipped-list-related",
+    "reason": "List-related source item; target is left unchanged."
+  },
+  {
+    "sourceRel": "Texture/Town/ui/town.tps.meta",
+    "targetRel": "Texture/Town/ui/town.tps.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": true,
+    "listEvidence": [
+      "paired-list-related"
+    ],
+    "action": "skipped-list-related",
+    "reason": "Paired meta for a List-related item; target is left unchanged."
+  }
+]

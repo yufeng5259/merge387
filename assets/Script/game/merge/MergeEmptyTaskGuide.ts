@@ -30,7 +30,24 @@ MergeEmptyTaskGuide.shouldHideForOrders = (orders: any[]) => MergeEmptyTaskGuide
 MergeEmptyTaskGuide.shouldShowForOrders = (orders: any[]) => Array.isArray(orders) && orders.length === 0;
 MergeEmptyTaskGuide.getOrdersLengthFromUserMerge = (userMerge: any) => {
     const orders = userMerge && userMerge.data && userMerge.data.orderData && userMerge.data.orderData.orders;
+    const reminder = MergeEmptyTaskGuide.getOrderReminderLevel();
+    if (reminder != null) {
+        const playerLevel = MergeEmptyTaskGuide.getPlayerLevelForOrderReminder(userMerge);
+        if (playerLevel != null && playerLevel > reminder) return -1;
+    }
     return Array.isArray(orders) ? orders.length : -1;
+};
+MergeEmptyTaskGuide.getOrderReminderLevel = () => {
+    if (typeof G === 'undefined' || !G.GameConstance) return null;
+    const reminder = Number(G.GameConstance.orderReminder);
+    return isFinite(reminder) ? reminder : null;
+};
+MergeEmptyTaskGuide.getPlayerLevelForOrderReminder = (userMerge: any) => {
+    let level = typeof Game !== 'undefined' && Game.SUser?.Level ? Game.SUser.Level() : null;
+    if ((level == null || level === '') && userMerge?.GetPlayerLevel) level = userMerge.GetPlayerLevel();
+    if ((level == null || level === '') && userMerge?.data) level = userMerge.data.playerLevel;
+    const numericLevel = Number(level);
+    return isFinite(numericLevel) ? numericLevel : null;
 };
 MergeEmptyTaskGuide.shouldShowForUserMerge = (userMerge: any) => MergeEmptyTaskGuide.getOrdersLengthFromUserMerge(userMerge) === 0;
 

@@ -1,5 +1,6 @@
 import { _decorator, Button, Component, find, instantiate, isValid, Label, Node } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import BuildingFocusEffect from '../../game/map/BuildingFocusEffect';
 
 const { ccclass } = _decorator;
 
@@ -10,6 +11,7 @@ export default class MapBuildMaxLevelWindow extends UIWindow {
     namelbl: Label | null = null;
     btnClose: Button | null = null;
     buildDisplayNode: Node | null = null;
+    focusEffect: BuildingFocusEffect | null = null;
     allComNode: Node | null = null;
     meta: any = null;
     mapID: any = null;
@@ -37,6 +39,7 @@ export default class MapBuildMaxLevelWindow extends UIWindow {
         this.cacheNodes();
         this.bindButtons();
         this.showBuildNode();
+        this.showFocusBuild();
         this.updatePanel();
     }
 
@@ -45,6 +48,7 @@ export default class MapBuildMaxLevelWindow extends UIWindow {
         this.namelbl = this.getLabel('bg/bg/nameTitle');
         this.btnClose = this.getComponentByPath('bg/close', Button);
         this.buildDisplayNode = find('bg/buildNode', this.node);
+        this.focusEffect = this.getComponentByPath('BuildingFocusEffect', BuildingFocusEffect);
         this.allComNode = find('bg/allDone', this.node);
     }
 
@@ -102,6 +106,10 @@ export default class MapBuildMaxLevelWindow extends UIWindow {
         const mapElementNode = this.getMapElementNode(buildNodeCopy);
         if (mapElementNode) mapElementNode.hideNode();
     }
+
+    showFocusBuild() { if (this.focusEffect && this.mNode) this.focusEffect.show(this.mNode); }
+    clearFocusBuild() { this.focusEffect?.clear(); }
+    onClose() { this.clearFocusBuild(); }
 
     getMapElementNode(node: Node | null) {
         if (!isValid(node)) return null;

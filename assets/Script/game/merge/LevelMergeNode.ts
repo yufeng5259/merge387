@@ -5,6 +5,9 @@ import MergeUtil from './MergeUtil';
 import MergeTypes from './MergeTypes';
 
 const { ccclass, property } = _decorator;
+const MERGE_DRAG_SLOP_RATIO = 0.15;
+const MERGE_RETAIN_TARGET_MS = 120;
+const MERGE_RETAIN_OUTSIDE_MARGIN_PX = 50;
 
 type AnyRecord = Record<string, any>;
 type Callback = () => void;
@@ -49,6 +52,16 @@ export class LevelMergeNode extends Component {
     private twoCanMergeAnimSchedule: Callback | null = null;
     private twoCanMergeAnimRestoreState: Array<{ node: Node, scale: Vec3, position: Vec3 }> = [];
     private initMergeMapData: AnyRecord = {};
+    private mergeGestureState = 'idle';
+    private touchStartLocalPos: Vec2 | null = null;
+    private maxTouchDistance = 0;
+    private twoCanMergeIdleSchedule: Callback | null = null;
+    private _floatingMergeItemNodes = new Map<Node, number>();
+    private _visualRefreshQueue: any[] = [];
+    private _visualRefreshVersion = 0;
+    private _visualRefreshDone: Callback | null = null;
+    private _retainedMergeTarget: any = null;
+    private _isDraggingOverStore = false;
     // =========================================================================
     // 生命周期
     // =========================================================================
@@ -73,6 +86,7 @@ export class LevelMergeNode extends Component {
         this.activeTouchId = null
         this.isTouchSettling = false
         this._mergeTouchEffectCellKey = null
+        this._isDraggingOverStore = false
 
         this.twoCanMergeTweens = []
         this.twoCanMergeAnimSchedule = null
@@ -83,8 +97,15 @@ export class LevelMergeNode extends Component {
         this._breakingBubbleByCellKey = {}
         this._pendingGeneratedCells = {}
         this._onGameShowRefreshBubbleCountdown = null
+        this._resetMergeGesture()
+        this._floatingMergeItemNodes.clear()
+        this._cancelVisualRefreshQueue()
 
         this._syncMergeMapsFromSceneChildren()
+    }
+
+    update() {
+        if (this._visualRefreshQueue.length > 0) this._processVisualRefreshQueue()
     }
     /**是否正在操作
      * 在操作棋盘时，禁止再次操作
@@ -110,11 +131,48 @@ export class LevelMergeNode extends Component {
     onDestroy() {
         this._clearMergeTouchEffect()
         this.unschedule(this.refreshBubbleCountdown)
+        this._cancelVisualRefreshQueue()
         if (this._onGameShowRefreshBubbleCountdown) {
             game.off(CocosGame.EVENT_SHOW, this._onGameShowRefreshBubbleCountdown, this)
             this._onGameShowRefreshBubbleCountdown = null
         }
+        this._floatingMergeItemNodes.clear()
         this.clearItemPool()
+    }
+
+    _cancelVisualRefreshQueue() {
+        this._visualRefreshVersion++
+        this._visualRefreshQueue.length = 0
+        this._visualRefreshDone = null
+    }
+
+    _enqueueVisualRefresh(run: Callback, node?: Node, cellKey?: string, version = this._visualRefreshVersion) {
+        this._visualRefreshQueue.push({ run, node, cellKey, version })
+        this._scheduleVisualRefreshQueue()
+    }
+
+    _scheduleVisualRefreshQueue() {
+        // update() drains the queue without relying on scheduler timing.
+    }
+
+    _processVisualRefreshQueue() {
+        if (!this._visualRefreshQueue.length) return
+        const version = this._visualRefreshVersion
+        const start = Date.now()
+        let processed = 0
+        while (this._visualRefreshQueue.length > 0 && processed < 8 && Date.now() - start < 3) {
+            const task = this._visualRefreshQueue.shift()
+            if (!task || task.version !== version) continue
+            if (task.node && (!isValid(task.node) || task.node.parent !== this.node)) continue
+            if (task.node && task.cellKey && task.node.name !== task.cellKey) continue
+            task.run()
+            processed++
+        }
+        if (!this._visualRefreshQueue.length && this._visualRefreshDone) {
+            const done = this._visualRefreshDone
+            this._visualRefreshDone = null
+            done()
+        }
     }
 
     // =========================================================================
@@ -165,7 +223,10 @@ export class LevelMergeNode extends Component {
      * @param {Object.<string,string>} mapData 键为 "tx_ty"，值为数据串；isFirst 时先向服务器拉平再铺盘
      */
     InitMergeMap(mapData?: any, isFirst: any = false, cb?: any) {
+        this._cancelVisualRefreshQueue()
+        this.isTouchSettling = true
         let initForMergeData = () => {
+            const refreshVersion = this._visualRefreshVersion
             for (let key in Game.SUserMerge.GetMergeMapData()) {
                 let { tx, ty } = this._parseTileKey(key)
                 let dataStr = Game.SUserMerge.GetMergeMapData()[key]
@@ -175,15 +236,28 @@ export class LevelMergeNode extends Component {
                 const childPos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
                 childNode.setPosition(childPos.x, childPos.y, 0)
                 childNode.parent = this.node
+                childNode.name = key
+                childNode.active = false
                 let mergeItem = childNode.getComponent(MergeItem)
-                mergeItem.InitMergeItem(tx, ty, Game.SUserMerge.ParseMergeMapData(dataStr))
+                this._enqueueVisualRefresh(() => {
+                    mergeItem.InitMergeItem(tx, ty, Game.SUserMerge.ParseMergeMapData(dataStr))
+                    childNode.active = true
+                }, childNode, key, refreshVersion)
             }
-
-            GamePlay.instance.mergeRoot.mergeNodeUI.InitUI()
-            this.updateOrderStatus()
-            this.PlayTwoCanMergeAnim()
-
-            if (cb) cb()
+            this._visualRefreshDone = () => {
+                if (refreshVersion !== this._visualRefreshVersion) return
+                this.refreshMergeItemSiblingOrder()
+                GamePlay.instance.mergeRoot.mergeNodeUI.InitUI()
+                this.updateOrderStatus()
+                this.PlayTwoCanMergeAnim()
+                this.isTouchSettling = false
+                if (cb) cb()
+            }
+            if (!this._visualRefreshQueue.length && this._visualRefreshDone) {
+                const done = this._visualRefreshDone
+                this._visualRefreshDone = null
+                done()
+            }
         }
         let itemChilds = this.node.children.filter(child => child.getComponent(MergeItem))
         while (itemChilds.length > 0) {
@@ -276,9 +350,7 @@ export class LevelMergeNode extends Component {
                     globalPos = slotGlobalPos.clone()
                 }
                 let mergeItem = itemNode.getComponent(MergeItem)
-                if (mergeItem && mergeItem.bottomRect) {
-                    mergeItem.bottomRect.active = false
-                }
+                if (mergeItem) mergeItem.hideBottomRectForConsume()
                 matchNodes.push({ itemNode: itemNode, globalPos: globalPos, pname: pname })
             })
         }
@@ -476,9 +548,46 @@ export class LevelMergeNode extends Component {
         return node
     }
 
+    _registerFloatingMergeItem(node: Node, priority = 0) {
+        if (!node || !isValid(node) || node.parent !== this.node) return
+        this._floatingMergeItemNodes.set(node, priority)
+        this.refreshMergeItemSiblingOrder()
+    }
+
+    _unregisterFloatingMergeItem(node: Node) {
+        this._floatingMergeItemNodes.delete(node)
+    }
+
+    refreshMergeItemSiblingOrder(keepOnTopNode?: Node) {
+        const floatingNodes: Array<{ node: Node, priority: number }> = []
+        this._floatingMergeItemNodes.forEach((priority, node) => {
+            if (isValid(node) && node.parent === this.node) floatingNodes.push({ node, priority })
+            else this._floatingMergeItemNodes.delete(node)
+        })
+        if (keepOnTopNode && !this._floatingMergeItemNodes.has(keepOnTopNode)) {
+            floatingNodes.push({ node: keepOnTopNode, priority: Number.MAX_SAFE_INTEGER })
+        }
+        floatingNodes.sort((a, b) => a.priority - b.priority)
+        const floatingSet = new Set(floatingNodes.map(item => item.node))
+        const itemNodes = this.node.children.filter(child => !floatingSet.has(child) && !!child.getComponent(MergeItem))
+        itemNodes.sort((a, b) => {
+            const itemA = a.getComponent(MergeItem)!
+            const itemB = b.getComponent(MergeItem)!
+            return itemA.ty !== itemB.ty ? itemB.ty - itemA.ty : itemA.tx - itemB.tx
+        })
+        itemNodes.forEach((node, index) => node.setSiblingIndex(index))
+        floatingNodes.forEach(item => {
+            if (isValid(item.node) && item.node.parent === this.node) item.node.setSiblingIndex(this.node.children.length - 1)
+        })
+        this.bringPicFrameToTop()
+    }
+
     putItem(itemNode?: any) {
         if (itemNode && isValid(itemNode)) {
+            this._unregisterFloatingMergeItem(itemNode)
             Tween.stopAllByTarget(itemNode)
+            const mergeItem = itemNode.getComponent(MergeItem)
+            if (mergeItem) mergeItem.discardDragBottomRectState()
             this.itemPool.put(itemNode)
         }
     }
@@ -605,10 +714,129 @@ export class LevelMergeNode extends Component {
     }
 
     scheduleTwoCanMergeHintAfterIdle(delay: any = 0) {
-        this.scheduleOnce(() => {
+        this.requestTwoCanMergeHintAfterBoardStable(delay)
+    }
+
+    requestTwoCanMergeHintAfterBoardStable(delay: any = 0) {
+        if (this.twoCanMergeIdleSchedule) this.unschedule(this.twoCanMergeIdleSchedule)
+        this.stopLastTwoCanMergeAnim()
+        this.twoCanMergeIdleSchedule = () => {
+            this.twoCanMergeIdleSchedule = null
             if (!this.node || !isValid(this.node)) return
             this.PlayTwoCanMergeAnim()
-        }, delay)
+        }
+        this.scheduleOnce(this.twoCanMergeIdleSchedule, delay)
+    }
+
+    getCollectContentType(mergeId: number) {
+        const meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, mergeId)
+        let contentType = meta ? MergeTypes.MergeTypeToContentTypes[meta.Type()] : null
+        if (contentType !== null && contentType !== undefined) return contentType
+        const provider = SR && SR.SRMerge && SR.SRMerge.MergeBoardLogicConfigProvider
+        const bubbleConfig = provider && provider.getBubbleConfig ? provider.getBubbleConfig() : null
+        if (bubbleConfig && Number(bubbleConfig.expireCoinPieceId) === Number(mergeId)) return Game.Content.Types.Coin
+        return contentType
+    }
+
+    _trackRetainedMergeTarget(touchPoint: Vec3, boardLayout: any) {
+        if (!this.touchStartNode || !this.itemCanDrag || !touchPoint) return null
+        const rawTile = GameKit.MergeUtil.px2tile(touchPoint.x, touchPoint.y, boardLayout)
+        const rawCellKey = rawTile.x + '_' + rawTile.y
+        if (rawCellKey === this.touchStartPosName || !this.ifInGrid(rawTile.x, rawTile.y)) return null
+        if (!this._isTutorialDropTileAllowed(rawCellKey)) return null
+
+        const startMergeItem = this.touchStartNode.getComponent(MergeItem)
+        const targetNode = this.node.getChildByName(rawCellKey)
+        const targetItem = targetNode ? targetNode.getComponent(MergeItem) : null
+        const meta = startMergeItem ? Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, startMergeItem.mergeId) : null
+        if (!startMergeItem || !targetItem || !meta ||
+            !GameKit.MergeUtil.CheckIfCanMerge(targetItem, startMergeItem, meta)) return null
+
+        this._retainedMergeTarget = { cellKey: rawCellKey, tile: rawTile, node: targetNode, lastValidAt: Date.now() }
+        return this._retainedMergeTarget
+    }
+
+    _getRetainedMergeDrop(touchPoint: Vec3, boardLayout: any) {
+        const retained = this._retainedMergeTarget
+        if (!retained || !touchPoint) return null
+        const ageMs = Date.now() - retained.lastValidAt
+        if (ageMs > MERGE_RETAIN_TARGET_MS) return null
+        if (!retained.node || !isValid(retained.node) || retained.node.parent !== this.node) return null
+
+        const startMergeItem = this.touchStartNode ? this.touchStartNode.getComponent(MergeItem) : null
+        const targetItem = retained.node.getComponent(MergeItem)
+        const meta = startMergeItem ? Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, startMergeItem.mergeId) : null
+        if (!startMergeItem || !targetItem || !meta ||
+            !GameKit.MergeUtil.CheckIfCanMerge(targetItem, startMergeItem, meta)) return null
+
+        const center = GameKit.MergeUtil.tile2px(retained.tile.x, retained.tile.y, boardLayout)
+        const dx = Math.max(Math.abs(touchPoint.x - center.x) - boardLayout.itemSize.x / 2, 0)
+        const dy = Math.max(Math.abs(touchPoint.y - center.y) - boardLayout.itemSize.y / 2, 0)
+        const outsideDistancePx = Math.sqrt(dx * dx + dy * dy)
+        if (outsideDistancePx > MERGE_RETAIN_OUTSIDE_MARGIN_PX) return null
+        return { target: retained, ageMs, outsideDistancePx }
+    }
+
+    _resolveMergeDrop(touchPoint: Vec3, boardLayout: any, allowRetained = false) {
+        const rawTile = GameKit.MergeUtil.px2tile(touchPoint.x, touchPoint.y, boardLayout)
+        const rawCellKey = rawTile.x + '_' + rawTile.y
+        const result: any = {
+            rawTile, resolvedTile: rawTile, rawCellKey, resolvedCellKey: rawCellKey,
+            canMergeTarget: false, usedRetainedTarget: false,
+            retainedAgeMs: null, retainedOutsideDistancePx: null,
+        }
+        if (!this.touchStartNode || !this.itemCanDrag) return result
+        const startMergeItem = this.touchStartNode ? this.touchStartNode.getComponent(MergeItem) : null
+        const meta = startMergeItem ? Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, startMergeItem.mergeId) : null
+        if (!startMergeItem || !meta) return result
+        const rawNode = this.node.getChildByName(rawCellKey)
+        const rawItem = rawNode ? rawNode.getComponent(MergeItem) : null
+        if (rawItem && GameKit.MergeUtil.CheckIfCanMerge(rawItem, startMergeItem, meta)) {
+            result.canMergeTarget = true
+            return result
+        }
+        const isSpecialDrop = meta.FunctionType() === MergeTypes.MergeFunctionType.SCISSORS ||
+            (rawItem && this._isCookingRecipeIngredient(rawItem, startMergeItem))
+        if (allowRetained && !isSpecialDrop) {
+            const retainedDrop = this._getRetainedMergeDrop(touchPoint, boardLayout)
+            if (retainedDrop) {
+                result.resolvedTile = retainedDrop.target.tile
+                result.resolvedCellKey = retainedDrop.target.cellKey
+                result.canMergeTarget = true
+                result.usedRetainedTarget = true
+                result.retainedAgeMs = retainedDrop.ageMs
+                result.retainedOutsideDistancePx = Math.round(retainedDrop.outsideDistancePx)
+            }
+        }
+        return result
+    }
+
+    _getMergeDragSlop(boardLayout: any) {
+        return Math.round(Math.min(boardLayout.itemSize.x, boardLayout.itemSize.y) * MERGE_DRAG_SLOP_RATIO)
+    }
+
+    _resetMergeGesture() {
+        this.mergeGestureState = 'idle'
+        this.touchStartLocalPos = null
+        this.maxTouchDistance = 0
+        this._retainedMergeTarget = null
+    }
+
+    _beginMergeGesture(localPosition: Vec3) {
+        this.mergeGestureState = 'pressed'
+        this.touchStartLocalPos = new Vec2(localPosition.x, localPosition.y)
+        this.maxTouchDistance = 0
+    }
+
+    _updateMergeGesture(localPosition: Vec3, boardLayout: any) {
+        if (!this.touchStartLocalPos || this.mergeGestureState === 'idle') return
+        const distance = Vec2.distance(this.touchStartLocalPos, new Vec2(localPosition.x, localPosition.y))
+        this.maxTouchDistance = Math.max(this.maxTouchDistance, distance)
+        if (this.maxTouchDistance >= this._getMergeDragSlop(boardLayout)) this.mergeGestureState = 'dragging'
+    }
+
+    _isMergeGestureDragging() {
+        return this.mergeGestureState === 'dragging'
     }
 
     _handleTutorialRejectedAction(startPos?: any, startMergeItem?: any, flyDuration?: any) {
@@ -815,8 +1043,7 @@ export class LevelMergeNode extends Component {
                     for (let i = 0; i < 5; i++) {
                         textures.push(startMergeItem.icon.spriteFrame)
                     }
-                    let meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, startMergeItem.mergeId)
-                    let contentType = MergeTypes.MergeTypeToContentTypes[meta.Type()]
+                    let contentType = this.getCollectContentType(startMergeItem.mergeId)
                     if (contentType) {
                         GamePlay.instance.mergeRoot.mergeNodeUI.PlayCoinFlyToTargetAnim(globalFromPos, Math.floor(Math.random() * 8) + 1, textures, contentType, undefined, () => { })
                     } else {
@@ -923,6 +1150,8 @@ export class LevelMergeNode extends Component {
     onTouchStart(e?: any) {
         if (this.activeTouchId != null || this.isTouchSettling) return
         this._clearMergeTouchEffect()
+        this._cancelStoreDragEffect()
+        this._resetMergeGesture()
         this.itemCanDrag = false;
         if (this.IsNetRunning()) return;
         this.touchStartNode = null
@@ -984,6 +1213,7 @@ export class LevelMergeNode extends Component {
             this.touchStartNode = itemNode
             this.touchStartPosName = pname
             this.activeTouchId = this._getTouchId(touch1)
+            this._beginMergeGesture(touchPoint1)
         }
     }
 
@@ -991,26 +1221,32 @@ export class LevelMergeNode extends Component {
     onTouchMove(e?: any) {
         if (this.IsNetRunning()) {
             this._clearMergeTouchEffect()
+            this._cancelStoreDragEffect()
             return
         }
         if (this.itemCanDrag == false) {
             this._clearMergeTouchEffect()
+            this._cancelStoreDragEffect()
             return
         }
         var touch1 = this._getActiveTouch(e)
         if (touch1) {
-            var screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
-            if (screenDist < 15) return
+            var touchPoint1 = this._getTouchLocalPoint(touch1);
+            this._updateMergeGesture(touchPoint1, this.getMergeBoardLayout())
+            if (!this._isMergeGestureDragging()) return
             if (this._isTutorialClickGeneratorOnlyRule()) {
                 this.itemCanDrag = false
                 this._clearMergeTouchEffect()
                 return
             }
             this.picFrame.active = false;
-            var touchPoint1 = this._getTouchLocalPoint(touch1);
             if (this.touchStartNode) {
-            this.touchStartNode.setPosition(touchPoint1)
+                const mergeItem = this.touchStartNode.getComponent(MergeItem)
+                if (mergeItem) mergeItem.beginDragBottomRect()
+                this.touchStartNode.setPosition(touchPoint1)
             }
+            this._updateStoreDragEffect()
+            this._trackRetainedMergeTarget(touchPoint1, this.getMergeBoardLayout())
             this._updateMergeTouchEffect(touchPoint1)
             this.lastSelectMergeItem = null;
             this.lastTouchStartPosName = null;
@@ -1027,15 +1263,22 @@ export class LevelMergeNode extends Component {
 
         this._clearMergeTouchEffect()
         this._restoreScissorsTransparent()
-        if (this.IsNetRunning()) return
-        if (!this.touchStartNode) return
+        if (this.IsNetRunning()) {
+            this._resetMergeGesture()
+            return
+        }
+        if (!this.touchStartNode) {
+            this._resetMergeGesture()
+            return
+        }
         let touchPoint1 = this._getTouchLocalPoint(touch1)
         let boardLayout = this.getMergeBoardLayout()
-        let screenDist = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
-        let isTap = screenDist < 40
-
-        let tp = GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, boardLayout)
+        this._updateMergeGesture(touchPoint1, boardLayout)
+        let isTap = !this._isMergeGestureDragging()
+        const dropResult = isTap ? null : this._resolveMergeDrop(touchPoint1, boardLayout, true)
+        let tp = dropResult ? dropResult.resolvedTile : GameKit.MergeUtil.px2tile(touchPoint1.x, touchPoint1.y, boardLayout)
         let endPosName = tp.x + '_' + tp.y
+        this._resetMergeGesture()
 
         if (isTap && this.touchStartPosName && this.touchStartPosName !== endPosName) {
             let sp = this.touchStartPosName.split('_')
@@ -1288,20 +1531,24 @@ export class LevelMergeNode extends Component {
 
     onTouchCancel(e?: any) {
         let touch1 = this._getActiveTouch(e)
-        if (!touch1) return
+        if (!touch1 && !this.touchStartNode) return
 
         this._clearMergeTouchEffect()
         this._restoreScissorsTransparent()
         this._releaseActiveTouch()
         this._beginTouchSettling()
-        if (!this.touchStartNode || !this.touchStartPosName) return
+        this._resetMergeGesture()
+        if (!this.touchStartNode || !this.touchStartPosName) {
+            this._cancelStoreDragEffect()
+            return
+        }
 
         let startMergeItem = this.touchStartNode.getComponent(MergeItem)
         let startParts = this.touchStartPosName.split('_')
         let startPos = GameKit.MergeUtil.tile2px(startParts[0], startParts[1], this.getMergeBoardLayout())
         if (startMergeItem) {
             if (this.itemCanDrag && !this._isTutorialClickGeneratorOnlyRule()) {
-                let touchPoint1 = this._getTouchLocalPoint(touch1)
+                let touchPoint1 = touch1 ? this._getTouchLocalPoint(touch1) : this.touchStartNode.position
                 this.touchStartNode.setPosition(touchPoint1)
                 if (GamePlay.instance.mergeRoot.mergeNodeUI.IfMergeHitTestStoreButton(this.touchStartNode)) {
                     let flyDuration = Vec3.distance(touchPoint1, new Vec3(startPos.x, startPos.y, 0)) / 300 * 0.1
@@ -1309,6 +1556,7 @@ export class LevelMergeNode extends Component {
                     return
                 }
             }
+            this._cancelStoreDragEffect()
             this._flyback(startPos, startMergeItem.node, 0.1, () => {
                 this.showRec(startMergeItem, startPos, this.touchStartPosName, true)
                 this.lastSelectMergeItem = startMergeItem
@@ -1333,6 +1581,7 @@ export class LevelMergeNode extends Component {
                 Promise.resolve(SR.SRMerge.AutoSendSaveMapLite()).then(() => {
                     let req = SR.SRMerge.MovePieceFromGridToWarehouse(this.touchStartPosName)
                     req.SetCallBack(() => {
+                        this._commitStorePutEffect()
                         if (Game.MergeTutorialManager && Game.MergeTutorialManager.Emit) {
                             Game.MergeTutorialManager.Emit('drag_to_backpack', {
                                 success: true,
@@ -1349,6 +1598,7 @@ export class LevelMergeNode extends Component {
                     })
                     req.Send()
                 }).catch((err) => {
+                    this._cancelStoreDragEffect()
                     console.error(err, "AutoSendSaveMapLite before MovePieceFromGridToWarehouse");
                     this._flyback(startPos, startMergeItem.node, flyDuration, () => {
                         this.showRec(startMergeItem, startPos, this.touchStartPosName, true)
@@ -1357,6 +1607,7 @@ export class LevelMergeNode extends Component {
                     })
                 })
             } else {
+                this._cancelStoreDragEffect()
                 this._flyback(startPos, startMergeItem.node, flyDuration, () => {
                     this.showRec(startMergeItem, startPos, this.touchStartPosName, true)
                     this.lastSelectMergeItem = startMergeItem
@@ -1380,6 +1631,33 @@ export class LevelMergeNode extends Component {
     /**
      * 拖到空格：已校验 canDrag；更新三件套并发 MOVE。
      */
+    _updateStoreDragEffect() {
+        if (!this.touchStartNode) return
+        const mergeUI = GamePlay.instance && GamePlay.instance.mergeRoot && GamePlay.instance.mergeRoot.mergeNodeUI
+        if (!mergeUI || !mergeUI.IfMergeHitTestStoreButton) return
+        const hitStoreButton = mergeUI.IfMergeHitTestStoreButton(this.touchStartNode)
+        if (hitStoreButton === this._isDraggingOverStore) return
+        if (hitStoreButton) {
+            this._isDraggingOverStore = true
+            if (mergeUI.PlayCangKuPutEnter) mergeUI.PlayCangKuPutEnter()
+        } else {
+            this._cancelStoreDragEffect()
+        }
+    }
+
+    _cancelStoreDragEffect() {
+        if (!this._isDraggingOverStore) return
+        this._isDraggingOverStore = false
+        const mergeUI = GamePlay.instance && GamePlay.instance.mergeRoot && GamePlay.instance.mergeRoot.mergeNodeUI
+        if (mergeUI && mergeUI.CancelCangKuPutPreview) mergeUI.CancelCangKuPutPreview()
+    }
+
+    _commitStorePutEffect() {
+        this._isDraggingOverStore = false
+        const mergeUI = GamePlay.instance && GamePlay.instance.mergeRoot && GamePlay.instance.mergeRoot.mergeNodeUI
+        if (mergeUI && mergeUI.PlayCangKuPutLeave) mergeUI.PlayCangKuPutLeave()
+    }
+
     _touchEndMoveToEmptyCell(endPosName?: any, endPos?: any, startMergeItem?: any, moveDuration?: any) {
         let dragNode = this.touchStartNode
         let tutorialFromKey = this.touchStartPosName
@@ -1413,6 +1691,7 @@ export class LevelMergeNode extends Component {
     _touchEndSameCellTap(touch1?: any, endPos?: any, endPosName?: any, startMergeItem?: any, dropMergeItem?: any, dropNode?: any) {
         this.touchStartNode.setPosition(endPos.x, endPos.y, 0)
         let dist1 = this.pressPosStart ? Vec2.distance(this.pressPosStart, this._getTouchUILocation(touch1)) : 0
+        if (dist1 >= 40) startMergeItem.restoreDragBottomRect()
         if (dist1 < 40) {
             // this.showRec(startMergeItem, endPos, this.touchStartPosName, true)
             if (this.lastSelectMergeItem && this.lastSelectMergeItem.node == dropNode) {
@@ -1618,6 +1897,7 @@ export class LevelMergeNode extends Component {
             this._handleTutorialRejectedAction(startPos, startMergeItem, tmDragToEndCell)
             return
         }
+        this._cancelStoreDragEffect()
 
         let fromCellKey = this.touchStartPosName
 
@@ -1873,6 +2153,7 @@ export class LevelMergeNode extends Component {
      * @param {boolean} [showAnim] 为 true 时弹 MergeDes 与弹性入场
      */
     showRec(mergeItem?: any, pos?: any, posName?: any, showAnim?: any) {
+        if (mergeItem) mergeItem.restoreDragBottomRect()
         let id = mergeItem ? mergeItem.mergeId : -1;
         if (!pos || !id) {
             this.picFrame.active = false;
@@ -2036,6 +2317,8 @@ export class LevelMergeNode extends Component {
      */
     DeleteSelectMergeItem(node?: any, pName?: any, needUpdateServer?: any, args?: any, cb?: any) {
         args = args || {}
+        const consumedItem = node && node.getComponent ? node.getComponent(MergeItem) : null
+        if (consumedItem) consumedItem.hideBottomRectForConsume()
         if (Game.MergeTutorialManager && (args.actionType === MergeTypes.MergeActionType.REMOVE || args.actionType === MergeTypes.MergeActionType.COLLECT || args.actionType === 'delete' || args.actionType === 'sell')) {
             if (!Game.MergeTutorialManager.CanOperate('sell', { cellKey: pName || this.lastTouchStartPosName, actionType: args.actionType })) {
                 return
@@ -2440,7 +2723,10 @@ export class LevelMergeNode extends Component {
         newNode.setPosition(frompos.x, frompos.y, 0)
         let item = newNode.getComponent(MergeItem);
         item.InitMergeItem(generateTilePos.x, generateTilePos.y, mergeDataStr)
+        this._registerFloatingMergeItem(newNode)
         this.playItemJumpAnim(newNode, frompos, pos, {}, () => {
+            this._unregisterFloatingMergeItem(newNode)
+            this.refreshMergeItemSiblingOrder()
             if (options.playLandingSound && GameKit.SoundManager && GameKit.SoundManager.playItemLandingSound) {
                 GameKit.SoundManager.playItemLandingSound()
             }
@@ -2576,6 +2862,7 @@ export class LevelMergeNode extends Component {
         let mergeItem = mergeNode.getComponent(MergeItem);
 
         mergeItem.InitMergeItem(tx, ty, mergeDataStr)
+        this._registerFloatingMergeItem(mergeNode)
 
         let pos = GameKit.MergeUtil.tile2px(tx, ty, this.getMergeBoardLayout())
         let startPos = mergeItem.node.getPosition()
@@ -2591,11 +2878,14 @@ export class LevelMergeNode extends Component {
                 maxScale: 1.2,
             },
             () => {
+                this._unregisterFloatingMergeItem(mergeNode)
                 let mergeNodeUI = GamePlay.instance.mergeRoot.mergeNodeUI
                 if (mergeNodeUI && mergeNodeUI.PlayQiZiLuoDiEnter && isValid(mergeItem.node)) {
                     let worldPos = mergeItem.node.getComponent(UITransform)!.convertToWorldSpaceAR(new Vec3(0, 0, 0), new Vec3())
                     mergeNodeUI.PlayQiZiLuoDiEnter(worldPos)
                 }
+                this.refreshMergeItemSiblingOrder()
+                this.requestTwoCanMergeHintAfterBoardStable()
                 if (cb) cb()
             }
         )

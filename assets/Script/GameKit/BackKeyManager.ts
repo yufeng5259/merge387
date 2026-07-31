@@ -4,6 +4,7 @@ type BackKeyCallback = (() => void) | undefined;
 
 export default class BackKeyManager {
     static callbacks: BackKeyCallback[] = [];
+    private static blockOwners: Record<string, boolean> = {};
     private static initialized = false;
 
     static init() {
@@ -14,6 +15,23 @@ export default class BackKeyManager {
 
     static Clear() {
         BackKeyManager.callbacks = [];
+        BackKeyManager.blockOwners = {};
+    }
+
+    static acquireBlock(owner: string) {
+        if (!owner || BackKeyManager.blockOwners[owner]) return false;
+        BackKeyManager.blockOwners[owner] = true;
+        return true;
+    }
+
+    static releaseBlock(owner: string) {
+        if (!owner || !BackKeyManager.blockOwners[owner]) return false;
+        delete BackKeyManager.blockOwners[owner];
+        return true;
+    }
+
+    static isBlocked() {
+        return Object.keys(BackKeyManager.blockOwners).length > 0;
     }
 
     static registerBackEvent(callback?: () => void) {
@@ -26,6 +44,7 @@ export default class BackKeyManager {
     }
 
     static callEvnet() {
+        if (BackKeyManager.isBlocked()) return;
         if (BackKeyManager.callbacks.length <= 0) return;
         const call = BackKeyManager.callbacks[BackKeyManager.callbacks.length - 1];
         if (call) call();

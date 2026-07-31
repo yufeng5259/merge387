@@ -6,6 +6,7 @@ class MergeGeneraterMeta {
     static GetAllMetaIdsByMergeId: any
     static GetGenerateByMergeId: any
     static GetGenerateItemId: any
+    static IsReady: any
 
     _data: any = {}
 
@@ -31,6 +32,21 @@ class MergeGeneraterMeta {
     } 
     Series() {
         return this.GetFieldValue(["Series", "series"], null)
+    }
+    UnlockElementsType() {
+        const value = this.GetFieldValue(["unlockElementsType", "UnlockElementsType"], [])
+        if (Array.isArray(value)) return value
+        if (value == null || value === "") return []
+        if (typeof value === "string") {
+            const text = value.trim()
+            if (!text) return []
+            try {
+                const parsed = JSON.parse(text)
+                if (Array.isArray(parsed)) return parsed
+            } catch (e) {}
+            return text.split(/[;,\uFF0C\uFF1B\s]+/).filter(item => item !== "")
+        }
+        return [value]
     }
     /**
      * 下一等级产出物品id
@@ -247,6 +263,11 @@ MergeGeneraterMeta.GetGenerateByMergeId = (mergeId) => {
         }   
     }
     return null;
+}
+
+MergeGeneraterMeta.IsReady = () => {
+    const metas = Meta.MetaManager.GetMetas(Meta.MetaType.MergeGenerater)
+    return !!metas && Object.keys(metas).length > 0
 }
 
 /**

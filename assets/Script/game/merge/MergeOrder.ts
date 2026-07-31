@@ -86,6 +86,8 @@ export class MergeOrder extends Component {
     public currentRoleNode: Node | null = null;
     public orderCompleteAnimKey = '';
     public _orderData: any = null;
+    private _mergeRoleClickNode: Node | null = null;
+    private _isClaiming = false;
 
     onLoad () {
         if (this.light) this.light.active = false;
@@ -98,6 +100,42 @@ export class MergeOrder extends Component {
             unbindGuardedClick(this.completeBtn, this);
             bindGuardedClick(this.completeBtn, this, this.onClickCompleteBtn);
         }
+        this._bindMergeRoleCompleteClick();
+    }
+
+    onDestroy () {
+        if (this.completeBtn) {
+            this.completeBtn.off(Node.EventType.TOUCH_END, this.onClickCompleteBtn, this);
+            unbindGuardedClick(this.completeBtn, this);
+        }
+        this._unbindMergeRoleCompleteClick();
+    }
+
+    _getMergeRoleClickNode () {
+        return this.mergeRoleNode && this.mergeRoleNode.ske ? this.mergeRoleNode.ske.node : (this.mergeRoleNode ? this.mergeRoleNode.node : null);
+    }
+
+    _bindMergeRoleCompleteClick () {
+        const roleClickNode = this._getMergeRoleClickNode();
+        if (!roleClickNode) return;
+        this._mergeRoleClickNode = roleClickNode;
+        roleClickNode.off(Node.EventType.TOUCH_END, this.onClickMergeRoleCompleteArea, this);
+        roleClickNode.on(Node.EventType.TOUCH_END, this.onClickMergeRoleCompleteArea, this);
+    }
+
+    _unbindMergeRoleCompleteClick () {
+        if (!this._mergeRoleClickNode) return;
+        this._mergeRoleClickNode.off(Node.EventType.TOUCH_END, this.onClickMergeRoleCompleteArea, this);
+        this._mergeRoleClickNode = null;
+    }
+
+    onClickMergeRoleCompleteArea (event?: any) {
+        if (this._isClaiming || !this.completeBtn || !this.completeBtn.active) return;
+        this.onClickCompleteBtn(event);
+    }
+
+    _isSkeletonCached (skeleton: sp.Skeleton | null) {
+        return !!(skeleton && skeleton.isAnimationCached && skeleton.isAnimationCached());
     }
 
     _getRoleComp () {
@@ -129,7 +167,13 @@ export class MergeOrder extends Component {
         const roleSpine = this._findRoleSpine(roleNameStr);
         const skeleton = roleComp.ske || roleNode.getComponent(sp.Skeleton);
         if (skeleton && roleSpine) {
-            skeleton.skeletonData = roleSpine;
+            if (roleComp.setRoleSkeletonData) {
+                roleComp.setRoleSkeletonData(roleSpine);
+            } else if (skeleton.skeletonData !== roleSpine) {
+                skeleton.skeletonData = roleSpine;
+                if (!this._isSkeletonCached(skeleton)) skeleton.clearTracks();
+                skeleton.setToSetupPose();
+            }
             roleComp.ske = skeleton;
         }
         return roleNode;
@@ -164,6 +208,11 @@ export class MergeOrder extends Component {
         if (roleComp && roleComp.playHappy) {
             roleComp.playHappy();
         }
+    }
+
+    PlayIdle () {
+        const roleComp = this._getRoleComp();
+        if (roleComp && roleComp.playIdle) roleComp.playIdle();
     }
 
     _playCompleteLightOnce () {
@@ -232,6 +281,7 @@ export class MergeOrder extends Component {
     }
 
     Init (order: any) {
+        this._isClaiming = false;
         order = order || {};
         this._orderData = order;
         this.roleNodes.forEach(rnode => {
@@ -291,8 +341,18 @@ export class MergeOrder extends Component {
         this.refreshAdditionalRewards(order);
     }
 
+    _getRewardLayout2 () {
+        return this.reward_layout ? GameKit.ControllerTable.GetNode(this.reward_layout, 'rewardlayout_2') : null;
+    }
+
+    _setRewardLayout2Visible (visible: boolean) {
+        const rewardLayout2 = this._getRewardLayout2();
+        if (rewardLayout2) rewardLayout2.active = visible;
+    }
+
     private refreshRewardItems (rewards: any[]) {
-        const rewardlayout2 = this.reward_layout ? GameKit.ControllerTable.GetNode(this.reward_layout, 'rewardlayout_2') : null;
+        const rewardlayout2 = this._getRewardLayout2();
+        this._setRewardLayout2Visible(rewards.length > 0);
         const rewardTemplate = rewardlayout2 ? GameKit.ControllerTable.GetNode(rewardlayout2, 'item') : null;
         for (let i = 0; i < 3; i++) {
             let rewardNode = this.rewardItems[i];
@@ -442,6 +502,7 @@ export class MergeOrder extends Component {
             if (this.light1) this.light1.active = false;
             if (this.light) this.light.active = false;
             this.isComplete = false;
+            if (wasComplete) this.PlayIdle();
         }
         return completeIds;
     }
@@ -477,7 +538,8 @@ export class MergeOrder extends Component {
         return map;
     }
 
-    onClickCompleteBtn () {
+    onClickCompleteBtn (_event?: any) {
+        if (this._isClaiming) return;
         const mergeRoot = GamePlay.instance ? GamePlay.instance.mergeRoot : null;
         const mergeLevelNode = mergeRoot ? mergeRoot.mergeLevelNode : null;
         const mergeUI = mergeRoot ? mergeRoot.mergeNodeUI : null;
@@ -488,9 +550,11 @@ export class MergeOrder extends Component {
         }
         const slotIndex = this.GetSlotIndex();
         if (slotIndex === -1) return;
+        this._isClaiming = true;
 
         this.PlayCompleteBtnEffect();
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.TryClaimTutorialOrder && Game.MergeTutorialManager.TryClaimTutorialOrder(slotIndex, this)) {
+            this._isClaiming = false;
             return;
         }
 
@@ -521,6 +585,7 @@ export class MergeOrder extends Component {
         if (!currentOrder) {
             console.error('order claim missing order data', { orderId: orderId, slotIndex: slotIndex });
             if (mergeUI.orderGroup && mergeUI.orderGroup.EndClaimTransition) mergeUI.orderGroup.EndClaimTransition();
+            this._isClaiming = false;
             return;
         }
 
@@ -549,6 +614,7 @@ export class MergeOrder extends Component {
                     mergeUI.orderGroup.PlayClaimedOrderRemoveAnim(this, () => {
                         mergeUI.InitOrderList();
                         mergeLevelNode.SetNetRunning(false);
+                        this._isClaiming = false;
                     });
                 });
             });
@@ -556,6 +622,7 @@ export class MergeOrder extends Component {
             console.error(err, 'order claim error');
             if (mergeUI.orderGroup && mergeUI.orderGroup.EndClaimTransition) mergeUI.orderGroup.EndClaimTransition();
             mergeLevelNode.SetNetRunning(false);
+            this._isClaiming = false;
         });
     }
 
@@ -608,6 +675,8 @@ export class MergeOrder extends Component {
                 }
             }
         }
+
+        this._setRewardLayout2Visible(false);
 
         if (flyRewardData.length <= 0) {
             if (cb) cb();

@@ -1,5 +1,6 @@
 import { _decorator, Button, Component, find, instantiate, isValid, Label, Node, ProgressBar, RichText, UITransform, Vec3 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import BuildingFocusEffect from '../../game/map/BuildingFocusEffect';
 
 const { ccclass } = _decorator;
 
@@ -14,6 +15,7 @@ export default class MapBuildStageUpgradeWindow extends UIWindow {
     btnInfo: Button | null = null;
     btnClose: Button | null = null;
     buildDisplayNode: Node | null = null;
+    focusEffect: BuildingFocusEffect | null = null;
     rewardsNode: Node | null = null;
     rewardItem: Node | null = null;
     stageRewardLabel: Label | null = null;
@@ -49,6 +51,7 @@ export default class MapBuildStageUpgradeWindow extends UIWindow {
         this.bindButtons();
         this.loadStory();
         this.showBuildNode();
+        this.showFocusBuild();
         this.updatePanel();
 
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.RefreshCurrentWindow) {
@@ -65,6 +68,7 @@ export default class MapBuildStageUpgradeWindow extends UIWindow {
         this.btnInfo = this.getComponentByPath('bg/upgradeNode/btninfo', Button);
         this.btnClose = this.getComponentByPath('bg/close', Button);
         this.buildDisplayNode = find('bg/buildNode', this.node);
+        this.focusEffect = this.getComponentByPath('BuildingFocusEffect', BuildingFocusEffect);
         this.rewardsNode = find('bg/upgradeNode/noStage/rewards', this.node);
         this.rewardItem = find('bg/upgradeNode/noStage/exp', this.node);
         const stageRewardLabel = this.getLabel('bg/upgradeNode/Stage/reward');
@@ -229,6 +233,10 @@ export default class MapBuildStageUpgradeWindow extends UIWindow {
         const mapElementNode = this.getMapElementNode(buildNodeCopy);
         if (mapElementNode) mapElementNode.hideNode();
     }
+
+    showFocusBuild() { if (this.focusEffect && this.mNode) this.focusEffect.show(this.mNode); }
+    clearFocusBuild() { this.focusEffect?.clear(); }
+    onClose() { this.clearFocusBuild(); }
 
     getMapElementNode(node: Node | null) {
         if (!isValid(node)) return null;

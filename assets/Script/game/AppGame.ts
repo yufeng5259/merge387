@@ -13,6 +13,7 @@ import Guild from './guild/Guild';
 import { UserMerge } from './merge/UserMerge';
 import UserStory from './story/UserStory';
 import { UserMap } from './map/UserMap';
+import './mergeTutorial/MergeGuideHooks';
 const { ccclass } = _decorator;
 
 @ccclass('AppGame')
@@ -200,14 +201,29 @@ export class AppGame extends Component {
         this.logined = true;
         this.prelogined = false;
 
+        const vibrateResourceIncrease = (data: any, from: any, to: any) => {
+            if (!data || data.__resourceAnim !== true || data.__animOnArrive === true) return;
+            from = Number(from);
+            to = Number(to);
+            if (!isFinite(from) || !isFinite(to) || to <= from) return;
+            if (typeof AppKit === 'undefined' || !AppKit.NativeWrap || !AppKit.NativeWrap.VibrateShortSequence) return;
+            AppKit.NativeWrap.VibrateShortSequence();
+        };
+
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ApEvent, 'Game', function(data) {
+            const beforeAp = Number(Game.SUser.Ap());
+            const fromAp = data && data.__from != null ? Number(data.__from) : beforeAp;
             if (data && data.__serverEvent === true && data.ap != null && data.legacyApSnapshot !== true && data.__legacyApSnapshot !== true) {
                 if (SR && SR.SRMerge && SR.SRMerge.SyncResourceShadow) SR.SRMerge.SyncResourceShadow();
                 GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ApEvent, data);
+                const toAp = data.__to != null ? Number(data.__to) : Number(data.ap);
+                vibrateResourceIncrease(data, fromAp, toAp);
                 return;
             }
             Game.SUser.updateData(data);
             GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.ApEvent, data);
+            const toAp = data && data.__to != null ? Number(data.__to) : Number(Game.SUser.Ap());
+            vibrateResourceIncrease(data, fromAp, toAp);
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.ResourceDeltaEvent, 'Game', function(data) {
@@ -226,8 +242,12 @@ export class AppGame extends Component {
         }.bind(this));
 
         GameKit.WebEvent.RegisterEvent(GameKit.WebEvent.EventName.CoinEvent, 'Game', function(data) {
+            const beforeCoin = Number(Game.SUser.Coin());
             Game.SUser.updateData(data);
             GameKit.GameEvent.DispatcherEvent(GameKit.GameEvent.EventName.CoinEvent, data);
+            const fromCoin = data && data.__from != null ? Number(data.__from) : beforeCoin;
+            const toCoin = data && data.__to != null ? Number(data.__to) : Number(Game.SUser.Coin());
+            vibrateResourceIncrease(data, fromCoin, toCoin);
             if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitTrigger) {
                 Game.MergeTutorialManager.EmitTrigger('coin_reach', { coin: Game.SUser.Coin() });
             }

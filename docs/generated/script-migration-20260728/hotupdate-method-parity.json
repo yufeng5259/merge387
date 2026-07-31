@@ -1,0 +1,1521 @@
+{
+  "summary": {
+    "generatedAt": "2026-07-28T09:51:49.187Z",
+    "files": 1,
+    "sourceMethods": 20,
+    "mappedMethods": 20,
+    "missingMethods": 0,
+    "duplicateMethods": 0,
+    "methodsWithFeatureDeltas": 6
+  },
+  "report": [
+    {
+      "rel": "AppKit/HotUpdate",
+      "sourceMethodCount": 20,
+      "targetMethodCount": 21,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": [
+        {
+          "method": "_formatHotUpdateSpeed",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_formatHotUpdateSpeed",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "max",
+              "round",
+              "toFixed",
+              "toString"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "24FC5FB423970CF8A6BB5B37251DBF1BB9C16F639131FC0F51C2D1531303D416"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "max",
+              "round",
+              "toFixed"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C05BB0E41B1ABD4A31575BAF8AF80A5BCFDB793A18E26C861E760ADE07B9349F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "toString"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "_logHotUpdateStats",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_logHotUpdateStats",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "Log",
+              "_formatHotUpdateSpeed",
+              "max",
+              "now",
+              "round",
+              "stringify"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3B21CF03717E394295A0B4390E9F41A81EDBF163FFE57D080EBFF47CF5F336BE"
+          },
+          "target": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "Log",
+              "_formatHotUpdateSpeed",
+              "max",
+              "now",
+              "round",
+              "stringify"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D3BD19252FEA54B448EFE94DE162E921749A6D0C8F70E66464602BE998110FCE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "_resetDownloadSpeedStats",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_resetDownloadSpeedStats",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_downloadSpeedBytes",
+              "_lastDownloadBytes",
+              "_lastDownloadTime"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "93E9E037C99524E0B597B58E2E7699D1F11F071361B48B5C0709F7EFB3EC46A6"
+          },
+          "target": {
+            "stateWrites": [
+              "_downloadSpeedBytes",
+              "_lastDownloadBytes",
+              "_lastDownloadTime"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "ED095240FBE334B8C0EE99E013ADF020F7F99ACF78C48CF91FC442B5E78DB30C"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "_resetHotUpdateStats",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_resetHotUpdateStats",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "now"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7AD9E0E0FA933088479805DB82EBEA188963C3E9F1D5C95F37393E4208F09507"
+          },
+          "target": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "now"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "63E39FDB03188AEB6F5DD8B187AABE647B378DE5126B193CB2791F39D15C75F0"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "_updateDownloadSpeed",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_updateDownloadSpeed",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_downloadSpeedBytes",
+              "_lastDownloadBytes",
+              "_lastDownloadTime"
+            ],
+            "calls": [
+              "now"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0832C412B1A0B80F1788364142480CD90748B67DB1A82B5DAF99A34055BDCFFC"
+          },
+          "target": {
+            "stateWrites": [
+              "_downloadSpeedBytes",
+              "_lastDownloadBytes",
+              "_lastDownloadTime"
+            ],
+            "calls": [
+              "now"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "40320CFDA3CE5CF88B8002E51D649486AC268B9C566856A20EC762A45CFE0AB7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "_updateHotUpdateStats",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "_updateHotUpdateStats",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "getDownloadedBytes",
+              "getDownloadedFiles",
+              "getTotalBytes",
+              "getTotalFiles"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "205D110012CA7A86AB0FE698121BAF6599267FE49E203678F5D983185D413CBC"
+          },
+          "target": {
+            "stateWrites": [
+              "_hotUpdateStats"
+            ],
+            "calls": [
+              "getDownloadedBytes",
+              "getDownloadedFiles",
+              "getTotalBytes",
+              "getTotalFiles"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0516B51CC7BAA3FDD9FE35D778B7F231EFB98956F071888DFCAA05484A9E4042"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "CallError",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "CallError",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "errorCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A37AA93F42CFB847955FD84BBBBD3EB038C987C80A34120CEE9279543C653032"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "errorCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A595482AAA471F69055E755E2F90BE9159D74B83E7B281D9A34FCC2677C5643E"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "CallOver",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "CallOver",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "overCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1AB5FE46822BC4FB90FA5821BB5788F340D2CE1820AF343AD99709E90C6F9D53"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "overCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AD578FEAA3E2F5D65240599F6396278DE7F53E793DF883C4D4D811D2643C65AE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "CallUpdating",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "CallUpdating",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "updatingCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AFDFDA77F128CA910E673CF737C3B879575C353C12BF9C05260AC4BE6FF85184"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "updatingCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7BB0DA55F992BE0362A83E66C39D020A86854568DEBA872C0F144F0DC5AC2E29"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "checkCb",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "checkCb",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_checkListener",
+              "_updating"
+            ],
+            "calls": [
+              "CallError",
+              "CallOver",
+              "CallUpdating",
+              "Log",
+              "getEventCode",
+              "hotUpdate",
+              "setEventCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3FEB7500932A71D94E69BA6044A68959F6764BC109983C307D57FB48CD8F3ADC"
+          },
+          "target": {
+            "stateWrites": [
+              "_updating"
+            ],
+            "calls": [
+              "CallError",
+              "CallOver",
+              "CallUpdating",
+              "Log",
+              "clearEventCallback",
+              "getEventCode",
+              "hotUpdate"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8F6FBE0F46F28D544442F8D77A867C4140F6B3D906FE84342C5E49BC0ACC0FA4"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "_checkListener"
+            ],
+            "callsMissing": [
+              "setEventCallback"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "clearEventCallback"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "checkUpdate",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "checkUpdate",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_am",
+              "_updating",
+              "rversion"
+            ],
+            "calls": [
+              "CallOver",
+              "IsNative",
+              "Log",
+              "SetCallBack",
+              "SetErrorCallBack",
+              "SetUpdatingCallBack",
+              "VersionOver",
+              "bind",
+              "checkUpdate",
+              "getLocalManifest",
+              "getState",
+              "getVersion",
+              "hotUpdate",
+              "isLoaded",
+              "loadLocalManifest",
+              "setEventCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "309548672CE4FDBBD00CC13AA092B3BACB3C2C518CB3411756467256660B40F1"
+          },
+          "target": {
+            "stateWrites": [
+              "_am",
+              "_checkListener",
+              "_updating",
+              "rversion"
+            ],
+            "calls": [
+              "CallError",
+              "CallOver",
+              "IsNative",
+              "Log",
+              "SetCallBack",
+              "SetErrorCallBack",
+              "SetUpdatingCallBack",
+              "VersionOver",
+              "bind",
+              "checkUpdate",
+              "getLocalManifest",
+              "getState",
+              "getVersion",
+              "isLoaded",
+              "loadLocalManifest",
+              "setEventCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "754DDC1C56C73035C01743EF7B0E18EE833D070043512E270ED14021E89522E5"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "hotUpdate"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_checkListener"
+            ],
+            "callsAdded": [
+              "CallError"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hotUpdate",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hotUpdate",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_am",
+              "_failCount",
+              "_updating"
+            ],
+            "calls": [
+              "CallOver",
+              "_resetDownloadSpeedStats",
+              "_resetHotUpdateStats",
+              "bind",
+              "getState",
+              "loadLocalManifest",
+              "setEventCallback",
+              "update"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2348C7ADA9A27A3D3CA435BEA112775C6D4EDB23EF193C5BA18A73DAE9709337"
+          },
+          "target": {
+            "stateWrites": [
+              "_am",
+              "_failCount",
+              "_updateListener",
+              "_updating"
+            ],
+            "calls": [
+              "CallError",
+              "_resetDownloadSpeedStats",
+              "_resetHotUpdateStats",
+              "bind",
+              "getState",
+              "loadLocalManifest",
+              "setEventCallback",
+              "update"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1A2599DB5779C1490396B9FE5B13314ED17B2FC5757C0477BA1F6FC909CF437D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "CallOver"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_updateListener"
+            ],
+            "callsAdded": [
+              "CallError"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onDestroy",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onDestroy",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_updateListener"
+            ],
+            "calls": [
+              "setEventCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6C3DA13716B1AA20024429E264806B3F664370ABB7D4D1262AE69F741FC87BDB"
+          },
+          "target": {
+            "stateWrites": [
+              "_updating"
+            ],
+            "calls": [
+              "clearEventCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E9F0A2DA66B59F5D99232E98ADEBD5E8F45D8B4BD9DD67D66B0C7C2DB13D541D"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "_updateListener"
+            ],
+            "callsMissing": [
+              "setEventCallback"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_updating"
+            ],
+            "callsAdded": [
+              "clearEventCallback"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onLoad",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onLoad",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_am",
+              "_storagePath"
+            ],
+            "calls": [
+              "IsNative",
+              "Log",
+              "getWritablePath",
+              "setMaxConcurrentTask",
+              "setVerifyCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "99CB4B3A0A417F8E986FBC30FC4CC085750E410E897D4F23ED1B47F47181946F"
+          },
+          "target": {
+            "stateWrites": [
+              "_am",
+              "_storagePath"
+            ],
+            "calls": [
+              "IsNative",
+              "Log",
+              "getWritablePath",
+              "setMaxConcurrentTask",
+              "setVerifyCallback"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "2CE9C56454336818871A29A4ADAF2367AC3C850102E959C5CCF0B2C033B40711"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "retry",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "retry",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_canRetry",
+              "_updating"
+            ],
+            "calls": [
+              "Log",
+              "downloadFailedAssets"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "868D735A3F94140D4547B28EF65D5453E51C3B67F9A9977053352DE73C4D6FA3"
+          },
+          "target": {
+            "stateWrites": [
+              "_am",
+              "_canRetry",
+              "_updating"
+            ],
+            "calls": [
+              "Log",
+              "_resetDownloadSpeedStats",
+              "_resetHotUpdateStats",
+              "downloadFailedAssets"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "28BC140C4BBC6FC65AEA73DE29CFB8BAE6A9D7D683ABFD5EF62279EB2BD3EF36"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_am"
+            ],
+            "callsAdded": [
+              "_resetDownloadSpeedStats",
+              "_resetHotUpdateStats"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetCallBack",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "overCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D9C34C08F3F10B6603ED93108965202D4CDAE02E6381678817B57C859AC18A97"
+          },
+          "target": {
+            "stateWrites": [
+              "overCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8A986045A417FE49BD2E34389E5B8F3F18149005B8F317FD2777F851D4D5161F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetErrorCallBack",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetErrorCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "errorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "701AACCF3E508177D6E54E2926CF996DFD6D87A34C4E888F146EAE5CE4BCA159"
+          },
+          "target": {
+            "stateWrites": [
+              "errorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "221958DD059F26877929ECB3DD284B89526CE5AB87D8E1DA5111336D1CEBD4DE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetUpdatingCallBack",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetUpdatingCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "updatingCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B38110B77E89D4EC8F82EC2352892975CB1B6B4A6DD77664741333538961C2FC"
+          },
+          "target": {
+            "stateWrites": [
+              "updatingCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A25788855A65E276104865612C8391D4628072CB52A18CCE674CD1117491F4E4"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "show",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "show",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A973DFC721D2AEBED1C2EF8CAFA47CB003964961B362027378D1986FE2831419"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E7C8BEB08E4882CFFFD298D29DC2605F03A7E44EAEC23A36984A228FE2E1CB0B"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateCb",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateCb",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_canRetry",
+              "_updateListener",
+              "_updating"
+            ],
+            "calls": [
+              "CallError",
+              "CallOver",
+              "CallUpdating",
+              "Log",
+              "RestartApp",
+              "Show",
+              "_logHotUpdateStats",
+              "_updateDownloadSpeed",
+              "_updateHotUpdateStats",
+              "addSearchPath",
+              "getAssetId",
+              "getDownloadedBytes",
+              "getEventCode",
+              "getLocalManifest",
+              "getMessage",
+              "getPercent",
+              "getSearchPaths",
+              "getTotalBytes",
+              "retry",
+              "setEventCallback",
+              "setItem",
+              "t"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 9,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "B5F49093C1CE5AFF2C86C6ABACF62122DD4C17BCE262D01997B8B846BFCB8ABB"
+          },
+          "target": {
+            "stateWrites": [
+              "_canRetry",
+              "_updating"
+            ],
+            "calls": [
+              "CallError",
+              "CallOver",
+              "CallUpdating",
+              "Log",
+              "RestartApp",
+              "Show",
+              "_logHotUpdateStats",
+              "_updateDownloadSpeed",
+              "_updateHotUpdateStats",
+              "addSearchPath",
+              "clearEventCallback",
+              "getAssetId",
+              "getDownloadedBytes",
+              "getEventCode",
+              "getLocalManifest",
+              "getMessage",
+              "getPercent",
+              "getSearchPaths",
+              "getTotalBytes",
+              "retry",
+              "setItem",
+              "stringify",
+              "t"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 8,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "2733A10F5B594CA02E19EB6D2F8CB37C1DE733F61D99F82329962DED4F6369F7"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "_updateListener"
+            ],
+            "callsMissing": [
+              "setEventCallback"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "clearEventCallback",
+              "stringify"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { _decorator, Label, Node, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
+import { _decorator, Label, Node, Sprite, SpriteFrame } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 
 const { ccclass, property } = _decorator;
@@ -67,12 +67,6 @@ export default class CashTaskWindow extends UIWindow {
             icon.spriteFrame = this.images[meta.Img()];
             btn.targetOff(this);
             btn.active = false;
-            if (meta.Item().toString().includes('shop')) {
-                btn.active = true;
-                btn.on('click', () => {
-                    this.callOpenShop(meta.MapId());
-                }, this);
-            }
             labelDesc.string = GameKit.i18n.sel(meta.Description());
             badge.active = !meta.Item().toString().includes('shop');
             labelbadge.string = String.format(GameKit.i18n.t('CashTaskBadge1'), meta.MapId());
@@ -97,8 +91,6 @@ export default class CashTaskWindow extends UIWindow {
 
             if (this.leftTime <= 0) {
                 this.leftTime = null;
-                const sw = UIRoot.instance.GetWindow('CashShopWindow');
-                if (sw != null) sw.close();
                 this.close();
             }
         }
@@ -106,19 +98,6 @@ export default class CashTaskWindow extends UIWindow {
 
     callClose() {
         this.closeAnim();
-    }
-
-    callOpenShop(mapId: any) {
-        if (Game.SUserVillage.MapId() < mapId) {
-            if (!this.modelCantOpen || !this.modelCantOpenLabel) return;
-            this.modelCantOpen.active = true;
-            tween(this.modelCantOpen).stop();
-            this.modelCantOpen.setScale(0.001, 0.001, 0.001);
-            tween(this.modelCantOpen).to(0.2, { scale: new Vec3(1, 1, 1) } as any).start();
-            this.modelCantOpenLabel.string = String.format(GameKit.i18n.t('CashTaskShopTip'), mapId.toString());
-            return;
-        }
-        UIRoot.instance.openChildWindow('CashShopWindow');
     }
 
     callCloseModel() {

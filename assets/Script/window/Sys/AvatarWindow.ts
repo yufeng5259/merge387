@@ -1,8 +1,22 @@
-import { _decorator, Component, EditBox, instantiate, Label, Node, ProgressBar, resources, Sprite, SpriteFrame, sys, UITransform, UIOpacity } from 'cc';
+import { _decorator, assetManager, Color, Component, EditBox, Font, instantiate, Label, LabelOutline, Node, ProgressBar, resources, Sprite, SpriteFrame, sys, UITransform, UIOpacity, Vec2 } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 
 const { ccclass, property } = _decorator;
+const GIFT_ICON = 'AvatarWindow/avatar_window_gift_icon';
+const GIFT_DOT = 'AvatarWindow/avatar_window_page_dot';
+const GIFT_DOT_FONT_BUNDLE = 'LiveData';
+const GIFT_DOT_FONT = 'PoetsenOne-Regular';
+const BUBBLE_BG = 'QuestCenterWindow/SignWindow/sign_btn_white';
+const BUBBLE_ARROW = 'QuestCenterWindow/SignWindow/sanjiao';
+const GIFT_DOT_SIZE = 25;
+const BUBBLE_BORDER = 24;
+const BUBBLE_REWARD_SIZE = 40;
+const BUBBLE_COUNT_WIDTH = 50;
+const BUBBLE_COUNT_HEIGHT = 20;
+const BUBBLE_COUNT_Y = -26;
+const BUBBLE_COUNT_FONT_SIZE = 16;
+const BUBBLE_COUNT_OUTLINE_WIDTH = 2;
 
 @ccclass('AvatarWindow')
 export default class AvatarWindow extends UIWindow {
@@ -53,6 +67,13 @@ export default class AvatarWindow extends UIWindow {
     private giftRewards: any[] = [];
     private giftBubble: Node | null = null;
     private giftChest: Node | null = null;
+    private giftDotFont: Font | null = null;
+    private giftDotFontLoading = false;
+    private giftBubbleLoading = false;
+    private giftIconSpriteFrame: SpriteFrame | null = null;
+    private giftDotSpriteFrame: SpriteFrame | null = null;
+    private giftBubbleBg: SpriteFrame | null = null;
+    private giftBubbleArrow: SpriteFrame | null = null;
 
     onShow(showParams: any) {
         this.showParams = showParams;
@@ -290,14 +311,102 @@ export default class AvatarWindow extends UIWindow {
     isWorldPosInNode(node: Node, worldPos: any) { return !!node?.getComponent(UITransform)?.getBoundingBoxToWorld().contains(worldPos); }
     getOrCreateGiftRewardBubble() { if (!this.giftBubble) { this.giftBubble = new Node('avatar-gift-reward-bubble'); this.giftBubble.parent = this.giftRewardsLayout; } return this.giftBubble; }
     getOrCreateGiftBubbleRewardNode(bubble: Node, index: number) { return bubble?.children[index] || null; }
+    setupGiftBubbleRewardDisplay(rewardNode: Node) {
+        if (!rewardNode) return;
+        (rewardNode.getComponent(UITransform) || rewardNode.addComponent(UITransform))
+            .setContentSize(BUBBLE_REWARD_SIZE, BUBBLE_REWARD_SIZE);
+
+        const iconNode = rewardNode.getChildByName('icon');
+        if (!iconNode) return;
+        iconNode.setPosition(0, 0);
+        const fitSize: any = iconNode.getComponent('SpriteFitSize');
+        if (fitSize) {
+            fitSize.type = 3;
+            fitSize.maxSize = new Vec2(BUBBLE_REWARD_SIZE, BUBBLE_REWARD_SIZE);
+            fitSize.updateSize?.();
+        }
+
+        const countNode = iconNode.getChildByName('text-count');
+        if (!countNode) return;
+        (countNode.getComponent(UITransform) || countNode.addComponent(UITransform))
+            .setContentSize(BUBBLE_COUNT_WIDTH, BUBBLE_COUNT_HEIGHT);
+        countNode.setPosition(0, BUBBLE_COUNT_Y);
+        const countLabel = countNode.getComponent(Label);
+        if (countLabel) {
+            countLabel.fontSize = BUBBLE_COUNT_FONT_SIZE;
+            countLabel.lineHeight = BUBBLE_COUNT_HEIGHT;
+        }
+        const countOutline = countNode.getComponent(LabelOutline);
+        if (countOutline) countOutline.width = BUBBLE_COUNT_OUTLINE_WIDTH;
+    }
     layoutGiftRewardBubble(rewards: any[], _bubble?: Node) { this.giftRewards = this.getVisibleGiftRewards(rewards); this.showGiftRewardBubble(); }
     setGiftRewardBubblePosition(bubble: Node, target: Node) { if (bubble && target) bubble.setPosition(target.position.x, target.position.y - 82); }
-    setupGiftChestDisplay(chest: Node) { if (chest) chest.active = this.giftRewards.length > 0; }
-    setupGiftChestDot(_chest: Node) {}
+    setupGiftChestDisplay(chest: Node) {
+        if (!chest) return;
+        chest.active = this.giftRewards.length > 0;
+        const icon = chest.getChildByName('icon')?.getComponent(Sprite);
+        if (icon) icon.spriteFrame = this.giftIconSpriteFrame;
+    }
+    setupGiftChestDot(chest: Node) {
+        if (!chest) return;
+        let dot = chest.getChildByName('avatar-gift-dot');
+        if (!dot) {
+            dot = new Node('avatar-gift-dot');
+            dot.parent = chest;
+            dot.addComponent(Sprite);
+            const labelNode = new Node('Label');
+            labelNode.parent = dot;
+            labelNode.addComponent(UITransform).setContentSize(GIFT_DOT_SIZE, GIFT_DOT_SIZE);
+            const label = labelNode.addComponent(Label);
+            label.string = '!';
+            label.fontSize = 20;
+            label.lineHeight = 20;
+            label.color = Color.WHITE;
+            label.horizontalAlign = Label.HorizontalAlign.CENTER;
+            label.verticalAlign = Label.VerticalAlign.CENTER;
+        }
+        dot.active = true;
+        (dot.getComponent(UITransform) || dot.addComponent(UITransform)).setContentSize(GIFT_DOT_SIZE, GIFT_DOT_SIZE);
+        dot.setPosition(20, 20);
+        dot.setSiblingIndex(chest.children.length - 1);
+        const sprite = dot.getComponent(Sprite);
+        if (sprite) { sprite.sizeMode = Sprite.SizeMode.CUSTOM; sprite.trim = false; if (this.giftDotSpriteFrame) sprite.spriteFrame = this.giftDotSpriteFrame; }
+        const label = dot.getChildByName('Label')?.getComponent(Label);
+        if (label) { label.string = '!'; if (this.giftDotFont) label.font = this.giftDotFont; }
+    }
     setupGiftRewardBubble(bubble: Node) { this.bindGiftBubbleTouch(bubble); }
-    loadGiftBubbleSpriteFrames() {}
-    loadGiftDotFont() {}
-    setBubbleSpriteFrameInsets(_frame: SpriteFrame) {}
+    loadGiftBubbleSpriteFrames() {
+        if (this.giftBubbleLoading) return;
+        this.giftBubbleLoading = true;
+        const load = (url: string, apply: (frame: SpriteFrame) => void) => resources.load(url, SpriteFrame, (error, frame) => {
+            if (!error && frame) apply(frame);
+        });
+        load(GIFT_ICON, frame => { this.giftIconSpriteFrame = frame; if (this.giftChest) this.setupGiftChestDisplay(this.giftChest); });
+        load(GIFT_DOT, frame => { this.giftDotSpriteFrame = frame; if (this.giftChest) this.setupGiftChestDot(this.giftChest); });
+        load(BUBBLE_BG, frame => { this.giftBubbleBg = frame; if (this.giftBubble) this.setupGiftRewardBubble(this.giftBubble); });
+        load(BUBBLE_ARROW, frame => { this.giftBubbleArrow = frame; if (this.giftBubble) this.setupGiftRewardBubble(this.giftBubble); });
+    }
+    loadGiftDotFont() {
+        if (this.giftDotFont || this.giftDotFontLoading) return;
+        this.giftDotFontLoading = true;
+        const loadFromBundle = (bundle: any) => bundle?.load(GIFT_DOT_FONT, Font, (error: Error | null, font: Font) => {
+            if (error || !font) return;
+            this.giftDotFont = font;
+            const label = this.giftChest?.getChildByName('avatar-gift-dot')?.getChildByName('Label')?.getComponent(Label);
+            if (label) label.font = font;
+        });
+        const bundle = assetManager.getBundle(GIFT_DOT_FONT_BUNDLE);
+        if (bundle) loadFromBundle(bundle);
+        else assetManager.loadBundle(GIFT_DOT_FONT_BUNDLE, (error, loadedBundle) => { if (!error) loadFromBundle(loadedBundle); });
+    }
+    setBubbleSpriteFrameInsets(frame: SpriteFrame) {
+        if (!frame || (frame as any)._avatarWindowInsetReady) return;
+        (frame as any)._avatarWindowInsetReady = true;
+        frame.insetLeft = BUBBLE_BORDER;
+        frame.insetRight = BUBBLE_BORDER;
+        frame.insetTop = BUBBLE_BORDER;
+        frame.insetBottom = BUBBLE_BORDER;
+    }
 
     onEditNameBegin() {
         if (!this.editNameInput || !this.nameLabel) return;
@@ -337,7 +446,10 @@ export default class AvatarWindow extends UIWindow {
         this.giftRewards = (rewards || []).filter(Boolean).slice(0, 3);
         this.giftChest = this.giftRewardsLayout.children[0] || null;
         if (!this.giftChest) return;
-        this.giftChest.active = this.giftRewards.length > 0;
+        this.setupGiftChestDisplay(this.giftChest);
+        this.setupGiftChestDot(this.giftChest);
+        this.loadGiftBubbleSpriteFrames();
+        this.loadGiftDotFont();
         this.giftRewardsLayout.children.forEach((child, index) => { if (index > 0) child.active = false; });
         this.giftChest.targetOff(this);
         this.giftChest.on(Node.EventType.TOUCH_END, this.onGiftChestTouch, this);
@@ -366,6 +478,7 @@ export default class AvatarWindow extends UIWindow {
             item.active = true;
             item.setPosition((index - (this.giftRewards.length - 1) / 2) * 68, 0);
             (item.getComponent('ContentModel') as any)?.show(reward, { infoBtnParams: { canTouch: false, showInfoBtn: true } });
+            this.setupGiftBubbleRewardDisplay(item);
         });
         this.giftBubble.setPosition(this.giftChest.position.x, this.giftChest.position.y - 82);
         this.giftBubble.active = true;

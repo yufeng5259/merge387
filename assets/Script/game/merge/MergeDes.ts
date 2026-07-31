@@ -206,7 +206,18 @@ export class MergeDes extends Component {
             this.sellButton.active = false;
             this.openButton.active = false;
         }
+        this.applyMainForcedTutorialSellGuard();
         this.refreshDesLabelLayout();
+    }
+
+    ShouldHideSellButtonInMainForcedTutorial () {
+        return !!(typeof Game !== 'undefined' && Game && Game.MergeTutorialManager &&
+            Game.MergeTutorialManager.ShouldHideMainForcedTutorialControls &&
+            Game.MergeTutorialManager.ShouldHideMainForcedTutorialControls());
+    }
+
+    applyMainForcedTutorialSellGuard () {
+        if (this.ShouldHideSellButtonInMainForcedTutorial() && this.sellButton) this.sellButton.active = false;
     }
 
     refreshStaticLocalizedLabels () {

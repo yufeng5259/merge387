@@ -12,6 +12,7 @@ export class MergeItem extends Component {
     public mergeId = 0;
     @property(Node)
     public bottomRect: Node = null!;
+    private _bottomRectVisibleBeforeDrag: boolean | undefined;
     @property(Sprite)
     public icon: Sprite = null!;
     @property(sp.Skeleton)
@@ -56,6 +57,8 @@ export class MergeItem extends Component {
     public cookingData: any = null;
     private _iconAnimLoadKey = 0;
     private _capabilities: any = {};
+    private _updatableCapabilities: any[] = [];
+    private _generatorRefreshKey = '';
 
     onLoad() {
         this.BASE_ANIM_URL = 'res/merge/anim/';
@@ -74,7 +77,18 @@ export class MergeItem extends Component {
         this.bottomRect.active = false;
 
         this._capabilities = {};
+        this._updatableCapabilities = [];
         this._registerCapability(new MergeGeneratorCapability());
+        this._cacheCookingNodes();
+        this.refreshTickEnabled();
+    }
+
+    _cacheCookingNodes() {
+        if (!this.cooking) return;
+        this.cookingTanhao = GameKit.ControllerTable.GetNode(this.cooking, 'tanhao');
+        this.cookingCycle = GameKit.ControllerTable.GetNode(this.cooking, 'cycle');
+        this.cookingTimeProgress = GameKit.ControllerTable.GetComponent(this.cooking, 'time_progress', ProgressBar);
+        this.cookingTimeLabel = GameKit.ControllerTable.GetComponent(this.cooking, 'time_label', Label);
     }
 
     showCooking(meta?: any) {
@@ -94,10 +108,7 @@ export class MergeItem extends Component {
             }
         }
         this.cooking.active = show;
-        this.cookingTanhao = GameKit.ControllerTable.GetNode(this.cooking, 'tanhao');
-        this.cookingCycle = GameKit.ControllerTable.GetNode(this.cooking, 'cycle');
-        this.cookingTimeProgress = GameKit.ControllerTable.GetComponent(this.cooking, 'time_progress', ProgressBar);
-        this.cookingTimeLabel = GameKit.ControllerTable.GetComponent(this.cooking, 'time_label', Label);
+        this._cacheCookingNodes();
         this.cookingData = isCooking ? cookingData : null;
         if (isCooking) {
             this.PlayIconAnim('animation', true);
@@ -106,6 +117,7 @@ export class MergeItem extends Component {
         }
         this.refreshCookingStateNodes(isCooking, isDone);
         this.refreshCookingProgress();
+        this.refreshTickEnabled();
     }
 
     refreshCookingStateNodes(isCooking: boolean, isDone: boolean) {
@@ -134,6 +146,7 @@ export class MergeItem extends Component {
             this.resetIconAnimPose();
             this.refreshCookingStateNodes(false, true);
         }
+        this.refreshTickEnabled();
     }
 
     update(dt: number) {
@@ -143,11 +156,22 @@ export class MergeItem extends Component {
         if (this.cooking && this.cooking.active) {
             this.refreshCookingProgress();
         }
+        this.refreshTickEnabled();
     }
 
     _registerCapability(capability: any) {
         capability.bind(this);
         this._capabilities[capability.key] = capability;
+        if (capability.update) this._updatableCapabilities.push(capability);
+    }
+
+    refreshTickEnabled() {
+        let needsTick = !!(this.cooking && this.cooking.active && this.cookingData);
+        for (let i = 0; !needsTick && i < this._updatableCapabilities.length; i++) {
+            const capability = this._updatableCapabilities[i];
+            needsTick = !capability.shouldUpdate || capability.shouldUpdate();
+        }
+        this.enabled = needsTick;
     }
 
     getCapability(key: string) {
@@ -164,6 +188,16 @@ export class MergeItem extends Component {
         this._forEachCapability((c: any) => {
             if (c.onTileDataChanged) c.onTileDataChanged();
         });
+        this.refreshTickEnabled();
+    }
+
+    _getGeneratorRefreshKey() {
+        const generatorMeta = Meta.MergeGeneraterMeta.GetGenerateByMergeId(this.mergeId);
+        if (!generatorMeta) return '';
+        const instanceId = Game.SUserMerge.GetGeneratorInstanceIdByMergeTilePos(this.tx, this.ty);
+        const data = instanceId == null ? null : Game.SUserMerge.GetGeneratorByInstanceId(instanceId);
+        if (!data) return String(instanceId) + '|';
+        return [instanceId, data.nextRefillTime, data.coolingStartTime, data.remainingCount, data.maxOutputCount, data.onetimeDestroy].join('|');
     }
 
     _getGeneratorCapability() {
@@ -292,6 +326,7 @@ export class MergeItem extends Component {
     }
 
     InitMergeItem(tx: number, ty: number, dataStr: string) {
+        this.discardDragBottomRectState()
         this.node.name = tx + '_' + ty;
         this.setTilePos(tx, ty);
         let mergeDataStr = Game.SUserMerge.ParseMergeMapData(dataStr);
@@ -332,8 +367,10 @@ export class MergeItem extends Component {
         this.icon_lock.node.active = this.additionIcon.node.active;
         this.hg.active = this.envStatus === -1 && (meta.IsMaxLevel() || meta.PrevId() !== -1 && meta.NextId() == -1);
 
+        const generatorRefreshKey = this._getGeneratorRefreshKey();
         this.HideShiningAnim();
         this.refreshCapabilities();
+        this._generatorRefreshKey = generatorRefreshKey;
         this.showCooking(meta);
     }
 
@@ -421,6 +458,27 @@ export class MergeItem extends Component {
         let inCompleteOrder = completeOrderIds.includes(this.mergeId) && canUse;
         this.okIcon.node.active = done;
         this.bottomRect.active = inCompleteOrder;
+    }
+
+    beginDragBottomRect() {
+        if (this._bottomRectVisibleBeforeDrag !== undefined) return
+        this._bottomRectVisibleBeforeDrag = !!(this.bottomRect && this.bottomRect.active)
+        if (this.bottomRect) this.bottomRect.active = false
+    }
+
+    restoreDragBottomRect() {
+        if (this._bottomRectVisibleBeforeDrag === undefined) return
+        if (this.bottomRect) this.bottomRect.active = this._bottomRectVisibleBeforeDrag
+        this._bottomRectVisibleBeforeDrag = undefined
+    }
+
+    hideBottomRectForConsume() {
+        this.discardDragBottomRectState()
+        if (this.bottomRect) this.bottomRect.active = false
+    }
+
+    discardDragBottomRectState() {
+        this._bottomRectVisibleBeforeDrag = undefined
     }
 
     ShowShiningAnim() {

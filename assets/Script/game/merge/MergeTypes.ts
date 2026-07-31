@@ -41,10 +41,12 @@ MergeTypes.MergeDoubleTapIntent = {
     COLLECT_SELL: 'collect_sell',//收集出售
     BROKEN_BUBBLE: 'broken_bubble',//打破气泡
 }
-MergeTypes.MergeTypeToContentTypes = {
-    "16": 7,//Game.Content.Types.Cash
-    "11": 2,//Game.Content.Types.Ap
-    "5": 1,//Game.Content.Types.Coin
+MergeTypes.MergeTypeToContentTypes = function (mergeType: any) {
+    mergeType = Number(mergeType)
+    if (mergeType === Game.Content.Types.CoinTypeMergeItem) return Game.Content.Types.Coin
+    if (mergeType === Game.Content.Types.ApTypeMergeItem) return Game.Content.Types.Ap
+    if (mergeType === Game.Content.Types.CashTypeMergeItem) return Game.Content.Types.Cash
+    return null
 }
 export default MergeTypes;
 

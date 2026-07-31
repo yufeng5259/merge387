@@ -1,5 +1,7 @@
 import '../../LegacyGlobals';
 class OrderSlotMeta {
+    private _data: any = {}
+
     constructor() { }
 
     static MakeEntity(data) {
@@ -25,6 +27,10 @@ class OrderSlotMeta {
 
     SlotType() {
         return this._data.SlotType
+    }
+
+    Layers() {
+        return this._data.Layers
     }
 
     CdTime() {

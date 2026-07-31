@@ -1,20 +1,20 @@
 
 main_pic24.png
-size: 70,28
+size: 150,54
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 main_pic24
   rotate: true
-  xy: 34, 2
-  size: 24, 34
-  orig: 24, 35
-  offset: 0, 1
+  xy: 2, 2
+  size: 50, 73
+  orig: 50, 73
+  offset: 0, 0
   index: -1
 main_pic25
   rotate: true
-  xy: 2, 4
-  size: 22, 30
-  orig: 24, 35
-  offset: 0, 5
+  xy: 77, 2
+  size: 50, 71
+  orig: 50, 73
+  offset: 0, 2
   index: -1

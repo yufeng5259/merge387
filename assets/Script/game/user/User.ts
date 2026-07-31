@@ -277,6 +277,10 @@ export class User {
         return this.data.source.indexOf("guest") !== -1
     }
 
+    GetCashBuyInfo() {
+        return this.data.cashBuyInfo
+    }
+
     //用户登陆识别码（当前消息发送的uuid与最后一次登陆记录的uuid不同时，判断被其他地方登陆下线）
     Uuid() {
         return this.data.uuid

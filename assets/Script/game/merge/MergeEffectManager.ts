@@ -6,6 +6,8 @@ import { QiZiLuoDiTx } from './effect/QiZiLuoDi_tx';
 import { ShaGePoSuiTx } from './effect/ShaGePoSui_tx';
 import { ShouJiJinBiTx } from './effect/ShouJiJinBi_tx';
 import { TiShiTx } from './effect/TiShi_tx';
+import { CangKuTx } from './effect/CangKu_tx';
+import { ShengChanQiTiShiTx } from './effect/ShengChanQiTiShi_tx';
 
 const { ccclass, property } = _decorator;
 
@@ -58,6 +60,12 @@ export class MergeEffectManager extends Component {
 
     @property(QiZiHeChengTx)
     public QiZiHeCheng_tx: QiZiHeChengTx | null = null;
+
+    @property(CangKuTx)
+    public CangKu_tx: CangKuTx | null = null;
+
+    @property(ShengChanQiTiShiTx)
+    public ShengChanQiTiShi_tx: ShengChanQiTiShiTx | null = null;
 
     onLoad () {
     }
@@ -112,6 +120,24 @@ export class MergeEffectManager extends Component {
         const resolvedOptions = prepareEffectOptions(this.QiZiHeCheng_tx, worldPos, options);
         if (!resolvedOptions || !this.QiZiHeCheng_tx) return;
         this.QiZiHeCheng_tx.PlayEnter(resolvedOptions);
+    }
+
+    PlayCangKuPutEnter (worldPos: Vec3 | null) {
+        if (!positionEffectNode(this.CangKu_tx, worldPos)) return;
+        this.CangKu_tx!.PlayPutEnter();
+    }
+
+    PlayCangKuPutLeave () { this.CangKu_tx?.PlayPutLeave(); }
+    CancelCangKuPutPreview () { this.CangKu_tx?.CancelPutPreview(); }
+
+    PlayCangKuTakeOut (worldPos: Vec3 | null) {
+        const options = prepareEffectOptions(this.CangKu_tx, worldPos);
+        if (options && this.CangKu_tx) this.CangKu_tx.PlayTakeOut(options);
+    }
+
+    PlayShengChanQiTiShiEnter (worldPos: Vec3 | null) {
+        const options = prepareEffectOptions(this.ShengChanQiTiShi_tx, worldPos);
+        if (options && this.ShengChanQiTiShi_tx) this.ShengChanQiTiShi_tx.PlayEnter(options);
     }
 }
 

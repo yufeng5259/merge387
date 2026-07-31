@@ -1,4 +1,4 @@
-import { _decorator, Animation, Component, instantiate, isValid, Label, Node, Prefab, RichText, tween, UITransform, Vec3 } from 'cc';
+import { _decorator, Animation, Component, Game as CocosGame, game, instantiate, isValid, Label, Node, Prefab, resources, RichText, tween, UITransform, Vec3 } from 'cc';
 import { MergeDes } from './MergeDes';
 import MergeTypes from './MergeTypes';
 import { MergeEffectManager } from './MergeEffectManager';
@@ -59,13 +59,39 @@ export class MergeUI extends Component {
     private _emptyTaskGuideDisposed = false;
     private _emptyTaskGuideVisible = false;
     private _emptyTaskGuideEventShowCallback: Function | null = null;
+    private _emptyTaskGuideCallbacks: Array<(guide: Node | null, label: RichText | null) => void> = [];
+    private _emptyTaskGuideLoading = false;
+    private _emptyTaskArrowClickActionPlaying = false;
     private emptyTaskGuide: Node | null = null;
     private emptyTaskLabel: RichText | null = null;
     private emptyTaskArrow: Node | null = null;
     private _delayNotesUIVisible = false;
     private _pendingNotesUIVisible = false;
+    private _orderUiStarted = false;
+    private _orderLifecycleRegistered = false;
+    private _orderScheduledChargeAt = 0;
+    private _eventKey = '';
+    private _orderChargeDueHandler!: () => void;
+    private _orderForegroundSyncHandler!: () => void;
+    private _orderGameShowHandler!: () => void;
+    private _orderGameHideHandler!: () => void;
+    private _updateOrderStatusHandler!: () => void;
+    private _coinEventHandler!: () => void;
+    private _pendingRewardsHandler!: () => void;
+    private _pendingRewardsRefreshHandler!: () => void;
+    private _levelOrderAllCompleteHandler!: () => void;
 
     onLoad () {
+        this._orderChargeDueHandler = this.onOrderChargeDue.bind(this);
+        this._orderForegroundSyncHandler = this.onOrderForegroundSync.bind(this);
+        this._orderGameShowHandler = this.onOrderGameShow.bind(this);
+        this._orderGameHideHandler = this.onOrderGameHide.bind(this);
+        this._updateOrderStatusHandler = this.updateOrderStatusAfterOrderRefresh.bind(this);
+        this._coinEventHandler = this.onDialogDataChanged.bind(this);
+        this._pendingRewardsHandler = this.onPendingRewardsChanged.bind(this);
+        this._pendingRewardsRefreshHandler = this.refreshPendingRewardsUI.bind(this);
+        this._levelOrderAllCompleteHandler = this.onLevelOrderAllComplete.bind(this);
+        this._eventKey = `MergeUI:${this.node.uuid}`;
         this.node.on(Node.EventType.TOUCH_START, this._onBottomUITouchStart, this, true);
         this.node.on(Node.EventType.TOUCH_END, this._onBottomUITouchEnd, this, true);
     }
@@ -82,10 +108,98 @@ export class MergeUI extends Component {
 
     start () {
         this._emptyTaskGuideDisposed = false;
+        this._orderUiStarted = true;
+        this.registerOrderLifecycle();
         this.FitScreenUI();
-        GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.CoinEvent, 'MergeUI', this.onDialogDataChanged.bind(this));
-        GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated, 'MergeUI', this.onPendingRewardsChanged.bind(this));
-        GameKit.GameEvent.RegisterEvent(GameKit.GameEvent.EventName.LevelOrderAllComplete, 'MergeUI', this.onLevelOrderAllComplete.bind(this));
+    }
+
+    cancelOrderChargeTimer () {
+        this.unschedule(this._orderChargeDueHandler);
+        this.unschedule(this._orderForegroundSyncHandler);
+        this.unschedule(this._updateOrderStatusHandler);
+    }
+
+    registerOrderLifecycle () {
+        if (this._orderLifecycleRegistered) return;
+        game.on(CocosGame.EVENT_SHOW, this._orderGameShowHandler);
+        game.on(CocosGame.EVENT_HIDE, this._orderGameHideHandler);
+        const events = GameKit.GameEvent.EventName;
+        GameKit.GameEvent.RegisterEvent(events.CoinEvent, this._eventKey, this._coinEventHandler);
+        GameKit.GameEvent.RegisterEvent(events.PendingRewardsUpdated, this._eventKey, this._pendingRewardsHandler);
+        GameKit.GameEvent.RegisterEvent(events.LevelOrderAllComplete, this._eventKey, this._levelOrderAllCompleteHandler);
+        this._orderLifecycleRegistered = true;
+    }
+
+    unregisterOrderLifecycle () {
+        if (!this._orderLifecycleRegistered) return;
+        game.off(CocosGame.EVENT_SHOW, this._orderGameShowHandler);
+        game.off(CocosGame.EVENT_HIDE, this._orderGameHideHandler);
+        const events = GameKit.GameEvent.EventName;
+        GameKit.GameEvent.UnRegisterEvent(events.PendingRewardsUpdated, this._eventKey);
+        GameKit.GameEvent.UnRegisterEvent(events.CoinEvent, this._eventKey);
+        GameKit.GameEvent.UnRegisterEvent(events.LevelOrderAllComplete, this._eventKey);
+        this._orderLifecycleRegistered = false;
+    }
+
+    canSyncOrderUI () {
+        return this.isValidNode(this.node) && this.node.activeInHierarchy !== false
+            && !!Game.SUserMerge?.GetOrders && !!this.orderGroup?.InitOrderList
+            && !!this.mergeLevelNode?.updateOrderStatus;
+    }
+
+    scheduleNextOrderCharge () {
+        this.unschedule(this._orderChargeDueHandler);
+        const nextChargeAt = SR?.SRMerge?.GetNextOrderChargeAt?.() || 0;
+        this._orderScheduledChargeAt = nextChargeAt;
+        if (!nextChargeAt) return;
+        const now = GameKit.TimeUtil.getCurrentTime();
+        this.scheduleOnce(this._orderChargeDueHandler, Math.max(0, nextChargeAt - now) + 0.1);
+    }
+
+    onOrderChargeDue () {
+        this._orderScheduledChargeAt = 0;
+        if (this.canSyncOrderUI()) this.InitOrderList();
+    }
+
+    onOrderGameHide () {
+        this.cancelOrderChargeTimer();
+        this.unschedule(this._pendingRewardsRefreshHandler);
+    }
+
+    onOrderGameShow () {
+        this.schedulePendingRewardsRefresh();
+        if (!this._orderUiStarted) return;
+        this.unschedule(this._orderForegroundSyncHandler);
+        this.scheduleOnce(this._orderForegroundSyncHandler, 0.1);
+    }
+
+    onOrderForegroundSync () {
+        if (!this.canSyncOrderUI() || AppGame?.instance?.logined === false) return;
+        const now = GameKit.TimeUtil.getCurrentTime();
+        if (AppGame?.instance?.leaveTime && now - AppGame.instance.leaveTime > GameKit.TimeUtil.HourInSecond) return;
+        if (this.shouldRebuildOrderListOnForeground() || (this._orderScheduledChargeAt > 0 && this._orderScheduledChargeAt <= now)) {
+            this.InitOrderList();
+            return;
+        }
+        this.unschedule(this._updateOrderStatusHandler);
+        this.scheduleOnce(this._updateOrderStatusHandler);
+        this.scheduleNextOrderCharge();
+    }
+
+    shouldRebuildOrderListOnForeground () {
+        const mergeData = Game.SUserMerge?.data || {};
+        const orderData = mergeData.orderData || {};
+        if (this.isValidNode(this.emptyTaskGuide) && this.emptyTaskGuide!.active) return true;
+        if (orderData.waitingForLevelUpgrade === true) return true;
+        const currentLevel = Number.parseInt(Game.SUser?.Level?.());
+        if (!Number.isFinite(currentLevel) || currentLevel <= 0) return false;
+        let snapshotLevel = Number.parseInt(orderData.playerLevel);
+        if (!Number.isFinite(snapshotLevel) || snapshotLevel <= 0) snapshotLevel = Number.parseInt(mergeData.playerLevel);
+        return Number.isFinite(snapshotLevel) && snapshotLevel > 0 && snapshotLevel !== currentLevel;
+    }
+
+    updateOrderStatusAfterOrderRefresh () {
+        if (this.canSyncOrderUI()) this.mergeLevelNode.updateOrderStatus();
     }
 
     onDestroy () {
@@ -96,12 +210,25 @@ export class MergeUI extends Component {
 
     ClearAll () {
         this._emptyTaskGuideDisposed = true;
-        if (GameKit && GameKit.GameEvent) {
-            GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.PendingRewardsUpdated, 'MergeUI');
-            GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.CoinEvent, 'MergeUI');
-            GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.LevelOrderAllComplete, 'MergeUI');
-        }
+        this._orderUiStarted = false;
+        this.cancelOrderChargeTimer();
+        this.unregisterOrderLifecycle();
         this.clearEmptyTaskGuide();
+    }
+
+    onEnable () {
+        this.registerOrderLifecycle();
+        this.schedulePendingRewardsRefresh();
+        if (this._orderUiStarted) {
+            this.onDialogDataChanged();
+            this.onOrderGameShow();
+        }
+    }
+
+    onDisable () {
+        this.cancelOrderChargeTimer();
+        this.unschedule(this._pendingRewardsRefreshHandler);
+        this.unregisterOrderLifecycle();
     }
 
     onLevelOrderAllComplete () {
@@ -156,14 +283,10 @@ export class MergeUI extends Component {
         const container = this.getEmptyTaskGuideContainer();
         if (!container) return;
         if (!this.emptyTaskGuide) {
-            const prefab = UIRoot.instance?.winPres?.MergeTutorialWindow;
-            if (!prefab) return;
-            const windowNode = instantiate(prefab);
-            this.emptyTaskGuide = windowNode.getChildByName('EmptyTaskGuide');
-            const labelNode = this.getNodeByPath(this.emptyTaskGuide, 'dialoggirl/msg');
-            this.emptyTaskLabel = labelNode?.getComponent(RichText) || null;
-            this.emptyTaskGuide?.removeFromParent();
-            windowNode.destroy();
+            this.loadEmptyTaskGuide(() => {
+                if (this._emptyTaskGuideVisible) this.showEmptyTaskGuide();
+            });
+            return;
         }
         if (this._emptyTaskGuideDisposed || !this.emptyTaskGuide) return;
         this.bringEmptyTaskGuideContainerToTop(container);
@@ -199,6 +322,7 @@ export class MergeUI extends Component {
     hideEmptyTaskArrow () {
         if (!this.isValidNode(this.emptyTaskArrow)) return;
         tween(this.emptyTaskArrow!).stop();
+        this._emptyTaskArrowClickActionPlaying = false;
         this.emptyTaskArrow!.active = false;
         this.emptyTaskArrow!.setScale(Vec3.ONE);
     }
@@ -207,11 +331,13 @@ export class MergeUI extends Component {
         this.emptyTaskArrow = this.getEmptyTaskArrowNode();
         if (!this.emptyTaskArrow) return;
         this.emptyTaskArrow.active = true;
+        if (this._emptyTaskArrowClickActionPlaying) return;
         tween(this.emptyTaskArrow).stop();
         this.playEmptyTaskArrowClickAction(this.emptyTaskArrow);
     }
 
     playEmptyTaskArrowClickAction (arrow: Node) {
+        this._emptyTaskArrowClickActionPlaying = true;
         tween(arrow).repeatForever(
             tween().to(0.15, { scale: new Vec3(0.88, 0.88, 1) }).to(0.18, { scale: Vec3.ONE }).delay(0.45)
         ).start();
@@ -222,8 +348,22 @@ export class MergeUI extends Component {
             callback(this.emptyTaskGuide, this.emptyTaskLabel);
             return;
         }
+        this._emptyTaskGuideCallbacks.push(callback);
+        if (this._emptyTaskGuideLoading) return;
+        this._emptyTaskGuideLoading = true;
         const prefab = UIRoot.instance?.winPres?.MergeTutorialWindow;
-        this.finishEmptyTaskGuideLoad(prefab ? this.createEmptyTaskGuideFromPrefab(prefab) : null, callback);
+        if (prefab) {
+            this.finishEmptyTaskGuideLoad(this.createEmptyTaskGuideFromPrefab(prefab));
+            return;
+        }
+        resources.load('window/Other/MergeTutorialWindow', Prefab, (error, loadedPrefab) => {
+            if (error || !loadedPrefab) {
+                Logs.Warning('load EmptyTaskGuide failed', error);
+                this.finishEmptyTaskGuideLoad(null);
+                return;
+            }
+            this.finishEmptyTaskGuideLoad(this.createEmptyTaskGuideFromPrefab(loadedPrefab));
+        });
     }
 
     createEmptyTaskGuideFromPrefab (prefab: Prefab) {
@@ -235,14 +375,17 @@ export class MergeUI extends Component {
         return { guide, label };
     }
 
-    finishEmptyTaskGuideLoad (result: { guide: Node | null; label: RichText | null } | null, callback?: (guide: Node | null, label: RichText | null) => void) {
+    finishEmptyTaskGuideLoad (result: { guide: Node | null; label: RichText | null } | null) {
+        this._emptyTaskGuideLoading = false;
+        const callbacks = this._emptyTaskGuideCallbacks;
+        this._emptyTaskGuideCallbacks = [];
         if (this._emptyTaskGuideDisposed) {
             result?.guide?.destroy();
             return;
         }
         this.emptyTaskGuide = result?.guide || null;
         this.emptyTaskLabel = result?.label || null;
-        callback?.(this.emptyTaskGuide, this.emptyTaskLabel);
+        for (const callback of callbacks) callback(this.emptyTaskGuide, this.emptyTaskLabel);
     }
 
     updateEmptyTaskGuideByOrders (orders: any[]) {
@@ -294,11 +437,10 @@ export class MergeUI extends Component {
 
     InitUI () {
         if (this.mergeAdditionDscAnim) this.mergeAdditionDscAnim.node.active = false;
-        if (this.noteDialog) this.noteDialog.node.active = Game.SUserMap.IsRedPoint();
+        this.RefreshUpgradeButtonVisible();
         this.ShowMergeDes(null);
         this.InitOrderList();
-        this.notetemp?.ShowIcon(Game.SUserMerge.GetLastPendingRewards());
-        this._updateNotesUIVisible();
+        this.refreshPendingRewardsUI();
         this._updateActivitiesUIVisible();
     }
 
@@ -345,6 +487,15 @@ export class MergeUI extends Component {
         this.mergeEffectManager.PlayQiZiHeChengEnter(worldPos, options);
     }
 
+    PlayCangKuPutEnter () {
+        this.mergeEffectManager?.PlayCangKuPutEnter(this.GetStoreButtonGlobalPos());
+    }
+
+    PlayCangKuPutLeave () { this.mergeEffectManager?.PlayCangKuPutLeave(); }
+    CancelCangKuPutPreview () { this.mergeEffectManager?.CancelCangKuPutPreview(); }
+    PlayCangKuTakeOut (worldPos: Vec3) { this.mergeEffectManager?.PlayCangKuTakeOut(worldPos); }
+    PlayShengChanQiTiShiEnter (worldPos: Vec3) { this.mergeEffectManager?.PlayShengChanQiTiShiEnter(worldPos); }
+
     getUserInfoResourceTargetNode (userInfo: any, contentType: any) {
         const type = contentType ?? Game.Content.Types.Coin;
         if (type === Game.Content.Types.Ap) {
@@ -361,11 +512,25 @@ export class MergeUI extends Component {
 
     getFlySpineAnimIndexByContentType (contentType: any) {
         const type = contentType ?? Game.Content.Types.Coin;
-        if (type === Game.Content.Types.Coin) return 0;
+        if (type === Game.Content.Types.Coin || type === Game.Content.Types.ShopCoin) return 0;
         if (type === Game.Content.Types.Exp) return 1;
         if (type === Game.Content.Types.Ap) return 2;
         if (type === Game.Content.Types.Cash) return 3;
         return null;
+    }
+
+    _updateUpgradeButtonVisible (canUpgrade: boolean) {
+        const hammer = this.bottomUI?.getChildByName('hammerButton') || this.bottomUI?.getChildByName('hammer_btn');
+        const build = this.bottomUI?.getChildByName('buildButton') || this.bottomUI?.getChildByName('build_btn');
+        if (hammer) hammer.active = !!canUpgrade;
+        if (build) build.active = !canUpgrade;
+    }
+
+    RefreshUpgradeButtonVisible () {
+        const canUpgrade = Game.SUserMap.IsRedPoint();
+        if (this.noteDialog) this.noteDialog.node.active = canUpgrade;
+        this._updateUpgradeButtonVisible(canUpgrade);
+        return canUpgrade;
     }
 
     isValidFlySpineAnimIndex (spineAnimIndex: any) {
@@ -373,8 +538,22 @@ export class MergeUI extends Component {
         return Number.isFinite(index) && index >= 0 && index <= 3;
     }
 
+    shouldPlayBpCoinFlySound (contentType: any, options?: any) {
+        if (options?.playBpCoinFlySound != null) return !!options.playBpCoinFlySound;
+        const type = contentType ?? Game.Content.Types.Coin;
+        return type === Game.Content.Types.Coin || type === Game.Content.Types.ShopCoin;
+    }
+
+    vibrateResourceArrive (contentType: any) {
+        const type = contentType ?? Game.Content.Types.Coin;
+        if (type === Game.Content.Types.Ap || type === Game.Content.Types.Coin || type === Game.Content.Types.ShopCoin) {
+            AppKit.NativeWrap?.VibrateShortSequence?.();
+        }
+    }
+
     PlayCoinFlyToTargetAnim (globalFromPos: Vec3, animCount: number, textures: any, contentType?: any, toWorldPos?: Vec3, cb?: Function, options: any = {}) {
         const userInfo = GameMainWindow.instance.userinfo;
+        const playSound = this.shouldPlayBpCoinFlySound(contentType, options);
         let resolvedToWorldPos = toWorldPos;
         if (resolvedToWorldPos === undefined || resolvedToWorldPos === null) {
             const targetNode = this.getUserInfoResourceTargetNode(userInfo, contentType);
@@ -390,7 +569,7 @@ export class MergeUI extends Component {
         let numAnimPlayed = false;
         GameMainWindow.instance.coinFlyToTargetAnim.PlayAnim(globalFromPos, resolvedToWorldPos, 1.0, 0.15, animCount, textures, cb, (worldPos: Vec3, flyNode: Node) => {
             if (!flyNode || !isValid(flyNode)) return;
-            if (options.playBpCoinFlySound) GameKit.SoundManager?.playBpCoinFlySound?.();
+            if (playSound) GameKit.SoundManager?.playBpCoinFlySound?.();
             this.PlayShouJiJinBiEnter(worldPos, {
                 parent: flyNode.parent,
                 position: flyNode.position,
@@ -398,9 +577,54 @@ export class MergeUI extends Component {
             });
             if (!numAnimPlayed) {
                 numAnimPlayed = true;
-                userInfo?.playPendingResourceNumAnim?.(contentType ?? Game.Content.Types.Coin);
+                const type = contentType ?? Game.Content.Types.Coin;
+                if (userInfo?.playPendingResourceNumAnim?.(type)) this.vibrateResourceArrive(type);
             }
         }, options);
+    }
+
+    PlayCoinFlyToTargetAnimNew (globalFromPos: Vec3, animCount: number, textures: any, contentType?: any, toWorldPos?: Vec3, cb?: Function, options: any = {}) {
+        animCount = Number(animCount);
+        if (!Number.isFinite(animCount) || animCount <= 0) {
+            cb?.();
+            return;
+        }
+        const userInfo = GameMainWindow.instance.userinfo;
+        let targetNode = this.getUserInfoResourceTargetNode(userInfo, contentType);
+        let resolvedToWorldPos = toWorldPos;
+        if (resolvedToWorldPos == null) {
+            if (!targetNode) return;
+            resolvedToWorldPos = targetNode.getComponent(UITransform)?.convertToWorldSpaceAR(Vec3.ZERO) || targetNode.worldPosition;
+        }
+        if (options.spineAnimIndex == null) options.spineAnimIndex = this.getFlySpineAnimIndexByContentType(contentType);
+        if (this.isValidFlySpineAnimIndex(options.spineAnimIndex)) {
+            options.spineAnimIndex = Number.parseInt(options.spineAnimIndex, 10);
+            textures = null;
+        }
+        let numAnimPlayed = false;
+        const arrive = (worldPos: Vec3, flyNode: Node) => {
+            if (!flyNode || !isValid(flyNode)) return;
+            if (this.shouldPlayBpCoinFlySound(contentType, options)) GameKit.SoundManager?.playBpCoinFlySound?.();
+            this.PlayShouJiJinBiEnter(worldPos, { parent: flyNode.parent, position: flyNode.position, siblingIndex: flyNode.getSiblingIndex() });
+            if (!numAnimPlayed) {
+                numAnimPlayed = true;
+                const type = contentType ?? Game.Content.Types.Coin;
+                if (userInfo?.playPendingResourceNumAnim?.(type)) this.vibrateResourceArrive(type);
+            }
+        };
+        const flyAnim = GameMainWindow.instance.coinFlyToTargetAnim;
+        if (!flyAnim) return cb?.();
+        if (!flyAnim.PlayResourceCollectAnim) {
+            flyAnim.PlayAnim(globalFromPos, resolvedToWorldPos, 1, 0.15, animCount, textures, cb, arrive, options);
+            return;
+        }
+        flyAnim.PlayResourceCollectAnim({
+            globalFromPos, globalToPos: resolvedToWorldPos, contentType, animCount, textures,
+            spriteFrame: textures?.[0] || null, spineAnimIndex: options.spineAnimIndex, targetNode,
+            cb, arriveCb: arrive, flySpeed: Number(options.flySpeed) > 0 ? Number(options.flySpeed) : 600,
+            minFlyTime: Number(options.minFlyTime) > 0 ? Number(options.minFlyTime) : null,
+            maxFlyTime: Number(options.maxFlyTime) > 0 ? Number(options.maxFlyTime) : 1.4,
+        });
     }
 
     PlayCollectAnimation (activityData: any[], cb?: Function) {
@@ -432,13 +656,31 @@ export class MergeUI extends Component {
     }
 
     onDialogDataChanged (data?: any) {
-        if (this.noteDialog) this.noteDialog.node.active = Game.SUserMap.IsRedPoint();
+        const canUpgrade = Game.SUserMap.IsRedPoint();
+        if (this.noteDialog) this.noteDialog.node.active = canUpgrade;
+        this._updateUpgradeButtonVisible(canUpgrade);
         this.UpdateNotesUIVisibleSafe();
     }
 
     onPendingRewardsChanged () {
-        this.notetemp?.ShowIcon(Game.SUserMerge.GetLastPendingRewards());
-        this.UpdateNotesUIVisibleSafe();
+        this.refreshPendingRewardsUI();
+    }
+
+    schedulePendingRewardsRefresh () {
+        this.unschedule(this._pendingRewardsRefreshHandler);
+        this.scheduleOnce(this._pendingRewardsRefreshHandler);
+    }
+
+    refreshPendingRewardsUI () {
+        if (!this.isValidNode(this.node) || !this.node.activeInHierarchy || !this.notetemp?.ShowIcon || !Game.SUserMerge?.GetLastPendingRewards) return false;
+        try {
+            if (Game.MergeTutorialManager?.ShouldHideTempRewardForGuide?.()) this.notetemp.node.active = false;
+            else this.notetemp.ShowIcon(Game.SUserMerge.GetLastPendingRewards());
+            this.UpdateNotesUIVisibleSafe();
+            return true;
+        } catch (_) {
+            return false;
+        }
     }
 
     FitScreenUI () {
@@ -579,14 +821,16 @@ export class MergeUI extends Component {
     }
 
     InitOrderList () {
+        if (!this.canSyncOrderUI()) return;
         if (typeof SR !== 'undefined' && SR.SRMerge && SR.SRMerge.SyncLocalOrders) {
             SR.SRMerge.SyncLocalOrders('InitOrderList');
         }
-        this.orderGroup?.InitOrderList(Game.SUserMerge.GetOrders());
-        this.updateEmptyTaskGuideByOrders(Game.SUserMerge.GetOrders());
-        this.scheduleOnce(() => {
-            this.mergeLevelNode?.updateOrderStatus();
-        });
+        const orders = Game.SUserMerge.GetOrders();
+        this.orderGroup!.InitOrderList(orders);
+        this.updateEmptyTaskGuideByOrders(orders);
+        this.unschedule(this._updateOrderStatusHandler);
+        this.scheduleOnce(this._updateOrderStatusHandler);
+        this.scheduleNextOrderCharge();
     }
 
     HideOrderCompleteBtn () {
@@ -605,13 +849,67 @@ export class MergeUI extends Component {
         this.mergeDes?.getComponent(MergeDes)?.Show(meta, mergeItem);
     }
 
+    canOperateMergeTutorialNodeClick (nodeKey: string) {
+        return Game.MergeTutorialManager?.CanOperateNodeClick?.(nodeKey) ?? true;
+    }
+
     onClickOpenMergeTypeWindow () {
+        if (!this.canOperateMergeTutorialNodeClick('merge_type_button')) return false;
         SR.SRMerge.AutoSendSaveMapLite();
         const mergeId = this.mergeDes?.getComponent(MergeDes)?.GetMergeId();
-        UIRoot.instance.openChildWindow('MergeTypeWindow', { mergeId: mergeId });
+        UIRoot.instance.openChildWindow('MergeTypeWindow', { mergeId, playSourceGeneratorHintOnClose: true });
+    }
+
+    GetMergeSourceGeneratorIds (mergeId: any) {
+        const meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, mergeId);
+        if (!meta) return [];
+        const typeMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeType, meta.Type());
+        const levels = typeMeta ? typeMeta.Levels() : [];
+        const mergeIndex = levels.indexOf(mergeId);
+        const sourceIds: any[] = [];
+        const addSourceIds = (targetMergeId: any) => {
+            const ids = Meta.MergeGeneraterMeta.GetAllMetaIdsByMergeId(targetMergeId) || [];
+            ids.forEach((id: any) => { if (!sourceIds.includes(id)) sourceIds.push(id); });
+        };
+        addSourceIds(mergeId);
+        for (let i = 0; i < mergeIndex; i++) addSourceIds(levels[i]);
+        return sourceIds;
+    }
+
+    GetMergeItemLevel (mergeId: any) {
+        const meta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeElements, mergeId);
+        if (!meta) return -1;
+        const typeMeta = Meta.MetaManager.GetMeta(Meta.MetaType.MergeType, meta.Type());
+        return typeMeta ? typeMeta.Levels().indexOf(mergeId) : -1;
+    }
+
+    FindMergeSourceGeneratorNode (mergeId: any) {
+        if (!this.mergeLevelNode?.node) return null;
+        const sourceIds = this.GetMergeSourceGeneratorIds(mergeId);
+        if (sourceIds.length === 0) return null;
+        let bestNode: Node | null = null;
+        let bestLevel = -1;
+        for (const node of this.mergeLevelNode.node.children) {
+            if (!node?.active) continue;
+            const mergeItem: any = node.getComponent('MergeItem');
+            if (!mergeItem) continue;
+            const generatorMergeId = mergeItem.GetMergeId();
+            if (!sourceIds.includes(generatorMergeId)) continue;
+            const level = this.GetMergeItemLevel(generatorMergeId);
+            if (bestNode && level <= bestLevel) continue;
+            bestNode = node;
+            bestLevel = level;
+        }
+        return bestNode;
+    }
+
+    PlayMergeSourceGeneratorHint (mergeId: any) {
+        const generatorNode = this.FindMergeSourceGeneratorNode(mergeId);
+        if (isValid(generatorNode)) this.PlayShengChanQiTiShiEnter(generatorNode!.worldPosition.clone());
     }
 
     onClickOpenStore () {
+        if (!this.canOperateMergeTutorialNodeClick('backpack_button')) return false;
         SR.SRMerge.AutoSendSaveMapLite();
         UIRoot.instance.openChildWindow('StoreWindow');
         if (Game.MergeTutorialManager && Game.MergeTutorialManager.EmitNodeClick) {
@@ -620,6 +918,7 @@ export class MergeUI extends Component {
     }
 
     onClickOpenVillage () {
+        if (!this.canOperateMergeTutorialNodeClick('town_button')) return false;
         console.log('onClickOpenVillage');
         SR.SRMerge.AutoSendSaveMapLite();
         GamePlay.instance.changeScene(GamePlay.Scenes.Village);
@@ -630,6 +929,7 @@ export class MergeUI extends Component {
     }
 
     onClickDialogNote () {
+        if (!this.canOperateMergeTutorialNodeClick('town_button')) return false;
         SR.SRMerge.AutoSendSaveMapLite();
         if (GamePlay.instance.mergeRoot.mergeLevelNode.IsNetRunning()) {
             this.PlayAdditionDscAnim('婵繐绲藉﹢顏堝触鐏炵虎鍔勬俊顐㈩儑濞插繘鏁嶅畝鍐惧殲缂佸绉撮埀顒佺憿閳?');
@@ -655,6 +955,7 @@ export class MergeUI extends Component {
     }
 
     onClickTempNote () {
+        if (!this.canOperateMergeTutorialNodeClick('temp_note')) return false;
         const lvl = GamePlay.instance.mergeRoot.mergeLevelNode;
         if (lvl.IsNetRunning()) {
             this.PlayAdditionDscAnim('婵繐绲藉﹢顏堝箵閹邦剙绲块柨娑樼焷椤曨剛绮欏鍛亾濞嗗备鍋?');
@@ -677,6 +978,9 @@ export class MergeUI extends Component {
         const mergeType = this.notetemp.GetMergeType();
         const dataStr = this.notetemp.GetMergeDataStr();
         const rewardIndex = Game.SUserMerge.GetLastPendingRewardsKey(dataStr);
+        const tutorialMergeId = Game.MergeTutorialManager?.GetMergeIdFromDataStr
+            ? Game.MergeTutorialManager.GetMergeIdFromDataStr(dataStr)
+            : (dataStr ? String(Number.parseInt(String(dataStr).split('_')[0], 10) || '') : '');
 
         if (rewardIndex === undefined || rewardIndex === null) {
             this.PlayAdditionDscAnim('婵炲备鍓濆﹢浣圭▔鐎涙ɑ顦ч柡浣哄瀹撲線鏁嶇仦鑲╃憹闁煎疇濮よぐ渚€宕ｉ弽锕€顦查柡鍐煐閺嗙喖骞戦鍡欑＜');
@@ -690,8 +994,12 @@ export class MergeUI extends Component {
             this.PlayAdditionDscAnim('濡澘妫楄ぐ鍥箣閹邦剙顫犻柨娑樺缁叉崘銇愰幘鍐差枀婵炲备鍓濆﹢渚€宕ｉ婊勬殢缂佸瞼鍎ら悧鎼佹晬瀹€鍐惧殲闁轰礁顕幃濠偽涚€ｎ剚纾搁柛姘叄閸ｅ摜鎷?');
             return false;
         }
-        lvl.SetNetRunning(true);
-
+        if (Game.MergeTutorialManager?.BeginP5GeneratorTempRewardClaim &&
+            !Game.MergeTutorialManager.BeginP5GeneratorTempRewardClaim(dataStr)) return false;
+        const cancelP5GeneratorTempRewardClaim = () => {
+            Game.MergeTutorialManager?.CancelP5GeneratorTempRewardClaim?.(dataStr);
+        };
+        if (tutorialMergeId) Game.MergeTutorialManager?.PrepareGeneratorMergeGuide?.(tutorialMergeId);
         const opId = GameKit.StringUtil.getRandomString(16);
         const cellKey = emptyNow ? (emptyNow.x + '_' + emptyNow.y) : null;
         const requestPromise = lvl.updateMergeMapEvent({
@@ -702,6 +1010,7 @@ export class MergeUI extends Component {
             forceServer: true,
             serverErrorCallback: (err: any) => {
                 console.error(err, 'claim error');
+                cancelP5GeneratorTempRewardClaim();
                 this._finishTempNoteExtract(true);
             },
         });
@@ -709,22 +1018,34 @@ export class MergeUI extends Component {
             if (!result || !result.success || result.opId !== opId) {
                 const msg = result && (result.errorMsg || result.errorCode) ? (result.errorMsg || result.errorCode) : 'claim reward failed';
                 console.error(result, msg);
+                cancelP5GeneratorTempRewardClaim();
                 this._finishTempNoteExtract(true);
                 return;
             }
 
             console.log('claim reward success');
-            lvl.SetNetRunning(true);
+            this._finishTempNoteExtract(false);
+            const claimedCellKey = result.cellKey || cellKey;
+            if (tutorialMergeId) {
+                Game.MergeTutorialManager?.OnTempRewardClaimed?.({
+                    mergeId: tutorialMergeId,
+                    cellKey: claimedCellKey,
+                    dataStr: result.pieceData || dataStr,
+                });
+            }
+            const emitTempNoteClick = () => Game.MergeTutorialManager?.EmitNodeClick?.('temp_note');
             if (mergeType === 'content' || mergeType === 'pack' || mergeType === 'cardChest') {
-                this._finishTempNoteExtract(true);
+                emitTempNoteClick();
             } else {
-                lvl.ExtractTempData(result.pieceData || dataStr, result.cellKey || cellKey, refGlobal, () => {
-                    this._finishTempNoteExtract(true);
+                lvl.ExtractTempData(result.pieceData || dataStr, claimedCellKey, refGlobal, () => {
+                    this._finishTempNoteExtract(false);
+                    emitTempNoteClick();
                 });
             }
             this.InitOrderList();
         }).catch((err) => {
             console.error(err, 'claim error');
+            cancelP5GeneratorTempRewardClaim();
             this._finishTempNoteExtract(true);
         });
 

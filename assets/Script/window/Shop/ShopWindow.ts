@@ -1,5 +1,6 @@
 import { _decorator, Component, find, instantiate, Label, Layout, Node, ScrollView, UITransform, Widget } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
+import ShopData from '../../game/shop/ShopData';
 
 const { ccclass, property } = _decorator;
 
@@ -9,6 +10,9 @@ export default class ShopWindow extends UIWindow {
 
     @property(Component)
     userInfo: any = null;
+
+    @property(Node)
+    userInfoNode: Node | null = null;
 
     @property(Node)
     spinPageNode: Node | null = null;
@@ -141,6 +145,8 @@ export default class ShopWindow extends UIWindow {
     _mergeTutorialNodeClickTargets: any[] | null = null;
     _shopRefreshing = false;
     _shopContentReady = false;
+    _usingLocalUserInfo = true;
+    _sharedUserInfoStates: any[] | null = null;
     gemInited = false;
     saleInited = false;
     hotInited = false;
@@ -153,7 +159,8 @@ export default class ShopWindow extends UIWindow {
     onShow(showParams: any = {}) {
         this.setShopContentReady(false);
         this.showCash = showParams.showCash || false;
-        if (this.userInfo) this.userInfo.show(Game.SUser);
+        this._usingLocalUserInfo = !this.attachGameMainUserInfo();
+        if (this._usingLocalUserInfo && this.userInfo) this.userInfo.show(Game.SUser);
         this.hotServerMeta = [];
         this.saleServerMeta = [];
         this.shopNextRefreshTime = null;
@@ -173,53 +180,104 @@ export default class ShopWindow extends UIWindow {
         }.bind(this), this.hotServerMeta, this.saleServerMeta);
     }
 
-    reqShopData(callback: any, hot: any[], sale: any[]) {
+    attachGameMainUserInfo() {
+        if (this._sharedUserInfoStates) return true;
+        const mainWindow = typeof GameMainWindow !== 'undefined' ? GameMainWindow.instance : null;
+        const userInfoNode = mainWindow?.userinfo?.node as Node | null;
+        const overlayParent = this.node?.parent;
+        if (!userInfoNode?.isValid || !userInfoNode.parent || !overlayParent?.isValid) return false;
+
+        const sharedNodes = ['spinbar', 'coinbar', 'diamondbar'].map(name => userInfoNode.getChildByName(name));
+        if (sharedNodes.some(node => !node?.isValid || !node.parent)) return false;
+
+        const shopSiblingIndex = this.node.getSiblingIndex();
+        this._sharedUserInfoStates = sharedNodes.map(node => ({
+            node,
+            parent: node!.parent,
+            siblingIndex: node!.getSiblingIndex(),
+            position: node!.position.clone(),
+            scale: node!.scale.clone(),
+            angle: node!.angle,
+            active: node!.active,
+            worldPosition: node!.worldPosition.clone(),
+        }));
+        if (this.userInfoNode?.isValid) this.userInfoNode.active = false;
+
+        this._sharedUserInfoStates.forEach((state, index) => {
+            state.node.parent = overlayParent;
+            state.node.setWorldPosition(state.worldPosition);
+            state.node.setScale(state.scale);
+            state.node.angle = state.angle;
+            state.node.active = true;
+            state.node.setSiblingIndex(shopSiblingIndex + index + 1);
+        });
+        return true;
+    }
+
+    restoreGameMainUserInfo() {
+        const states = this._sharedUserInfoStates;
+        this._sharedUserInfoStates = null;
+        if (!states?.length) return false;
+
+        let restored = false;
+        states.forEach(state => {
+            if (!state.node?.isValid || !state.parent?.isValid) return;
+            state.node.parent = state.parent;
+            state.node.setPosition(state.position);
+            state.node.setScale(state.scale);
+            state.node.angle = state.angle;
+            state.node.active = state.active;
+            state.node.setSiblingIndex(Math.min(state.siblingIndex, Math.max(0, state.parent.children.length - 1)));
+            restored = true;
+        });
+        if (this.userInfoNode?.isValid) this.userInfoNode.active = true;
+        return restored;
+    }
+
+    reqShopData(callback: any, hot: any[], sale: any[], force = false) {
         let self = this;
-        let req = SR.SRShop.shopGetInfo();
-        req.SetCallBack(function(res: any) {
-            if (res && res.data && res.data.refreshCost) {
-                self.refreshCashCount = res.data.refreshCost.price;
-                self.updateRefreshLabel();
-            }
-            console.log(res.data.daily, res.data.dailyState);
-            console.log(res.data.hot, res.data.hotState);
-            if (!res.data) {
-                console.log('data error');
+        ShopData.GetInfo(function(success: boolean, data: any) {
+            if (!success || !data) {
                 LoadingWindow.Hide();
                 if (callback) callback(false);
                 return;
             }
-            if (!res.data.daily) {
+            if (data.refreshCost) {
+                self.refreshCashCount = data.refreshCost.price;
+                self.updateRefreshLabel();
+            }
+            console.log(data.daily, data.dailyState);
+            console.log(data.hot, data.hotState);
+            if (!data.daily) {
                 console.log('data.daily error');
                 LoadingWindow.Hide();
                 if (callback) callback(false);
                 return;
             }
-            if (!res.data.hot) {
+            if (!data.hot) {
                 console.log('data.hot error');
                 LoadingWindow.Hide();
                 if (callback) callback(false);
                 return;
             }
-            self.setShopNextRefreshTime(res.data.nextRefreshTime);
-            for (let index = 0; index < res.data.daily.length; index++) {
-                const mid = res.data.daily[index];
+            self.setShopNextRefreshTime(data.nextRefreshTime);
+            for (let index = 0; index < data.daily.length; index++) {
+                const mid = data.daily[index];
                 const meta = Meta.MetaManager.GetMeta(Meta.MetaType.ShopDaily, mid);
-                meta.setServerMeta(res.data.dailyState[index]);
+                meta.setServerMeta(data.dailyState[index]);
                 sale.push(meta);
             }
-            for (let index = 0; index < res.data.hot.length; index++) {
-                const mid = res.data.hot[index];
+            for (let index = 0; index < data.hot.length; index++) {
+                const mid = data.hot[index];
                 const meta = Meta.MetaManager.GetMeta(Meta.MetaType.ShopHot, mid);
-                meta.setServerMeta(res.data.hotState[index]);
+                meta.setServerMeta(data.hotState[index]);
                 hot.push(meta);
             }
             LoadingWindow.Hide();
             console.log('----', hot, sale);
 
             if (callback) callback(true);
-        });
-        req.Send();
+        }, { force, silence: false });
     }
 
     refresh() {
@@ -235,7 +293,7 @@ export default class ShopWindow extends UIWindow {
             this.saleServerMeta = latestSale;
             this.refreshShopListData();
             this.scheduleRefreshCurrentTabLayout();
-        }.bind(this), latestHot, latestSale);
+        }.bind(this), latestHot, latestSale, true);
     }
 
     initData() {
@@ -461,9 +519,10 @@ export default class ShopWindow extends UIWindow {
     }
 
     onClose() {
+        this.restoreGameMainUserInfo();
         GameKit.GameEvent.UnRegisterEvent(GameKit.GameEvent.EventName.ShopWindowrefresh, 'ShopWindowrefresh');
         this.unbindMergeTutorialNodeClick();
-        if (this.userInfo) this.userInfo.onClose();
+        if (this._usingLocalUserInfo && this.userInfo) this.userInfo.onClose();
     }
 
     bindMergeTutorialNodeClick() {

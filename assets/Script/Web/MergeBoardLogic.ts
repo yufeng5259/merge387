@@ -1477,6 +1477,23 @@ MergeBoardLogic.recordObtainedPieces = function (boardState, pieceDatas) {
     return changed;
 };
 
+MergeBoardLogic.recordObtainedPiecesFromContainers = function (boardState, options) {
+    if (!boardState) return false;
+    options = options || {};
+    var changed = false;
+    var scanContainer = function (container) {
+        if (!container || typeof container !== 'object' || Array.isArray(container)) return;
+        for (var key in container) {
+            if (!Object.prototype.hasOwnProperty.call(container, key)) continue;
+            changed = MergeBoardLogic.recordObtainedPiece(boardState, container[key]) || changed;
+        }
+    };
+    scanContainer(boardState.data);
+    scanContainer(boardState.warehouse);
+    if (options.includePendingRewards) scanContainer(boardState.pendingRewards);
+    return changed;
+};
+
 // ====================================================================
 //  辅助：结果对象工�?
 // ====================================================================

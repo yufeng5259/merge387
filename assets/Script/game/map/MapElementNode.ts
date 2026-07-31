@@ -5,6 +5,7 @@ import {
     Component,
     find,
     instantiate,
+    isValid,
     Label,
     Node,
     PolygonCollider2D,
@@ -44,6 +45,12 @@ const BUILD_COMPLETE_SPINE_EFFECTS = [
 ];
 const BUILD_COMPLETE_SPINE_DATA_CACHE: Record<string, sp.SkeletonData> = {};
 const BUILD_COMPLETE_SPINE_DATA_LOADING: Record<string, Promise<sp.SkeletonData | null>> = {};
+const LOCK_SPRITE_ANIMATIONS = ['01', '02'];
+const BUILD_DISPLAY_SPINE_BONE = 'DaDiTu_JianZhu';
+const BUILD_DISPLAY_SHOW_ANIMATION = 'show';
+const BUILD_DISPLAY_IDLE_ANIMATION = 'idle';
+const BUILD_DISPLAY_CONTENT_NAME = 'BuildingVisualContent';
+const BUILD_DISPLAY_SHOW_DELAY = 0.2;
 
 function loadBuildCompleteSpineData(effectName: string): Promise<sp.SkeletonData | null> {
     if (BUILD_COMPLETE_SPINE_DATA_CACHE[effectName]) return Promise.resolve(BUILD_COMPLETE_SPINE_DATA_CACHE[effectName]);
@@ -142,6 +149,8 @@ export class MapElementNode extends Component {
     private _coinBarNode: Node | null = null;
     private _lockMask: Node | null = null;
     private _lockMaskSprite: Sprite | null = null;
+    private _lockSpriteNode: Node | null = null;
+    private _lockSkeleton: sp.Skeleton | null = null;
     private _coinProgressSprite: Sprite | null = null;
     private _currentLockMaskKey = '';
     private _appliedLockMaskKey = '';
@@ -156,12 +165,19 @@ export class MapElementNode extends Component {
     private _buildCompleteEffectToken = 0;
     private _buildCompleteEffectNodes: Node[] = [];
     private _buildCompleteEffectPreloadPromise: Promise<(sp.SkeletonData | null)[]> | null = null;
+    private _usesSharedLevelView = false;
+    private _buildingDisplaySkeleton: sp.Skeleton | null = null;
+    private _buildingDisplayContent: Node | null = null;
+    private _buildingDisplayAnimationToken = 0;
+    private _buildingDisplayWarningLogged = false;
+    private _buildingDisplayShowCallback: (() => void) | null = null;
 
     onLoad() {
         this.initRuntimeState();
     }
 
     onDestroy() {
+        this.clearBuildingDisplayAnimationListener();
         this.clearBuildCompleteEffects();
         this.unbindUpgradeIconClick();
         this._buildSpriteLoadToken++;
@@ -196,6 +212,12 @@ export class MapElementNode extends Component {
         this._currentBuildSpriteKey = null;
         this._buildSpriteLoadToken = 0;
         this._buildSoundToken = 0;
+        this._usesSharedLevelView = false;
+        this._buildingDisplaySkeleton = null;
+        this._buildingDisplayContent = null;
+        this._buildingDisplayAnimationToken = 0;
+        this._buildingDisplayWarningLogged = false;
+        this._buildingDisplayShowCallback = null;
     }
 
     start() {
@@ -219,7 +241,135 @@ export class MapElementNode extends Component {
         this.cc_prelbl = GameKit.ControllerTable.GetComponent(this.coinBar, 'perlbl', Label);
         this.cacheViewRefs();
         this.bindUpgradeIconClick();
+        this.prepareBuildingDisplayAnimation();
         return this.updateElement(userCoin, options.waitForSprite !== false);
+    }
+
+    getBuildingDisplaySkeleton() {
+        if (this._buildingDisplaySkeleton?.node && isValid(this._buildingDisplaySkeleton.node)) return this._buildingDisplaySkeleton;
+        const skeletons = this.node ? this.node.getComponents(sp.Skeleton) : [];
+        for (const skeleton of skeletons) {
+            const value: any = skeleton;
+            if (value.findAnimation?.(BUILD_DISPLAY_SHOW_ANIMATION) && value.findAnimation?.(BUILD_DISPLAY_IDLE_ANIMATION)) {
+                this._buildingDisplaySkeleton = skeleton;
+                return skeleton;
+            }
+        }
+        return null;
+    }
+
+    logBuildingDisplayWarningOnce(message: any) {
+        if (this._buildingDisplayWarningLogged) return;
+        this._buildingDisplayWarningLogged = true;
+        console.warn('MapElementNode building display spine unavailable', this.buildID, message);
+    }
+
+    getBuildingBoneCompensation(bone: any) {
+        const { a, b, c, d, worldX, worldY } = bone;
+        const determinant = Number(a) * Number(d) - Number(b) * Number(c);
+        if (!Number.isFinite(determinant) || Math.abs(determinant) < 0.0001) return null;
+        const scaleX = Math.sqrt(a * a + c * c);
+        const scaleY = Math.sqrt(b * b + d * d);
+        if (scaleX < 0.0001 || scaleY < 0.0001) return null;
+        return {
+            x: (-d * worldX + b * worldY) / determinant,
+            y: (c * worldX - a * worldY) / determinant,
+            angle: -Math.atan2(c, a) * 180 / Math.PI,
+            scaleX: 1 / scaleX,
+            scaleY: 1 / scaleY,
+        };
+    }
+
+    ensureBuildingVisualAttached(silent = false) {
+        if (this._buildingDisplayContent && isValid(this._buildingDisplayContent)) return true;
+        const skeleton = this.getBuildingDisplaySkeleton() as any;
+        if (!skeleton?.attachUtil) {
+            if (!silent) this.logBuildingDisplayWarningOnce('missing root sp.Skeleton with show/idle');
+            return false;
+        }
+        try {
+            skeleton.setToSetupPose();
+            skeleton._skeleton?.updateWorldTransform?.();
+            const bone = skeleton.findBone?.(BUILD_DISPLAY_SPINE_BONE);
+            const compensation = bone ? this.getBuildingBoneCompensation(bone) : null;
+            const attachedNodes = skeleton.attachUtil.generateAttachedNodes(BUILD_DISPLAY_SPINE_BONE);
+            const boneNode: Node | null = attachedNodes?.[0] || null;
+            if (!boneNode || !compensation) {
+                this.logBuildingDisplayWarningOnce(`missing bone ${BUILD_DISPLAY_SPINE_BONE}`);
+                return false;
+            }
+            const content = new Node(BUILD_DISPLAY_CONTENT_NAME);
+            content.setPosition(compensation.x, compensation.y);
+            content.angle = compensation.angle;
+            content.setScale(compensation.scaleX, compensation.scaleY, 1);
+            content.parent = boneNode;
+            if (this.levelNode && isValid(this.levelNode) && this.levelNode.parent === this.node) this.levelNode.parent = content;
+            const attachedRoot = skeleton.attachUtil.getAttachedRootNode?.();
+            if (attachedRoot?.parent === this.node) attachedRoot.setSiblingIndex(0);
+            this._buildingDisplayContent = content;
+            return true;
+        } catch (error: any) {
+            this.logBuildingDisplayWarningOnce(error?.message || error);
+            return false;
+        }
+    }
+
+    clearBuildingDisplayAnimationListener() {
+        this._buildingDisplayAnimationToken++;
+        if (this._buildingDisplayShowCallback) {
+            this.unschedule(this._buildingDisplayShowCallback);
+            this._buildingDisplayShowCallback = null;
+        }
+        const skeleton = this._buildingDisplaySkeleton;
+        if (skeleton?.node && isValid(skeleton.node)) skeleton.setCompleteListener(null);
+    }
+
+    prepareBuildingDisplayAnimation() {
+        if (!this.ensureBuildingVisualAttached(true)) return false;
+        this.playBuildingIdleAnimation(this._buildingDisplaySkeleton, this._buildingDisplayAnimationToken);
+        return true;
+    }
+
+    playBuildingIdleAnimation(skeleton: sp.Skeleton | null, token: number) {
+        if (token !== this._buildingDisplayAnimationToken || !skeleton?.node || !isValid(skeleton.node)) return;
+        try {
+            const value: any = skeleton;
+            skeleton.setCompleteListener(null);
+            skeleton.paused = false;
+            const idle = value.findAnimation?.(BUILD_DISPLAY_IDLE_ANIMATION);
+            const isStatic = (idle?.timelines && idle.timelines.length === 0) || (idle && Number(idle.duration) <= 0);
+            if (isStatic) {
+                skeleton.clearTrack(0);
+                skeleton.setToSetupPose();
+                value._skeleton?.updateWorldTransform?.();
+                skeleton.paused = true;
+            } else {
+                skeleton.setAnimation(0, BUILD_DISPLAY_IDLE_ANIMATION, true);
+            }
+        } catch (error: any) {
+            this.logBuildingDisplayWarningOnce(error?.message || error);
+        }
+    }
+
+    playBuildingUpgradeShowAnimation() {
+        if (!this.ensureBuildingVisualAttached()) return;
+        const skeleton = this._buildingDisplaySkeleton;
+        this.clearBuildingDisplayAnimationListener();
+        const token = this._buildingDisplayAnimationToken;
+        this.playBuildingIdleAnimation(skeleton, token);
+        this._buildingDisplayShowCallback = () => {
+            this._buildingDisplayShowCallback = null;
+            if (token !== this._buildingDisplayAnimationToken || !skeleton?.node || !isValid(skeleton.node)) return;
+            skeleton.paused = false;
+            skeleton.setCompleteListener((entry: any) => {
+                const name = entry?.animation?.name || '';
+                if (token === this._buildingDisplayAnimationToken && (!name || name === BUILD_DISPLAY_SHOW_ANIMATION)) {
+                    this.playBuildingIdleAnimation(skeleton, token);
+                }
+            });
+            skeleton.setAnimation(0, BUILD_DISPLAY_SHOW_ANIMATION, false);
+        };
+        this.scheduleOnce(this._buildingDisplayShowCallback, BUILD_DISPLAY_SHOW_DELAY);
     }
 
     cacheViewRefs() {
@@ -227,22 +377,41 @@ export class MapElementNode extends Component {
         this._coinBarNode = getNodeTarget(this.coinBar);
         this._lockMask = this.lockIcon ? this.lockIcon.getChildByName('mask') : null;
         this._lockMaskSprite = this._lockMask ? this._lockMask.getComponent(Sprite) : null;
+        this._lockSpriteNode = this.lockIcon ? this.lockIcon.getChildByName('lockSprite') : null;
+        this._lockSkeleton = this._lockSpriteNode ? this._lockSpriteNode.getComponent(sp.Skeleton) : null;
         const coinProgressNode = this.getControllerNode(this.coinBar, 'progress');
         this._coinProgressSprite = coinProgressNode ? coinProgressNode.getComponent(Sprite) : null;
         this._metaMaxLevel = this.meta && this.meta.MaxLevel ? this.meta.MaxLevel() : (this.levelNodes ? this.levelNodes.length : 0);
         this._limitLvText = this.meta && this.meta.LimitLv ? 'LV.' + this.meta.LimitLv() : '';
         this._levelNodeViews = [];
 
+        const validLevelNodes = (this.levelNodes || []).filter((node) => node && isValid(node));
+        this._usesSharedLevelView = validLevelNodes.length === 1;
+        if (this._usesSharedLevelView) {
+            this._levelNodeViews[0] = this.createLevelNodeView(validLevelNodes[0], 1);
+            return;
+        }
         for (let i = 0; i < this._metaMaxLevel; i++) {
             const levelNode = this.levelNodes && this.levelNodes[i] ? this.levelNodes[i] : null;
-            this._levelNodeViews[i] = {
-                node: levelNode,
-                normal: this.getControllerNode(levelNode, 'normal'),
-                damage: this.getControllerNode(levelNode, 'damage'),
-                normalSprite: this.getBuildLevelSprite(levelNode, i + 1, false),
-                damageSprite: this.getBuildLevelSprite(levelNode, i + 1, true),
-            };
+            this._levelNodeViews[i] = this.createLevelNodeView(levelNode, i + 1);
         }
+    }
+
+    createLevelNodeView(levelNode: Node | null, level: number): LevelNodeView {
+        return { node: levelNode, normal: this.getControllerNode(levelNode, 'normal'), damage: this.getControllerNode(levelNode, 'damage'),
+            normalSprite: this.getBuildLevelSprite(levelNode, level, false), damageSprite: this.getBuildLevelSprite(levelNode, level, true) };
+    }
+
+    syncLockSpriteAnimations(shouldPlay: boolean) {
+        const skeleton: any = this._lockSkeleton;
+        if (!skeleton?.node || !isValid(skeleton.node)) return;
+        if (!shouldPlay || !this._lockSpriteNode?.active) {
+            skeleton.clearTracks();
+            return;
+        }
+        LOCK_SPRITE_ANIMATIONS.forEach((name, index) => {
+            if (!skeleton.findAnimation || skeleton.findAnimation(name)) skeleton.setAnimation(index, name, true);
+        });
     }
 
     getNodeTarget(target: any) {
@@ -447,6 +616,7 @@ export class MapElementNode extends Component {
         this.canPlayLevelUpAnimation();
         if (this.lockIcon) {
             this.setNodeActive(this.lockIcon, !this.unlocked);
+            this.syncLockSpriteAnimations(!this.unlocked);
             this.setNodeOpacity(this._lockMask, 255);
             if (!this.unlocked) this.updateLockMaskSprite();
         }
@@ -458,6 +628,7 @@ export class MapElementNode extends Component {
         }
 
         const showLevel = bought ? Math.max(1, this.level) : 0;
+        if (this._usesSharedLevelView) return this.updateSharedLevelView(bought, showLevel, waitForSprite);
         const activeLevelIndex = this.unlocked && bought ? showLevel - 1 : -1;
         for (let i = 0; i < this._metaMaxLevel; i++) {
             const view = this._levelNodeViews && this._levelNodeViews[i];
@@ -488,6 +659,18 @@ export class MapElementNode extends Component {
         if (this.unlocked && !bought && firstLevelView && firstLevelView.damageSprite) {
             return this.updateDynamicBuildSprite('1z', firstLevelView.damageSprite, waitForSprite);
         }
+        return Promise.resolve(null);
+    }
+
+    updateSharedLevelView(bought: boolean, showLevel: number, waitForSprite: boolean) {
+        const view = this._levelNodeViews?.[0];
+        if (!view?.node) return Promise.resolve(null);
+        this.setNodeActive(view.node, this.unlocked);
+        if (!this.unlocked) return Promise.resolve(null);
+        this.setNodeActive(view.normal, bought);
+        this.setNodeActive(view.damage, !bought);
+        if (bought && view.normalSprite) return this.updateDynamicBuildSprite(String(showLevel), view.normalSprite, waitForSprite);
+        if (!bought && view.damageSprite) return this.updateDynamicBuildSprite('1z', view.damageSprite, waitForSprite);
         return Promise.resolve(null);
     }
 
@@ -704,10 +887,12 @@ export class MapElementNode extends Component {
         const readyPromise = this.updateElement();
         if (readyPromise && readyPromise.then) {
             readyPromise.then(() => {
+                this.playBuildingUpgradeShowAnimation();
                 if (callback) callback();
             });
             return;
         }
+        this.playBuildingUpgradeShowAnimation();
         if (callback) callback();
     }
 
@@ -766,6 +951,7 @@ export class MapElementNode extends Component {
     }
 
     showLevelInfo(e: any) {
+        if (!this.shouldOpenByTouchGesture(e)) return;
         const cameraNode = find('Canvas/Main Camera') || find('Canvas/VillageCamera');
         this.camera = cameraNode ? cameraNode.getComponent(Camera) : null;
         const collider = this.node.getComponent(PolygonCollider2D);
@@ -825,9 +1011,21 @@ export class MapElementNode extends Component {
                 buildId: this.buildID,
             });
         }
+        this.clearMapClickGestureState();
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
+    }
+
+    shouldOpenByTouchGesture(e: any, nowTime?: number) {
+        if (!e || e.skipHitTest || !e.getLocation || !this.node?.parent?.parent) return true;
+        const controller: any = this.node.parent.parent.getComponent('MapControlle');
+        return !(controller?.isSingleTapGesture && !controller.isSingleTapGesture(e, nowTime));
+    }
+
+    clearMapClickGestureState() {
+        const controller: any = this.node?.parent?.parent?.getComponent('MapControlle');
+        if (controller?.clearClickGestureState) controller.clearClickGestureState();
     }
 
     getMapElementWindowName() {

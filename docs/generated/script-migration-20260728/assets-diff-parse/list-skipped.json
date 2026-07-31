@@ -1,0 +1,210 @@
+[
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/gift/icons/toolIcon.tps",
+    "targetRel": "resources/res/gift/icons/toolIcon.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/gift/icons/toolIcon.tps.meta",
+    "targetRel": "resources/res/gift/icons/toolIcon.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/merge/skyfox/skyfox.tps",
+    "targetRel": "resources/res/merge/skyfox/skyfox.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/merge/skyfox/skyfox.tps.meta",
+    "targetRel": "resources/res/merge/skyfox/skyfox.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/user/avatarframe/avatarframe.tps",
+    "targetRel": "resources/res/user/avatarframe/avatarframe.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "resources/res/user/avatarframe/avatarframe.tps.meta",
+    "targetRel": "resources/res/user/avatarframe/avatarframe.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/activityItem/itemAtlas.tps",
+    "targetRel": "Texture/Activity/activityItem/itemAtlas.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/activityItem/itemAtlas.tps.meta",
+    "targetRel": "Texture/Activity/activityItem/itemAtlas.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/gameshow_img/gameshow_img.tps",
+    "targetRel": "Texture/Activity/gameshow_img/gameshow_img.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/gameshow_img/gameshow_img.tps.meta",
+    "targetRel": "Texture/Activity/gameshow_img/gameshow_img.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/SlotSymbol/SlotSymbol.tps",
+    "targetRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Activity/SlotSymbol/SlotSymbol.tps.meta",
+    "targetRel": "Texture/Activity/SlotSymbol/SlotSymbol.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Card/chest/cardChestAtlas.tps",
+    "targetRel": "Texture/Card/chest/cardChestAtlas.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Card/chest/cardChestAtlas.tps.meta",
+    "targetRel": "Texture/Card/chest/cardChestAtlas.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Guild/Badge/badge.tps",
+    "targetRel": "Texture/Guild/Badge/badge.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Guild/Badge/badge.tps.meta",
+    "targetRel": "Texture/Guild/Badge/badge.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Guild/GuildBoss/guildBoss.tps",
+    "targetRel": "Texture/Guild/GuildBoss/guildBoss.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Guild/GuildBoss/guildBoss.tps.meta",
+    "targetRel": "Texture/Guild/GuildBoss/guildBoss.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/items/itemAtlas.tps",
+    "targetRel": "Texture/item/items/itemAtlas.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/items/itemAtlas.tps.meta",
+    "targetRel": "Texture/item/items/itemAtlas.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/presentPack/presentPackAtlas.tps",
+    "targetRel": "Texture/item/presentPack/presentPackAtlas.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/presentPack/presentPackAtlas.tps.meta",
+    "targetRel": "Texture/item/presentPack/presentPackAtlas.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/randomPack/randomPackAtlas.tps",
+    "targetRel": "Texture/item/randomPack/randomPackAtlas.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/item/randomPack/randomPackAtlas.tps.meta",
+    "targetRel": "Texture/item/randomPack/randomPackAtlas.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Town/ui/town.tps",
+    "targetRel": "Texture/Town/ui/town.tps",
+    "evidence": [
+      "texturepacker-list-key"
+    ]
+  },
+  {
+    "scope": "source-present-target-missing",
+    "rel": "Texture/Town/ui/town.tps.meta",
+    "targetRel": "Texture/Town/ui/town.tps.meta",
+    "evidence": [
+      "paired-list-related"
+    ]
+  }
+]

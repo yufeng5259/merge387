@@ -1,0 +1,495 @@
+{
+  "generatedAt": "2026-07-30T14:04:29.904Z",
+  "files": 144,
+  "findings": [
+    {
+      "rel": "game/GamePlay",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/items/Content",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/items/ContentCheck",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/items/ContentCheck",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/items/ContentCheck",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/map/MapElementNode",
+      "method": "createLevelNodeView",
+      "kind": "fixed-return-diverges",
+      "targetLiteral": "{ node: levelNode, normal: this.getControllerNode(levelNode, 'normal'), damage: this.getControllerNode(levelNode, 'damage'),\n            normalSprite: this.getBuildLevelSprite(levelNode, level, false), damageSprite: this.getBuildLevelSprite(levelNode, level, true) }",
+      "sourceLiteral": "{\r\n            node: levelNode,\r\n            normal: this.getControllerNode(levelNode, \"normal\"),\r\n            damage: this.getControllerNode(levelNode, \"damage\"),\r\n            normalSprite: this.getBuildLevelSprite(levelNode, level, false),\r\n            damageSprite: this.getBuildLevelSprite(levelNode, level, true),\r\n        }"
+    },
+    {
+      "rel": "game/merge/MergeEmptyTaskGuide",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/MergeGeneraterMeta",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/MergeOrder",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/MergeOrder",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/MergeOrder",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/request/SRMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/UserMerge",
+      "method": "DefaultOrderData",
+      "kind": "fixed-return-diverges",
+      "targetLiteral": "{\r\n            orders: [],\r\n            completedOrderIds: [],\r\n            orderSeed: 1,\r\n            mode: 'newbie',\r\n            newbieNextOrderId: 0,\r\n            hardSequenceIndex: 0,\r\n            nextRandomOrderId: 100000000,\n            nextRecycleOrderId: 200000000,\n            slotChargePolicyVersion: 2,\n            slotStates: {},\n            slotTypeStates: {},\n            waitingForLevelUpgrade: false,\n            levelOrderAllCompleteNotified: {},\n            lastCompletedOrder: null\n        }",
+      "sourceLiteral": "{\r\n            orders: [],\r\n            completedOrderIds: [],\r\n            orderSeed: 1,\r\n            mode: 'newbie',\r\n            newbieNextOrderId: 0,\r\n            hardSequenceIndex: 0,\r\n            nextRandomOrderId: 100000000,\r\n            nextRecycleOrderId: 200000000,\r\n            slotChargePolicyVersion: 2,\r\n            slotStates: {},\r\n            slotTypeStates: {},\r\n            waitingForLevelUpgrade: false,\r\n            levelOrderAllCompleteNotified: {},\r\n            lastCompletedOrder: null\r\n        }"
+    },
+    {
+      "rel": "game/merge/UserMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/UserMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/UserMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/merge/UserMerge",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/mergeTutorial/MergeTutorialBusinessAdapter",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/mergeTutorial/MergeTutorialManager",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/mergeTutorial/MergeTutorialManager",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/mergeTutorial/MergeTutorialManager",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "game/quest/meta/SignMeta",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "GameKit/global",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/es",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/it",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "Todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "TODO"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "GameKit/i18n/data/pt",
+      "kind": "placeholder-marker",
+      "marker": "todo"
+    },
+    {
+      "rel": "UIRoot",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "UIRoot",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/IdentityTrace",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeBoardLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "Web/MergeOrderLogic",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "window/GameMainWindow",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "window/Menu/MenuWindow",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "window/Sys/AvatarWindow",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "window/UserInfoModel",
+      "method": "onLoad",
+      "kind": "empty-target-nonempty-source"
+    },
+    {
+      "rel": "window/UserInfoModel",
+      "kind": "empty-catch"
+    },
+    {
+      "rel": "window/UserInfoModel",
+      "kind": "empty-catch"
+    }
+  ]
+}

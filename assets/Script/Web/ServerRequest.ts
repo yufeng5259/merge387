@@ -1,6 +1,7 @@
 import NetRequest from "./NetRequest";
 import WebEvent from "./WebEvent";
 import { i18n } from "../GameKit/i18n/i18n";
+import IdentityTrace from './IdentityTrace';
 
 type ServerRequestCallback = (res?: any) => void;
 
@@ -55,7 +56,7 @@ export default class ServerRequest extends NetRequest {
     }
 
     okCallback(res: any) {
-        Logs.Debug("ServerRequest resp:", res)
+        Logs.Debug("ServerRequest resp:", IdentityTrace.TelemetryResponseSummary(res))
         var dispatEvent = () => {
             if (res.timestamp != null) GameKit.TimeUtil.UpdateServerTime(res.timestamp)
             if (res.events != null) {
@@ -69,13 +70,15 @@ export default class ServerRequest extends NetRequest {
             }
         }
         if (res.errorCode !== ErrorCode.SUCCESS) {
+            if (IdentityTrace.IsIdentityError(res.errorCode)) {
+                IdentityTrace.LogResponse('serverIdentityError', this.identityTrace, res, this.data)
+            }
             if (res.errorCode == null) res.errorCode = ErrorCode.UNKNOWN_CLIENT
             this.serverErrorCallbacks.forEach(function(x) {
                 if (x!=null)x(res)
             })
-            Logs.Warning("ServerRequest error " + "method:" + this.data.method + " msg:" + JSON.stringify(res.msg || "") + " code:" + res.errorCode)
-            //AppMain.instance.logerror({msg:"ServerRequest error " + "method:" + this.data.method + " msg:" + JSON.stringify(res.msg || "") + " code:" + res.errorCode, url:"", line:""})
-            AppKit.LogEventWrap.logEvent("http_api_fail", {api:this.data.method, body:JSON.stringify(this.data), code:res.errorCode, msg:"ServerRequest error " + JSON.stringify(res.msg || "")})
+            Logs.Warning("ServerRequest error method:" + this.data.method + " msgLength:" + String(res.msg || "").length + " code:" + res.errorCode)
+            AppKit.LogEventWrap.logEvent("http_api_fail", {api:this.data.method, body:JSON.stringify(IdentityTrace.TelemetryRequestSummary(this.data)), code:res.errorCode, messageLength:String(res.msg || "").length})
             
             if (ErrorCode.muteError(res.errorCode)) {
                 dispatEvent();

@@ -6,18 +6,17 @@
  * the board as a single-player state machine.
  */
 type MergeOrderLogicApi = Record<string, any>;
-type MergeOrderWindow = Window & {
-    MergeOrderLogic?: MergeOrderLogicApi;
-};
-
+type MergeOrderWindow = Window & { MergeOrderLogic?: MergeOrderLogicApi };
 var MergeOrderLogic: MergeOrderLogicApi = {};
 
-MergeOrderLogic.MAX_ORDER_SLOTS = 5;
+MergeOrderLogic.MAX_ORDER_SLOTS = 6;
 MergeOrderLogic.ORDER_MODE_NEWBIE = 'newbie';
 MergeOrderLogic.ORDER_MODE_NORMAL = 'normal';
 MergeOrderLogic.ORDER_TYPE_NEWBIE = 'newbie';
 MergeOrderLogic.ORDER_TYPE_NORMAL = 'normal';
 MergeOrderLogic.ORDER_TYPE_RECYCLE = 'recycle';
+MergeOrderLogic.SLOT_CHARGE_POLICY_VERSION = 2;
+MergeOrderLogic.GENERATOR_ELIGIBILITY_VERSION = 1;
 MergeOrderLogic.DEFAULT_ROLE_NAME = 'Ava';
 MergeOrderLogic.DEFAULT_RANDOM_ORDER_ID = 100000000;
 MergeOrderLogic.DEFAULT_RECYCLE_ORDER_ID = 200000000;
@@ -216,9 +215,19 @@ MergeOrderLogic._ensureOrderState = function (orderState, seedKey) {
     if (orderState.nextRecycleOrderId == null || isNaN(parseInt(orderState.nextRecycleOrderId))) {
         orderState.nextRecycleOrderId = MergeOrderLogic.DEFAULT_RECYCLE_ORDER_ID;
     }
+    if (orderState.slotChargePolicyVersion == null || isNaN(parseInt(orderState.slotChargePolicyVersion))) {
+        orderState.slotChargePolicyVersion = 0;
+    }
     if (!orderState.slotStates || typeof orderState.slotStates !== 'object' || Array.isArray(orderState.slotStates)) {
         orderState.slotStates = {};
     }
+    if (!orderState.slotTypeStates || typeof orderState.slotTypeStates !== 'object' || Array.isArray(orderState.slotTypeStates)) {
+        orderState.slotTypeStates = {};
+    }
+    if (!orderState.levelOrderAllCompleteNotified || typeof orderState.levelOrderAllCompleteNotified !== 'object' || Array.isArray(orderState.levelOrderAllCompleteNotified)) {
+        orderState.levelOrderAllCompleteNotified = {};
+    }
+    orderState.waitingForLevelUpgrade = orderState.waitingForLevelUpgrade === true;
     if (orderState.lastCompletedOrder == null || typeof orderState.lastCompletedOrder !== 'object') {
         orderState.lastCompletedOrder = null;
     }
@@ -262,23 +271,6 @@ MergeOrderLogic._getNewbieMetaLevel = function (meta) {
     return level > 0 ? level : 0;
 };
 
-MergeOrderLogic._filterNewbieMetasForPlayerLevel = function (metas, playerLevel) {
-    var level = MergeOrderLogic._toInt(playerLevel, 1);
-    return metas.filter(function (meta) {
-        var metaLevel = MergeOrderLogic._getNewbieMetaLevel(meta);
-        return metaLevel > 0 && metaLevel <= level;
-    });
-};
-
-MergeOrderLogic._hasLockedNewbieMetas = function (configProvider, playerLevel) {
-    var level = MergeOrderLogic._toInt(playerLevel, 1);
-    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
-    for (var i = 0; i < metas.length; i++) {
-        if (MergeOrderLogic._getNewbieMetaLevel(metas[i]) > level) return true;
-    }
-    return false;
-};
-
 MergeOrderLogic._getActiveNewbieIds = function (orderState) {
     var ids = [];
     for (var i = 0; i < orderState.orders.length; i++) {
@@ -291,53 +283,39 @@ MergeOrderLogic._getActiveNewbieIds = function (orderState) {
     return ids;
 };
 
-MergeOrderLogic._normalizeNewbieNextOrderId = function (orderState, configProvider, playerLevel) {
-    var allMetas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
-    var metas = playerLevel == null ? allMetas : MergeOrderLogic._filterNewbieMetasForPlayerLevel(allMetas, playerLevel);
-    if (metas.length <= 0) return 0;
-    var current = parseInt(orderState.newbieNextOrderId) || 0;
-    if (current > 0) return current;
-
-    var seen = {};
-    for (var c = 0; c < orderState.completedOrderIds.length; c++) {
-        seen[String(orderState.completedOrderIds[c])] = true;
+MergeOrderLogic._findNextPendingNewbieMeta = function (orderState, configProvider) {
+    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    if (metas.length <= 0) {
+        orderState.newbieNextOrderId = 0;
+        return null;
     }
-    var active = MergeOrderLogic._getActiveNewbieIds(orderState);
-    for (var a = 0; a < active.length; a++) seen[String(active[a])] = true;
-
-    var maxSeenIndex = -1;
-    for (var i = 0; i < metas.length; i++) {
-        if (seen[String(metas[i].id)]) maxSeenIndex = i;
-    }
-    if (maxSeenIndex >= 0 && metas[maxSeenIndex + 1]) {
-        orderState.newbieNextOrderId = metas[maxSeenIndex + 1].id;
-    } else if (maxSeenIndex >= metas.length - 1) {
-        orderState.newbieNextOrderId = metas[metas.length - 1].id + 1;
-    } else {
-        orderState.newbieNextOrderId = metas[0].id;
-    }
-    return orderState.newbieNextOrderId;
-};
-
-MergeOrderLogic._findNextNewbieMeta = function (orderState, configProvider, playerLevel) {
-    var allMetas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
-    var metas = playerLevel == null ? allMetas : MergeOrderLogic._filterNewbieMetasForPlayerLevel(allMetas, playerLevel);
-    if (metas.length <= 0) return null;
     var activeIds = MergeOrderLogic._getActiveNewbieIds(orderState);
-    var nextId = MergeOrderLogic._normalizeNewbieNextOrderId(orderState, configProvider, playerLevel);
     for (var i = 0; i < metas.length; i++) {
         var meta = metas[i];
-        if (Number(meta.id) < Number(nextId)) continue;
         if (MergeOrderLogic._hasId(activeIds, meta.id)) continue;
         if (MergeOrderLogic._hasId(orderState.completedOrderIds, meta.id)) continue;
+        orderState.newbieNextOrderId = meta.id;
         return meta;
     }
+    orderState.newbieNextOrderId = Number(metas[metas.length - 1].id) + 1;
     return null;
+};
+
+MergeOrderLogic._advanceNewbiePointer = function (orderState, meta, configProvider) {
+    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    for (var i = 0; i < metas.length; i++) {
+        if (String(metas[i].id) === String(meta.id)) {
+            orderState.newbieNextOrderId = metas[i + 1] ? metas[i + 1].id : Number(meta.id) + 1;
+            return;
+        }
+    }
+    orderState.newbieNextOrderId = Number(meta.id) + 1;
 };
 
 MergeOrderLogic._getLevelNewbieMetas = function (configProvider, playerLevel) {
     var level = MergeOrderLogic._toInt(playerLevel, 1);
-    return MergeOrderLogic._getAllNewbieOrderMetas(configProvider).filter(function (meta) {
+    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
+    return metas.filter(function (meta) {
         return MergeOrderLogic._getNewbieMetaLevel(meta) === level;
     });
 };
@@ -350,7 +328,8 @@ MergeOrderLogic._hasActiveNewbieOrderForLevel = function (orderState, playerLeve
         if (order.orderType !== MergeOrderLogic.ORDER_TYPE_NEWBIE && order.mode !== MergeOrderLogic.ORDER_MODE_NEWBIE) continue;
         var orderLevel = MergeOrderLogic._toInt(order.level, 0);
         if (!orderLevel && configProvider && typeof configProvider.getOrderMeta === 'function') {
-            orderLevel = MergeOrderLogic._getNewbieMetaLevel(configProvider.getOrderMeta(order.orderId));
+            var meta = configProvider.getOrderMeta(order.orderId);
+            orderLevel = MergeOrderLogic._getNewbieMetaLevel(meta);
         }
         if (orderLevel === level) return true;
     }
@@ -374,17 +353,6 @@ MergeOrderLogic._markLevelOrderAllComplete = function (orderState, playerLevel) 
     return true;
 };
 
-MergeOrderLogic._advanceNewbiePointer = function (orderState, meta, configProvider) {
-    var metas = MergeOrderLogic._getAllNewbieOrderMetas(configProvider);
-    for (var i = 0; i < metas.length; i++) {
-        if (String(metas[i].id) === String(meta.id)) {
-            orderState.newbieNextOrderId = metas[i + 1] ? metas[i + 1].id : Number(meta.id) + 1;
-            return;
-        }
-    }
-    orderState.newbieNextOrderId = Number(meta.id) + 1;
-};
-
 MergeOrderLogic._getUnlockedSlots = function (playerLevel, configProvider) {
     var level = MergeOrderLogic._toInt(playerLevel, 1);
     var slots = [];
@@ -394,7 +362,7 @@ MergeOrderLogic._getUnlockedSlots = function (playerLevel, configProvider) {
     if (!slots || slots.length <= 0) {
         var count = Math.max(1, Math.min(MergeOrderLogic.MAX_ORDER_SLOTS, level || 1));
         for (var i = 0; i < count; i++) {
-            slots.push({ id: i + 1, lv: i + 1, slotType: 1, cdTime: 0 });
+            slots.push({ id: i + 1, lv: i + 1, slotType: 1, layers: 1, cdTime: 0 });
         }
     }
     slots = slots.slice().map(function (slot, index) {
@@ -403,6 +371,7 @@ MergeOrderLogic._getUnlockedSlots = function (playerLevel, configProvider) {
             id: MergeOrderLogic._toInt(id, index + 1),
             lv: MergeOrderLogic._toInt(slot.lv, 1),
             slotType: MergeOrderLogic._toInt(slot.slotType != null ? slot.slotType : slot.SlotType, 1),
+            layers: Math.max(0, MergeOrderLogic._toInt(slot.layers != null ? slot.layers : slot.Layers, 1)),
             cdTime: Math.max(0, MergeOrderLogic._toInt(slot.cdTime != null ? slot.cdTime : slot.CdTime, 0))
         };
     });
@@ -411,19 +380,275 @@ MergeOrderLogic._getUnlockedSlots = function (playerLevel, configProvider) {
     return slots;
 };
 
-MergeOrderLogic._getSlotState = function (orderState, slot) {
-    var key = String(slot.id);
-    if (!orderState.slotStates[key]) {
-        orderState.slotStates[key] = { slotId: slot.id, cdEndTime: 0 };
+MergeOrderLogic._getSlotTypeConfigs = function (slots) {
+    var configs = {};
+    for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        var key = String(slot.slotType);
+        if (!configs[key]) {
+            configs[key] = {
+                slotType: slot.slotType,
+                maxLayers: 0,
+                cdTime: Math.max(0, MergeOrderLogic._toInt(slot.cdTime, 0)),
+                slotIds: []
+            };
+        }
+        configs[key].maxLayers += Math.max(0, MergeOrderLogic._toInt(slot.layers, 1));
+        configs[key].slotIds.push(slot.id);
+        var cdTime = Math.max(0, MergeOrderLogic._toInt(slot.cdTime, 0));
+        if (configs[key].cdTime <= 0 || (cdTime > 0 && cdTime < configs[key].cdTime)) {
+            configs[key].cdTime = cdTime;
+        }
     }
-    orderState.slotStates[key].slotId = slot.id;
-    return orderState.slotStates[key];
+    return configs;
 };
 
-MergeOrderLogic._isSlotReady = function (orderState, slot, now) {
-    var state = MergeOrderLogic._getSlotState(orderState, slot);
-    var cdEndTime = MergeOrderLogic._toInt(state.cdEndTime, 0);
-    return cdEndTime <= 0 || cdEndTime <= now;
+MergeOrderLogic._settleSlotTypeState = function (state, config, now) {
+    state.slotType = config.slotType;
+    var previousMax = Math.max(0, MergeOrderLogic._toInt(state.maxLayers, config.maxLayers));
+    var layers = Math.max(0, MergeOrderLogic._toInt(state.layers, 0));
+    if (config.maxLayers > previousMax) layers += config.maxLayers - previousMax;
+    state.maxLayers = config.maxLayers;
+    state.layers = Math.min(config.maxLayers, layers);
+    state.lastSettleAt = Math.max(0, MergeOrderLogic._toInt(state.lastSettleAt, now));
+    state.nextLayerAt = Math.max(0, MergeOrderLogic._toInt(state.nextLayerAt, 0));
+    var missingLayers = Math.max(0, state.maxLayers - state.layers);
+    var pendingLayerAt = Array.isArray(state.pendingLayerAt)
+        ? state.pendingLayerAt.map(function (value) {
+            return Math.max(0, MergeOrderLogic._toInt(value, 0));
+        }).filter(function (value) { return value > 0; })
+        : [];
+    pendingLayerAt.sort(function (a, b) { return a - b; });
+
+    if (state.layers >= state.maxLayers) {
+        state.pendingLayerAt = [];
+        state.nextLayerAt = 0;
+        state.lastSettleAt = now;
+        return state;
+    }
+    if (config.cdTime <= 0) {
+        state.layers = state.maxLayers;
+        state.pendingLayerAt = [];
+        state.nextLayerAt = 0;
+        state.lastSettleAt = now;
+        return state;
+    }
+    if (pendingLayerAt.length <= 0 && missingLayers > 0) {
+        var firstLayerAt = state.nextLayerAt > 0 ? state.nextLayerAt : now + config.cdTime;
+        for (var missingIndex = 0; missingIndex < missingLayers; missingIndex++) {
+            pendingLayerAt.push(firstLayerAt + missingIndex * config.cdTime);
+        }
+    }
+    if (pendingLayerAt.length > missingLayers) pendingLayerAt = pendingLayerAt.slice(0, missingLayers);
+    while (pendingLayerAt.length < missingLayers) {
+        var lastPendingAt = pendingLayerAt.length > 0
+            ? pendingLayerAt[pendingLayerAt.length - 1]
+            : now;
+        pendingLayerAt.push(lastPendingAt + config.cdTime);
+    }
+
+    var lastRecoveredAt = 0;
+    while (pendingLayerAt.length > 0 && pendingLayerAt[0] <= now && state.layers < state.maxLayers) {
+        lastRecoveredAt = pendingLayerAt.shift();
+        state.layers++;
+    }
+    if (lastRecoveredAt > 0) state.lastSettleAt = lastRecoveredAt;
+    pendingLayerAt = pendingLayerAt.slice(0, Math.max(0, state.maxLayers - state.layers));
+    state.pendingLayerAt = pendingLayerAt;
+    state.nextLayerAt = pendingLayerAt.length > 0 ? pendingLayerAt[0] : 0;
+    return state;
+};
+
+MergeOrderLogic._isFixedNewbieOrder = function (order) {
+    return !!order && (order.usesSlotCharge === false ||
+        order.orderType === MergeOrderLogic.ORDER_TYPE_NEWBIE ||
+        order.mode === MergeOrderLogic.ORDER_MODE_NEWBIE);
+};
+
+MergeOrderLogic._orderUsesSlotCharge = function (order) {
+    if (!order) return false;
+    if (order.usesSlotCharge != null) return order.usesSlotCharge === true;
+    return !MergeOrderLogic._isFixedNewbieOrder(order);
+};
+
+MergeOrderLogic._refundFixedOrderCharges = function (state, refundCount) {
+    refundCount = Math.max(0, MergeOrderLogic._toInt(refundCount, 0));
+    if (!state || refundCount <= 0) return;
+    var maxLayers = Math.max(0, MergeOrderLogic._toInt(state.maxLayers, 0));
+    var layers = Math.max(0, MergeOrderLogic._toInt(state.layers, 0));
+    var refund = Math.min(refundCount, Math.max(0, maxLayers - layers));
+    if (refund <= 0) return;
+    state.layers = layers + refund;
+    var pendingLayerAt = Array.isArray(state.pendingLayerAt) ? state.pendingLayerAt.slice() : [];
+    pendingLayerAt.sort(function (a, b) { return Number(a) - Number(b); });
+    if (refund >= pendingLayerAt.length) pendingLayerAt = [];
+    else pendingLayerAt.splice(pendingLayerAt.length - refund, refund);
+    pendingLayerAt = pendingLayerAt.slice(0, Math.max(0, maxLayers - state.layers));
+    state.pendingLayerAt = pendingLayerAt;
+    state.nextLayerAt = pendingLayerAt.length > 0 ? pendingLayerAt[0] : 0;
+};
+
+MergeOrderLogic._ensureSlotTypeStates = function (orderState, slots, now) {
+    var configs = MergeOrderLogic._getSlotTypeConfigs(slots);
+    var activeChargeByType = {};
+    var activeFixedByType = {};
+    var needsPolicyMigration = MergeOrderLogic._toInt(orderState.slotChargePolicyVersion, 0) <
+        MergeOrderLogic.SLOT_CHARGE_POLICY_VERSION;
+    for (var i = 0; i < orderState.orders.length; i++) {
+        var order = orderState.orders[i];
+        if (!order || order.claimed) continue;
+        var typeKey = String(MergeOrderLogic._toInt(order.slotType, 1));
+        if (MergeOrderLogic._orderUsesSlotCharge(order)) {
+            activeChargeByType[typeKey] = (activeChargeByType[typeKey] || 0) + 1;
+        } else {
+            activeFixedByType[typeKey] = (activeFixedByType[typeKey] || 0) + 1;
+        }
+    }
+    if (needsPolicyMigration && MergeOrderLogic._isFixedNewbieOrder(orderState.lastCompletedOrder)) {
+        var completedSlotType = MergeOrderLogic._toInt(orderState.lastCompletedOrder.slotType, NaN);
+        if (isNaN(completedSlotType)) {
+            var configKeys = Object.keys(configs);
+            if (configKeys.length === 1) completedSlotType = MergeOrderLogic._toInt(configKeys[0], NaN);
+        }
+        if (!isNaN(completedSlotType)) {
+            var completedTypeKey = String(completedSlotType);
+            activeFixedByType[completedTypeKey] = (activeFixedByType[completedTypeKey] || 0) + 1;
+        }
+    }
+
+    for (var key in configs) {
+        var config = configs[key];
+        var state = orderState.slotTypeStates[key];
+        var hadSlotTypeState = !!state && typeof state === 'object' && !Array.isArray(state);
+        if (!hadSlotTypeState) {
+            var oldLayerEnds = [];
+            for (var s = 0; s < config.slotIds.length; s++) {
+                var oldState = orderState.slotStates[String(config.slotIds[s])];
+                var oldEnd = MergeOrderLogic._toInt(oldState && oldState.cdEndTime, 0);
+                if (oldEnd > now) oldLayerEnds.push(oldEnd);
+            }
+            oldLayerEnds.sort(function (a, b) { return a - b; });
+            var blockedCount = oldLayerEnds.length;
+            var initialLayers = Math.max(0, config.maxLayers - (activeChargeByType[key] || 0) - blockedCount);
+            var missingLayers = Math.max(0, config.maxLayers - initialLayers);
+            var pendingLayerAt = oldLayerEnds.slice(0, missingLayers);
+            var syntheticCount = Math.max(0, missingLayers - pendingLayerAt.length);
+            for (var syntheticIndex = 0; syntheticIndex < syntheticCount; syntheticIndex++) {
+                pendingLayerAt.push(now + (syntheticIndex + 1) * config.cdTime);
+            }
+            pendingLayerAt.sort(function (a, b) { return a - b; });
+            state = {
+                slotType: config.slotType,
+                layers: initialLayers,
+                maxLayers: config.maxLayers,
+                pendingLayerAt: pendingLayerAt,
+                nextLayerAt: pendingLayerAt.length > 0 ? pendingLayerAt[0] : 0,
+                lastSettleAt: now
+            };
+            orderState.slotTypeStates[key] = state;
+        }
+        MergeOrderLogic._settleSlotTypeState(state, config, now);
+        if (needsPolicyMigration && hadSlotTypeState) {
+            MergeOrderLogic._refundFixedOrderCharges(state, activeFixedByType[key] || 0);
+        }
+        for (var legacyIndex = 0; legacyIndex < config.slotIds.length; legacyIndex++) {
+            delete orderState.slotStates[String(config.slotIds[legacyIndex])];
+        }
+    }
+    for (var stateKey in orderState.slotTypeStates) {
+        if (!configs[stateKey]) delete orderState.slotTypeStates[stateKey];
+    }
+    orderState.slotChargePolicyVersion = MergeOrderLogic.SLOT_CHARGE_POLICY_VERSION;
+    return configs;
+};
+
+MergeOrderLogic._hasSlotCharge = function (orderState, slot) {
+    var state = orderState.slotTypeStates[String(slot.slotType)];
+    return !!state && MergeOrderLogic._toInt(state.layers, 0) > 0;
+};
+
+MergeOrderLogic._findNearestCoolingEmptySlot = function (orderState, slots) {
+    var best = null;
+    var bestAt = 0;
+    var hasEmptySlot = false;
+    for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        if (MergeOrderLogic._findOrderBySlotId(orderState, slot.id)) continue;
+        hasEmptySlot = true;
+        var state = orderState.slotTypeStates[String(slot.slotType)];
+        if (!state) return null;
+        if (MergeOrderLogic._toInt(state.layers, 0) > 0) return null;
+        var nextLayerAt = MergeOrderLogic._toInt(state.nextLayerAt, 0);
+        if (nextLayerAt <= 0) return null;
+        if (!best || nextLayerAt < bestAt ||
+            (nextLayerAt === bestAt && Number(slot.id) < Number(best.id))) {
+            best = slot;
+            bestAt = nextLayerAt;
+        }
+    }
+    return hasEmptySlot ? best : null;
+};
+
+MergeOrderLogic._forceRecoverSlotCharge = function (orderState, slot, now) {
+    var key = String(slot.slotType);
+    var state = orderState.slotTypeStates[key];
+    if (!state) return false;
+    var maxLayers = Math.max(0, MergeOrderLogic._toInt(state.maxLayers, 0));
+    var layers = Math.max(0, MergeOrderLogic._toInt(state.layers, 0));
+    if (maxLayers <= 0 || layers >= maxLayers) return false;
+    var pendingLayerAt = Array.isArray(state.pendingLayerAt) ? state.pendingLayerAt.slice() : [];
+    pendingLayerAt = pendingLayerAt.map(function (value) {
+        return Math.max(0, MergeOrderLogic._toInt(value, 0));
+    }).filter(function (value) { return value > 0; });
+    pendingLayerAt.sort(function (a, b) { return a - b; });
+    if (pendingLayerAt.length <= 0) {
+        var nextLayerAt = MergeOrderLogic._toInt(state.nextLayerAt, 0);
+        if (nextLayerAt <= 0) return false;
+        pendingLayerAt.push(nextLayerAt);
+    }
+    pendingLayerAt.shift();
+    state.layers = Math.min(maxLayers, layers + 1);
+    pendingLayerAt = pendingLayerAt.slice(0, Math.max(0, maxLayers - state.layers));
+    state.pendingLayerAt = pendingLayerAt;
+    state.nextLayerAt = pendingLayerAt.length > 0 ? pendingLayerAt[0] : 0;
+    state.lastSettleAt = now;
+    return true;
+};
+
+MergeOrderLogic._consumeSlotCharge = function (orderState, slot, slotTypeConfigs, now) {
+    var key = String(slot.slotType);
+    var state = orderState.slotTypeStates[key];
+    var config = slotTypeConfigs[key];
+    if (!state || !config || MergeOrderLogic._toInt(state.layers, 0) <= 0) return false;
+    state.layers = Math.max(0, MergeOrderLogic._toInt(state.layers, 0) - 1);
+    state.lastSettleAt = now;
+    if (config.cdTime <= 0) {
+        state.layers = state.maxLayers;
+        state.pendingLayerAt = [];
+        state.nextLayerAt = 0;
+        return true;
+    }
+    var pendingLayerAt = Array.isArray(state.pendingLayerAt) ? state.pendingLayerAt.slice() : [];
+    pendingLayerAt = pendingLayerAt.map(function (value) {
+        return Math.max(0, MergeOrderLogic._toInt(value, 0));
+    }).filter(function (value) { return value > 0; });
+    pendingLayerAt.sort(function (a, b) { return a - b; });
+    var lastPendingAt = pendingLayerAt.length > 0 ? pendingLayerAt[pendingLayerAt.length - 1] : now;
+    pendingLayerAt.push(Math.max(now, lastPendingAt) + config.cdTime);
+    pendingLayerAt = pendingLayerAt.slice(0, Math.max(0, state.maxLayers - state.layers));
+    state.pendingLayerAt = pendingLayerAt;
+    state.nextLayerAt = pendingLayerAt.length > 0 ? pendingLayerAt[0] : 0;
+    return true;
+};
+
+MergeOrderLogic.getNextOrderChargeAt = function (orderState, playerLevel, configProvider) {
+    if (!orderState || !orderState.slotTypeStates) return 0;
+    var nearest = 0;
+    for (var key in orderState.slotTypeStates) {
+        var nextLayerAt = MergeOrderLogic._toInt(orderState.slotTypeStates[key].nextLayerAt, 0);
+        if (nextLayerAt > 0 && (!nearest || nextLayerAt < nearest)) nearest = nextLayerAt;
+    }
+    return nearest;
 };
 
 MergeOrderLogic._findOrderBySlotId = function (orderState, slotId) {
@@ -460,8 +685,8 @@ MergeOrderLogic._normalizeExistingSlots = function (orderState, slots, limit, no
     orderState.orders = [];
 
     var usedSlotIds = {};
-    var overflow = [];
     var assignToSlot = function (normalizedOrder, slot) {
+        normalizedOrder.usesSlotCharge = MergeOrderLogic._orderUsesSlotCharge(normalizedOrder);
         normalizedOrder.slotId = slot.id;
         normalizedOrder.slotType = slot.slotType;
         normalizedOrder.slotCdTime = slot.cdTime || 0;
@@ -484,23 +709,11 @@ MergeOrderLogic._normalizeExistingSlots = function (orderState, slots, limit, no
         var preferredSlot = byId[String(preferredSlotId)];
         if (preferredSlot && !usedSlotIds[String(preferredSlot.id)]) {
             assignToSlot(candidate, preferredSlot);
-        } else {
-            overflow.push(candidate);
         }
     }
 
-    for (var o = 0; o < overflow.length; o++) {
-        var freeSlot = null;
-        for (var fs = 0; fs < activeSlots.length; fs++) {
-            var slot = activeSlots[fs];
-            if (usedSlotIds[String(slot.id)]) continue;
-            if (now != null && !MergeOrderLogic._isSlotReady(orderState, slot, now)) continue;
-            freeSlot = slot;
-            break;
-        }
-        if (!freeSlot) break;
-        assignToSlot(overflow[o], freeSlot);
-    }
+    // slotId is persistent ownership. Invalid or duplicate legacy entries are dropped
+    // instead of being moved into another logical slot.
 };
 
 MergeOrderLogic._getOrderLevelConfig = function (playerLevel, configProvider) {
@@ -527,11 +740,20 @@ MergeOrderLogic._getHardSequence = function (levelConfig) {
     return result.length > 0 ? result : [1];
 };
 
-MergeOrderLogic._nextDifficulty = function (orderState, levelConfig) {
+MergeOrderLogic._peekDifficulty = function (orderState, levelConfig) {
     var seq = MergeOrderLogic._getHardSequence(levelConfig);
     var index = MergeOrderLogic._toInt(orderState.hardSequenceIndex, 0);
-    var difficulty = seq[index % seq.length] || 1;
+    return seq[index % seq.length] || 1;
+};
+
+MergeOrderLogic._advanceDifficulty = function (orderState) {
+    var index = MergeOrderLogic._toInt(orderState.hardSequenceIndex, 0);
     orderState.hardSequenceIndex = index + 1;
+};
+
+MergeOrderLogic._nextDifficulty = function (orderState, levelConfig) {
+    var difficulty = MergeOrderLogic._peekDifficulty(orderState, levelConfig);
+    MergeOrderLogic._advanceDifficulty(orderState);
     return difficulty;
 };
 
@@ -562,24 +784,35 @@ MergeOrderLogic._getPlanRows = function (levelConfig, difficulty) {
 };
 
 MergeOrderLogic._selectPlanLevels = function (levelConfig, difficulty, itemCount, rng) {
+    var candidates = MergeOrderLogic._getPlanLevelCandidates(levelConfig, difficulty, itemCount, rng);
+    return candidates.length > 0 ? candidates[0].slice(0, MergeOrderLogic.MAX_ORDER_ITEM_COUNT) : [];
+};
+
+MergeOrderLogic._getPlanLevelCandidates = function (levelConfig, difficulty, itemCount, rng) {
+    rng = typeof rng === 'function' ? rng : MergeOrderLogic.seededRandom(1);
     var rows = MergeOrderLogic._getPlanRows(levelConfig, difficulty);
-    if (rows.length <= 0) return [1];
-    var exact = [];
-    var closest = [];
-    var bestDistance = 999;
+    if (rows.length <= 0) return [[1]];
+    var maxCount = Math.max(1, Math.min(
+        MergeOrderLogic.MAX_ORDER_ITEM_COUNT,
+        MergeOrderLogic._toInt(itemCount, 1)
+    ));
+    var grouped = {};
     for (var i = 0; i < rows.length; i++) {
-        if (rows[i].length === itemCount) exact.push(rows[i]);
-        var dist = Math.abs(rows[i].length - itemCount);
-        if (dist < bestDistance) {
-            closest = [rows[i]];
-            bestDistance = dist;
-        } else if (dist === bestDistance) {
-            closest.push(rows[i]);
+        var count = rows[i].length;
+        if (count <= 0 || count > maxCount) continue;
+        if (!grouped[count]) grouped[count] = [];
+        grouped[count].push(rows[i]);
+    }
+    var candidates = [];
+    for (var size = maxCount; size >= 1; size--) {
+        var group = grouped[size] || [];
+        if (group.length <= 0) continue;
+        var shuffled = MergeOrderLogic._seededShuffle(group.slice(), rng);
+        for (var j = 0; j < shuffled.length; j++) {
+            candidates.push(shuffled[j].slice(0, MergeOrderLogic.MAX_ORDER_ITEM_COUNT));
         }
     }
-    var candidates = exact.length > 0 ? exact : closest;
-    var picked = candidates[MergeOrderLogic.seededRandomInt(rng, 0, candidates.length - 1)] || candidates[0];
-    return picked.slice(0, MergeOrderLogic.MAX_ORDER_ITEM_COUNT);
+    return candidates;
 };
 
 MergeOrderLogic._getElementMeta = function (pieceId, configProvider) {
@@ -638,124 +871,166 @@ MergeOrderLogic._isGeneratorPiece = function (pieceId, configProvider) {
     return false;
 };
 
-MergeOrderLogic._getUnlockedSeries = function (playerLevel, configProvider, elements) {
-    var list = null;
-    if (configProvider && typeof configProvider.getUnlockedSeries === 'function') {
-        list = configProvider.getUnlockedSeries(playerLevel) || null;
-    }
-    if (!list || list.length <= 0) {
-        list = [];
-        var seen = {};
-        for (var i = 0; i < elements.length; i++) {
-            var series = elements[i].series;
-            if (series == null || series === '') continue;
-            if (!seen[String(series)]) {
-                seen[String(series)] = true;
-                list.push(series);
-            }
+MergeOrderLogic.resolveUnlockedLineTypesFromGenerators = function (pieceIds, configProvider) {
+    var highestBySeries = {};
+    pieceIds = Array.isArray(pieceIds) ? pieceIds : [];
+    for (var i = 0; i < pieceIds.length; i++) {
+        var pieceId = pieceIds[i];
+        var generator = configProvider && configProvider.getGeneratorByMergeId
+            ? configProvider.getGeneratorByMergeId(pieceId)
+            : null;
+        if (!generator || generator.series == null || generator.series === '') continue;
+        var level = configProvider && configProvider.getPieceLevel
+            ? MergeOrderLogic._toInt(configProvider.getPieceLevel(pieceId), 0)
+            : 0;
+        var key = String(generator.series);
+        var current = highestBySeries[key];
+        if (!current || level > current.level || (level === current.level && Number(pieceId) > Number(current.pieceId))) {
+            highestBySeries[key] = { pieceId: pieceId, level: level, generator: generator };
         }
     }
+
+    var unlocked = {};
+    for (var series in highestBySeries) {
+        var lineTypes = highestBySeries[series].generator.unlockElementsType;
+        lineTypes = MergeOrderLogic._asArray(lineTypes);
+        for (var lineIndex = 0; lineIndex < lineTypes.length; lineIndex++) {
+            var lineType = MergeOrderLogic._toInt(lineTypes[lineIndex], NaN);
+            if (!isNaN(lineType)) unlocked[String(lineType)] = lineType;
+        }
+    }
+    var result = [];
+    for (var unlockedKey in unlocked) result.push(unlocked[unlockedKey]);
+    result.sort(function (a, b) { return Number(a) - Number(b); });
+    return result;
+};
+
+MergeOrderLogic.resolveAvailableGeneratorPieceIds = function (boardData, warehouseData, configProvider) {
+    var pieceIds = [];
+    var seen = {};
+    var addPieceData = function (pieceData) {
+        var parsed = null;
+        if (configProvider && typeof configProvider.parsePieceData === 'function') {
+            parsed = configProvider.parsePieceData(pieceData);
+        } else {
+            parsed = MergeOrderLogic._parsePieceData(pieceData);
+        }
+        var pieceId = parsed ? MergeOrderLogic._toInt(parsed.pieceId, NaN) : NaN;
+        if (isNaN(pieceId) || pieceId <= 0) return;
+
+        var status = parsed.status != null ? MergeOrderLogic._toInt(parsed.status, NaN) : -1;
+        if (isNaN(status) || status !== -1) return;
+        if (parsed.bubbleRewardId != null && isNaN(MergeOrderLogic._toInt(parsed.bubbleRewardId, NaN))) return;
+
+        if (configProvider && typeof configProvider.isBubblePieceData === 'function') {
+            if (configProvider.isBubblePieceData(pieceData)) return;
+        } else if (parsed.instanceId && String(parsed.instanceId).indexOf('b_') === 0) {
+            return;
+        }
+        if (seen[String(pieceId)]) return;
+        seen[String(pieceId)] = true;
+        pieceIds.push(pieceId);
+    };
+    var key;
+    boardData = boardData || {};
+    warehouseData = warehouseData || {};
+    for (key in boardData) addPieceData(boardData[key]);
+    for (key in warehouseData) addPieceData(warehouseData[key]);
+    return pieceIds;
+};
+
+MergeOrderLogic.resolveUnlockedLineTypesFromSnapshot = function (boardData, warehouseData, configProvider) {
+    return MergeOrderLogic.resolveUnlockedLineTypesFromGenerators(
+        MergeOrderLogic.resolveAvailableGeneratorPieceIds(boardData, warehouseData, configProvider),
+        configProvider
+    );
+};
+
+MergeOrderLogic._getUnlockedLineTypes = function (playerLevel, configProvider, boardData, warehouseData) {
+    var list = [];
+    if (configProvider && typeof configProvider.getUnlockedLineTypes === 'function') {
+        list = configProvider.getUnlockedLineTypes(playerLevel, boardData, warehouseData) || [];
+    } else if (configProvider && typeof configProvider.getUnlockedSeries === 'function') {
+        list = configProvider.getUnlockedSeries(playerLevel, boardData, warehouseData) || [];
+    }
+    list = list.slice();
     list.sort(function (a, b) { return Number(a) - Number(b); });
     return list;
 };
 
-MergeOrderLogic._calculateSeriesScores = function (requiredPieces, configProvider) {
+MergeOrderLogic._getUnlockedSeries = MergeOrderLogic._getUnlockedLineTypes;
+
+MergeOrderLogic._calculateLineScores = function (requiredPieces, configProvider) {
     var scores = {};
     var coinValue = 0;
     for (var pieceId in requiredPieces) {
         var count = requiredPieces[pieceId] || 0;
         var meta = MergeOrderLogic._getElementMeta(pieceId, configProvider) || {};
-        var series = meta.series != null && meta.series !== '' ? String(meta.series) : '0';
+        var lineType = meta.type != null && meta.type !== '' ? String(meta.type) : '0';
         var score = Math.max(0, MergeOrderLogic._toNumber(meta.orderScore, 0)) * count;
         var gold = Math.max(0, MergeOrderLogic._toNumber(meta.goldPrice, 0)) * count;
-        if (score <= 0) score = count;
-        if (gold <= 0) gold = score;
-        scores[series] = (scores[series] || 0) + score;
+        scores[lineType] = (scores[lineType] || 0) + score;
         coinValue += gold;
     }
     return {
-        seriesScores: scores,
+        lineScores: scores,
         coinValue: Math.max(0, Math.floor(coinValue))
     };
 };
 
-MergeOrderLogic._getPressureBySeries = function (orderState, configProvider) {
+MergeOrderLogic._getPressureByLineType = function (orderState, configProvider) {
     var pressure = {};
     var addScores = function (scores) {
         if (!scores) return;
-        for (var series in scores) {
-            pressure[String(series)] = (pressure[String(series)] || 0) + (Number(scores[series]) || 0);
+        for (var lineType in scores) {
+            pressure[String(lineType)] = (pressure[String(lineType)] || 0) + (Number(scores[lineType]) || 0);
         }
     };
     for (var i = 0; i < orderState.orders.length; i++) {
         var order = orderState.orders[i];
         if (!order || order.claimed) continue;
-        if (!order.seriesScores) {
-            var calc = MergeOrderLogic._calculateSeriesScores(order.requiredPieces || {}, configProvider);
-            order.seriesScores = calc.seriesScores;
-            if (!order.coinValue) order.coinValue = calc.coinValue;
+        if (!order.lineScores) {
+            var calc = MergeOrderLogic._calculateLineScores(order.requiredPieces || {}, configProvider);
+            order.lineScores = calc.lineScores;
+            if (order.coinValue == null) order.coinValue = calc.coinValue;
         }
-        addScores(order.seriesScores);
+        addScores(order.lineScores);
     }
-    if (orderState.lastCompletedOrder && orderState.lastCompletedOrder.seriesScores) {
-        addScores(orderState.lastCompletedOrder.seriesScores);
+    if (orderState.lastCompletedOrder) {
+        addScores(orderState.lastCompletedOrder.lineScores || orderState.lastCompletedOrder.seriesScores);
     }
     return pressure;
 };
 
-MergeOrderLogic._selectSeries = function (orderState, playerLevel, configProvider, elements, rng) {
-    var seriesList = MergeOrderLogic._getUnlockedSeries(playerLevel, configProvider, elements);
-    if (seriesList.length <= 0) return null;
-    var pressure = MergeOrderLogic._getPressureBySeries(orderState, configProvider);
-    var best = [];
-    var bestScore = Infinity;
-    for (var i = 0; i < seriesList.length; i++) {
-        var key = String(seriesList[i]);
-        var score = pressure[key] || 0;
-        if (score < bestScore) {
-            best = [seriesList[i]];
-            bestScore = score;
-        } else if (score === bestScore) {
-            best.push(seriesList[i]);
-        }
-    }
-    return best[MergeOrderLogic.seededRandomInt(rng, 0, best.length - 1)];
+MergeOrderLogic._getPressureBySeries = MergeOrderLogic._getPressureByLineType;
+
+MergeOrderLogic._sortLineTypesByPressure = function (lineTypes, pressure) {
+    return lineTypes.slice().sort(function (a, b) {
+        var diff = (Number(pressure[String(a)]) || 0) - (Number(pressure[String(b)]) || 0);
+        if (diff !== 0) return diff;
+        return Number(a) - Number(b);
+    });
 };
 
-MergeOrderLogic._choosePieceForLevel = function (elements, series, level, usedIds, configProvider, rng) {
+MergeOrderLogic._choosePieceForLevel = function (elements, lineType, level, usedIds, configProvider, rng) {
     var candidates = [];
-    var fallback = [];
-    var closest = [];
-    var closestDistance = Infinity;
     for (var i = 0; i < elements.length; i++) {
         var meta = elements[i];
         if (!meta || meta.id == null) continue;
         if (MergeOrderLogic._isGeneratorPiece(meta.id, configProvider)) continue;
-        if (series != null && String(meta.series) !== String(series)) continue;
+        if (lineType != null && String(meta.type) !== String(lineType)) continue;
         if (usedIds[String(meta.id)]) continue;
         var metaLevel = MergeOrderLogic._getOrderPieceLevel(meta);
-        if (metaLevel <= 0) continue;
-        fallback.push(meta);
-        if (metaLevel === level) {
-            candidates.push(meta);
-        }
-        var distance = Math.abs(metaLevel - level);
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = [meta];
-        } else if (distance === closestDistance) {
-            closest.push(meta);
-        }
+        if (metaLevel === level) candidates.push(meta);
     }
-    var pool = candidates.length > 0 ? candidates : (closest.length > 0 ? closest : fallback);
-    if (pool.length <= 0) return null;
-    var picked = pool[MergeOrderLogic.seededRandomInt(rng, 0, pool.length - 1)];
-    return picked ? picked.id : null;
+    if (candidates.length <= 0) return null;
+    return candidates[MergeOrderLogic.seededRandomInt(rng, 0, candidates.length - 1)] || null;
 };
 
-MergeOrderLogic._choosePiecesForPlan = function (levels, series, elements, configProvider, rng) {
+MergeOrderLogic._choosePiecesForPlan = function (levels, lineTypes, orderState, elements, configProvider, rng) {
     var required = {};
     var used = {};
+    var pressure = MergeOrderLogic._getPressureByLineType(orderState, configProvider);
     for (var i = 0; i < levels.length && i < MergeOrderLogic.MAX_ORDER_ITEM_COUNT; i++) {
         var allowDuplicateForSameLevel = false;
         for (var j = 0; j < i; j++) {
@@ -765,19 +1040,56 @@ MergeOrderLogic._choosePiecesForPlan = function (levels, series, elements, confi
             }
         }
         var usedForPick = allowDuplicateForSameLevel ? {} : used;
-        var pieceId = MergeOrderLogic._choosePieceForLevel(elements, series, levels[i], usedForPick, configProvider, rng);
-        if (pieceId == null) continue;
+        var pieceMeta = null;
+        var pickedLineType = null;
+        var sortedLineTypes = MergeOrderLogic._sortLineTypesByPressure(lineTypes, pressure);
+        for (var lineIndex = 0; lineIndex < sortedLineTypes.length; lineIndex++) {
+            var candidate = MergeOrderLogic._choosePieceForLevel(
+                elements, sortedLineTypes[lineIndex], levels[i], usedForPick, configProvider, rng
+            );
+            if (candidate) {
+                pieceMeta = candidate;
+                pickedLineType = sortedLineTypes[lineIndex];
+                break;
+            }
+        }
+        if (!pieceMeta) return {};
+        var pieceId = pieceMeta.id;
         used[String(pieceId)] = true;
         required[pieceId] = (required[pieceId] || 0) + 1;
+        var score = Math.max(0, MergeOrderLogic._toNumber(pieceMeta.orderScore, 0));
+        pressure[String(pickedLineType)] = (pressure[String(pickedLineType)] || 0) + score;
     }
     return required;
+};
+
+MergeOrderLogic._choosePiecesFromPlanCandidates = function (planCandidates, lineTypes, orderState, elements, configProvider, rng) {
+    if (!Array.isArray(planCandidates) || planCandidates.length <= 0) return null;
+    for (var i = 0; i < planCandidates.length; i++) {
+        var levels = planCandidates[i];
+        if (!Array.isArray(levels) || levels.length <= 0) continue;
+        var requiredPieces = MergeOrderLogic._choosePiecesForPlan(
+            levels, lineTypes, orderState, elements, configProvider, rng
+        );
+        if (Object.keys(requiredPieces).length > 0) {
+            return {
+                levels: levels.slice(0, MergeOrderLogic.MAX_ORDER_ITEM_COUNT),
+                requiredPieces: requiredPieces
+            };
+        }
+    }
+    return null;
 };
 
 MergeOrderLogic._createBaseOrder = function (params) {
     var requiredPieces = params.requiredPieces || {};
     var matchedCells = {};
+    var orderType = params.orderType || MergeOrderLogic.ORDER_TYPE_NORMAL;
+    var usesSlotCharge = params.usesSlotCharge != null
+        ? params.usesSlotCharge === true
+        : orderType !== MergeOrderLogic.ORDER_TYPE_NEWBIE;
     for (var pieceId in requiredPieces) matchedCells[pieceId] = [];
-    return {
+    var order: any = {
         orderId: params.orderId,
         slotId: params.slotId,
         slotIndex: params.slotIndex || 0,
@@ -793,18 +1105,23 @@ MergeOrderLogic._createBaseOrder = function (params) {
         collectRewards: params.collectRewards || [],
         roleName: params.roleName || MergeOrderLogic.DEFAULT_ROLE_NAME,
         mode: params.mode || MergeOrderLogic.ORDER_MODE_NORMAL,
-        orderType: params.orderType || MergeOrderLogic.ORDER_TYPE_NORMAL,
+        orderType: orderType,
+        usesSlotCharge: usesSlotCharge,
         coinValue: params.coinValue || 0,
-        seriesScores: params.seriesScores || {},
+        lineScores: params.lineScores || params.seriesScores || {},
         difficulty: params.difficulty || 0,
         itemLevels: params.itemLevels || [],
         createdAt: params.createdAt || 0
     };
+    if (params.generatorEligibilityVersion != null) {
+        order.generatorEligibilityVersion = MergeOrderLogic._toInt(params.generatorEligibilityVersion, 0);
+    }
+    return order;
 };
 
 MergeOrderLogic._createNewbieOrderFromMeta = function (meta, slot, slotIndex, orderState, configProvider) {
     var requiredPieces = MergeOrderLogic.parseRequiredPieces(meta.content);
-    var calc = MergeOrderLogic._calculateSeriesScores(requiredPieces, configProvider);
+    var calc = MergeOrderLogic._calculateLineScores(requiredPieces, configProvider);
     MergeOrderLogic._advanceNewbiePointer(orderState, meta, configProvider);
     return MergeOrderLogic._createBaseOrder({
         orderId: meta.id,
@@ -819,8 +1136,9 @@ MergeOrderLogic._createNewbieOrderFromMeta = function (meta, slot, slotIndex, or
         roleName: meta.roleName || MergeOrderLogic.DEFAULT_ROLE_NAME,
         mode: MergeOrderLogic.ORDER_MODE_NEWBIE,
         orderType: MergeOrderLogic.ORDER_TYPE_NEWBIE,
+        level: MergeOrderLogic._getNewbieMetaLevel(meta),
         coinValue: calc.coinValue,
-        seriesScores: calc.seriesScores,
+        lineScores: calc.lineScores,
         createdAt: MergeOrderLogic._getCurrentTime(configProvider)
     });
 };
@@ -872,8 +1190,9 @@ MergeOrderLogic._normalizeOrderRewardFields = function (order, configProvider) {
     order.additionRewards = MergeOrderLogic._normalizeRewardList(order.additionRewards);
     if (!Array.isArray(order.collectRewards)) order.collectRewards = [];
 
-    var calc = MergeOrderLogic._calculateSeriesScores(order.requiredPieces, configProvider);
-    order.seriesScores = calc.seriesScores;
+    var calc = MergeOrderLogic._calculateLineScores(order.requiredPieces, configProvider);
+    order.lineScores = calc.lineScores;
+    delete order.seriesScores;
     order.coinValue = calc.coinValue;
     order.rewards = MergeOrderLogic._buildCoinReward(calc.coinValue);
     return order;
@@ -887,25 +1206,30 @@ MergeOrderLogic._getRandomRoleName = function (configProvider, rng) {
     return MergeOrderLogic.DEFAULT_ROLE_NAME;
 };
 
-MergeOrderLogic._createRandomOrderForSlot = function (orderState, slot, slotIndex, playerLevel, configProvider) {
+MergeOrderLogic._createRandomOrderForSlot = function (orderState, slot, slotIndex, playerLevel, configProvider, lineTypes) {
     var levelConfig = MergeOrderLogic._getOrderLevelConfig(playerLevel, configProvider);
     if (!levelConfig) return null;
     var elements = MergeOrderLogic._getAllElementMetas(configProvider);
     if (elements.length <= 0) return null;
 
     var rng = MergeOrderLogic.seededRandom(orderState.orderSeed);
-    var difficulty = MergeOrderLogic._nextDifficulty(orderState, levelConfig);
+    var difficulty = MergeOrderLogic._peekDifficulty(orderState, levelConfig);
     var itemCount = MergeOrderLogic._rollItemCount(levelConfig, rng);
-    var levels = MergeOrderLogic._selectPlanLevels(levelConfig, difficulty, itemCount, rng);
-    var series = MergeOrderLogic._selectSeries(orderState, playerLevel, configProvider, elements, rng);
-    var requiredPieces = MergeOrderLogic._choosePiecesForPlan(levels, series, elements, configProvider, rng);
-    if (Object.keys(requiredPieces).length <= 0 && series != null) {
-        requiredPieces = MergeOrderLogic._choosePiecesForPlan(levels, null, elements, configProvider, rng);
+    var planCandidates = MergeOrderLogic._getPlanLevelCandidates(levelConfig, difficulty, itemCount, rng);
+    if (!Array.isArray(lineTypes)) {
+        lineTypes = MergeOrderLogic._getUnlockedLineTypes(playerLevel, configProvider);
     }
-    if (Object.keys(requiredPieces).length <= 0) return null;
+    if (lineTypes.length <= 0) return null;
+    var pickedPlan = MergeOrderLogic._choosePiecesFromPlanCandidates(
+        planCandidates, lineTypes, orderState, elements, configProvider, rng
+    );
+    if (!pickedPlan) return null;
+    var levels = pickedPlan.levels;
+    var requiredPieces = pickedPlan.requiredPieces;
 
-    var calc = MergeOrderLogic._calculateSeriesScores(requiredPieces, configProvider);
+    var calc = MergeOrderLogic._calculateLineScores(requiredPieces, configProvider);
     var orderId = orderState.nextRandomOrderId++;
+    MergeOrderLogic._advanceDifficulty(orderState);
     orderState.orderSeed = MergeOrderLogic._nextSeed(rng);
     orderState.lastCompletedOrder = null;
     return MergeOrderLogic._createBaseOrder({
@@ -920,9 +1244,10 @@ MergeOrderLogic._createRandomOrderForSlot = function (orderState, slot, slotInde
         mode: MergeOrderLogic.ORDER_MODE_NORMAL,
         orderType: MergeOrderLogic.ORDER_TYPE_NORMAL,
         coinValue: calc.coinValue,
-        seriesScores: calc.seriesScores,
+        lineScores: calc.lineScores,
         difficulty: difficulty,
         itemLevels: levels,
+        generatorEligibilityVersion: MergeOrderLogic.GENERATOR_ELIGIBILITY_VERSION,
         createdAt: MergeOrderLogic._getCurrentTime(configProvider)
     });
 };
@@ -1001,7 +1326,7 @@ MergeOrderLogic._createRecycleOrderForSlot = function (orderState, slot, slotInd
     candidates = candidates.slice(0, MergeOrderLogic.MAX_ORDER_ITEM_COUNT);
     var requiredPieces = {};
     for (var c = 0; c < candidates.length; c++) requiredPieces[candidates[c].pieceId] = 1;
-    var calc = MergeOrderLogic._calculateSeriesScores(requiredPieces, configProvider);
+    var calc = MergeOrderLogic._calculateLineScores(requiredPieces, configProvider);
     var orderId = orderState.nextRecycleOrderId++;
     return MergeOrderLogic._createBaseOrder({
         orderId: orderId,
@@ -1015,7 +1340,7 @@ MergeOrderLogic._createRecycleOrderForSlot = function (orderState, slot, slotInd
         mode: MergeOrderLogic.ORDER_MODE_NORMAL,
         orderType: MergeOrderLogic.ORDER_TYPE_RECYCLE,
         coinValue: calc.coinValue,
-        seriesScores: calc.seriesScores,
+        lineScores: calc.lineScores,
         difficulty: 4,
         createdAt: MergeOrderLogic._getCurrentTime(configProvider)
     });
@@ -1038,6 +1363,108 @@ MergeOrderLogic._cleanOrders = function (orderState) {
     orderState.orders = clean;
 };
 
+MergeOrderLogic._isRandomOrderEligibleForLineTypes = function (order, lineTypes, configProvider) {
+    if (!order || order.orderType !== MergeOrderLogic.ORDER_TYPE_NORMAL) return true;
+    var allowed = {};
+    lineTypes = Array.isArray(lineTypes) ? lineTypes : [];
+    for (var i = 0; i < lineTypes.length; i++) allowed[String(lineTypes[i])] = true;
+    var required = order.requiredPieces || {};
+    var hasRequiredPiece = false;
+    for (var pieceId in required) {
+        if (MergeOrderLogic._toInt(required[pieceId], 0) <= 0) continue;
+        hasRequiredPiece = true;
+        var meta = MergeOrderLogic._getElementMeta(pieceId, configProvider);
+        if (!meta || MergeOrderLogic._getOrderPieceLevel(meta) <= 0) return false;
+        if (MergeOrderLogic._isGeneratorPiece(pieceId, configProvider)) return false;
+        if (!allowed[String(meta.type)]) return false;
+    }
+    return hasRequiredPiece;
+};
+
+MergeOrderLogic._rerollLegacyRandomOrder = function (orderState, order, playerLevel, configProvider, lineTypes) {
+    var levelConfig = MergeOrderLogic._getOrderLevelConfig(playerLevel, configProvider);
+    if (!levelConfig || !Array.isArray(lineTypes) || lineTypes.length <= 0) return false;
+    var elements = MergeOrderLogic._getAllElementMetas(configProvider);
+    if (elements.length <= 0) return false;
+
+    var rng = MergeOrderLogic.seededRandom(orderState.orderSeed);
+    var difficulty = MergeOrderLogic._toInt(order.difficulty, 0);
+    if (difficulty <= 0) difficulty = MergeOrderLogic._peekDifficulty(orderState, levelConfig);
+    var levels = [];
+    var hadSavedLevels = false;
+    if (Array.isArray(order.itemLevels)) {
+        for (var i = 0; i < order.itemLevels.length && levels.length < MergeOrderLogic.MAX_ORDER_ITEM_COUNT; i++) {
+            var itemLevel = MergeOrderLogic._toInt(order.itemLevels[i], 0);
+            if (itemLevel > 0) levels.push(itemLevel);
+        }
+        hadSavedLevels = levels.length > 0;
+    }
+    var planCandidates = [];
+    if (levels.length <= 0) {
+        var itemCount = MergeOrderLogic._rollItemCount(levelConfig, rng);
+        planCandidates = MergeOrderLogic._getPlanLevelCandidates(levelConfig, difficulty, itemCount, rng);
+    } else {
+        planCandidates = [levels];
+    }
+    var pickedPlan = MergeOrderLogic._choosePiecesFromPlanCandidates(
+        planCandidates, lineTypes, orderState, elements, configProvider, rng
+    );
+    if (!pickedPlan && hadSavedLevels) {
+        planCandidates = MergeOrderLogic._getPlanLevelCandidates(levelConfig, difficulty, levels.length, rng);
+        pickedPlan = MergeOrderLogic._choosePiecesFromPlanCandidates(
+            planCandidates, lineTypes, orderState, elements, configProvider, rng
+        );
+    }
+    if (!pickedPlan) return false;
+    levels = pickedPlan.levels;
+    var requiredPieces = pickedPlan.requiredPieces;
+
+    var calc = MergeOrderLogic._calculateLineScores(requiredPieces, configProvider);
+    var matchedCells = {};
+    for (var pieceId in requiredPieces) matchedCells[pieceId] = [];
+    order.requiredPieces = requiredPieces;
+    order.matchedCells = matchedCells;
+    order.completed = false;
+    order.claimed = false;
+    order.matchedCount = 0;
+    order.requiredCount = 0;
+    order.progressStatus = 'none';
+    order.coinValue = calc.coinValue;
+    order.lineScores = calc.lineScores;
+    delete order.seriesScores;
+    order.rewards = MergeOrderLogic._buildCoinReward(calc.coinValue);
+    order.difficulty = difficulty;
+    order.itemLevels = levels;
+    order.generatorEligibilityVersion = MergeOrderLogic.GENERATOR_ELIGIBILITY_VERSION;
+    orderState.orderSeed = MergeOrderLogic._nextSeed(rng);
+    return true;
+};
+
+MergeOrderLogic._migrateLegacyRandomOrders = function (orderState, playerLevel, configProvider, lineTypes) {
+    if (configProvider && typeof configProvider.isGeneratorEligibilityReady === 'function' &&
+        !configProvider.isGeneratorEligibilityReady()) return;
+    var index = 0;
+    while (index < orderState.orders.length) {
+        var order = orderState.orders[index];
+        if (!order || order.claimed || order.orderType !== MergeOrderLogic.ORDER_TYPE_NORMAL ||
+            MergeOrderLogic._toInt(order.generatorEligibilityVersion, 0) >= MergeOrderLogic.GENERATOR_ELIGIBILITY_VERSION) {
+            index++;
+            continue;
+        }
+        if (MergeOrderLogic._isRandomOrderEligibleForLineTypes(order, lineTypes, configProvider)) {
+            order.generatorEligibilityVersion = MergeOrderLogic.GENERATOR_ELIGIBILITY_VERSION;
+            index++;
+            continue;
+        }
+
+        orderState.orders.splice(index, 1);
+        if (MergeOrderLogic._rerollLegacyRandomOrder(orderState, order, playerLevel, configProvider, lineTypes)) {
+            orderState.orders.splice(index, 0, order);
+            index++;
+        }
+    }
+};
+
 MergeOrderLogic._trimOrdersToLimit = function (orderState, limit) {
     limit = Math.max(0, MergeOrderLogic._toInt(limit, 0));
     if (!orderState || !Array.isArray(orderState.orders) || orderState.orders.length <= limit) return;
@@ -1053,6 +1480,12 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
     var orderMax = MergeOrderLogic._getOrderMax(levelConfig, slots);
     var addedOrders = [];
     var levelOrderAllComplete = false;
+    var generatorEligibilityReady = !(configProvider &&
+        typeof configProvider.isGeneratorEligibilityReady === 'function') ||
+        configProvider.isGeneratorEligibilityReady();
+    var unlockedLineTypes = generatorEligibilityReady
+        ? MergeOrderLogic._getUnlockedLineTypes(level, configProvider, boardData || {}, warehouseData || {})
+        : [];
 
     orderState.playerLevel = level;
     MergeOrderLogic._cleanOrders(orderState);
@@ -1062,34 +1495,43 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
     var activeSlots = slots.slice(0, orderMax);
     MergeOrderLogic._normalizeExistingSlots(orderState, slots, orderMax, now);
     MergeOrderLogic._trimOrdersToLimit(orderState, orderMax);
+    if (generatorEligibilityReady) {
+        MergeOrderLogic._migrateLegacyRandomOrders(orderState, level, configProvider, unlockedLineTypes);
+    }
+    var slotTypeConfigs = MergeOrderLogic._ensureSlotTypeStates(orderState, activeSlots, now);
 
     var slotIndex;
     for (slotIndex = 0; slotIndex < activeSlots.length && MergeOrderLogic._getActiveOrderCount(orderState) < orderMax; slotIndex++) {
         var slot = activeSlots[slotIndex];
         if (MergeOrderLogic._findOrderBySlotId(orderState, slot.id)) continue;
-        if (!MergeOrderLogic._isSlotReady(orderState, slot, now)) continue;
-        var meta = MergeOrderLogic._findNextNewbieMeta(orderState, configProvider, level);
-        if (!meta) break;
+        var pendingMeta = MergeOrderLogic._findNextPendingNewbieMeta(orderState, configProvider);
+        if (!pendingMeta || MergeOrderLogic._getNewbieMetaLevel(pendingMeta) > level) break;
+        var meta = pendingMeta;
         var newbieOrder = MergeOrderLogic._createNewbieOrderFromMeta(meta, slot, slotIndex, orderState, configProvider);
+        if (!newbieOrder) continue;
         orderState.orders.push(newbieOrder);
         addedOrders.push(newbieOrder);
     }
 
-    var hasNextNewbie = !!MergeOrderLogic._findNextNewbieMeta(orderState, configProvider, level);
-    var hasLockedNewbie = MergeOrderLogic._hasLockedNewbieMetas(configProvider, level);
-    if (!hasNextNewbie && MergeOrderLogic._isPlayerLevelNewbieComplete(orderState, level, configProvider)) {
+    var nextPendingNewbie = MergeOrderLogic._findNextPendingNewbieMeta(orderState, configProvider);
+    var nextNewbieLocked = !!nextPendingNewbie && MergeOrderLogic._getNewbieMetaLevel(nextPendingNewbie) > level;
+    orderState.waitingForLevelUpgrade = nextNewbieLocked &&
+        MergeOrderLogic._isPlayerLevelNewbieComplete(orderState, level, configProvider);
+    if (orderState.waitingForLevelUpgrade) {
         levelOrderAllComplete = MergeOrderLogic._markLevelOrderAllComplete(orderState, level);
     }
-    if (!hasNextNewbie && !hasLockedNewbie) {
+    if (!nextPendingNewbie) {
         orderState.mode = MergeOrderLogic.ORDER_MODE_NORMAL;
-        for (slotIndex = 0; slotIndex < activeSlots.length && MergeOrderLogic._getActiveOrderCount(orderState) < orderMax; slotIndex++) {
+        for (slotIndex = 0; generatorEligibilityReady && slotIndex < activeSlots.length &&
+            MergeOrderLogic._getActiveOrderCount(orderState) < orderMax; slotIndex++) {
             var recycleSlot = activeSlots[slotIndex];
             if (MergeOrderLogic._findOrderBySlotId(orderState, recycleSlot.id)) continue;
-            if (!MergeOrderLogic._isSlotReady(orderState, recycleSlot, now)) continue;
+            if (!MergeOrderLogic._hasSlotCharge(orderState, recycleSlot)) continue;
             var recycleOrder = MergeOrderLogic._createRecycleOrderForSlot(
                 orderState, recycleSlot, slotIndex, level, configProvider, boardData, warehouseData
             );
             if (!recycleOrder) continue;
+            if (!MergeOrderLogic._consumeSlotCharge(orderState, recycleSlot, slotTypeConfigs, now)) continue;
             orderState.orders.push(recycleOrder);
             addedOrders.push(recycleOrder);
             break;
@@ -1097,11 +1539,28 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
         for (slotIndex = 0; slotIndex < activeSlots.length && MergeOrderLogic._getActiveOrderCount(orderState) < orderMax; slotIndex++) {
             var normalSlot = activeSlots[slotIndex];
             if (MergeOrderLogic._findOrderBySlotId(orderState, normalSlot.id)) continue;
-            if (!MergeOrderLogic._isSlotReady(orderState, normalSlot, now)) continue;
-            var normalOrder = MergeOrderLogic._createRandomOrderForSlot(orderState, normalSlot, slotIndex, level, configProvider);
-            if (!normalOrder) break;
+            if (!MergeOrderLogic._hasSlotCharge(orderState, normalSlot)) continue;
+            var normalOrder = MergeOrderLogic._createRandomOrderForSlot(
+                orderState, normalSlot, slotIndex, level, configProvider, unlockedLineTypes
+            );
+            if (!normalOrder) continue;
+            if (!MergeOrderLogic._consumeSlotCharge(orderState, normalSlot, slotTypeConfigs, now)) continue;
             orderState.orders.push(normalOrder);
             addedOrders.push(normalOrder);
+        }
+        if (generatorEligibilityReady && MergeOrderLogic._getActiveOrderCount(orderState) <= 0) {
+            var forceSlot = MergeOrderLogic._findNearestCoolingEmptySlot(orderState, activeSlots);
+            if (forceSlot) {
+                var forcedOrder = MergeOrderLogic._createRandomOrderForSlot(
+                    orderState, forceSlot, activeSlots.indexOf(forceSlot), level, configProvider, unlockedLineTypes
+                );
+                if (forcedOrder &&
+                    MergeOrderLogic._forceRecoverSlotCharge(orderState, forceSlot, now) &&
+                    MergeOrderLogic._consumeSlotCharge(orderState, forceSlot, slotTypeConfigs, now)) {
+                    orderState.orders.push(forcedOrder);
+                    addedOrders.push(forcedOrder);
+                }
+            }
         }
     } else {
         orderState.mode = MergeOrderLogic.ORDER_MODE_NEWBIE;
@@ -1116,8 +1575,10 @@ MergeOrderLogic.syncOrdersForPlayerLevel = function (orderState, playerLevel, co
         orderState: orderState,
         addedOrders: addedOrders,
         mode: orderState.mode,
+        waitingForLevelUpgrade: orderState.waitingForLevelUpgrade,
         levelOrderAllComplete: levelOrderAllComplete,
-        levelOrderAllCompleteLevel: level
+        levelOrderAllCompleteLevel: level,
+        nextChargeAt: MergeOrderLogic.getNextOrderChargeAt(orderState, level, configProvider)
     };
 };
 
@@ -1181,7 +1642,6 @@ MergeOrderLogic.sortOrdersForDisplay = function (orderState) {
 MergeOrderLogic.checkAllOrderProgress = function (boardData, warehouseData, orderState) {
     if (!orderState || !Array.isArray(orderState.orders)) return;
     var pieceIndex = MergeOrderLogic._buildPieceIndex(boardData, warehouseData).index;
-    var pieceCursor = {};
     for (var i = 0; i < orderState.orders.length; i++) {
         var order = orderState.orders[i];
         if (!order || order.claimed) continue;
@@ -1194,9 +1654,7 @@ MergeOrderLogic.checkAllOrderProgress = function (boardData, warehouseData, orde
             var need = Math.max(0, MergeOrderLogic._toInt(required[pieceId], 0));
             requiredCount += need;
             var available = pieceIndex[pieceId] || [];
-            var start = pieceCursor[pieceId] || 0;
-            var matched = available.slice(start, start + need);
-            pieceCursor[pieceId] = start + matched.length;
+            var matched = available.slice(0, need);
             order.matchedCells[pieceId] = matched;
             matchedCount += matched.length;
             if (matched.length < need) allMatched = false;
@@ -1298,28 +1756,8 @@ MergeOrderLogic._findOrderByClaimTarget = function (orderState, claimTarget) {
     return MergeOrderLogic._findOrderByDisplaySlot(orderState, slotIndex);
 };
 
-MergeOrderLogic._applySlotCooldownAfterClaim = function (orderState, order, configProvider) {
-    var slotId = order.slotId != null ? order.slotId : order.slotIndex + 1;
-    var state = orderState.slotStates[String(slotId)] || { slotId: slotId, cdEndTime: 0 };
-    var cdTime = 0;
-    if (order.orderType !== MergeOrderLogic.ORDER_TYPE_NEWBIE) {
-        cdTime = MergeOrderLogic._toInt(order.slotCdTime, 0);
-        if (!cdTime && order.slotId != null && orderState.playerLevel != null) {
-            var slots = MergeOrderLogic._getUnlockedSlots(orderState.playerLevel, configProvider);
-            for (var i = 0; i < slots.length; i++) {
-                if (Number(slots[i].id) === Number(slotId)) {
-                    cdTime = slots[i].cdTime || 0;
-                    break;
-                }
-            }
-        }
-    }
-    state.cdEndTime = cdTime > 0 ? MergeOrderLogic._getCurrentTime(configProvider) + cdTime : 0;
-    orderState.slotStates[String(slotId)] = state;
-};
-
 MergeOrderLogic.claimOrder = function (orderState, slotIndex, boardData, warehouseData, configProvider, playerLevel) {
-    var result = {
+    var result: any = {
         success: false,
         errorCode: '',
         errorMsg: '',
@@ -1328,6 +1766,15 @@ MergeOrderLogic.claimOrder = function (orderState, slotIndex, boardData, warehou
         removedPieces: []
     };
     orderState = MergeOrderLogic._ensureOrderState(orderState);
+    var level = MergeOrderLogic._toInt(playerLevel, orderState.playerLevel || 1);
+    var claimSlots = MergeOrderLogic._getUnlockedSlots(level, configProvider);
+    var claimLevelConfig = MergeOrderLogic._getOrderLevelConfig(level, configProvider);
+    var claimOrderMax = MergeOrderLogic._getOrderMax(claimLevelConfig, claimSlots);
+    MergeOrderLogic._ensureSlotTypeStates(
+        orderState,
+        claimSlots.slice(0, claimOrderMax),
+        MergeOrderLogic._getCurrentTime(configProvider)
+    );
     for (var orderIndex = 0; orderIndex < orderState.orders.length; orderIndex++) {
         MergeOrderLogic._normalizeOrderRewardFields(orderState.orders[orderIndex], configProvider);
     }
@@ -1377,15 +1824,15 @@ MergeOrderLogic.claimOrder = function (orderState, slotIndex, boardData, warehou
         result.sideEffects.push({ type: 'addNewCollectRewards', params: { collectRewards: order.collectRewards } });
     }
 
-    var level = MergeOrderLogic._toInt(playerLevel, orderState.playerLevel || 1);
     orderState.playerLevel = level;
     MergeOrderLogic._pushUniqueId(orderState.completedOrderIds, order.orderId);
     orderState.lastCompletedOrder = {
         orderId: order.orderId,
         orderType: order.orderType,
-        seriesScores: order.seriesScores || MergeOrderLogic._calculateSeriesScores(order.requiredPieces || {}, configProvider).seriesScores
+        slotType: order.slotType,
+        usesSlotCharge: MergeOrderLogic._orderUsesSlotCharge(order),
+        lineScores: order.lineScores || order.seriesScores || MergeOrderLogic._calculateLineScores(order.requiredPieces || {}, configProvider).lineScores
     };
-    MergeOrderLogic._applySlotCooldownAfterClaim(orderState, order, configProvider);
     orderState.orders.splice(found.index, 1);
 
     var syncResult = MergeOrderLogic.syncOrdersForPlayerLevel(
@@ -1397,6 +1844,8 @@ MergeOrderLogic.claimOrder = function (orderState, slotIndex, boardData, warehou
         warehouseData || {}
     );
     result.newOrder = syncResult.addedOrders && syncResult.addedOrders.length > 0 ? syncResult.addedOrders[0] : null;
+    result.levelOrderAllComplete = syncResult.levelOrderAllComplete;
+    result.levelOrderAllCompleteLevel = syncResult.levelOrderAllCompleteLevel;
     result.success = true;
     return result;
 };

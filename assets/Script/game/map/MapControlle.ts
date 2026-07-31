@@ -51,6 +51,8 @@ export class MapControlle extends Component {
     @property
     public clickEffectMoveThreshold = 8;
     @property
+    public clickEffectHoldThreshold = 0.5;
+    @property
     public lookBuildDuration = 1;
 
     private begin = new Vec3();
@@ -71,6 +73,8 @@ export class MapControlle extends Component {
     private clickEffectPool: NodePool | null = null;
     private activeClickEffects: Node[] = [];
     private clickEffectStartLocation: Vec2 | null = null;
+    private clickEffectStartTime = 0;
+    private clickEffectTouchActive = false;
     private clickEffectMoved = false;
     private clickEffectMultiTouch = false;
     private clickEffectTemplate: Node | null = null;
@@ -108,8 +112,7 @@ export class MapControlle extends Component {
             }
         }
 
-        this.setCameraZoomRatio(this.defaultScale);
-        this.node.setPosition(new Vec3(0, 0, 0));
+        this.resetViewState();
         this.node.on(Node.EventType.TOUCH_START, this.onStartTouch, this);
         this.node.on(Node.EventType.TOUCH_END, this.onMapClickEffectTouchEnd, this, true);
         this.node.on(Node.EventType.TOUCH_END, this.releaseTouchesEnd, this);
@@ -117,6 +120,25 @@ export class MapControlle extends Component {
         this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.node.on(Node.EventType.MOUSE_WHEEL, this.onStartWheel, this);
         this.initClickEffectPool();
+    }
+
+    resetViewState() {
+        if (!this.camera || !this.camera.node) return false;
+        this.stopInertia();
+        this.isMoving = false;
+        this.isSingleTouchMoving = false;
+        this.isPinching = false;
+        this.clearClickGestureState();
+        if (this.cameraMoveTween) {
+            Tween.stopAllByTarget(this.camera.node);
+            this.cameraMoveTween = null;
+        }
+        let defaultScale = Number(this.defaultScale);
+        if (isNaN(defaultScale) || defaultScale <= 0) defaultScale = 1;
+        this.setCameraZoomRatio(defaultScale);
+        this.camera.node.setPosition(Vec3.ZERO);
+        this.begin = this.camera.node.position.clone();
+        return true;
     }
 
     onStartWheel(event: any) {
@@ -277,11 +299,33 @@ export class MapControlle extends Component {
 
     recordClickEffectTouchStart(event: any) {
         this.clickEffectStartLocation = event && event.getLocation ? event.getLocation().clone() : null;
+        this.clickEffectStartTime = Date.now() / 1000;
+        this.clickEffectTouchActive = true;
         this.clickEffectMoved = false;
         this.clickEffectMultiTouch = false;
         if (event && event.getTouches && event.getTouches().length > 1) {
             this.clickEffectMultiTouch = true;
         }
+    }
+
+    clearClickGestureState() {
+        this.clickEffectStartLocation = null;
+        this.clickEffectStartTime = 0;
+        this.clickEffectTouchActive = false;
+        this.clickEffectMoved = false;
+        this.clickEffectMultiTouch = false;
+    }
+
+    isSingleTapGesture(event: any, nowTime?: number) {
+        if (!event || !event.getLocation) return true;
+        if (event.getTouches && event.getTouches().length > 1) return false;
+        if (this.isPinching || this.isMoving || this.isSingleTouchMoving) return false;
+        if (!this.clickEffectTouchActive) return true;
+        if (this.clickEffectMultiTouch || this.clickEffectMoved) return false;
+        if (this.clickEffectStartLocation && event.getLocation().subtract(this.clickEffectStartLocation).length() > this.clickEffectMoveThreshold) return false;
+        const now = nowTime != null ? nowTime : Date.now() / 1000;
+        if (this.clickEffectStartTime > 0 && now - this.clickEffectStartTime > this.clickEffectHoldThreshold) return false;
+        return true;
     }
 
     recordClickEffectTouchMove(event: any) {
@@ -310,15 +354,7 @@ export class MapControlle extends Component {
         if (!event || !event.getLocation) {
             return;
         }
-        if (this.clickEffectMultiTouch || this.clickEffectMoved || this.isPinching) {
-            return;
-        }
-        if (this.clickEffectStartLocation) {
-            const moveDistance = event.getLocation().subtract(this.clickEffectStartLocation).length();
-            if (moveDistance > this.clickEffectMoveThreshold) {
-                return;
-            }
-        }
+        if (!this.isSingleTapGesture(event)) return;
         this.playClickEffectAtScreenPos(event.getLocation());
     }
 

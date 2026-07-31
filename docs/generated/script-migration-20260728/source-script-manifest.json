@@ -1,0 +1,3463 @@
+{
+  "generatedAt": "2026-07-28T09:39:57.949Z",
+  "sourceCommit": "9fcc805bfed66bae23f047cc72c2dc15faee6972",
+  "counts": {
+    "total": 145,
+    "modified": 120,
+    "added": 14,
+    "deleted": 11,
+    "equivalent-infrastructure": 1,
+    "existing-cocos3-reviewed": 119,
+    "source-deleted": 11,
+    "source-added-migrated": 14
+  },
+  "exclusions": [
+    {
+      "sourcePath": "assets/Script/GameKit/ui/list/List.js",
+      "targetPath": "assets/Script/GameKit/ui/list/List.ts",
+      "sha256": "82B007A3BABB43C4B4A5247616EA8F82107592E102CDE8ECD1D17ECF85215FB5"
+    },
+    {
+      "sourcePath": "assets/Script/GameKit/ui/list/ListItem.js",
+      "targetPath": "assets/Script/GameKit/ui/list/ListItem.ts",
+      "sha256": "AD14D99C9122366116CFF91658737D7D46E4F3286319B1B09A4FF8AC09357563"
+    }
+  ],
+  "entries": [
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/__game__.js",
+      "sourceMetaPath": "assets/Script/__game__.js.meta",
+      "targetPath": "assets/Script/LegacyGlobals.ts",
+      "targetMetaPath": "assets/Script/LegacyGlobals.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "equivalent-infrastructure",
+      "sourceSha256": "45AAFD9ED27D411B81974B5A551F50F93951CF93F2EA2107A4DD46B426A27146",
+      "sourceMetaSha256": "DC86269113E9E21FDD84B410470DA0F8725F5E104F5E1B6040EA7271638C496C",
+      "targetSha256": "61A4BD18F2CBA8BF9145EC1427570EBFFFCF980F5CF1EF93C6D6B5ABC358C305",
+      "targetMetaSha256": "D87DC7A82D66D4BCE9373FBE2255BF7F34079F4F352EB707B1B59E6DC62E4430",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/__game__.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppKit/HotUpdate.js",
+      "sourceMetaPath": "assets/Script/AppKit/HotUpdate.js.meta",
+      "targetPath": "assets/Script/AppKit/HotUpdate.ts",
+      "targetMetaPath": "assets/Script/AppKit/HotUpdate.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "4C3722AE36F14C64A206A2FE6CED8735C0521D3E8914E581A04C6326D6575A3A",
+      "sourceMetaSha256": "402B27A1A70CB0EB31D91CB78E155A769B2F5684FFF2EEC9581BFECFC7B4DCA0",
+      "targetSha256": "738A03C692D3E9BDCE29DA06AA714F9E9B42BD269A8A4ADF08C053EA8327CA80",
+      "targetMetaSha256": "DC331828621CE3D2A04E2EF01C09C019720BAD52E4AE55D4B48179F475E169DA",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppKit/HotUpdate.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppKit/NativeWrap.js",
+      "sourceMetaPath": "assets/Script/AppKit/NativeWrap.js.meta",
+      "targetPath": "assets/Script/AppKit/NativeWrap.ts",
+      "targetMetaPath": "assets/Script/AppKit/NativeWrap.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "27763C468FA200DCEE78E18604AF19C414CCDC881275C870FCF3D54746D1709F",
+      "sourceMetaSha256": "FCE5C9A252B43A412DCD55856B5BFE28A8EF4FE9F6AC3D8855D1B4B7E687CC46",
+      "targetSha256": "1ECA113FD2705B2B44E86F175C990E2B7D8A7257AE477776C429F74ADD0E7BE2",
+      "targetMetaSha256": "A1429A73C6C14E4A9C13F82B670478D7FCCCFF2856526994E4F0BF6A60319318",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppKit/NativeWrap.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppKit/NotificationWrap.js",
+      "sourceMetaPath": "assets/Script/AppKit/NotificationWrap.js.meta",
+      "targetPath": "assets/Script/AppKit/NotificationWrap.ts",
+      "targetMetaPath": "assets/Script/AppKit/NotificationWrap.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "5BCC015326E046E627FE2A427888089F48713110AE899EF9F299435C5E9ECBF3",
+      "sourceMetaSha256": "D33AA70EA3CAB364F6F83C9BC38646AB865F812711824D5947C4874A04BE6283",
+      "targetSha256": "772CE47A7CCD2346ABFE5777F2E817988EC8178636DBE684BAB142824AECBE07",
+      "targetMetaSha256": "3F101BC16836116E9D13E2C6370BA4AA4DA52C0C25FDC4E75D7A5F69A633F3B1",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppKit/NotificationWrap.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppKit/PaymentWrap.js",
+      "sourceMetaPath": "assets/Script/AppKit/PaymentWrap.js.meta",
+      "targetPath": "assets/Script/AppKit/PaymentWrap.ts",
+      "targetMetaPath": "assets/Script/AppKit/PaymentWrap.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "2D27F5B755E44A9C33E3143449DCFFEC47A9DD0CE6B7E5B41113D3F7BE526B6B",
+      "sourceMetaSha256": "EC3CB2D3B11B211ACC4528A5F48B9E67F968E4B266FDC89D95F51100D92D4530",
+      "targetSha256": "001CDB80EEF4C8486EEA216AEAA9C04248DC487C09B19123155545CD4042C99B",
+      "targetMetaSha256": "F0DAEB04DD1078BA678430FB9A9C6148F9B86F1ADAC003CF7F3BFF1A99AEE00F",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppKit/PaymentWrap.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppKit/UserWrap.js",
+      "sourceMetaPath": "assets/Script/AppKit/UserWrap.js.meta",
+      "targetPath": "assets/Script/AppKit/UserWrap.ts",
+      "targetMetaPath": "assets/Script/AppKit/UserWrap.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "85F3EBAE0F1338D34EAA601AD21BE86AECA1B4DA7FAF9CDC9AF0B4A338E63646",
+      "sourceMetaSha256": "D59110D700CC3B38D9467DB8B7907DDCAE0BF16214DA0919BFD050D5E960A1E1",
+      "targetSha256": "DDE4329EF2A5B7D1475AEA2C65791F7845D4B29F8C83F33D2C10152F3DF64094",
+      "targetMetaSha256": "8FEABEA55DEE1E51988110AC9B1B7737A7F089FD188EA99DDA2A256B7FC42EC1",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppKit/UserWrap.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/AppMain.js",
+      "sourceMetaPath": "assets/Script/AppMain.js.meta",
+      "targetPath": "assets/Script/AppMain.ts",
+      "targetMetaPath": "assets/Script/AppMain.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "82E657DA4415B4BF4CBC238B596AE1D388F5D0BE14202854ABDA4DC2CC744A5C",
+      "sourceMetaSha256": "3CEE7A433F5650853C511B5E366AD2D43BAE97517EB56534CE288F34CEED6F89",
+      "targetSha256": "036C99EFC0FF54B1F03AB7B04752023827FEEB2BFF374B8B8C929ADC4C10F978",
+      "targetMetaSha256": "91D5100308FD38D33A2E0AE0420DA19B714A34D4812AF8DD5F18B3BC561542FC",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/AppMain.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/activity/ActivityManager.js",
+      "sourceMetaPath": "assets/Script/game/activity/ActivityManager.js.meta",
+      "targetPath": "assets/Script/game/activity/ActivityManager.ts",
+      "targetMetaPath": "assets/Script/game/activity/ActivityManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "4B3BE655AFF79D1BC5A4AD061141FF14B05B2BBA10159BA3905E239EE68920C3",
+      "sourceMetaSha256": "B9BEC6533E83CB2499DE51D5F4D97A6F99AC66E536CA49634182450BB42A0918",
+      "targetSha256": "ED9E95DE7F8F7DFBDD297499D51BC499E641BFFE7DFF9FD04C27D8C17D12D214",
+      "targetMetaSha256": "7E281CD78FFB89B8301A19AF40D90B627FA018E61943F6041C3BFDC1DC8AAF31",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/activity/ActivityManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/activity/meta/giftActivityMeta.js",
+      "sourceMetaPath": "assets/Script/game/activity/meta/giftActivityMeta.js.meta",
+      "targetPath": "assets/Script/game/activity/meta/giftActivityMeta.ts",
+      "targetMetaPath": "assets/Script/game/activity/meta/giftActivityMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1F25D076A10BCC3511ACE91ED967B4026E8035167F847FA290D9A9DCE6E8A7CE",
+      "sourceMetaSha256": "9C0541AB0622DA35185BD5755BC82A33BEAB439D60D0FCF8C70EBA2B593D4BEA",
+      "targetSha256": "B53658027FF2877E930E90F43FB9E44D54D69B4A9CE8FAC16E325AECC1A556B1",
+      "targetMetaSha256": "1FF335E4801DD516F3E3E9B7991C1A8232400C4AE474122B81C743ACE601747C",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/activity/meta/giftActivityMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/activity/meta/packrewardMeta.js",
+      "sourceMetaPath": "assets/Script/game/activity/meta/packrewardMeta.js.meta",
+      "targetPath": "assets/Script/game/activity/meta/packrewardMeta.ts",
+      "targetMetaPath": "assets/Script/game/activity/meta/packrewardMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "9782A503A129F4C103A990DFBEAB4149648DCC57D7AB7C60258435581EF3D012",
+      "sourceMetaSha256": "817C8DBF18466058DEC7B18486B1EBBF524924344365B1DFFBDAEDDA54E628A1",
+      "targetSha256": "B6EDF586EA7285AEEC8062331196405A27A2C6D519098CEA615E51ED9FE4E1B0",
+      "targetMetaSha256": "7430716809B868870AB64D949E7E61D0934AD8C54B32319B50A74F44B98F2645",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/activity/meta/packrewardMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/AppGame.js",
+      "sourceMetaPath": "assets/Script/game/AppGame.js.meta",
+      "targetPath": "assets/Script/game/AppGame.ts",
+      "targetMetaPath": "assets/Script/game/AppGame.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F371B14E544BE99A02CD8D5AC822D39924F08465047AF52017FA46D4A7F395A9",
+      "sourceMetaSha256": "80A1021090FCA215879EEAAC254B4EBCB1F6C14D9067021C732D845DE791ACA4",
+      "targetSha256": "F0983D1B894ABFBAE450FB673CE788AC25E8CA26938102EE75D7834152D63A95",
+      "targetMetaSha256": "9618209880861F4B90028BFD5A19996C7433DFA157A5C142E46513F4EF464D02",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/AppGame.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/card/UserCard.js",
+      "sourceMetaPath": "assets/Script/game/card/UserCard.js.meta",
+      "targetPath": "assets/Script/game/card/UserCard.ts",
+      "targetMetaPath": "assets/Script/game/card/UserCard.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3669EB8A411052E5781CD649876484E1901BFE7FCF79028323388D2EF5A86A4A",
+      "sourceMetaSha256": "36E02D9E978D2A06ACAC58119946EEAA862A77B1FF654548E7A9910362AA5BBD",
+      "targetSha256": "6B262D96A9546EA747B169637BC588F191AFDF812C5186F4E4165413B482BE9E",
+      "targetMetaSha256": "9A87EF6F3B548FB39692A87313D49481E9B6405513041CCE63EF4F9464ECC43A",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/card/UserCard.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/GamePlay.js",
+      "sourceMetaPath": "assets/Script/game/GamePlay.js.meta",
+      "targetPath": "assets/Script/game/GamePlay.ts",
+      "targetMetaPath": "assets/Script/game/GamePlay.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "C74D82F837B87640BD65C6772C5C31375C50B0213408710DE745FCC22183A00F",
+      "sourceMetaSha256": "F74718029CFDD74E3A284D2F56DBFEED11C22AC107863909FCE4FBB6D2135CAA",
+      "targetSha256": "4EB31ADC4CDD975D0F6368C2C63501E9959A436E7240C3D948591330B5AC398A",
+      "targetMetaSha256": "E4E7795C04DCEA4526CC13436CB10EBB31DA1869EC5FC9B9D9A795F0AFD76CC2",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/GamePlay.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/items/CommonAssets.js",
+      "sourceMetaPath": "assets/Script/game/items/CommonAssets.js.meta",
+      "targetPath": "assets/Script/game/items/CommonAssets.ts",
+      "targetMetaPath": "assets/Script/game/items/CommonAssets.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3D98B52E8C4809941D75B20AAD4B3B80669E843875EA180B5331594758CC31C3",
+      "sourceMetaSha256": "FA648B6622CE97D0551A56430637405465B0C6427A8CCEE7C146849232521C5D",
+      "targetSha256": "153E9617C9410A13A91A4B3A8B4669C6C3C95B0E9A4E73B9AA02F0A7D6DA9992",
+      "targetMetaSha256": "CE5D799E97A60335B9BEF36F04472C3087315940156AA0B455260F41FB82E153",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/items/CommonAssets.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/items/Content.js",
+      "sourceMetaPath": "assets/Script/game/items/Content.js.meta",
+      "targetPath": "assets/Script/game/items/Content.ts",
+      "targetMetaPath": "assets/Script/game/items/Content.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F1BC96FA02962F363049B81C46638BF63FC9ACD6E83975B71DEC826093FF6016",
+      "sourceMetaSha256": "8639AB9B670673BF5F9F138FE01FE2E2F7FA5CA9FD2140E598151210D008FD14",
+      "targetSha256": "A66B7292C04044DDA6581B8A8F16BA5459F7ADA2AF885050905989EEEE10CFF5",
+      "targetMetaSha256": "D4666C40FFE7A76374870345CD3A922CB87B4F01BB149D15EE9BE132AF16ABF9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/items/Content.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/items/ContentCheck.js",
+      "sourceMetaPath": "assets/Script/game/items/ContentCheck.js.meta",
+      "targetPath": "assets/Script/game/items/ContentCheck.ts",
+      "targetMetaPath": "assets/Script/game/items/ContentCheck.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "4AA663E86E8D4C482909454CFFE74A308D52109E8E031ECB070B1D46E8FC14E7",
+      "sourceMetaSha256": "5A72DE9F00F5CE4B152EAD8F5539AB6AF44F9B894274E04C7D1950EBAD033FB1",
+      "targetSha256": "DDC1D18B7D377B7A1BA9CDE819A2C5CC1D942B84393072EBC42F865C21F2D7A5",
+      "targetMetaSha256": "F302955CFDC10259B6054FAA58D3295273DB866822E5835276CF74CAA318FECA",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/items/ContentCheck.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/items/ContentModel.js",
+      "sourceMetaPath": "assets/Script/game/items/ContentModel.js.meta",
+      "targetPath": "assets/Script/game/items/ContentModel.ts",
+      "targetMetaPath": "assets/Script/game/items/ContentModel.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "955030E36ADA19F98E861AC725C6D8D93FE010D46C8D7B142EBA0B16442F505A",
+      "sourceMetaSha256": "64B13C949737348B56CD2B735C401A60A69585163AE74392E34D7E3CDEE51AEF",
+      "targetSha256": "1221FF73DE04AC5A6A9E9E971906609847E2A48FEE1CF169D6044886D7B9D4BA",
+      "targetMetaSha256": "2848870A4D89BA2F01B3BB5AE3D2EB0E742C1D06655A43E5AA2A7E2ACB71979E",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/items/ContentModel.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/items/request/SRItems.js",
+      "sourceMetaPath": "assets/Script/game/items/request/SRItems.js.meta",
+      "targetPath": "assets/Script/game/items/request/SRItems.ts",
+      "targetMetaPath": "assets/Script/game/items/request/SRItems.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "385C428038E7878DA1CD5F7C03F4D0C2A6163828E3A6869E1FC132DF2E30AFC9",
+      "sourceMetaSha256": "F9D0BFAA85FEBF749D01C21415402AE87A08DCF85857E8FB4A5565D7883C2ED1",
+      "targetSha256": "13EF4BE0D6EBD79DF8563282EB49E14821FE5FD7A2003760B46C47D3CB04B669",
+      "targetMetaSha256": "2CD6334F33FAFCF1F64580FC0EB58F7A50957F3D5676FC88A5268D41BE59AA02",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/items/request/SRItems.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/map/AStarPathfinder.js",
+      "sourceMetaPath": "assets/Script/game/map/AStarPathfinder.js.meta",
+      "targetPath": "assets/Script/game/map/AStarPathfinder.ts",
+      "targetMetaPath": "assets/Script/game/map/AStarPathfinder.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "D174433743C2B3396EC61F07033ACDEAC984DB88890456CCF3187B43149BED53",
+      "sourceMetaSha256": "E3BA1A71A4E38997504D12C0EE064EDD21ED289A7AAEFAC0018200BF836F6040",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/AStarPathfinder.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/AStarPathfinder.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/map/MapControlle.js",
+      "sourceMetaPath": "assets/Script/game/map/MapControlle.js.meta",
+      "targetPath": "assets/Script/game/map/MapControlle.ts",
+      "targetMetaPath": "assets/Script/game/map/MapControlle.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B5A900BC141930FF3A55483AF05F186D5FF5CE5959FD59298A356BEF78F2CF97",
+      "sourceMetaSha256": "E49209D917C5A2F88CA8511DC1F50AA953645FC15FB23DE2DD57EA01500DC737",
+      "targetSha256": "913DE125C18CEEE61DAA8C1DAC981BABF6AA57D39F2BD1CB97CAFDB607BFD475",
+      "targetMetaSha256": "629141DC28B285BB25FC716F0962671D3BF9A5429EEF1298CDC4DD0BB762AB07",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/map/MapControlle.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/map/MapElementNode.js",
+      "sourceMetaPath": "assets/Script/game/map/MapElementNode.js.meta",
+      "targetPath": "assets/Script/game/map/MapElementNode.ts",
+      "targetMetaPath": "assets/Script/game/map/MapElementNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "D027E900E165E49CCE3F5FF86E8C6DFD9DF9753A07D31069D48EF5B74203B1D0",
+      "sourceMetaSha256": "4DFC72D6BAEAB5A11DA2AE1925400ECB6B8D0AB0478A58724251A566C2AC9336",
+      "targetSha256": "7474A6872BE03A32F0DF94BFE8EC3ED25DDF86FC65876612642FB889578C1156",
+      "targetMetaSha256": "44D729AB903F6FAF6403D536ADA887DA1E46430B980FC2BDE46AACFBE4EE0A1E",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/map/MapElementNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/map/MapNode.js",
+      "sourceMetaPath": "assets/Script/game/map/MapNode.js.meta",
+      "targetPath": "assets/Script/game/map/MapNode.ts",
+      "targetMetaPath": "assets/Script/game/map/MapNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "40A468DC290346F0A0175922CD1C15ECE8DD5313030CF963F11316E9B5DC3647",
+      "sourceMetaSha256": "B37D5892E8BCF9C15DCA792961AE21915FD2A77B824867AD111A9BA783C8BB9C",
+      "targetSha256": "55A5F90DD421B68DF8AFB2EB95E6509A7CFA7D827C168F247E1C224CA0252D2E",
+      "targetMetaSha256": "6A91B1C2514192AC583B3C8E60B8040CB4C2927F38C0AEF21856E80A979AA3F9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/map/MapNode.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/map/MapPathExample.js",
+      "sourceMetaPath": "assets/Script/game/map/MapPathExample.js.meta",
+      "targetPath": "assets/Script/game/map/MapPathExample.ts",
+      "targetMetaPath": "assets/Script/game/map/MapPathExample.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "5B1E4E6521C641095B2C084467EEC18C4C9AC7AD8F6D8B296E5CEE18529F16B4",
+      "sourceMetaSha256": "95DD9CFE9902242C7C675419517ADE60BE406CD809016CC4FDADDDD4AA4F600F",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MapPathExample.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MapPathExample.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/map/MapPathManager.js",
+      "sourceMetaPath": "assets/Script/game/map/MapPathManager.js.meta",
+      "targetPath": "assets/Script/game/map/MapPathManager.ts",
+      "targetMetaPath": "assets/Script/game/map/MapPathManager.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "37B77E607D58D2BCDB99FB8FBA9823B68DDCED38035B75A99A5168AC110AC893",
+      "sourceMetaSha256": "133B73D32FAA6AE40E78002C78F0E93BB6BF6AACF60B9E6D73CBB5D9DDD2CA11",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MapPathManager.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MapPathManager.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/map/MovableElement.js",
+      "sourceMetaPath": "assets/Script/game/map/MovableElement.js.meta",
+      "targetPath": "assets/Script/game/map/MovableElement.ts",
+      "targetMetaPath": "assets/Script/game/map/MovableElement.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "F7E7EDADDBAA58B8D354EA94A3C63B9E15CE89E800E6C6C7BA04B89AB050B25C",
+      "sourceMetaSha256": "7BF252D52B9F03B572DFE7CF87F9E695E63F6A5977BCED63BF83DA9F5952C6BC",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MovableElement.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/MovableElement.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/map/PathFollower.js",
+      "sourceMetaPath": "assets/Script/game/map/PathFollower.js.meta",
+      "targetPath": "assets/Script/game/map/PathFollower.ts",
+      "targetMetaPath": "assets/Script/game/map/PathFollower.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "A39ECB0D4112F4863B250EB7CD702A81DDE29C0576BBE582EC6EAABF8FA44294",
+      "sourceMetaSha256": "621A2A06C10B75C6EF1B5210EBB262C8A1BEC389A2DAE999626968EFDC21D418",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/PathFollower.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/map/PathFollower.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/map/TownUpgradeFlow.js",
+      "sourceMetaPath": "assets/Script/game/map/TownUpgradeFlow.js.meta",
+      "targetPath": "assets/Script/game/map/TownUpgradeFlow.ts",
+      "targetMetaPath": "assets/Script/game/map/TownUpgradeFlow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "15C663B31C0DFC05881567D95FE004B6B4A608FB8B81A86355807A008781B435",
+      "sourceMetaSha256": "826EA1A1BC19F4AD9F87CDE3C94EBD2BF111C06C447632D39C05456DBFAC119B",
+      "targetSha256": "8E600FA99914B2458E481B9CE520E793224CBEDC0F258F4152BB3D5527ADE229",
+      "targetMetaSha256": "BDEA372D088F0E4991C13BD3788BE8FB1306810F70BE121ABC4891C71DADFE46",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/map/TownUpgradeFlow.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/map/TownUpgradeTransactionState.js",
+      "sourceMetaPath": "assets/Script/game/map/TownUpgradeTransactionState.js.meta",
+      "targetPath": "assets/Script/game/map/TownUpgradeTransactionState.ts",
+      "targetMetaPath": "assets/Script/game/map/TownUpgradeTransactionState.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "421E4216A0706B3F634EEC6FB9FACD2F9694B4A2B1E72D5FAF7277DD8BB181BF",
+      "sourceMetaSha256": "D997BBD13B8D0D00A32E66C98A0090E50FC0495D5AB8873B40F033E917499C05",
+      "targetSha256": "F99629E387EF817F6545D379E828DE4C1776068E729A22B98B91E49B3EA15860",
+      "targetMetaSha256": "1784B89BEC4B25CBB7FCB776F7F1A8F28D1BA08163928FEAF5A01BD6EE945860",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/map/TownUpgradeTransactionState.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/map/TownUpgradeTransactionState.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/map/UserMap.js",
+      "sourceMetaPath": "assets/Script/game/map/UserMap.js.meta",
+      "targetPath": "assets/Script/game/map/UserMap.ts",
+      "targetMetaPath": "assets/Script/game/map/UserMap.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "FE9929F8B20C350541DFE0D62D854437FCD7FDD615CDA2B42C60E4FA1E67C447",
+      "sourceMetaSha256": "77279450F9B1C2FC14E33AEFBF71025C87894A528C157846FAA1AD3B36631664",
+      "targetSha256": "315CF5B35C3CE4D947C4590CF36D94F2AD8E798B8BC23343A6366BDA97624D3A",
+      "targetMetaSha256": "77A7E06377A010DB03440CCFFBAF20CF79F728C9C80DB55D65EE8337ED8EB367",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/map/UserMap.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.js",
+      "sourceMetaPath": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.js.meta",
+      "targetPath": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.ts",
+      "targetMetaPath": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "D8227E6CEB254466576C69C6A247911EDC0BC61C88A4100942711D24A3C19DB9",
+      "sourceMetaSha256": "C2765F77D9F8017E9C845BA57DDB8A45D71C5B2CB6B4C4991F0AB874221108D0",
+      "targetSha256": "D2B226C96E2743A72EF2AF5E759958036AED951F6C720698B233714F9500980A",
+      "targetMetaSha256": "612D913D4A2049E15DE77F64915840634463CAC01485B895BEA65B8379A9A5E8",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/capabilities/MergeGeneratorCapability.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/merge/effect/CangKu_tx.js",
+      "sourceMetaPath": "assets/Script/game/merge/effect/CangKu_tx.js.meta",
+      "targetPath": "assets/Script/game/merge/effect/CangKu_tx.ts",
+      "targetMetaPath": "assets/Script/game/merge/effect/CangKu_tx.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "BDD78DCBE92C528287DFFDE5D1B2A1AE50125A37F3FBBC7C1FFAD71AC9CC3699",
+      "sourceMetaSha256": "04E22B0185465B879E108E616F5F7EC6C1A1489F500E85F877BA6AD66864CFA7",
+      "targetSha256": "DC17D8E1D9DEE6FB01A357F65A128844DA2603EA96A8D7A019F61F2EB960D5B0",
+      "targetMetaSha256": "7655C214073818B15C628CBA54FF657464965B97327CEB3F6DF057B713F0A924",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/effect/CangKu_tx.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/effect/CangKu_tx.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js",
+      "sourceMetaPath": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js.meta",
+      "targetPath": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.ts",
+      "targetMetaPath": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "BCBDA90608FAB96E6E586B945D2A20CD9AA025B13AA8B11E619205C0F104744F",
+      "sourceMetaSha256": "DE423D555B809656CAF537D38905B2DD511602AD9B26B2FFAF30455B3454B786",
+      "targetSha256": "ADC27C51518CC79D77C2D687E1D348A1ACC13EA7131520FC022895F736339AF0",
+      "targetMetaSha256": "05356AE3793122CE7CACD90B5C85288A9D3FEF66BFF0F026E9A018AEAF5DAC7E",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/effect/ShengChanQiTiShi_tx.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/effect/ShouJiJinBi_tx.js",
+      "sourceMetaPath": "assets/Script/game/merge/effect/ShouJiJinBi_tx.js.meta",
+      "targetPath": "assets/Script/game/merge/effect/ShouJiJinBi_tx.ts",
+      "targetMetaPath": "assets/Script/game/merge/effect/ShouJiJinBi_tx.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "466E1549BB03A646465FFA3489DAD457866539961C6E880D91B51F662F4467E8",
+      "sourceMetaSha256": "51B5497B801EE3286233C4D697B651CCC711CCDF1E9CFB18D84D0DAED2C42C16",
+      "targetSha256": "43751912698C37A4AA6F91A578B888683920DAA4949981C0D18D4AA1F0106E59",
+      "targetMetaSha256": "7CA3683EEB6AF8292289114C32FB9A572C079FF82C44CAF9528D1C897FAE94BB",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/effect/ShouJiJinBi_tx.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/LevelMergeNode.js",
+      "sourceMetaPath": "assets/Script/game/merge/LevelMergeNode.js.meta",
+      "targetPath": "assets/Script/game/merge/LevelMergeNode.ts",
+      "targetMetaPath": "assets/Script/game/merge/LevelMergeNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3BB64A8CB680489087C94ED2435AEAFC9008C1F11F24DA2D5BEA0C170625E59D",
+      "sourceMetaSha256": "D267555D1B7FAFC23A868B98A76C13058A3D92EA898001BC70FE914FD055068B",
+      "targetSha256": "2E180F5DECD9092F5BD4662CF4B8875FFD73BB9BC0795619EC851C2B763FCD1F",
+      "targetMetaSha256": "3EF4DF37A9A65A49356B66700733E5A9479D952C94A0503A0EDA3EB3BA2D6FE9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/LevelMergeNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeDes.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeDes.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeDes.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeDes.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "E2A3878E6F778ACB40F921B084C90425B3794377A1B7988A1861E9CF42B8A99C",
+      "sourceMetaSha256": "D0F0FDF639A0C746E2D729CBA6B3B1BF44A59DE763CD159472E8DF02D98359CB",
+      "targetSha256": "5E8EBE44AB1C7692A157703A37F4F80BF1D2F8C80298CE9861809DC61A8D2A2C",
+      "targetMetaSha256": "03E310783A7F48B058ABDB166ECB0A83F48D40333DA2852AEB7A4EE40D51A6F2",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeDes.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeEffectManager.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeEffectManager.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeEffectManager.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeEffectManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "A8D5ED5BD1952DDF2417E3154B99DD06A66228C1AB6A27B68ABB6583742950EB",
+      "sourceMetaSha256": "1F25124A9C48BF24D72D20E8AD6EA0DF86522221D587C3BAC23C8540393F0070",
+      "targetSha256": "6B4648FF4BA6276EF23A0B497CEE99D9FBF1482AF83AAE9D8C6F7D809A2DCD4D",
+      "targetMetaSha256": "0A57E45F9DDC51CB4AADE1772AE216DEA9E587608F555A0EEEE3B27C155F8987",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeEffectManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeElementsMeta.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeElementsMeta.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeElementsMeta.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeElementsMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F59ED74695377140A533B3C6342797C40EEC0F021DF97409B10BE4B65DEAC17D",
+      "sourceMetaSha256": "894C6677C94BE7D6A9C23BFD2C5C21B98F1405DC03C8197ED56D1A0A62EA9231",
+      "targetSha256": "70313ADB4FC4411A354A54517D86BBB4ED64FCA92ADDFD29C6AA8C83318A9D74",
+      "targetMetaSha256": "41E34F75D336D5366933E1F357C493DD3419EBBAF4DACF1CAE6B39D9A11CA9F1",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeElementsMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/merge/MergeEmptyTaskGuide.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeEmptyTaskGuide.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeEmptyTaskGuide.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeEmptyTaskGuide.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "24A928AD564A50A8D493962F264DB2A932CFB23064B908B334E93053C31ACE43",
+      "sourceMetaSha256": "11B2ADF1CC84EF6B02A9931E00A2953532EE454427B3F898455E20AC40E57A8B",
+      "targetSha256": "0ED5DB91AB34B9952592FC8B8D60002806C01B2A2A30C4B26BD76189B182DEBF",
+      "targetMetaSha256": "A7C6409B33ABAB4DD6FD983C576392D5208FD40D026A65FA6666FD5B237E5340",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/MergeEmptyTaskGuide.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/merge/MergeEmptyTaskGuide.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeGeneraterMeta.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeGeneraterMeta.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeGeneraterMeta.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeGeneraterMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "581766270934B8A0F799376CD25C9330C078952DD404E66E1EF9ADE95E76D4D2",
+      "sourceMetaSha256": "75FBFC6D0DED7C386758168FDDAB988CBEE8313497750FE14770522D194185E4",
+      "targetSha256": "2062903412B65970ED95BEFB80CAF926B73FDFA39B35B449A3ECEED5298EF335",
+      "targetMetaSha256": "3877B7B1A878BAC405C83D1E1D03BC33D3F29DF9FE9B94187F6B500B7FD4F8A4",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeGeneraterMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeItem.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeItem.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeItem.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeItem.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "A97CAF21620F5355D1A1B6D83B4F50977B4E86D07C64B069B72B0BFA3A2FDA3F",
+      "sourceMetaSha256": "2FE788838557ED70B25E005AFD6013235E31EEEADBDF473A7C611F9135B14F60",
+      "targetSha256": "EAFD24D7FADA36663CBD5581B5682E4004F1EA9CCD5D2927CC0A3DD22D4E621D",
+      "targetMetaSha256": "AEF113D6CFA92D5BDC8F56CBF793F5153A6D468ADB64655C7AA9F4E574AC8DCF",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeItem.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeOrder.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeOrder.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeOrder.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeOrder.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "E57514F2AE576E9F0BBFF63540E9C4B074D597CD9CC8FB90E602BF44A1436D1D",
+      "sourceMetaSha256": "C3F898BC01B200F3189DCAB41BE9BC246BDC3A21E5E9A64DE159482BE9CBEBB1",
+      "targetSha256": "418AC1118E0EF537CE1E230903883310B6A86AA888AA25828CDAB77C44E53028",
+      "targetMetaSha256": "17066AAE0C6282F946E9EEB55F6623BA9AEDBF8F8FD4D26690C4C11686F348ED",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeOrder.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeOrderGroup.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeOrderGroup.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeOrderGroup.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeOrderGroup.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "853E5CE6DCFB0081F34BAFDE28385D0E303DB13F78D7717C490E5154DCA188E9",
+      "sourceMetaSha256": "7B2DAE532F938CB34241E0C7B8EA5B5D8D30F5EB0BA39245F1DC79B8B56136CA",
+      "targetSha256": "188286A882D1913FF7DC081C663F517341CBC032850A3C8255685C7BB37A3C8A",
+      "targetMetaSha256": "9313A36B78219C79A8F6614192150B49E4FFEC687464049D6D18C0815DD3D16C",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeOrderGroup.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeOrdersMeta.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeOrdersMeta.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeOrdersMeta.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeOrdersMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3888C18F0C53CD7060C99B0AC03E9F59C83110E4D4B16A5CDE2D15CAD8AEC420",
+      "sourceMetaSha256": "42823D4A07D1CE2196B12B62A3F1221E61C88362FFC623BF75BC6D1CBCEA282B",
+      "targetSha256": "D6FB7CF50A8C28ECD0C9785F16EA7B193B3238A059CFECE072C604548991E798",
+      "targetMetaSha256": "1C6C91DD4270C2331806A85D72B3A635F535E7D95AC1738FEAD17A4159875A23",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeOrdersMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeRoleNode.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeRoleNode.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeRoleNode.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeRoleNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "8780CDA8C0CD8CC7242E6709162EF2E8A28ED24F260E226745A6ADF19AD05CD6",
+      "sourceMetaSha256": "2865E8F9788944E097A78A35694129EE4A18BE333642BDC64226F8A6CDAE048B",
+      "targetSha256": "DE42AD9DABCE8CAB15F35DC69214045ACD60F2A06EED62CAF25FDEB319634E4A",
+      "targetMetaSha256": "B7B4C0425BD178EBB09A7D99D0D5A7776D473C6F8F38F2B74AB0A0947C4174EB",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeRoleNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeTempLibary.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeTempLibary.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeTempLibary.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeTempLibary.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "E03833AD315B0580574F86E81E51D4FC828569C5F030FFBC041CA33B4C05CB06",
+      "sourceMetaSha256": "2FCAE2EEA81D0824774F72A51768BD32E7E8965D45CBFA913570567731C67ED4",
+      "targetSha256": "463559BE11148951B8DAB082875AA5BA462E4547C5F17FD654DA0F3821EF4FC0",
+      "targetMetaSha256": "779EA762D97022286F65CE8A7507A0E095646CCC85CEF031DD38CE09AC84E4FE",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeTempLibary.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeTypes.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeTypes.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeTypes.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeTypes.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "83FD4370681A5B6DAB835214066D07C1D85E0B9FDEF8AC851B42B476DDB2664C",
+      "sourceMetaSha256": "82E55DDE21DCF75F2AEA0686616E02D2F94144796ADB862A6B16ACDECD0AA0EB",
+      "targetSha256": "FD8100A22694839040BF130644EB876E00019E8372979DD293BD008374CA3A2C",
+      "targetMetaSha256": "41A2ED32B13C30F689C3651D18F7680D8F3DF5C2697EA2D6CA32FB1FE375C936",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeTypes.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeUI.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeUI.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeUI.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeUI.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3BE8D867FBF8FCFA6E65C7CEE3F5C0FE6A18DF15BA2BFD49D0710AA1C00525A0",
+      "sourceMetaSha256": "56567D55263750719B6AF8D0771C11DBE4B7546351BAB739E323264513D544AF",
+      "targetSha256": "606BEC704079C735EEAA14C7200FCDA8904D82D82839C44C7C5FE0882F3599F3",
+      "targetMetaSha256": "A0A69961E7A809840CB8E33EB18BADB9493C21AD63643A48A079333A1CCC8FBA",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeUI.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/MergeUtil.js",
+      "sourceMetaPath": "assets/Script/game/merge/MergeUtil.js.meta",
+      "targetPath": "assets/Script/game/merge/MergeUtil.ts",
+      "targetMetaPath": "assets/Script/game/merge/MergeUtil.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "61F13220B2C43A0DE736D06F1D7890F8C782A6E2C885454E5C60B03E1137A572",
+      "sourceMetaSha256": "2E2A483B59589DF0116A173CA4F8C9BCD0B104AE6C857A295676390610967212",
+      "targetSha256": "5A2B3A41B4F8360A50F6ECA05CD69ABD5628FFBFD10661323D52A49D9C5F50E6",
+      "targetMetaSha256": "4E49F8782ACD4B09BEFE5D434124ECCD2E33CFE0202C59C1C80854031E5BDCF9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/MergeUtil.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/OrderSlotMeta.js",
+      "sourceMetaPath": "assets/Script/game/merge/OrderSlotMeta.js.meta",
+      "targetPath": "assets/Script/game/merge/OrderSlotMeta.ts",
+      "targetMetaPath": "assets/Script/game/merge/OrderSlotMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "3964F3A53E6B36A357265295199DF7ACA322D7842EBB4088716FF9877DE22BF8",
+      "sourceMetaSha256": "EF0DBEBD3F8453A82B3416EE82796F5FB2120AA97D5A9D4674F2CD3E3125B467",
+      "targetSha256": "8A95E401E9EB6C8733A5620BD192654B5B97954620A947C46C447B8919D7E2AC",
+      "targetMetaSha256": "C0732B3EE8B848568F9CA7C1817C9076EF2727997E2103975C51185E1C34A7E7",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/OrderSlotMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/request/SRMerge.js",
+      "sourceMetaPath": "assets/Script/game/merge/request/SRMerge.js.meta",
+      "targetPath": "assets/Script/game/merge/request/SRMerge.ts",
+      "targetMetaPath": "assets/Script/game/merge/request/SRMerge.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "9AB60657C1B784F2E3607C1E32C1260289EE95D0945CC5AF296FDCA6A6A658C7",
+      "sourceMetaSha256": "FA92A754D6E3C2A30080ED752F70670C726FDCA57876E53D20D7F79B83188EB1",
+      "targetSha256": "A173153F814F69604A4FBD168A6CEC15BFD688ADDE6E9F07EE6F0EEEFED8E21E",
+      "targetMetaSha256": "F2BFE2C78DC339FD2EC8CB9669F75B456E17E7AAFDD4EC4E78D1EF2FC3DA0ECF",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/request/SRMerge.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/merge/UserMerge.js",
+      "sourceMetaPath": "assets/Script/game/merge/UserMerge.js.meta",
+      "targetPath": "assets/Script/game/merge/UserMerge.ts",
+      "targetMetaPath": "assets/Script/game/merge/UserMerge.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F6E52FB5790E394717BA395DA78FC2D6FC28C59B7C4131DE04F313C2675E2C65",
+      "sourceMetaSha256": "D6032E08069D31B5DBF9ACF3F979DC0BC61FE0097D4E1AE5E26F70421F380165",
+      "targetSha256": "74C86A1A725ADB214D0EA3CA19E45C6CF9BC9DF1FBA792233E98E3DF62F69E0F",
+      "targetMetaSha256": "CD34153C8C025A7D2AA7577AB86B26877CF122FBAE7A9170DC84FB63BD703577",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/merge/UserMerge.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js",
+      "sourceMetaPath": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js.meta",
+      "targetPath": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.ts",
+      "targetMetaPath": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "0712134F75511B83A5288ACB2A3C124737BF9AC51E51038183A5E8FBC7051B45",
+      "sourceMetaSha256": "D13853DA012ADC4C7E420C650CE130FDF4CE30317D8E0548BBCF3DEE5BAED85A",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/game/mergeTutorial/LocalMergeTutorialTestData.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/mergeTutorial/MergeTutorialManager.js",
+      "sourceMetaPath": "assets/Script/game/mergeTutorial/MergeTutorialManager.js.meta",
+      "targetPath": "assets/Script/game/mergeTutorial/MergeTutorialManager.ts",
+      "targetMetaPath": "assets/Script/game/mergeTutorial/MergeTutorialManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B1A44534E6601A9F5303D6CD578CCDC9619918423666D6A3CEECEC41441742D3",
+      "sourceMetaSha256": "B69BDCAA553E41D83EB0513B57E031029452A66A3F17C8A4D6862C1C057CFEBA",
+      "targetSha256": "267966F1CCA88B921DE5701F0ECAF9FBFAAF9F78A61008594D582A4B7A8525C6",
+      "targetMetaSha256": "173A13367D8A9D65E390D9E6AED370DDEC56990004369230636346C0EA978DE2",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/mergeTutorial/MergeTutorialManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/MetaManager.js",
+      "sourceMetaPath": "assets/Script/game/MetaManager.js.meta",
+      "targetPath": "assets/Script/game/MetaManager.ts",
+      "targetMetaPath": "assets/Script/game/MetaManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "A1C7C8EBFB70B3B5268A509E0D87794EB442C6A4F9DA94CDA582F80E759BEE50",
+      "sourceMetaSha256": "8CF33C209FB6919FD50630A4825BA9C9B4EFC29519881AC020F78462E0E0703A",
+      "targetSha256": "2B8E8EB3580A7F6BE1B49DFDDF2152A47448E2AE5D7E66BD7318E964F07E3A03",
+      "targetMetaSha256": "BB757FC1B9EC7DC72B866B00A9176F8E6EE9DE30B0616A9BC83B8F309FC5D203",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/MetaManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/quest/meta/SignMeta.js",
+      "sourceMetaPath": "assets/Script/game/quest/meta/SignMeta.js.meta",
+      "targetPath": "assets/Script/game/quest/meta/SignMeta.ts",
+      "targetMetaPath": "assets/Script/game/quest/meta/SignMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "783BBD309034A30D30406A5403F27E3B11702DB427AEF18AA67B2ED463893945",
+      "sourceMetaSha256": "4DE8259D4DCCBE47298627A52A8E8C720872B6834BFA100A78DC3C81EBC47E81",
+      "targetSha256": "4C17A721787E1D14C94581F7F3EEFE43CC595432FCE67DDDF52018115A3A64C7",
+      "targetMetaSha256": "00B09424E8545BC4C53149D3D350D0448DF48788AE50B3F37A89EC0C98F49FB9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/quest/meta/SignMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/quest/request/SRSign.js",
+      "sourceMetaPath": "assets/Script/game/quest/request/SRSign.js.meta",
+      "targetPath": "assets/Script/game/quest/request/SRSign.ts",
+      "targetMetaPath": "assets/Script/game/quest/request/SRSign.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "386A08759043C3E213B6244E48799692411039165001F85FAFCFED7C5D4FC22F",
+      "sourceMetaSha256": "0C63A4C44036E19A116ED722720699B80073A99E4CFA2F602D56E8B0C4DA29A8",
+      "targetSha256": "18A5B2E36C1917555FAEE2B23060DE8472169FEB09EB4B12892CB757CD6136AA",
+      "targetMetaSha256": "62F05F7D38221C22305A18FCBFC119A88DE298FC8EA4EBAE86978AC8B6E6924F",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/quest/request/SRSign.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/shop/request/SRShop.js",
+      "sourceMetaPath": "assets/Script/game/shop/request/SRShop.js.meta",
+      "targetPath": "assets/Script/game/shop/request/SRShop.ts",
+      "targetMetaPath": "assets/Script/game/shop/request/SRShop.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "9F6E84F727D2AF68E882C71FE1A9A962D25A1888FF5256DDB65A3C3BD7CA4155",
+      "sourceMetaSha256": "98A1C7A44A479ABC64F6D61EC7AFDB62F2AE3EA38DD7F2514EB301F58BDF90B4",
+      "targetSha256": "2B8E626DC3BE5B7D87173C046E2684B2BF5AE40AFA9051F1FE40A04AD69F9386",
+      "targetMetaSha256": "BD942ED14F56CC84F28C6589C5930691A00C5A411247D56BD2067FBF43202B5B",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/shop/request/SRShop.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/shop/ShopData.js",
+      "sourceMetaPath": "assets/Script/game/shop/ShopData.js.meta",
+      "targetPath": "assets/Script/game/shop/ShopData.ts",
+      "targetMetaPath": "assets/Script/game/shop/ShopData.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "5D1E812619A36EBB87748F9D9A9C153518864EE6343C6806EC6393A7091D44B4",
+      "sourceMetaSha256": "D2CE1197DE4ABD921B822A33A51074597A700B9C798018F364EE1422DCC48DC4",
+      "targetSha256": "014B7F4ACC2ED4A471C5BE0109A006F03971E861E7C0A5B33237A16CFD6D4AF1",
+      "targetMetaSha256": "EB513C7E024A2F874732C326E792B4823D15109FEF57AF6A642DD39B175C7E27",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/shop/ShopData.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/shop/ShopData.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/shop/ShopIconNode.js",
+      "sourceMetaPath": "assets/Script/game/shop/ShopIconNode.js.meta",
+      "targetPath": "assets/Script/game/shop/ShopIconNode.ts",
+      "targetMetaPath": "assets/Script/game/shop/ShopIconNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1ECDBAD7ADD21024273457F17E9A1B1CCB9F6FE54AB380AC7EB2064CA3BD2579",
+      "sourceMetaSha256": "D5E8487CCC9D8A45E1832D3AF424E5FDC793163F6E6AA49342179AC542DD6CD6",
+      "targetSha256": "29200D227DB66B999CF594D80DA51CBB3146A1E0BF2466F8279E3D0EDB549644",
+      "targetMetaSha256": "ED25BE9B431ECFD549587920341843628348F4027C3026C39CF02DEFAEF33BB0",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/shop/ShopIconNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/slot/UserSlot.js",
+      "sourceMetaPath": "assets/Script/game/slot/UserSlot.js.meta",
+      "targetPath": "assets/Script/game/slot/UserSlot.ts",
+      "targetMetaPath": "assets/Script/game/slot/UserSlot.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "7BA4B3D01C8E632C72779D3F94FF076AE2B6F4700738B2704A51DBA429122321",
+      "sourceMetaSha256": "97D52EEC3ECDE7C1ECC3211DB5072326E488E495FBA84DA3850CDFBBD91FA663",
+      "targetSha256": "5397D82D76F92AFC432143EB2AA00B9CBAC7DF234D62351128AE5DB05E7B49D2",
+      "targetMetaSha256": "EC48C2CFE996F1F913F0970B26A0DB8FE5E5A9E7A14BFC0782BF8217BD11CB58",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/slot/UserSlot.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/story/meta/StoryMeta.js",
+      "sourceMetaPath": "assets/Script/game/story/meta/StoryMeta.js.meta",
+      "targetPath": "assets/Script/game/story/meta/StoryMeta.ts",
+      "targetMetaPath": "assets/Script/game/story/meta/StoryMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "16C78725B9114CC6F62AD655749315487D6B4C9306A99E652BC7CCE055AA6FA5",
+      "sourceMetaSha256": "56CE2ED0125653056F363D249D1B894A2EF6935C0DA16FF1B5953BA32BD2E447",
+      "targetSha256": "0B4921980A92C6B050A868CE811A413CDB4ACC97818837CD6915B71253557CFF",
+      "targetMetaSha256": "A47713FA19A9E6127D1DCC3085B9CF8D44D4D2940CAEDC2B295EB8A7BAAE0163",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/story/meta/StoryMeta.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/story/meta/StoryMeta.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/story/UserStory.js",
+      "sourceMetaPath": "assets/Script/game/story/UserStory.js.meta",
+      "targetPath": "assets/Script/game/story/UserStory.ts",
+      "targetMetaPath": "assets/Script/game/story/UserStory.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "46290B1BD96348DE693F600444272EFFD44EC46A9FCD807149BDEDF587ECBCA2",
+      "sourceMetaSha256": "31F34FB121B043ED52B9D20BCBFB96591BF55952DD38B3EAD7B5B46751A69361",
+      "targetSha256": "4016D239F176703F49198E762ED5167F42BE9E9B0655015F4BACEC882355D08E",
+      "targetMetaSha256": "6F115D8B8F0C693F6755C95053DA2D771E8AB9B619C9B1F47367887A43D3D451",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/story/UserStory.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/game/user/LevelUpDisplayLock.js",
+      "sourceMetaPath": "assets/Script/game/user/LevelUpDisplayLock.js.meta",
+      "targetPath": "assets/Script/game/user/LevelUpDisplayLock.ts",
+      "targetMetaPath": "assets/Script/game/user/LevelUpDisplayLock.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "7904DC7BD77AA4C71D9F9F80691F74ABA42997F97974B1D9287AAB787DDA6218",
+      "sourceMetaSha256": "BD11FAF149D8B0677D333FA77DC936E7AEE90EF6EF55ED7DC2E72283EF194810",
+      "targetSha256": "24E86BF988BE12D57A0E562326ABE5961ED85E323E58082A480C5A27444B2477",
+      "targetMetaSha256": "C809B41F7625FEB3A65C3AE2E9F3D8821E24C998C71DD8BF98CBFC13A5219A24",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/game/user/LevelUpDisplayLock.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/game/user/LevelUpDisplayLock.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/user/request/SRLogin.js",
+      "sourceMetaPath": "assets/Script/game/user/request/SRLogin.js.meta",
+      "targetPath": "assets/Script/game/user/request/SRLogin.ts",
+      "targetMetaPath": "assets/Script/game/user/request/SRLogin.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "C13948030B552DF9201703771A5048526BDBE5CC99CDA293A06F5B23D145F2BE",
+      "sourceMetaSha256": "F9E4F93586ABFDBCA554F90544170DE807DE5BA912D4789888A51E81CEBA9D2F",
+      "targetSha256": "D983D71A3CCB48C47B2FBB885D79AEEE7B0B64B982CABFF18C5EE5DC7A8A08A2",
+      "targetMetaSha256": "D634733E5206C025784F1AFBF875F841177E8E17339DCDB803A326F9EA8366CE",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/user/request/SRLogin.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/user/User.js",
+      "sourceMetaPath": "assets/Script/game/user/User.js.meta",
+      "targetPath": "assets/Script/game/user/User.ts",
+      "targetMetaPath": "assets/Script/game/user/User.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "81DED2D5181D50F72637561F529225F437FB5CA6E4A2EE7806C0F33D7692DE46",
+      "sourceMetaSha256": "2E306EAD1253980A7DCB13F06633FD94C6CCB6573DF10530EC986C5BA65DAA8C",
+      "targetSha256": "C32C075C489D0E58A5FB0C8222BD73B3FB3007C898C03348545C977B2EB0E3B5",
+      "targetMetaSha256": "ECB8B94BBF27CBB6A5FE231E1C3EF66D9B83AEE5AD5EFA0D026CEB157D3DACB7",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/user/User.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/game/village/request/SRVillage.js",
+      "sourceMetaPath": "assets/Script/game/village/request/SRVillage.js.meta",
+      "targetPath": "assets/Script/game/village/request/SRVillage.ts",
+      "targetMetaPath": "assets/Script/game/village/request/SRVillage.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "7DF4721A395F03C4616F8D43AE45F9DB40DD19199C6742F264CC9DE2DF32516B",
+      "sourceMetaSha256": "0277F932C3C3549C4F0988251ACB58CBAE09F2323D7369705E61C9AADAB712A6",
+      "targetSha256": "3C959A886E55E777BE393B8AAEB3AAA29842943F7FC76BA73B9A5E39460A32E1",
+      "targetMetaSha256": "74FAF61EB03C92E390D821BB1D85849C8855987962D6B807E66F75F8A68AE885",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/game/village/request/SRVillage.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/BackKeyManager.js",
+      "sourceMetaPath": "assets/Script/GameKit/BackKeyManager.js.meta",
+      "targetPath": "assets/Script/GameKit/BackKeyManager.ts",
+      "targetMetaPath": "assets/Script/GameKit/BackKeyManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "A7A6152FCE88F380F370927C7270F6AE307E234A0FB63D090DE3D1DCFE744DED",
+      "sourceMetaSha256": "097911F4F08A338C089F002F82D79D63383CA7F082D15833BBBEB2FBDD63E3DE",
+      "targetSha256": "467E688EBA798B98B0A8B30FE627BC835D573D86B67C98387EF1B2F3EC79CAF4",
+      "targetMetaSha256": "1A0C61C05BB950BA880A61811EEA38AF58353F210CA9397FE3CF1D66AC4B1A86",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/BackKeyManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/extentions/ccExtention.js",
+      "sourceMetaPath": "assets/Script/GameKit/extentions/ccExtention.js.meta",
+      "targetPath": "assets/Script/GameKit/extentions/ccExtention.ts",
+      "targetMetaPath": "assets/Script/GameKit/extentions/ccExtention.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "AB7DD4F16376C3C86DB3F8C8003CC23EFCA0EA5E6499FE9B9E0CA410C281A0F8",
+      "sourceMetaSha256": "761D584A43D45E31C57810AEB1026E844352F0456E5A04DE78796ADB3B0715A5",
+      "targetSha256": "374B32881A0C75C5C8763227D3191B4285007B75D70BAC74D1EDE55376A85BEE",
+      "targetMetaSha256": "82C8F9B1279E95706BE421A35F0B6C4821CD9F9C46552A66ED3886330C133175",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/extentions/ccExtention.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/GameEvent.js",
+      "sourceMetaPath": "assets/Script/GameKit/GameEvent.js.meta",
+      "targetPath": "assets/Script/GameKit/GameEvent.ts",
+      "targetMetaPath": "assets/Script/GameKit/GameEvent.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "0196D1590045E89E368EFDE0A0AEDC37E0F300EF2AAE36C3DAE990F1345F1F6E",
+      "sourceMetaSha256": "4D7B13096157DDB727CA8ACDDDFB2F800C16E943E3C02AA1A9AB3C7EDF7B7323",
+      "targetSha256": "6FFF6DC8F3C64861CDE70C137386E3B854BCECB07BD5EDA1415B1BD9AF7D2674",
+      "targetMetaSha256": "258C234F64F139BA98294F8AEE8638465CF0B551BE7BF63B893B4F33C23DE22A",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/GameEvent.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/global.js",
+      "sourceMetaPath": "assets/Script/GameKit/global.js.meta",
+      "targetPath": "assets/Script/GameKit/global.ts",
+      "targetMetaPath": "assets/Script/GameKit/global.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "C00869B6D57636C6C96AE39247297BA0897725EC9EFF57770C7B8434FF771309",
+      "sourceMetaSha256": "1E06A11EE56DD84D98219D62276165E1E7C7A11DD5E29EF9D5CABA78C1C422E1",
+      "targetSha256": "604A3E837F47C18347062B6D39F757749096F24B5505F86801B04A7C5250C6CE",
+      "targetMetaSha256": "6A18C8DC2ED7712E9CC31223F55F951167B2AB2C3DA3AEC4D829B87079D55E13",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/global.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/ar.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/ar.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/ar.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/ar.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "94E20A9737C83F9E4CB8DF3C88F26D8961A7B5B7617CBAFD4C07EE5E1C48B3C6",
+      "sourceMetaSha256": "7CBD42C0BE0FBBD7B259D5A5062275E0BE459E80BAAB61E9B8081C739BD3A908",
+      "targetSha256": "4EF990F85436F66460D85D90973DE4755A62236F219A4EC05E3230FFF6CE8982",
+      "targetMetaSha256": "3085932EF9FFB90A18CC7F1955BB06A40D409A08BAC68E1DC38820E033CBDC45",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/ar.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/de.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/de.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/de.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/de.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "FC023187EB79CB0020F598EE9DD3245E02427DE5C77B99A5F4AEEEA794B1B5DB",
+      "sourceMetaSha256": "1135364CF0480539A266D7D3B80FA5A5248FE9879E9DAB6E221D72B96A66B530",
+      "targetSha256": "C1CF1E850B7C8971CE22D440EBA1EE3D640940D0D1A88691ABEDCEED3FE451A4",
+      "targetMetaSha256": "ED92C97770B1DD6D0BAB05C34B753B8096CC57106B1164616296E26F0EBA9855",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/de.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/en.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/en.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/en.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/en.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B6353337826815E15E1DBA68D6749B1F947425E77959A9428E5B421EA698DA5F",
+      "sourceMetaSha256": "B25B26070263272AB34D6BADBAA5214F1CAF8AE3AC7644B401FDE3067C418462",
+      "targetSha256": "7CADC434141A41FA00BA88B0A56088CBAE09C9432F9E61AE3F69EBB2EC798323",
+      "targetMetaSha256": "B06804E417B9BE6B560E8B4C4449898D4F491B33C16CA64D5F9244C80F892C6E",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/en.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/es.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/es.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/es.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/es.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "6AA3A9A96672C9B36803A3B496F049F4BC654795748B4065814286114C464FD6",
+      "sourceMetaSha256": "8DBCBE4A381BCBB98A8860037D813364F7F320AEF42E269D81DB1234AB3E7F23",
+      "targetSha256": "1155969E0A18E8010052610A671A4D3AD5A0504C1DCED44DC81077505F9B3E01",
+      "targetMetaSha256": "E7DF0D2C5A3596A5A28A24C2FC24563B165E9CDE9AA67C4AACD1B9C0A78524A6",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/es.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/fr.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/fr.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/fr.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/fr.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B386CFF184EFC22AE78E85658333E5DBC415CBA5C3D2E7099CA17B3118E1110A",
+      "sourceMetaSha256": "B76FF1F70C96B520E9BE7D660B29FEA1CA48D565B8E46BEB4827E7D62F5C7B45",
+      "targetSha256": "723D9C5AE2F1B1AA766D76ADFC4FB023121D5AE2E96158D21471C583EF445DE3",
+      "targetMetaSha256": "1C12EA60FCCF41E99B556ED41F61FCB411774D1F14692FEEB1693505107688A4",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/fr.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/he.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/he.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/he.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/he.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "DD8B35B5DB77ADA0A32D3CDA70798ABC82A4F2238C8B5DE93F678AC0F9387492",
+      "sourceMetaSha256": "CF81404B0FF828FE7C572AB66F7E0E62D4BDC75BAD1439007D6E114943FB9AB5",
+      "targetSha256": "0F333505A0BE4A4604033C292D549D6FA8C0B3EB8AC22608A04642D5D0B83094",
+      "targetMetaSha256": "3F6478E05C025C03DF000BB7CE463B181FB0F3D8B8729810F5C70FD7356F13CF",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/he.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/it.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/it.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/it.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/it.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "D0F78142C8680A6BA674B400DAAA877E52D77513FA6D73B61F693B67E801BDCC",
+      "sourceMetaSha256": "834233C4F269299A9BF585671F93E0BC35A9C974C2211558E2509811F31C2037",
+      "targetSha256": "D0D6C713BD601FA4AA7D014B5583D562BBB503E4D8D0AFA4BE11D92BD6F32672",
+      "targetMetaSha256": "5FCA91040E5A767915C0DD7F2FDB7B3F164F8A6512A9BF904498A3595DBC0396",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/it.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/ja.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/ja.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/ja.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/ja.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "5F4DA02B2C7B0BDF2114A5D53E42324CDD89F9AA65670C567469E252D9FF693B",
+      "sourceMetaSha256": "632A77CDF409C00D808628702676DE373A6569C286AA1EE3B27136CB4FD8CAC0",
+      "targetSha256": "90EF2E32C88D86137EF17C3E2462079CAC2177481E5F9A22ED110FD9945BB961",
+      "targetMetaSha256": "FE742D09707678F59B3DD6828A1AC78A0C48A8DEB52C9F12A77A3133449E7712",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/ja.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/ko.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/ko.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/ko.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/ko.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "52F4EB075228D678117EC4155452815424B936E625E0666189595DEFE1DBAAA0",
+      "sourceMetaSha256": "1ED25012CF6C1E6B85163200CD7AF9FC758D5BCFCFEEF0912D93485A3C77B973",
+      "targetSha256": "3B6E2D466EF0AB9E35F95DA672DB5CDC645BBFC2AFA7C802FD60B9DBF62105CF",
+      "targetMetaSha256": "E6410DA3C5E12F74A88BBE3245F061F6E05329F9F6C9F8DA3268A1F6B7829BFF",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/ko.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/pt.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/pt.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/pt.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/pt.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "7C799DA0FE2DAA8350052BB5BB71322EB6D0A698BD7E6BAF059BC0233D57AC12",
+      "sourceMetaSha256": "CBB8729B4986C0EEBD6C78C1C0EE003AD3B36BCC35555062C04194A759B3A317",
+      "targetSha256": "0B42CBBBC8056F9189FD9E1F3995A934729A82A38E9C92C962AD6995DD5A3185",
+      "targetMetaSha256": "17C759693BD25E6BEBD177FF5038C412EC10106DDA534336E438F864B17A1E12",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/pt.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/zh_tw.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/zh_tw.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/zh_tw.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/zh_tw.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "4550088806EBE4B99BB1636D5750B3212E0C5378B64A6169FCE2D10611DA20AF",
+      "sourceMetaSha256": "674E1BD11625DBB2AEF1BF8C6BF79D517F948FC9F695CCB59E3C57968A607309",
+      "targetSha256": "C2DFE1A0BA398AF81612D8628C06BC1D4595CFB2336D4E28D11D79C805D00427",
+      "targetMetaSha256": "BA7234041A0E287EEEBB4A95CF4143671AB2E672C5C3C38E83E48080BBF4B9F2",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/zh_tw.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/i18n/data/zh.js",
+      "sourceMetaPath": "assets/Script/GameKit/i18n/data/zh.js.meta",
+      "targetPath": "assets/Script/GameKit/i18n/data/zh.ts",
+      "targetMetaPath": "assets/Script/GameKit/i18n/data/zh.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "E91C331B99C8E86B09B9D3178F5C3749F785452A17CC77E860AF0F1352481DA1",
+      "sourceMetaSha256": "9C4938CAD4C9CA4839C302856C3AE960DA48374F336A4195543BE0AF537F3CD2",
+      "targetSha256": "E2074A8D260C7BE9AF0D745455660C3B429D0A3EEADF3196148FEE74B733A1D6",
+      "targetMetaSha256": "07473284CCBF8653940D60F6B3A4BFF86DC13DD2E27055FB245EFFB568435147",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/i18n/data/zh.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/SoundManager.js",
+      "sourceMetaPath": "assets/Script/GameKit/SoundManager.js.meta",
+      "targetPath": "assets/Script/GameKit/SoundManager.ts",
+      "targetMetaPath": "assets/Script/GameKit/SoundManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "8A0648AD77AEB5F804F55B9208F320D6C7BB2D3DE1A085683E6CF124A7ACBC0B",
+      "sourceMetaSha256": "84EC98F9AB0687A9F5F7D4DEEFD7081F8BE694C7619AE05445A37F104234BFBC",
+      "targetSha256": "1B8E6D2B2507E58F21363225CAE3BE0C2F59C08132D95B0D7C78FD0AFA4FEE6D",
+      "targetMetaSha256": "BB89F1756249318216EFEC460B98C041BF9DD6B03930E995FCD71D4F2B06B5B3",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/SoundManager.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/GameKit/SoundVolumeConfig.js",
+      "sourceMetaPath": "assets/Script/GameKit/SoundVolumeConfig.js.meta",
+      "targetPath": "assets/Script/GameKit/SoundVolumeConfig.ts",
+      "targetMetaPath": "assets/Script/GameKit/SoundVolumeConfig.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "48D0E15E8177D562B775F0C76C7C242B8B01EB44425D2812060224C4637B2BA0",
+      "sourceMetaSha256": "6B0E8D23171BAFD35453AF1EAD12C48F97581533DDA441574DD6279DD58C8B6B",
+      "targetSha256": "BC66DE42BB2CC006FBCBBE781AD2C6E572708FE18F952998A0B4F61C9CDAF31A",
+      "targetMetaSha256": "799FA011F5853E86859B4F61D3F2FD59C181D1C32AEC14BB3D02AB784426E7B1",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/SoundVolumeConfig.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/SoundVolumeConfig.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/GameKit/SoundVolumeItem.js",
+      "sourceMetaPath": "assets/Script/GameKit/SoundVolumeItem.js.meta",
+      "targetPath": "assets/Script/GameKit/SoundVolumeItem.ts",
+      "targetMetaPath": "assets/Script/GameKit/SoundVolumeItem.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "CB593A70C84D26817E46808A57EE665EE967F701B9DAA11D9E3DE01BDAAD0E6B",
+      "sourceMetaSha256": "E9B9E78CD762653C5A630F8A717759F232ABB7E3C17C9E69DD0838E5DFC86F06",
+      "targetSha256": "F40A7A740F0B62ADB5A29882B862CAA4940FEE3D67D7E468FB17679B624531D1",
+      "targetMetaSha256": "7D6BF396D789EE740D936FC819FDC2CC5148620BD9511E46AFC9CE9AD6E403C2",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/SoundVolumeItem.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/SoundVolumeItem.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/AutoWindowQueue.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/AutoWindowQueue.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/AutoWindowQueue.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/AutoWindowQueue.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F97945F0331ED4373A900F1AB4EBEC1CF03D618DA32CA54462BC1AC3A40EF5BA",
+      "sourceMetaSha256": "C8AD021D2F523BB567162A7845D1265D14331DF845BDEE9F965EC4E9C348D90D",
+      "targetSha256": "E54B024AD6F6272CFF9C29DCED44420E22B78CA9561FE9F4E0EC7AADFF597455",
+      "targetMetaSha256": "BA413024B76C49920F2F1E9417B669910DEAA5DBC3A223E9976F5D44EACE0BAF",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/AutoWindowQueue.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/ChangeSceneManager.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/ChangeSceneManager.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/ChangeSceneManager.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/ChangeSceneManager.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "F2280F19C51F908DAC4FC900716821E0896083FD1956140F9DE6F3B1C7FA7F2D",
+      "sourceMetaSha256": "2A285846B2D3B4AB19EC6EBD55AD01C13555EFAABAAD4789A237D34229CEA3CE",
+      "targetSha256": "E43369BAE491472236DD84239A380DB8033B18CCC5C8F48AF072CA3D2C10DBAB",
+      "targetMetaSha256": "2EA2C728A3B1CB1A6E06DF7C48378A264B1629F9E239506944548D68DF1F6A68",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/ChangeSceneManager.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/ChildWindowChain.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/ChildWindowChain.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/ChildWindowChain.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/ChildWindowChain.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "DBD04AF0154B355DE140A0284EF821F9A722980EA5FC007EA5AAFB84812E82A8",
+      "sourceMetaSha256": "A074BC86FE0FD3F711D89A48C345C9415AE657D7D1BA3984076C25326FF49441",
+      "targetSha256": "3D9BACAE541D2ACC052A5D09CEB12BC07BFB2F911B8D7E218F0839F6A100CEAF",
+      "targetMetaSha256": "BD439D66FD7668F1F1AEBC2D8055396EC67CE0912C3D6A6B0516869E8D1A0E49",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/ChildWindowChain.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "422A900C23300B8224054078A09A9CC7C2798E58C3F301A3E6BB74F406C3E221",
+      "sourceMetaSha256": "95D468F6B487FDDAFEBDFB1C3C3D8DB70B9200F2930E3A93647442733DA7C790",
+      "targetSha256": "256F6ECB7A0930CA883E83459C3DD5B02A56A9E37B9A31F6E980A0DBD53B894B",
+      "targetMetaSha256": "AB73F5B8CD7CC6912099E10D5B3B2E93F41D273CF392CD72DF9B834FD8938632",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/CoinFlyToTargetAnim.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/GameKit/ui/MaskRoundRect.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/MaskRoundRect.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/MaskRoundRect.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/MaskRoundRect.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "9C3090BCCFBD3A5F96DA64D0D7825200E5418D7EEA9E470DB9358429C51CB7BC",
+      "sourceMetaSha256": "7B13513D1158EB9AB7995F9E4EC719FA4BE818E07261F42AA3C897D5F1128763",
+      "targetSha256": "D821A9EE03A62118AC38245091DAE64CBAF540F4D2550BBA2CEB42DE31DB86A6",
+      "targetMetaSha256": "1753FCFFA0C0032C8F3C2873EDA317AC988964A26A395B13D6FB501CD67DF2D7",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/ui/MaskRoundRect.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/GameKit/ui/MaskRoundRect.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/UICantClick.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/UICantClick.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/UICantClick.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/UICantClick.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "FD38635B5A40E645A628CE12A591B380D17DDE8CA2861B5BA27AD9464DD07042",
+      "sourceMetaSha256": "ED4660B292702AA752D7B8D602985B9626D23F4F7BD16127DD10851E45AF627C",
+      "targetSha256": "963677431FD5A041A4F7191B25A8FF9885BB05B137415FBCF690713421531F64",
+      "targetMetaSha256": "143CC852C4B2BC4EFDF0071AED9D24140C085F18F31B0009848C2A45CF9856FA",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/UICantClick.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/GameKit/ui/UIWindow.js",
+      "sourceMetaPath": "assets/Script/GameKit/ui/UIWindow.js.meta",
+      "targetPath": "assets/Script/GameKit/ui/UIWindow.ts",
+      "targetMetaPath": "assets/Script/GameKit/ui/UIWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "D1D126433B6DF8B523A4130D8777831A53C9B8F1532A96A750F4AC3E0AEC6224",
+      "sourceMetaSha256": "711E89743C4B9ECDD5C55FEB8B61EBD86927320E178222A7D62D0D1722E6A99B",
+      "targetSha256": "9D2299CA1D085ABFA2EBD6777D15A59BC3590347E84791F42C2B88F87CF8CC3B",
+      "targetMetaSha256": "2FA225AD55AC166ED64A65E0E76E971A1754F90EBD59DE48A4D5E3B5D1A676B2",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/GameKit/ui/UIWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/UIRoot.js",
+      "sourceMetaPath": "assets/Script/UIRoot.js.meta",
+      "targetPath": "assets/Script/UIRoot.ts",
+      "targetMetaPath": "assets/Script/UIRoot.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "ECDB2647D87296DF64536BDD8BB68EB51EEAC1ADBD1DF4EC99DB767A976082F0",
+      "sourceMetaSha256": "0A8C906DE285ACEC3570327979C3EF11D90F5EAE60E90A079FEAFC78544B3B98",
+      "targetSha256": "70A19A664F783D27F5AB909E27118D11EFD11749478888B396659E7AAD65724D",
+      "targetMetaSha256": "46E6DB0FA884300F8F3A3058D5E73C700083AEAA51BA706F1BCAF6EC54335102",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/UIRoot.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/BatchRequest.js",
+      "sourceMetaPath": "assets/Script/Web/BatchRequest.js.meta",
+      "targetPath": "assets/Script/Web/BatchRequest.ts",
+      "targetMetaPath": "assets/Script/Web/BatchRequest.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "7399911E71197F1C44CACB7D701735864FF05A9E710598ADEBE23FF1DFF6E64B",
+      "sourceMetaSha256": "7BAB42DE98B48B615FFEA5FCD500EB14F039F51AB3995ECF612FBD4C740EF2B9",
+      "targetSha256": "EDE7A5EEC87BAF778ECD1782BE3CD4BC1B3AD4A3522A8A31E054A392A054FAFC",
+      "targetMetaSha256": "A803B1715B205E902C60FF480D522BF500C04DC4CDCA6143771B78D154CC3E7B",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/BatchRequest.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/Web/IdentityTrace.js",
+      "sourceMetaPath": "assets/Script/Web/IdentityTrace.js.meta",
+      "targetPath": "assets/Script/Web/IdentityTrace.ts",
+      "targetMetaPath": "assets/Script/Web/IdentityTrace.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "8B7B8C891A0E65494A2EFF73AE5AC6B8C21AFA012ADFED96D1C165AC1B8B1470",
+      "sourceMetaSha256": "B27F59073DDAE65B9A59C8C0BAA679E2EB9245A47FDA0F02C93DC3B9BEF08D2D",
+      "targetSha256": "F0BCD988EE2603DE7A3CEE303DC948D7D4ECE2A831A94C9D85D167E5824B5977",
+      "targetMetaSha256": "8DF298C3439AF6E17F6B19DA3915C4CAAA1F0382C162CD2336B5004251E1787C",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/Web/IdentityTrace.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/Web/IdentityTrace.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/MergeBoardLogic.js",
+      "sourceMetaPath": "assets/Script/Web/MergeBoardLogic.js.meta",
+      "targetPath": "assets/Script/Web/MergeBoardLogic.ts",
+      "targetMetaPath": "assets/Script/Web/MergeBoardLogic.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "CFC18A781B71CD09D644DC60B12F1036997266A363F4109F45636CA0681BB998",
+      "sourceMetaSha256": "692EC0C6FF42DA0DE7FAFA513ADD7C1360E8A54D6CB3C4AB81B66651AD8FD1B4",
+      "targetSha256": "C31652F0EA72ADEB779DFB84317D69BA12F032EDE85268BD89DF33AC0816A4D1",
+      "targetMetaSha256": "40366D9808D46659AE16752D9575554498BD3FB5ABDEDE4BE106B3C11DF03196",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/MergeBoardLogic.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/MergeOrderLogic.js",
+      "sourceMetaPath": "assets/Script/Web/MergeOrderLogic.js.meta",
+      "targetPath": "assets/Script/Web/MergeOrderLogic.ts",
+      "targetMetaPath": "assets/Script/Web/MergeOrderLogic.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "952A0CF912BE9AE5D21D63B7F022CD7294493E819B4A20D11A8F520F197C678A",
+      "sourceMetaSha256": "9394EBEF5BBDDA1CB1EFD4046970B4EE85DE47A1D03780A5F9C63DD66766A4DB",
+      "targetSha256": "9B6547C238907F78221C59223D6ACDE56DD098ECD168A3CA9A1690A021FA43CB",
+      "targetMetaSha256": "4C5E5E99BB8F09A8E6C2926533E27B2BE046194DFC6E458ADCF05C390626DF84",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/MergeOrderLogic.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/NetRequest.js",
+      "sourceMetaPath": "assets/Script/Web/NetRequest.js.meta",
+      "targetPath": "assets/Script/Web/NetRequest.ts",
+      "targetMetaPath": "assets/Script/Web/NetRequest.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "6898D0533A3269C57398E72A0AF4466BEC7CD5FA0B250488212C0D03F6FC85A1",
+      "sourceMetaSha256": "4E0673FCD2D57E85A2DB4B1D153523FC64928161C779457D2E85E53E92D10360",
+      "targetSha256": "D71426FB1E027C8AD6A5053487349ECDDCEC7AD1B9858A978EC65B95E42F4D97",
+      "targetMetaSha256": "AFA7CD5FBBCB7A8C14223A912C8DB3183DBF2D6D2CDDAFDC87C1F4F896FE10E4",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/NetRequest.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/ServerRequest.js",
+      "sourceMetaPath": "assets/Script/Web/ServerRequest.js.meta",
+      "targetPath": "assets/Script/Web/ServerRequest.ts",
+      "targetMetaPath": "assets/Script/Web/ServerRequest.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "E16CDB19B08FC581A1FA8EF8DA04F4A5C87A9E845C43EB38490EB2E6F9C57853",
+      "sourceMetaSha256": "7F66E6857E80E87399ACF970042E1578DB077A6AE31EFC4D6775B9D05ECE3B46",
+      "targetSha256": "2053C9FA95B9574C258891DA4CF41E8314EC24D3AB375476F3536D2446598DE8",
+      "targetMetaSha256": "AF4A8F70F339BE75DE327D26785B4FA53AB19462A33694777FA3E360E7FA752D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/ServerRequest.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/Web/WebEvent.js",
+      "sourceMetaPath": "assets/Script/Web/WebEvent.js.meta",
+      "targetPath": "assets/Script/Web/WebEvent.ts",
+      "targetMetaPath": "assets/Script/Web/WebEvent.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "D9D980F4C3A4646293E13E067D2E5F7243F119B210051F80D9D82BEB9CEA03EF",
+      "sourceMetaSha256": "3309FC8E40768A8AD5A334172B6C21790EFC26195FEB98C05C3EE862FF339FEA",
+      "targetSha256": "010790B0CB9483C4E1580C81CB195D227802929EA08353F50CDC8E407DB35010",
+      "targetMetaSha256": "6F0136BB119BFE1CAFA2E3808EC649FE0839523AF471D642727BB47EE12F175D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/Web/WebEvent.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.js",
+      "sourceMetaPath": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.js.meta",
+      "targetPath": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts",
+      "targetMetaPath": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "DD65F3515C7CC20964BE2CCEBEB0292432FF1C8F80DD82F47B0B2F005924109C",
+      "sourceMetaSha256": "B2EEEA7F3F86D6980AA641FA1C7566083DC1FAF0CF4BC1993C6B00A2CAAA5169",
+      "targetSha256": "E5A97E087EE164566DDBA16101FBDF65550765FEB031D68EA3C52F67FEE128A7",
+      "targetMetaSha256": "93CD7844FAAA42C66DB6F19C6BCB18E733FDF01CC0AC230DA22FE80F649C8383",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Card/CardAllSetWindow.js",
+      "sourceMetaPath": "assets/Script/window/Card/CardAllSetWindow.js.meta",
+      "targetPath": "assets/Script/window/Card/CardAllSetWindow.ts",
+      "targetMetaPath": "assets/Script/window/Card/CardAllSetWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "405E2E0CD89B43DD46648E4308C285386CDCFFAFCF89FD4E2D1439CE75B273F9",
+      "sourceMetaSha256": "50253785CC49BD009BE3672EE3BE8D22F010566B63E4AA18E7C5CCCD5FC71780",
+      "targetSha256": "8E9BC31E81404DAB8AD85EE989C28CCF02BA2BE39B39EB8E8195D58BFDF63529",
+      "targetMetaSha256": "8E98A977BD05AE8B03719B9305618BEC1860FE3898C7F9ACA9C47A10BD2157C3",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Card/CardAllSetWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Card/CardChestOpenWindow.js",
+      "sourceMetaPath": "assets/Script/window/Card/CardChestOpenWindow.js.meta",
+      "targetPath": "assets/Script/window/Card/CardChestOpenWindow.ts",
+      "targetMetaPath": "assets/Script/window/Card/CardChestOpenWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "FB99A146CD529BAF8C06E7413D43C561F5DD6C1CEA41BA6EE1A53A84A77ED468",
+      "sourceMetaSha256": "A5BD822A62FCF1111FF186FAEBDF76D0A50EEA9271C1A9C24963CB0EE85CFDBE",
+      "targetSha256": "A1FA235419573FDD531A0665AECFBC458C6B2880B854008BD4FF8D439177733F",
+      "targetMetaSha256": "89B24019996333BE4D14B2E1B46E297F897841D8462D35F7691B4825717DEC21",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Card/CardChestOpenWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Common/GetRewardWindow.js",
+      "sourceMetaPath": "assets/Script/window/Common/GetRewardWindow.js.meta",
+      "targetPath": "assets/Script/window/Common/GetRewardWindow.ts",
+      "targetMetaPath": "assets/Script/window/Common/GetRewardWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "93AE2100FE62ECCC9C4CB1463A17E8CEEF9AA91982BBA510CA915EA5796A6A05",
+      "sourceMetaSha256": "A1130A5BA321E16EFA3FEC24F1DE4D89D43A463F8AE3A65D582051CE934EEE71",
+      "targetSha256": "2ABE0406372E63D189438D6C82988E79E888A737990B6958DDB263B66411935A",
+      "targetMetaSha256": "34EFBB118F5A1F97E8382ECC33E9ABF77921F923F34AA3F84D2888E5C94ABB76",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Common/GetRewardWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Common/LevelUpGetRewardWindow.js",
+      "sourceMetaPath": "assets/Script/window/Common/LevelUpGetRewardWindow.js.meta",
+      "targetPath": "assets/Script/window/Common/LevelUpGetRewardWindow.ts",
+      "targetMetaPath": "assets/Script/window/Common/LevelUpGetRewardWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "756D0FBECCE6C4D53AE6CADC9C69F446AFBC8A96E1574A975923C76B0B49BBCD",
+      "sourceMetaSha256": "DF49F91B235B24AEF32C33F847AC063C0D1FC24B09E6DF6D488566117F9F2271",
+      "targetSha256": "1135E9B7028401EA3DB0CDF3F03E30565E1FE876D5F8C9184A417A2F828583EC",
+      "targetMetaSha256": "E1C48946172DC43788A6AB57B94631CF497EA95963A2DB609433F072248354D4",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Common/LevelUpGetRewardWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/window/Common/OpeningVideoWindow.js",
+      "sourceMetaPath": "assets/Script/window/Common/OpeningVideoWindow.js.meta",
+      "targetPath": "assets/Script/window/Common/OpeningVideoWindow.ts",
+      "targetMetaPath": "assets/Script/window/Common/OpeningVideoWindow.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "8CC0F1E2A01543443B758B376E7D75814B4D598673A478935BDC47DDBBE4C0BC",
+      "sourceMetaSha256": "D52237E0EF3D261BE2658353A4ADBC0C5A073580DF8E3D208BFB9CE3C7789108",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/window/Common/OpeningVideoWindow.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/window/Common/OpeningVideoWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/GameMainWindow.js",
+      "sourceMetaPath": "assets/Script/window/GameMainWindow.js.meta",
+      "targetPath": "assets/Script/window/GameMainWindow.ts",
+      "targetMetaPath": "assets/Script/window/GameMainWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "327F89FA56FA25230461ECD6C453B862181C3174E6E113DEBB1392B138903173",
+      "sourceMetaSha256": "69EEA77CC7C94CE92A0DDACCA1BFAB6C4F36AAAD7DF38B4E21B982431D08B78B",
+      "targetSha256": "01F9A5252C3E0D1C6D12BC74550212FC7C9F381A63B8FBD5DA96DF71EBA4552A",
+      "targetMetaSha256": "08193FB57CF10F2915B889C4B5BD36AD72F63E8FC40ED8C9424754CB6DB9E310",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/GameMainWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Item/LimitCardDesWindow.js",
+      "sourceMetaPath": "assets/Script/window/Item/LimitCardDesWindow.js.meta",
+      "targetPath": "assets/Script/window/Item/LimitCardDesWindow.ts",
+      "targetMetaPath": "assets/Script/window/Item/LimitCardDesWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "DA045AE916C37D52981EC4CA9BFA2EA09FD231E32900107BE3FAD3E663C4F33D",
+      "sourceMetaSha256": "8EC0C019C6DFCC22CDC793D79B2C6CCEDC4B665EC70BAFC9D7B026099A37F8B2",
+      "targetSha256": "E676BFB6FB40CCE3660AF11979E5FE58F9A9A093A465546EFDFC2DFED71ED0B7",
+      "targetMetaSha256": "606B2B7D45FEAA22FA3A532A5C83D24F85BAB0475CB2F26D7E22698D4999947A",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Item/LimitCardDesWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/LoginWindow.js",
+      "sourceMetaPath": "assets/Script/window/LoginWindow.js.meta",
+      "targetPath": "assets/Script/window/LoginWindow.ts",
+      "targetMetaPath": "assets/Script/window/LoginWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "658D95947F7E19E9DCF32AACF8A2769C47E96C49284A36B309652C8A1FD0F24D",
+      "sourceMetaSha256": "1DE3E80C70BE0A0201748F894AC3599D2960735818F7DFA993A9548222E1CFCC",
+      "targetSha256": "5DD9C40EA1D98249DB7AD94EA5073A1B71901F592C2DFC7B3CCDB680BEA3D5C9",
+      "targetMetaSha256": "EE9ED10DB718B5ED67C9B8C3862D4D8E10B6CD639C3DD7115D7B62FA278508FE",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/LoginWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.js",
+      "sourceMetaPath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.js.meta",
+      "targetPath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.ts",
+      "targetMetaPath": "assets/Script/window/Map/MapBuildStageUpgradeWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "787720B55EC737A954FF40970EFA133DA708AF8DCACB8E8E934BE120BDB40019",
+      "sourceMetaSha256": "3D073268242365F7758632E98B6AF83B1E7F460BA07198DB40E48ED545F363F8",
+      "targetSha256": "1A931D6E332CD19D87E6A0E196E35916619BD480FBEBED8710539262DBC020D7",
+      "targetMetaSha256": "739BA681761391CAE5C42FD0F0A62BF52F38DE4FB2E093D28C8153D2742E51B0",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Map/MapBuildStageUpgradeWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Map/MapBuildUpgradeWindow.js",
+      "sourceMetaPath": "assets/Script/window/Map/MapBuildUpgradeWindow.js.meta",
+      "targetPath": "assets/Script/window/Map/MapBuildUpgradeWindow.ts",
+      "targetMetaPath": "assets/Script/window/Map/MapBuildUpgradeWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "81AF7C762C506AE723355AC2B307F4EF420D06B92D0A117FA6F7BE72B0CDF5F1",
+      "sourceMetaSha256": "46892CBD0E0A944DD7DF2CEAD42C26F1031F410D57A26A2DFB53DBF54DA8C0C5",
+      "targetSha256": "DBE211D93A7C60C5236D8C7F271AE1D6FC7BDD35B26FF0EC70CD84801C1A859F",
+      "targetMetaSha256": "FED7C17A3FFB8EDB3BACE9A52DA97AF37D64B00E4EF59D91C71F85166EF6156D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Map/MapBuildUpgradeWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Map/MapBuyBuildWindow.js",
+      "sourceMetaPath": "assets/Script/window/Map/MapBuyBuildWindow.js.meta",
+      "targetPath": "assets/Script/window/Map/MapBuyBuildWindow.ts",
+      "targetMetaPath": "assets/Script/window/Map/MapBuyBuildWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "EF5624B9455BBAFB39706E0A8855BAE6782105FD761DE721640E57D1E267A2C6",
+      "sourceMetaSha256": "8713633B83049BBA144580F73F531DCCC758CD96997FEDCA348392D1989FCEAD",
+      "targetSha256": "7FA1A12C217AF7883900A7ADE355253B769D659C9BDB1A282C71620511608D85",
+      "targetMetaSha256": "A0388DC36292CE7366B1F6C1033CF61EC72887645F2F4000E67D651051A52F1D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Map/MapBuyBuildWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/window/Map/MapElementWindow.js",
+      "sourceMetaPath": "assets/Script/window/Map/MapElementWindow.js.meta",
+      "targetPath": "assets/Script/window/Map/MapElementWindow.ts",
+      "targetMetaPath": "assets/Script/window/Map/MapElementWindow.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "4931BF56342E8456BA650F25102FF5FA1605A958AA6D7EF0676ED7B36AD003D0",
+      "sourceMetaSha256": "1EF4526930133C02796858632E758DE18F4A3BD819563823CFD21650DD0F2752",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/window/Map/MapElementWindow.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/window/Map/MapElementWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Menu/InviteWindow.js",
+      "sourceMetaPath": "assets/Script/window/Menu/InviteWindow.js.meta",
+      "targetPath": "assets/Script/window/Menu/InviteWindow.ts",
+      "targetMetaPath": "assets/Script/window/Menu/InviteWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "CFBA655C08067762F5638B95421BBD77F8ED213EBE38040197FDAC00A1E48506",
+      "sourceMetaSha256": "A95367913AA8CBB058FD426A7E76E1009A876B9812C2EB8C5E64ADC9A1493613",
+      "targetSha256": "6041F6504D80A97414061D229C6929F2848C9685F98F7DDDB5A1BF93930ECF9D",
+      "targetMetaSha256": "446F7753BCD648AC54A92B76CAB8B073DA5A68D20898681137A12D7480DD0A95",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Menu/InviteWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Menu/MenuWindow.js",
+      "sourceMetaPath": "assets/Script/window/Menu/MenuWindow.js.meta",
+      "targetPath": "assets/Script/window/Menu/MenuWindow.ts",
+      "targetMetaPath": "assets/Script/window/Menu/MenuWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "6DA9E24988EEBF292AF17CC95348510A7864239D2BC13F2437054134C908F6C8",
+      "sourceMetaSha256": "90617CB546C77C696326581C523591B628E689ACEDB33714050BAB7F61BD0672",
+      "targetSha256": "72D062BF0BFB10376D6BDD8930B0BDD6FEF9F392D0CCDB3E9B215ED309BAEC1A",
+      "targetMetaSha256": "B9E2531DBAA54712DE75B107ABB3BDADDC1075994955BC436E1ECC3C60DF9527",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Menu/MenuWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/window/Menu/MessageMailDetailWindow.js",
+      "sourceMetaPath": "assets/Script/window/Menu/MessageMailDetailWindow.js.meta",
+      "targetPath": "assets/Script/window/Menu/MessageMailDetailWindow.ts",
+      "targetMetaPath": "assets/Script/window/Menu/MessageMailDetailWindow.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "392FF698D528F24ABAF43E464DD3F660B01EF9FE2CBCC83E52D5C44F68809566",
+      "sourceMetaSha256": "87C63F84E8F7B9B833E86B27860966CE273A6EA0C04544A0836574E686F98D5C",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/window/Menu/MessageMailDetailWindow.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/window/Menu/MessageMailDetailWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Menu/SettingLanguageWindow.js",
+      "sourceMetaPath": "assets/Script/window/Menu/SettingLanguageWindow.js.meta",
+      "targetPath": "assets/Script/window/Menu/SettingLanguageWindow.ts",
+      "targetMetaPath": "assets/Script/window/Menu/SettingLanguageWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "A40B9AE3C917BD469D29B22FD55AB919A5D211921AB7CE44E36652C6003662CD",
+      "sourceMetaSha256": "2F877743817379D1FA72BEB3A70E9895739E51A69D8F3ACAB0EB8541BF292407",
+      "targetSha256": "8A0688BD408C78017ACF2D2823D93CB208BB32F17DC64248752721539CE74170",
+      "targetMetaSha256": "CDDB779AE071FE1C5051EADA04437C21518E23E3B7703A844569FCDFC9AFB3CC",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Menu/SettingLanguageWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Menu/VillageNewsWindow.js",
+      "sourceMetaPath": "assets/Script/window/Menu/VillageNewsWindow.js.meta",
+      "targetPath": "assets/Script/window/Menu/VillageNewsWindow.ts",
+      "targetMetaPath": "assets/Script/window/Menu/VillageNewsWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "61F1D0FAEC1111C2DB013F9429378331FC063EB6F0A1648C445DAB7D5E5F0950",
+      "sourceMetaSha256": "598C14A606AE48525CD5A452A2B574EEA4D9E62D3A649D9BABED57323B1DF677",
+      "targetSha256": "71A8846FD2A94117E00CC1A1070D24FFF10C3055B5B86F1EC111F27BC2BC42B9",
+      "targetMetaSha256": "B1AA38092FBB9C644B4D246A51F51214BFEDFD55D1874CF3C982C47A5444E69A",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Menu/VillageNewsWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Merge/MergeTypeWindow.js",
+      "sourceMetaPath": "assets/Script/window/Merge/MergeTypeWindow.js.meta",
+      "targetPath": "assets/Script/window/Merge/MergeTypeWindow.ts",
+      "targetMetaPath": "assets/Script/window/Merge/MergeTypeWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1879F315C913A672D6B3939C8327664A0F9822326057F3952951281C8E787C0E",
+      "sourceMetaSha256": "44AEC825A0879AF84F00FBEF57F5A036E0B71AE18D50760F13F75BE3F90597E8",
+      "targetSha256": "192CD9AA4B5689978187D1404BF059C5B6C125FFB3CB23D47E10E1549AF5CCFF",
+      "targetMetaSha256": "356AB508404E0AFA3A661DF5BFA56B4DD61C79CED52B2170F684352538AD63BE",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Merge/MergeTypeWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Merge/StoreWindow.js",
+      "sourceMetaPath": "assets/Script/window/Merge/StoreWindow.js.meta",
+      "targetPath": "assets/Script/window/Merge/StoreWindow.ts",
+      "targetMetaPath": "assets/Script/window/Merge/StoreWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "80AB3FAB5EE17A7158A0A63D72F65ED7DEE1561DB8EF7DA477B4C2CD5D68B180",
+      "sourceMetaSha256": "4EE0604A8C83F68BED0C3229AE340D71E71F33CC0ABBA74997F0938001668A51",
+      "targetSha256": "655D4BA4ED4F30A445ADE359A7122A204762442031414EE22C5A72C548492462",
+      "targetMetaSha256": "ADDD73A6708AEA969DBF30A49A38BBC662BCA336947EF4BABE4BEC1F981B2F23",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Merge/StoreWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/window/Message/MessageInBoxWindow.js",
+      "sourceMetaPath": "assets/Script/window/Message/MessageInBoxWindow.js.meta",
+      "targetPath": "assets/Script/window/Message/MessageInBoxWindow.ts",
+      "targetMetaPath": "assets/Script/window/Message/MessageInBoxWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "37C9E4249121FB8718186283997534E556AD6ACB63B2330972F9D703014B7D03",
+      "sourceMetaSha256": "70B8F17DCD1B4B2E6D8D5C7BDFC8C1ADC9546F299034BFDA543A9C6818385DD4",
+      "targetSha256": "04ADF001B11950172345F49FBDB1A31F4BA3BB4CC46E7995A0EE9CA2998763B7",
+      "targetMetaSha256": "2D5167456E837920A09CBAA0E4FEFC52F8F1365DFBD916EB957C16D85FA73C07",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/window/Message/MessageInBoxWindow.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/window/Message/MessageInBoxWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/window/Message/MessageMailDetailWindow.js",
+      "sourceMetaPath": "assets/Script/window/Message/MessageMailDetailWindow.js.meta",
+      "targetPath": "assets/Script/window/Message/MessageMailDetailWindow.ts",
+      "targetMetaPath": "assets/Script/window/Message/MessageMailDetailWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "22006DBBF628A38051A74C86F12DCEEF55534738024915E4E866E28112A27E2B",
+      "sourceMetaSha256": "87C63F84E8F7B9B833E86B27860966CE273A6EA0C04544A0836574E686F98D5C",
+      "targetSha256": "1B0309D3AF3AEC450F7355B56A1F521232D923B0EFE72051EA86425AEA218EAA",
+      "targetMetaSha256": "E8FDDD6E990E3A12978BFF606C2501A1E5229DC990C5E15B6269160531E3B939",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/window/Message/MessageMailDetailWindow.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/window/Message/MessageMailDetailWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Other/MergeTutorialWindow.js",
+      "sourceMetaPath": "assets/Script/window/Other/MergeTutorialWindow.js.meta",
+      "targetPath": "assets/Script/window/Other/MergeTutorialWindow.ts",
+      "targetMetaPath": "assets/Script/window/Other/MergeTutorialWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "33E4CC7EBBCB07E2A6561BC92A0D77E2728998870B96E66583DDE12C6B43D234",
+      "sourceMetaSha256": "FEBBD0B8DE9DE7A3E189524B80335EFD237DC03F22A44039436A0BE4B7E5760C",
+      "targetSha256": "70D799BE8A2BCC73CA717A8F582DE97AA96B5470114EB042B2CF2298B9F6085D",
+      "targetMetaSha256": "D09ADD0CDA1D3546E49281FFDF7DA1CC38CAB64398C57A3C452DBF32677FE58A",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Other/MergeTutorialWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Other/RichText.js",
+      "sourceMetaPath": "assets/Script/window/Other/RichText.js.meta",
+      "targetPath": "assets/Script/window/Other/RichText.ts",
+      "targetMetaPath": "assets/Script/window/Other/RichText.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "02FF07AFFF739E175D74560CC99AD897AA6A053AF682423EEDD9184931391414",
+      "sourceMetaSha256": "77061B06748A0588C5504EC9921EA5442F7F0A33BF1FBF38FAD5BAC54FF7B07D",
+      "targetSha256": "FC31A04885DDFB4C9681A90E8352B2CBE95C23893A27C47031E6770A0C631580",
+      "targetMetaSha256": "422A7151CA6E3DE83F030276380BB9757BC76CEDC4F1FF3DCA8E4A33902A7CEB",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Other/RichText.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Other/WatchGetSpinWindow.js",
+      "sourceMetaPath": "assets/Script/window/Other/WatchGetSpinWindow.js.meta",
+      "targetPath": "assets/Script/window/Other/WatchGetSpinWindow.ts",
+      "targetMetaPath": "assets/Script/window/Other/WatchGetSpinWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1DC54FCFD790085E19BFAD4AF7FB069C1E0C034B174F024F31A135CC8001C318",
+      "sourceMetaSha256": "EC6E2FBC2DF4F173FC362043C585EEE8521740BF900C196DC82506727550C426",
+      "targetSha256": "55C67BF8C1179DF7F670F6D3FC3B1C70EE4DA084FFEAB737C85562F705E1F35C",
+      "targetMetaSha256": "EAC50B7B1D3956CE5DFA81E44A0B9DEB3FB1B5C5904D6B4DEBB8967F274F8188",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Other/WatchGetSpinWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Quest/CashTaskWindow.js",
+      "sourceMetaPath": "assets/Script/window/Quest/CashTaskWindow.js.meta",
+      "targetPath": "assets/Script/window/Quest/CashTaskWindow.ts",
+      "targetMetaPath": "assets/Script/window/Quest/CashTaskWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1BB2FD7EB4CC7865E8752EF35CF61612E1499B6149AE0473152931FD17CC9EE1",
+      "sourceMetaSha256": "8E78236B266E5E61967476071E4556F96DCD2C10E13AF0082E56BFC507FB10F4",
+      "targetSha256": "C2A235E232149E0599C8831B55042E0E48F5C3C4E9632F20537A438E4C4223FF",
+      "targetMetaSha256": "36F66DA93EB7C556EA46BA7C52D3E91FE64A968A247D50F45CDE952254241EC1",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Quest/CashTaskWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Quest/SignWindow.js",
+      "sourceMetaPath": "assets/Script/window/Quest/SignWindow.js.meta",
+      "targetPath": "assets/Script/window/Quest/SignWindow.ts",
+      "targetMetaPath": "assets/Script/window/Quest/SignWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "45A9EC366A4CD975EE5B5BF00601EACFA52876C503A9A6102D0FD35B35005D92",
+      "sourceMetaSha256": "8DD2D0873B3E6DF574DE834E4B09F42B25008460DF5614A1E3D3F73D1FE8D726",
+      "targetSha256": "A43EE8EB42B7A1E67CBAC17ED0235C3359692A1EFDD641CBE8870148B3BF5599",
+      "targetMetaSha256": "7016916B5918EDDA8B0C0223D221BDC3E1A40D738CDB336E4B3D8E883704AEEE",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Quest/SignWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ApNotEnoughDialogWindow.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ApNotEnoughDialogWindow.js.meta",
+      "targetPath": "assets/Script/window/Shop/ApNotEnoughDialogWindow.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ApNotEnoughDialogWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "0E5845253A33DC43AC993C83E7B49F480E6BCE56FA5FAD9AA3E595564BFF1046",
+      "sourceMetaSha256": "3F14697A2EE7BD6498EE55A38717C84B963FA2A4D9C32AB5FED83810500AB1DD",
+      "targetSha256": "2B8E3E1A19981A7A68E0A32521F740655DF4DF681250CF636C1B0191BD0B1C7A",
+      "targetMetaSha256": "96F36F121DB12B6DD585465DC9DD5FBC54B6E4D98A194536AA73FB0601A8B067",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ApNotEnoughDialogWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/window/Shop/CashShopWindow.js",
+      "sourceMetaPath": "assets/Script/window/Shop/CashShopWindow.js.meta",
+      "targetPath": "assets/Script/window/Shop/CashShopWindow.ts",
+      "targetMetaPath": "assets/Script/window/Shop/CashShopWindow.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "606E966D22BB6F009078707299482B7427D31FD1CD1FA0580DE11CB8E6392FE0",
+      "sourceMetaSha256": "A8ACAA37ACE58972A9C0924DC7949676A99C40A3CBD2B307EF481FB655377CAF",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/window/Shop/CashShopWindow.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/window/Shop/CashShopWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/PaySuccessWindow.js",
+      "sourceMetaPath": "assets/Script/window/Shop/PaySuccessWindow.js.meta",
+      "targetPath": "assets/Script/window/Shop/PaySuccessWindow.ts",
+      "targetMetaPath": "assets/Script/window/Shop/PaySuccessWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B50108CDAD832C75649E4910B292A0D0B459B2C0997CED47DA6073262E0B6C7A",
+      "sourceMetaSha256": "D28302393D4AD42196542AF17D1E30C050BCCE00059E222CB42B3D1AC6314AB5",
+      "targetSha256": "96839108DED28C60944EB0CAB41464EA8B2912E9A4993F85A038C59102982680",
+      "targetMetaSha256": "7D2DC410947381F6892153BE86FEA62B25C74B70314F086497D9AF45875C9408",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/PaySuccessWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ShopBuySucessWindow.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ShopBuySucessWindow.js.meta",
+      "targetPath": "assets/Script/window/Shop/ShopBuySucessWindow.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ShopBuySucessWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "44E1FD574E83DCA9FA66A7656C46C9847298202B84942234D64849981AC5EE33",
+      "sourceMetaSha256": "F148DC30E3B0F23B273173649A7D7E525BBEF4DC40E8DDFA7B713E4EF2217798",
+      "targetSha256": "4B366EA9F198C350D1EDE87F6A955DB97B7F9D52F12C02650BF5A8670373D3E9",
+      "targetMetaSha256": "C405B767A14F2B8ADC8C914DB817BDA34CD3C9F88B011BAC67D6EA1186D253EB",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ShopBuySucessWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ShopChestItem.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ShopChestItem.js.meta",
+      "targetPath": "assets/Script/window/Shop/ShopChestItem.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ShopChestItem.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "2D73E5E74BBC86B8E0FD3B830371C4AF1C769AEC69AAFD3BE9DDFBE83A1E6C8C",
+      "sourceMetaSha256": "345C79D5E6B0E1468ABB2F966780861F1D0740F301CF5C73BA3F4738EABEF116",
+      "targetSha256": "67A7829674DB3F672922A1C80BFE3158AA36E3F59EC46B6192FE6EE9E6F11336",
+      "targetMetaSha256": "A9716420B608045C7FF1080DB44DC8C6DA09186EB785AB8FBAC4688BD7425573",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ShopChestItem.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ShopHotItem.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ShopHotItem.js.meta",
+      "targetPath": "assets/Script/window/Shop/ShopHotItem.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ShopHotItem.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "160EC471AFED588DB31963AB89E4C354F51703F648AA537BFCA64F1E273547B6",
+      "sourceMetaSha256": "B88D8CEB5F8A50D98C463872EA336B83459D447703C686FE6A22070E7E37326C",
+      "targetSha256": "8DA933C93EB4FAC73EE2090719EDCDA3171B6D972278124FCC5CB068A081884C",
+      "targetMetaSha256": "2848FCD225AF9565D2D5D1700C6B6D84D4E672662DF47355C0E73525C528134D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ShopHotItem.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ShopSaleItem.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ShopSaleItem.js.meta",
+      "targetPath": "assets/Script/window/Shop/ShopSaleItem.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ShopSaleItem.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "0DF26A02BB4CF6C8C2228395157726C84B5078CDF331A762E9EE0323379BF722",
+      "sourceMetaSha256": "2EDB75D6C0EA0BFE93730D9C2CE5E03839454992BF336A29A39AE559F98963EC",
+      "targetSha256": "F38BF700C7474550B92E7C2185ECD123FB0133EFC5BA80B57D15EC693BB13866",
+      "targetMetaSha256": "FBAEBAE9CF481C036D25A62F1575968E88AD396B52EAE69150235B933E7CF0D7",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ShopSaleItem.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Shop/ShopWindow.js",
+      "sourceMetaPath": "assets/Script/window/Shop/ShopWindow.js.meta",
+      "targetPath": "assets/Script/window/Shop/ShopWindow.ts",
+      "targetMetaPath": "assets/Script/window/Shop/ShopWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "9EF05BFAB1C6BFE75E8A3BADF43CC76C3E0067824C4873276946F1E430E394F8",
+      "sourceMetaSha256": "809976F3E056563B1A57F7F7DDF8FB37F0711444DC9A3AB48B372EC7B2D36E13",
+      "targetSha256": "0F93E868A1603A4D133124486E8BC7BD383A856D35215364ADCDBF3F47065575",
+      "targetMetaSha256": "240444575DEDC653A042CD2755765C70BC2F01BFCE3EDE5568B116CE782F4BE9",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Shop/ShopWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "added",
+      "sourcePath": "assets/Script/window/Story/GeneralStotyWindow.js",
+      "sourceMetaPath": "assets/Script/window/Story/GeneralStotyWindow.js.meta",
+      "targetPath": "assets/Script/window/Story/GeneralStotyWindow.ts",
+      "targetMetaPath": "assets/Script/window/Story/GeneralStotyWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "source-added-migrated",
+      "sourceSha256": "AC89A8AC3348ECAE662090B37B8465C7ABE9F085B3AF2073EF05023DD90EA005",
+      "sourceMetaSha256": "994AD5378471AE3EC96E8755DCC2A4B778883866A57CC5CA8BDD50B972F44D5F",
+      "targetSha256": "0E75685E711D2622F7D36AC20F027A8450DF56664A2A0E2B726DDD7023742393",
+      "targetMetaSha256": "7B0959AB0B6C0EDD491C780E0E3F73CD23D26A649D699EF11419819E5C2521CF",
+      "evidence": "entry-added-deleted-audit.md",
+      "statusRows": [
+        {
+          "status": "??",
+          "path": "assets/Script/window/Story/GeneralStotyWindow.js"
+        },
+        {
+          "status": "??",
+          "path": "assets/Script/window/Story/GeneralStotyWindow.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Story/prefabs/ChapterImageNode.js",
+      "sourceMetaPath": "assets/Script/window/Story/prefabs/ChapterImageNode.js.meta",
+      "targetPath": "assets/Script/window/Story/prefabs/ChapterImageNode.ts",
+      "targetMetaPath": "assets/Script/window/Story/prefabs/ChapterImageNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "9F3946A7BB54A3E0A040CDA470D64F9CA3264AE2C55929AC6A50E9FAAB07449E",
+      "sourceMetaSha256": "EB670A419374A52396B67CE2E2008B2183B131031BF5712E709921157BDE8A0F",
+      "targetSha256": "4E532BB1698261A31BFD1328EAFB400E5F2885BECB80A1C98A977F25D7C6BB63",
+      "targetMetaSha256": "FEBE4EF798A1293C1AEEE61FB1648E1F0826E6144BDBB3A96D55CF69C5977B7B",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Story/prefabs/ChapterImageNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Story/prefabs/ChapterTalkNode.js",
+      "sourceMetaPath": "assets/Script/window/Story/prefabs/ChapterTalkNode.js.meta",
+      "targetPath": "assets/Script/window/Story/prefabs/ChapterTalkNode.ts",
+      "targetMetaPath": "assets/Script/window/Story/prefabs/ChapterTalkNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "1BA09E27370FEAFEC829B142A71FE03C40DB75E13669A65BEB2011258BF2892A",
+      "sourceMetaSha256": "2BA0EDDE7552653AB6652EBAFFA0470EF1C08B9FA865E16A3708414E0D35DC02",
+      "targetSha256": "0351AC09026B2FB11463CBA0EF9E4FA5A4CB7A206DBBC6DFDB1111FA32AC553E",
+      "targetMetaSha256": "2D911A0457E3AF51C4750343F085F17500F6FBD8349F907D893ED1E4AEAC9907",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Story/prefabs/ChapterTalkNode.js"
+        }
+      ]
+    },
+    {
+      "action": "deleted",
+      "sourcePath": "assets/Script/window/Story/prefabs/StoryRole.js",
+      "sourceMetaPath": "assets/Script/window/Story/prefabs/StoryRole.js.meta",
+      "targetPath": "assets/Script/window/Story/prefabs/StoryRole.ts",
+      "targetMetaPath": "assets/Script/window/Story/prefabs/StoryRole.ts.meta",
+      "sourceExists": false,
+      "sourceMetaExists": false,
+      "targetExists": false,
+      "targetMetaExists": false,
+      "disposition": "source-deleted",
+      "sourceSha256": "ACEBF9403AEAF1E30AFC4B7326CED977712935748A2FDD3BE4DDFFC1C40975B0",
+      "sourceMetaSha256": "8022FEC13E6425AFB0B2D484E0532A701008D5EBD5BCEF26E2954DFAC3B3069E",
+      "targetSha256": null,
+      "targetMetaSha256": null,
+      "evidence": "deleted-path-residue-audit.md",
+      "statusRows": [
+        {
+          "status": " D",
+          "path": "assets/Script/window/Story/prefabs/StoryRole.js"
+        },
+        {
+          "status": " D",
+          "path": "assets/Script/window/Story/prefabs/StoryRole.js.meta"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Story/prefabs/TalkUpgradeNode.js",
+      "sourceMetaPath": "assets/Script/window/Story/prefabs/TalkUpgradeNode.js.meta",
+      "targetPath": "assets/Script/window/Story/prefabs/TalkUpgradeNode.ts",
+      "targetMetaPath": "assets/Script/window/Story/prefabs/TalkUpgradeNode.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "28D3774538A777BAC241A4C78E5EC22ED2FF6E26861242B26D404AE9CFFBAB0E",
+      "sourceMetaSha256": "031DD68D51C9E421E055E3190913462F06CAA94985C3F1F0961CBBE97DDFB500",
+      "targetSha256": "0812184E53C9018D98456507E9C54866116C87A623731EDBE511353B7C5F5DC8",
+      "targetMetaSha256": "3AA0C1154BBB91321B25F53D81E8805A1BA588F381C1A2C9EB5F67F0EFCAB62D",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Story/prefabs/TalkUpgradeNode.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Story/StoryWindow.js",
+      "sourceMetaPath": "assets/Script/window/Story/StoryWindow.js.meta",
+      "targetPath": "assets/Script/window/Story/StoryWindow.ts",
+      "targetMetaPath": "assets/Script/window/Story/StoryWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "5A765A88A39A0EC2248D59842A4307387DF28476687911E37D952D38CD9DD38D",
+      "sourceMetaSha256": "3BFE7B644383C26F9BC1CA759E8B60530739A06139FA6E7838CB43F6E8919C3A",
+      "targetSha256": "01C8E7A83787027926EF7E22253ADE57A6688807E1A5C2571B42B18E1D0216DA",
+      "targetMetaSha256": "5E12256F0CCB6884E8E1EAE5C5CDC749E375FE52ADF4171E9505A4F66C9D8988",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Story/StoryWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Sys/AccountSwitchWindow.js",
+      "sourceMetaPath": "assets/Script/window/Sys/AccountSwitchWindow.js.meta",
+      "targetPath": "assets/Script/window/Sys/AccountSwitchWindow.ts",
+      "targetMetaPath": "assets/Script/window/Sys/AccountSwitchWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "98C7FD91774962CC109FF31D945FB8C601C3761D55378182FF967A857089EA34",
+      "sourceMetaSha256": "E93C7F695D479CCD7F525979AC8355CBA669DA5010DAF1F897AC29965715C858",
+      "targetSha256": "958F237281AF6FA083399A7CFBD99C08664118695E9B33B597CFCAC40CAEA0B8",
+      "targetMetaSha256": "80ED45609F160676160B46774DE4844F8F5ED7B6F9139608894EE226D4A222B4",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Sys/AccountSwitchWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/Sys/AvatarWindow.js",
+      "sourceMetaPath": "assets/Script/window/Sys/AvatarWindow.js.meta",
+      "targetPath": "assets/Script/window/Sys/AvatarWindow.ts",
+      "targetMetaPath": "assets/Script/window/Sys/AvatarWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "B78FD3BAB4EA7D386242271CD9C481728068A822AAB89EBD45992EEA1717C7C4",
+      "sourceMetaSha256": "34424CD34AE9F5A40FD1EA82C20092DF5BD6ECACCAFF8C7538EB865E8B11F162",
+      "targetSha256": "424D4C42769A0C0B46E9EADCB59071735955D12C6D2C289835AB7162CD3DC722",
+      "targetMetaSha256": "A9E4083E0DBF13A5E5939F2E04D883F4205A675B406948271A64B5A81A68943F",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/Sys/AvatarWindow.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/UserInfoModel.js",
+      "sourceMetaPath": "assets/Script/window/UserInfoModel.js.meta",
+      "targetPath": "assets/Script/window/UserInfoModel.ts",
+      "targetMetaPath": "assets/Script/window/UserInfoModel.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "4D228F89E674B82DCD957ECB7323D1AD280CA33BC81010E036F08D7DF8872AFF",
+      "sourceMetaSha256": "DA5523DD0E8B87A3DDC795162AB5CB9626FE084430977818C5E2CA49D2EBA5B9",
+      "targetSha256": "519F136B5FEAD28A106E7BA6808E795F33B56E9AA55CF4E6717945CDB16DE78C",
+      "targetMetaSha256": "9999B6711B3C2DA11DAD54D0CE20B22A56D8B52E8D2545440E6B305C12B6A6AD",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/UserInfoModel.js"
+        }
+      ]
+    },
+    {
+      "action": "modified",
+      "sourcePath": "assets/Script/window/VIP/VIPDailyRewardWindow.js",
+      "sourceMetaPath": "assets/Script/window/VIP/VIPDailyRewardWindow.js.meta",
+      "targetPath": "assets/Script/window/VIP/VIPDailyRewardWindow.ts",
+      "targetMetaPath": "assets/Script/window/VIP/VIPDailyRewardWindow.ts.meta",
+      "sourceExists": true,
+      "sourceMetaExists": true,
+      "targetExists": true,
+      "targetMetaExists": true,
+      "disposition": "existing-cocos3-reviewed",
+      "sourceSha256": "0408C26CBA60B719AFE0867AF16C513130345A8220DB83ADBE3F8162BA917571",
+      "sourceMetaSha256": "E4B085ED99F84672445E907F644B20B3C3767B75489089B4BF6DFB386D361C03",
+      "targetSha256": "17511254EFA421F226929486C71721A636C3CD8B00B1615C9956B45C2D64008A",
+      "targetMetaSha256": "0E87FD147AC9967FB7B9AF17AE369FC33E34D54F2561CB0323E752BBF8DF48CA",
+      "evidence": "live-method-parity.json",
+      "statusRows": [
+        {
+          "status": " M",
+          "path": "assets/Script/window/VIP/VIPDailyRewardWindow.js"
+        }
+      ]
+    }
+  ]
+}

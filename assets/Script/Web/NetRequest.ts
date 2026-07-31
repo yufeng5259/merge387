@@ -11,6 +11,7 @@ export default class NetRequest {
     useEncrypt: boolean | number;
     silence: any = false;
     req: XMLHttpRequest | null = null;
+    identityTrace: IdentityTraceRecord | null = null;
 
     constructor (server: string) {
         this.data = {}
@@ -46,7 +47,12 @@ export default class NetRequest {
     }
 
     Send() {
-        Logs.Debug("NetRequest req:", this)
+        this.identityTrace = IdentityTrace.BuildTrace(this.url, this.data, 'net');
+        IdentityTrace.LogRequest(this.identityTrace);
+        Logs.Debug("NetRequest context:", {
+            currentUser: IdentityTrace.CurrentUserState(),
+            method: this.data.method,
+        })
         if (!this.silence) LoadingWindow.Show()
         if (wxTools.usewx) {
             wx.request({
@@ -67,6 +73,7 @@ export default class NetRequest {
                     this.errorCallbacks.forEach(function(x) {
                         if (x!=null)x(res)
                     })
+                    IdentityTrace.LogNetFail('wxFail', this.identityTrace, res, this.data)
                 }.bind(this),
             })
         } else {
@@ -85,7 +92,8 @@ export default class NetRequest {
                     this.errorCallbacks.forEach(function(x) {
                         if (x!=null)x(e)
                     })
-                    AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), header: this.req.getAllResponseHeaders(), readyState:this.req.readyState, code:this.req.status})
+                    AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), method:this.data.method, readyState:this.req.readyState, code:this.req.status})
+                    IdentityTrace.LogNetFail('httpStatusFail', this.identityTrace, {readyState:this.req.readyState, code:this.req.status}, this.data)
                 }
             }.bind(this)
             this.req.ontimeout = function(e) {
@@ -93,7 +101,8 @@ export default class NetRequest {
                 this.errorCallbacks.forEach(function(x) {
                     if (x!=null)x(e)
                 })
-                AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), code:0, msg:"ontimeout"})
+                AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), method:this.data.method, code:0, msg:"ontimeout"})
+                IdentityTrace.LogNetFail('httpTimeout', this.identityTrace, e, this.data)
             }.bind(this)
             this.req.onerror = function(e) {
                 e = e || {code:-1, msg:"unknown"}
@@ -101,7 +110,8 @@ export default class NetRequest {
                 this.errorCallbacks.forEach(function(x) {
                     if (x!=null)x(e)
                 })
-                AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), header: this.req.getAllResponseHeaders(), code:e.code||-1, msg:"onerror" + e.toString()})
+                AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), method:this.data.method, code:e.code||-1, stage:"onerror"})
+                IdentityTrace.LogNetFail('httpError', this.identityTrace, e, this.data)
             }.bind(this)
 
             this.req.send(this.useEncrypt ? JSON.stringify({arr:encryptCode.stringToBytes(encryptCode.simplecode(pako.gzip(JSON.stringify(this.data), {to:"string"})))}) : JSON.stringify(this.data))
@@ -109,9 +119,13 @@ export default class NetRequest {
     }
 
     okCallback(res: any) {
+        if (res && IdentityTrace.IsIdentityError(res.errorCode)) {
+            IdentityTrace.LogResponse('netIdentityError', this.identityTrace, res, this.data)
+        }
         this.callbacks.forEach(function(x) {
             if (x!=null)x(res)
         })
         return true
     }
 }
+import IdentityTrace, { IdentityTraceRecord } from './IdentityTrace';

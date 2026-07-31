@@ -60,6 +60,15 @@ export class NumAnim extends Component {
         this.currentValue = v;
         this.setValue(this.currentValue);
     }
+
+    public stopAt(value: number): void {
+        this.playing = false;
+        this.playTime = 0;
+        this.duration = 0;
+        this.fromValue = value;
+        this.toValue = value;
+        this.setCurrentValue(value);
+    }
 }
 
 export default NumAnim;

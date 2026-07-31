@@ -1,0 +1,100 @@
+[
+  {
+    "targetRel": "Script/GameKit/ui/TouchClickGuard.ts",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/GameKit/ui/TouchClickGuard.ts",
+      "Script/GameKit/ui/TouchClickGuard.js"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-cocos3-runtime",
+    "reason": "Cocos 3 target runtime UI click guard; needs review before removal."
+  },
+  {
+    "targetRel": "Script/GameKit/ui/TouchClickGuard.ts.meta",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/GameKit/ui/TouchClickGuard.ts.meta",
+      "Script/GameKit/ui/TouchClickGuard.js.meta"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-cocos3-runtime",
+    "reason": "Cocos 3 target runtime UI click guard; needs review before removal."
+  },
+  {
+    "targetRel": "Script/globals.d.ts",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/globals.d.ts",
+      "Script/globals.d.js"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-ts-migration-infrastructure",
+    "reason": "TS migration/global declaration infrastructure."
+  },
+  {
+    "targetRel": "Script/globals.d.ts.meta",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/globals.d.ts.meta",
+      "Script/globals.d.js.meta"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-ts-migration-infrastructure",
+    "reason": "TS migration/global declaration infrastructure."
+  },
+  {
+    "targetRel": "Script/LegacyGlobals.ts",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/LegacyGlobals.ts",
+      "Script/LegacyGlobals.js"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-ts-migration-infrastructure",
+    "reason": "TS migration/global declaration infrastructure."
+  },
+  {
+    "targetRel": "Script/LegacyGlobals.ts.meta",
+    "mappedSourceRel": null,
+    "candidateSourceRels": [
+      "Script/LegacyGlobals.ts.meta",
+      "Script/LegacyGlobals.js.meta"
+    ],
+    "targetExists": true,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "keep-ts-migration-infrastructure",
+    "reason": "TS migration/global declaration infrastructure."
+  },
+  {
+    "sourceRel": "Script/__game__.js",
+    "targetRel": "Script/__game__.ts",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "covered-by-legacyglobals-review",
+    "reason": "Legacy global bootstrap is covered by TS migration infrastructure."
+  },
+  {
+    "sourceRel": "Script/__game__.js.meta",
+    "targetRel": "Script/__game__.ts.meta",
+    "sourceExists": true,
+    "targetExists": false,
+    "listRelated": false,
+    "listEvidence": [],
+    "action": "covered-by-legacyglobals-review",
+    "reason": "Legacy global bootstrap is covered by TS migration infrastructure."
+  }
+]

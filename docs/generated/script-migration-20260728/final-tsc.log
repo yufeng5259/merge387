@@ -1,0 +1,875 @@
+﻿G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/@types/jsb.d.ts(213,18): error TS2304: Cannot find name 'TypedArray'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/@types/jsb.d.ts(214,17): error TS2304: Cannot find name 'TypedArray'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(38213,32): error TS2314: Generic type 'Map<T>' requires 1 type argument(s).
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(38271,37): error TS2314: Generic type 'Map<T>' requires 1 type argument(s).
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(38272,39): error TS2314: Generic type 'Map<T>' requires 1 type argument(s).
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61885,55): error TS2833: Cannot find namespace '____private'. Did you mean '__private'?
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61901,125): error TS2833: Cannot find namespace '____private'. Did you mean '__private'?
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61950,33): error TS2304: Cannot find name '_Motion'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61951,27): error TS2304: Cannot find name '_Motion'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61953,47): error TS2833: Cannot find namespace '____private'. Did you mean '__private'?
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61955,17): error TS2833: Cannot find namespace '____private'. Did you mean '__private'?
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61958,33): error TS2503: Cannot find namespace '____private'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61965,50): error TS2304: Cannot find name '_VariableDescription'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61968,48): error TS2304: Cannot find name '_Motion'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61969,54): error TS2503: Cannot find namespace '____private'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61975,27): error TS2503: Cannot find namespace '____private'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61978,21): error TS2503: Cannot find namespace '_poseGraphOp'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61981,27): error TS2503: Cannot find namespace '_poseGraphOp'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61983,28): error TS2503: Cannot find namespace '_poseGraphOp'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61990,19): error TS2503: Cannot find namespace '____private'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(61991,20): error TS2304: Cannot find name '_PoseGraph'.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64824,52): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64832,58): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64840,80): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64855,32): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64860,33): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(64888,61): error TS2307: Cannot find module 'pal/audio/type' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(68122,60): error TS2307: Cannot find module 'pal/input/input-source' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(68123,58): error TS2307: Cannot find module 'pal/input/input-source' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(68124,59): error TS2307: Cannot find module 'pal/input/input-source' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(68125,62): error TS2307: Cannot find module 'pal/input/input-source' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(68126,65): error TS2307: Cannot find module 'pal/input/input-source' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(75855,109): error TS2307: Cannot find module 'cc/editor/exotic-animation' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(75856,155): error TS2307: Cannot find module 'cc/editor/embedded-player' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(75857,60): error TS2307: Cannot find module 'cc/editor/new-gen-anim' or its corresponding type declarations.
+G:/cocosCreator/Editor/Creator/3.8.7/resources/resources/3d/engine/bin/.declarations/cc.d.ts(75858,26): error TS2307: Cannot find module 'cc/editor/serialization' or its corresponding type declarations.
+assets/other/TLoadBuilding.ts(1,39): error TS2724: '"cc"' has no exported member named 'String'. Did you mean 'CCString'?
+assets/Script/game/activity/meta/ActivityMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(36,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(41,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(46,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(51,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(56,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(61,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(66,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(71,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(76,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(81,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(86,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(91,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(95,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(99,23): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(104,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(109,19): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(110,18): error TS2551: Property 'enable_trigger' does not exist on type 'ActivityMeta'. Did you mean 'EnableTrigger'?
+assets/Script/game/activity/meta/ActivityMeta.ts(111,18): error TS2551: Property 'enable_trigger' does not exist on type 'ActivityMeta'. Did you mean 'EnableTrigger'?
+assets/Script/game/activity/meta/ActivityMeta.ts(111,40): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(113,21): error TS2551: Property 'enable_trigger' does not exist on type 'ActivityMeta'. Did you mean 'EnableTrigger'?
+assets/Script/game/activity/meta/ActivityMeta.ts(118,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(123,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(127,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(132,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(169,21): error TS2551: Property '_data' does not exist on type 'ActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityMeta.ts(173,14): error TS2339: Property 'Types' does not exist on type 'typeof ActivityMeta'.
+assets/Script/game/activity/meta/ActivityMeta.ts(180,14): error TS2339: Property 'SubTypes' does not exist on type 'typeof ActivityMeta'.
+assets/Script/game/activity/meta/ActivityMeta.ts(226,14): error TS2339: Property 'GameSubTypesOrder' does not exist on type 'typeof ActivityMeta'.
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ActivityParamsMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ActivityParamsMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ActivityParamsMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ActivityParamsMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'ActivityParamsMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(31,20): error TS2339: Property 'Types' does not exist on type 'typeof ActivityParamsMeta'.
+assets/Script/game/activity/meta/ActivityParamsMeta.ts(63,20): error TS2339: Property 'GetValue' does not exist on type 'typeof ActivityParamsMeta'.
+assets/Script/game/activity/meta/giftActivityMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'giftActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/giftActivityMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'giftActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/giftActivityMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'giftActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/giftActivityMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'giftActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/giftActivityMeta.ts(28,14): error TS2551: Property '_data' does not exist on type 'giftActivityMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/giftActivityMeta.ts(31,18): error TS2339: Property 'GetValue' does not exist on type 'typeof giftActivityMeta'.
+assets/Script/game/activity/meta/giftActivityMeta.ts(37,18): error TS2339: Property 'GeTableData' does not exist on type 'typeof giftActivityMeta'.
+assets/Script/game/activity/meta/giftActivityMeta.ts(43,18): error TS2339: Property 'GetValueByAciveID' does not exist on type 'typeof giftActivityMeta'.
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(38,21): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(38,43): error TS2551: Property '_data' does not exist on type 'GuildBossMonsterMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(41,22): error TS2339: Property 'GetBossList' does not exist on type 'typeof GuildBossMonsterMeta'.
+assets/Script/game/activity/meta/GuildBossMonsterMeta.ts(45,22): error TS2339: Property 'GetById' does not exist on type 'typeof GuildBossMonsterMeta'.
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'GuildBossRankMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/GuildBossRankMeta.ts(38,19): error TS2339: Property 'GetById' does not exist on type 'typeof GuildBossRankMeta'.
+assets/Script/game/activity/meta/RankRewardMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(33,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(38,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'RankRewardMeta'. Did you mean 'Data'?
+assets/Script/game/activity/meta/RankRewardMeta.ts(46,16): error TS2339: Property 'GetShootRewards' does not exist on type 'typeof RankRewardMeta'.
+assets/Script/game/activity/request/SRActivity.ts(5,12): error TS2339: Property 'getUserActivity' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivity.ts(12,12): error TS2339: Property 'activityCouponBuyRequest' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityCollectFlag.ts(5,23): error TS2339: Property 'CollectReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityCollectFlag.ts(12,23): error TS2339: Property 'CollectKingReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityCollectFlag.ts(19,23): error TS2339: Property 'CollectAllReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityCollectFlag.ts(28,23): error TS2339: Property 'BuyPassport' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(11,21): error TS2339: Property 'activityFlytoSkyBuy' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(22,21): error TS2339: Property 'activityFlytoSkyFree' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(33,21): error TS2339: Property 'askFlytoSkyFinishVillage' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(39,20): error TS2339: Property '_getActivityFlytoSkyData' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(46,20): error TS2339: Property '_getActivityChoosePackData' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityFlytoSky.ts(52,20): error TS2339: Property '_getActivityChoosePackBuy' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityHeist.ts(9,17): error TS2339: Property 'activityHeistAddBuyCount' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityHeist.ts(19,17): error TS2339: Property 'activityHeistFreeBuy' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(11,21): error TS2339: Property 'getTaskList' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(20,21): error TS2339: Property 'buyPassport' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(30,21): error TS2339: Property 'buyLevelPassport' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(40,21): error TS2339: Property 'cllectFreeReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(47,20): error TS2339: Property 'collectPassportReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(55,20): error TS2339: Property 'collectAllReward' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(63,20): error TS2339: Property 'NewPassportCollectTask' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(69,20): error TS2339: Property 'NewPassportCollectFree' does not exist on type '{}'.
+assets/Script/game/activity/request/SRActivityPassport.ts(75,20): error TS2339: Property 'NewPassportCollectBuy' does not exist on type '{}'.
+assets/Script/game/card/meta/CardChestMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(16,17): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(17,18): error TS2339: Property '_nameJson' does not exist on type 'CardChestMeta'.
+assets/Script/game/card/meta/CardChestMeta.ts(17,44): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(22,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(26,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(30,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(34,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(38,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(42,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(46,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(50,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(54,21): error TS2551: Property '_data' does not exist on type 'CardChestMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardChestMeta.ts(57,17): error TS2339: Property '_nameJson' does not exist on type 'CardChestMeta'.
+assets/Script/game/card/meta/CardChestMeta.ts(58,25): error TS2339: Property '_nameJson' does not exist on type 'CardChestMeta'.
+assets/Script/game/card/meta/CardMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(47,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(57,21): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(61,38): error TS2551: Property '_data' does not exist on type 'CardMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardMeta.ts(66,10): error TS2339: Property 'GetId' does not exist on type 'typeof CardMeta'.
+assets/Script/game/card/meta/CardMeta.ts(70,10): error TS2339: Property 'GetMeta' does not exist on type 'typeof CardMeta'.
+assets/Script/game/card/meta/CardMeta.ts(71,66): error TS2339: Property 'GetId' does not exist on type 'typeof CardMeta'.
+assets/Script/game/card/meta/CardSetsMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(32,38): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(36,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(40,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(46,19): error TS2551: Property 'reward' does not exist on type 'CardSetsMeta'. Did you mean 'Reward'?
+assets/Script/game/card/meta/CardSetsMeta.ts(47,18): error TS2551: Property 'reward' does not exist on type 'CardSetsMeta'. Did you mean 'Reward'?
+assets/Script/game/card/meta/CardSetsMeta.ts(47,57): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(48,18): error TS2551: Property 'reward' does not exist on type 'CardSetsMeta'. Did you mean 'Reward'?
+assets/Script/game/card/meta/CardSetsMeta.ts(48,51): error TS2551: Property 'reward' does not exist on type 'CardSetsMeta'. Did you mean 'Reward'?
+assets/Script/game/card/meta/CardSetsMeta.ts(50,21): error TS2551: Property 'reward' does not exist on type 'CardSetsMeta'. Did you mean 'Reward'?
+assets/Script/game/card/meta/CardSetsMeta.ts(54,21): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(58,29): error TS2551: Property '_data' does not exist on type 'CardSetsMeta'. Did you mean 'Data'?
+assets/Script/game/card/meta/CardSetsMeta.ts(61,14): error TS2339: Property 'getMetasByIssue' does not exist on type 'typeof CardSetsMeta'.
+assets/Script/game/card/meta/CardSetsMeta.ts(76,14): error TS2339: Property 'getCardMetasByIssue' does not exist on type 'typeof CardSetsMeta'.
+assets/Script/game/card/meta/CardSetsMeta.ts(78,33): error TS2339: Property 'getMetasByIssue' does not exist on type 'typeof CardSetsMeta'.
+assets/Script/game/card/request/SRCard.ts(30,8): error TS2339: Property 'getUserCard' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(42,8): error TS2339: Property 'getCardReward' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(53,8): error TS2339: Property 'cardSend' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(61,8): error TS2339: Property 'watchChest' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(67,8): error TS2339: Property 'changeJoker' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(73,8): error TS2339: Property 'changeStar' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(79,8): error TS2339: Property 'changeStarNum' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(84,8): error TS2339: Property 'changeStarRefresh' does not exist on type '{}'.
+assets/Script/game/card/request/SRCard.ts(92,8): error TS2339: Property 'recordJokerCountData' does not exist on type '{}'.
+assets/Script/game/chat/ChatMgr.ts(4,9): error TS2339: Property 'init' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(10,9): error TS2339: Property 'Clear' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(16,9): error TS2339: Property 'addMessage' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(29,9): error TS2339: Property 'getMessages' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(32,9): error TS2339: Property 'getNewMessages' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(36,9): error TS2339: Property 'getLastMessages' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/ChatMgr.ts(40,9): error TS2339: Property 'setLastMessages' does not exist on type '{ _msgs: any[]; lastMsg: any; }'.
+assets/Script/game/chat/request/SRChat.ts(5,8): error TS2339: Property 'getChats' does not exist on type '{}'.
+assets/Script/game/chat/request/SRChat.ts(18,8): error TS2339: Property 'getLastChat' does not exist on type '{}'.
+assets/Script/game/chat/request/SRChat.ts(30,8): error TS2339: Property 'sendChat' does not exist on type '{}'.
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/dailyBonus/meta/DailyBonusRewardMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'DailyBonusRewardMeta'. Did you mean 'Data'?
+assets/Script/game/guild/meta/GuildMsgMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(23,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(30,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(37,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(44,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(51,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(58,55): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(65,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/meta/GuildMsgMeta.ts(72,21): error TS2339: Property '_data' does not exist on type 'GuildMsgMeta'.
+assets/Script/game/guild/request/SRGuild.ts(19,9): error TS2339: Property 'createGuild' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(25,9): error TS2339: Property 'joinGuild' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(31,9): error TS2339: Property 'leaveGuild' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(39,9): error TS2339: Property 'searchGuild' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(45,9): error TS2339: Property 'checkGuildInfo' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(51,9): error TS2339: Property 'deleteUserFriend' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(59,9): error TS2339: Property 'SendChatRequest' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(65,9): error TS2339: Property 'GetChatsRequest' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(71,9): error TS2339: Property 'HelpGiftRequest' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(77,9): error TS2339: Property 'addUserFriends' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(83,9): error TS2339: Property 'determineAddUserFriends' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(89,9): error TS2339: Property 'refuseAddUserFriends' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(95,9): error TS2339: Property 'kickLegion' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(101,9): error TS2339: Property 'verificationLegion' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(107,9): error TS2339: Property 'bossReward' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(113,9): error TS2339: Property 'changeLegionRequest' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(119,9): error TS2339: Property 'legionRanksRequest' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(125,9): error TS2339: Property 'obtain' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(136,10): error TS2339: Property 'MsgType' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(143,9): error TS2339: Property 'Mine' does not exist on type '{}'.
+assets/Script/game/guild/request/SRGuild.ts(144,9): error TS2339: Property 'BossCount' does not exist on type '{}'.
+assets/Script/game/help/HelpManager.ts(4,13): error TS2339: Property 'init' does not exist on type '{ _data: {}; }'.
+assets/Script/game/help/HelpManager.ts(16,13): error TS2339: Property 'GetHelp' does not exist on type '{ _data: {}; }'.
+assets/Script/game/items/Item.ts(7,14): error TS2339: Property 'data' does not exist on type 'Item'.
+assets/Script/game/items/Item.ts(16,18): error TS2339: Property 'data' does not exist on type 'Item'.
+assets/Script/game/items/Item.ts(24,30): error TS2339: Property 'data' does not exist on type 'Item'.
+assets/Script/game/items/Item.ts(25,30): error TS2339: Property 'data' does not exist on type 'Item'.
+assets/Script/game/items/Item.ts(32,14): error TS2339: Property 'data' does not exist on type 'Item'.
+assets/Script/game/items/Item.ts(37,6): error TS2339: Property 'getBets' does not exist on type 'typeof Item'.
+assets/Script/game/items/Item.ts(55,24): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+assets/Script/game/items/Item.ts(55,29): error TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+assets/Script/game/items/Item.ts(66,6): error TS2339: Property 'getBetsTime' does not exist on type 'typeof Item'.
+assets/Script/game/items/Item.ts(69,8): error TS2339: Property 'Game' does not exist on type 'Window & typeof globalThis'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(51,23): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(57,19): error TS2551: Property 'contents' does not exist on type 'DynamicPackMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(58,18): error TS2551: Property 'contents' does not exist on type 'DynamicPackMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(58,59): error TS2551: Property '_data' does not exist on type 'DynamicPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(60,21): error TS2551: Property 'contents' does not exist on type 'DynamicPackMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/DynamicPackMeta.ts(64,17): error TS2339: Property 'GetMapId' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(86,17): error TS2339: Property 'GetPayId' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(101,17): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(102,17): error TS2339: Property 'CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(103,21): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(108,30): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(108,69): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(110,30): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(110,76): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(112,25): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(116,17): error TS2339: Property 'FindMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(117,33): error TS2339: Property 'GetMapId' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(118,33): error TS2339: Property 'GetPayId' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/DynamicPackMeta.ts(120,28): error TS2339: Property '_CacheMeta' does not exist on type 'typeof DynamicPackMeta'.
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/GiftPackageItemsMeta.ts(33,21): error TS2551: Property '_data' does not exist on type 'GiftPackageItemsMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/InviteRewardsMeta.ts(13,14): error TS2339: Property '_data' does not exist on type 'InviteRewardsMeta'.
+assets/Script/game/items/meta/InviteRewardsMeta.ts(15,18): error TS2339: Property '_data' does not exist on type 'InviteRewardsMeta'.
+assets/Script/game/items/meta/InviteRewardsMeta.ts(19,21): error TS2339: Property '_data' does not exist on type 'InviteRewardsMeta'.
+assets/Script/game/items/meta/InviteRewardsMeta.ts(23,21): error TS2339: Property '_data' does not exist on type 'InviteRewardsMeta'.
+assets/Script/game/items/meta/InviteRewardsMeta.ts(27,23): error TS2339: Property '_data' does not exist on type 'InviteRewardsMeta'.
+assets/Script/game/items/meta/InviteRewardsMeta.ts(33,19): error TS2551: Property 'contents' does not exist on type 'InviteRewardsMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/InviteRewardsMeta.ts(35,18): error TS2551: Property 'contents' does not exist on type 'InviteRewardsMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/InviteRewardsMeta.ts(37,22): error TS2551: Property 'contents' does not exist on type 'InviteRewardsMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/InviteRewardsMeta.ts(40,21): error TS2551: Property 'contents' does not exist on type 'InviteRewardsMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/InviteRewardsMeta.ts(43,19): error TS2339: Property 'GetContentByInviteCount' does not exist on type 'typeof InviteRewardsMeta'.
+assets/Script/game/items/meta/ItemMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(33,38): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(38,38): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/ItemMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'ItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(31,23): error TS2551: Property '_data' does not exist on type 'PackItemMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/PackItemMeta.ts(37,19): error TS2551: Property 'contents' does not exist on type 'PackItemMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/PackItemMeta.ts(39,18): error TS2551: Property 'contents' does not exist on type 'PackItemMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/PackItemMeta.ts(41,22): error TS2551: Property 'contents' does not exist on type 'PackItemMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/PackItemMeta.ts(44,21): error TS2551: Property 'contents' does not exist on type 'PackItemMeta'. Did you mean 'Contents'?
+assets/Script/game/items/meta/RandomPackMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'RandomPackMeta'. Did you mean 'Data'?
+assets/Script/game/items/meta/RandomPackMeta.ts(47,16): error TS2339: Property 'Types' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(55,16): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(56,16): error TS2339: Property 'CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(57,20): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(62,29): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(62,64): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(63,24): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(67,16): error TS2339: Property 'FindMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(69,33): error TS2339: Property '_CacheMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(79,16): error TS2339: Property 'FindItemsRange' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/meta/RandomPackMeta.ts(80,32): error TS2339: Property 'FindMeta' does not exist on type 'typeof RandomPackMeta'.
+assets/Script/game/items/request/SRItems.ts(5,9): error TS2339: Property 'getUserItems' does not exist on type '{}'.
+assets/Script/game/items/request/SRItems.ts(19,18): error TS2339: Property 'invitationUser' does not exist on type '{}'.
+assets/Script/game/map/meta/LevelMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/LevelMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/LevelMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/LevelMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/LevelMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/LevelMeta.ts(34,21): error TS2551: Property '_data' does not exist on type 'LevelMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(21,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(25,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(29,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(33,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(37,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(37,42): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(41,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(45,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(49,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(53,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(56,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(59,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(62,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(65,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(69,26): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(134,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(137,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(140,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(143,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(146,21): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(150,27): error TS2551: Property '_data' does not exist on type 'MapMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/MapMeta.ts(171,9): error TS2339: Property 'GetMetaById' does not exist on type 'typeof MapMeta'.
+assets/Script/game/map/meta/StoryUserMeta.ts(26,14): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(28,18): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(32,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(36,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(40,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(45,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(49,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(53,28): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(57,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(61,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(65,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(69,21): error TS2551: Property '_data' does not exist on type 'StoryUserMeta'. Did you mean 'Data'?
+assets/Script/game/map/meta/StoryUserMeta.ts(72,15): error TS2339: Property 'poolData' does not exist on type 'typeof StoryUserMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(18,21): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(25,21): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(32,38): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(39,21): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(46,21): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeBgElementsMeta.ts(52,21): error TS2339: Property '_data' does not exist on type 'MergeBgElementsMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(19,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(27,38): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(35,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(43,38): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(51,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(59,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(67,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(75,38): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(83,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(91,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(99,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(106,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(114,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(122,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(130,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(138,38): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(142,21): error TS2339: Property '_data' does not exist on type 'MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(151,24): error TS2339: Property 'GetRecipeByKey' does not exist on type 'typeof MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeCookingRecipeMeta.ts(169,24): error TS2339: Property 'GetRecipesByToolId' does not exist on type 'typeof MergeCookingRecipeMeta'.
+assets/Script/game/merge/MergeElementsTypeMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'MergeElementsTypeMeta'.
+assets/Script/game/merge/MergeElementsTypeMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'MergeElementsTypeMeta'.
+assets/Script/game/merge/MergeElementsTypeMeta.ts(18,21): error TS2339: Property '_data' does not exist on type 'MergeElementsTypeMeta'.
+assets/Script/game/merge/MergeElementsTypeMeta.ts(25,38): error TS2339: Property '_data' does not exist on type 'MergeElementsTypeMeta'.
+assets/Script/game/merge/MergeElementsTypeMeta.ts(32,21): error TS2339: Property '_data' does not exist on type 'MergeElementsTypeMeta'.
+assets/Script/game/merge/MergeWharehouseMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'MergeWharehouseMeta'.
+assets/Script/game/merge/MergeWharehouseMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'MergeWharehouseMeta'.
+assets/Script/game/merge/MergeWharehouseMeta.ts(18,21): error TS2339: Property '_data' does not exist on type 'MergeWharehouseMeta'.
+assets/Script/game/merge/MergeWharehouseMeta.ts(25,21): error TS2339: Property '_data' does not exist on type 'MergeWharehouseMeta'.
+assets/Script/game/merge/MergeWharehouseMeta.ts(32,45): error TS2339: Property '_data' does not exist on type 'MergeWharehouseMeta'.
+assets/Script/game/merge/OrderMeta.ts(12,14): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(14,18): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(19,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(23,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(27,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(31,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(35,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(39,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(43,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(47,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(51,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/merge/OrderMeta.ts(55,21): error TS2339: Property '_data' does not exist on type 'OrderMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(16,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(32,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(36,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(40,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(44,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(48,23): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(52,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(56,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(60,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialGuideMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(69,24): error TS2339: Property 'GuideTypes' does not exist on type 'typeof MergeTutorialGuideMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(77,24): error TS2339: Property 'TargetTypes' does not exist on type 'typeof MergeTutorialGuideMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialGuideMeta.ts(84,24): error TS2339: Property 'HighlightTypes' does not exist on type 'typeof MergeTutorialGuideMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(17,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(21,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(25,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(29,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(33,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(37,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(41,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(45,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(49,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(53,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(57,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(61,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(65,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(69,23): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(73,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(77,50): error TS2339: Property 'Types' does not exist on type 'typeof MergeTutorialMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialMeta.ts(87,19): error TS2339: Property 'Types' does not exist on type 'typeof MergeTutorialMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(16,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(32,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(36,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(40,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(44,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(48,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(52,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(56,23): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(60,23): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(64,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(64,66): error TS2339: Property 'BlockModes' does not exist on type 'typeof MergeTutorialTriggerMeta'.
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(68,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(72,21): error TS2551: Property '_data' does not exist on type 'MergeTutorialTriggerMeta'. Did you mean 'Data'?
+assets/Script/game/mergeTutorial/meta/MergeTutorialTriggerMeta.ts(82,26): error TS2339: Property 'BlockModes' does not exist on type 'typeof MergeTutorialTriggerMeta'.
+assets/Script/game/mergeTutorial/request/SRMergeTutorial.ts(4,17): error TS2339: Property 'getData' does not exist on type '{}'.
+assets/Script/game/mergeTutorial/request/SRMergeTutorial.ts(14,17): error TS2339: Property 'finishStep' does not exist on type '{}'.
+assets/Script/game/other/meta/PromptScriptMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'PromptScriptMeta'. Did you mean 'Data'?
+assets/Script/game/other/meta/PromptScriptMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'PromptScriptMeta'. Did you mean 'Data'?
+assets/Script/game/other/meta/PromptScriptMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'PromptScriptMeta'. Did you mean 'Data'?
+assets/Script/game/other/meta/PromptScriptMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'PromptScriptMeta'. Did you mean 'Data'?
+assets/Script/game/other/meta/PromptScriptMeta.ts(28,38): error TS2551: Property '_data' does not exist on type 'PromptScriptMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(32,38): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(36,38): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(41,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(45,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(49,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(53,19): error TS2551: Property 'reward' does not exist on type 'TaskMeta'. Did you mean 'Reward'?
+assets/Script/game/quest/meta/TaskMeta.ts(54,18): error TS2551: Property 'reward' does not exist on type 'TaskMeta'. Did you mean 'Reward'?
+assets/Script/game/quest/meta/TaskMeta.ts(54,57): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(55,18): error TS2551: Property 'reward' does not exist on type 'TaskMeta'. Did you mean 'Reward'?
+assets/Script/game/quest/meta/TaskMeta.ts(55,51): error TS2551: Property 'reward' does not exist on type 'TaskMeta'. Did you mean 'Reward'?
+assets/Script/game/quest/meta/TaskMeta.ts(57,21): error TS2551: Property 'reward' does not exist on type 'TaskMeta'. Did you mean 'Reward'?
+assets/Script/game/quest/meta/TaskMeta.ts(62,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(67,21): error TS2551: Property '_data' does not exist on type 'TaskMeta'. Did you mean 'Data'?
+assets/Script/game/quest/meta/TaskMeta.ts(71,10): error TS2339: Property 'Types' does not exist on type 'typeof TaskMeta'.
+assets/Script/game/quest/meta/TaskMeta.ts(75,10): error TS2339: Property 'Targets' does not exist on type 'typeof TaskMeta'.
+assets/Script/game/quest/meta/TaskMeta.ts(89,10): error TS2339: Property 'GetById' does not exist on type 'typeof TaskMeta'.
+assets/Script/game/quest/request/SRTask.ts(5,8): error TS2339: Property 'getTaskList' does not exist on type '{}'.
+assets/Script/game/quest/request/SRTask.ts(15,8): error TS2339: Property 'receiveTaskReward' does not exist on type '{}'.
+assets/Script/game/quest/request/SRTask.ts(22,8): error TS2339: Property 'receiveTasksReward' does not exist on type '{}'.
+assets/Script/game/quest/request/SRTask.ts(28,8): error TS2339: Property 'clientCountTask' does not exist on type '{}'.
+assets/Script/game/record/request/SRRecord.ts(6,10): error TS2339: Property 'getUserRecord' does not exist on type '{}'.
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCardPriceMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'ShopCardPriceMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(27,41): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopCoinMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'ShopCoinMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(30,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(34,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(38,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(42,59): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(46,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(50,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(54,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(58,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(62,19): error TS2551: Property 'content' does not exist on type 'ShopDailyMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(64,18): error TS2551: Property 'content' does not exist on type 'ShopDailyMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(66,21): error TS2551: Property 'content' does not exist on type 'ShopDailyMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(70,21): error TS2551: Property '_data' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(74,14): error TS2551: Property 'sdata' does not exist on type 'ShopDailyMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopDailyMeta.ts(80,15): error TS2339: Property 'Cype' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(85,15): error TS2339: Property 'GetAllSorted' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(98,15): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(112,15): error TS2339: Property 'GetByTypeIndex' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(113,26): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(116,15): error TS2339: Property 'GetRandomByType' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopDailyMeta.ts(117,31): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopDailyMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(13,14): error TS2551: Property 'content' does not exist on type 'ShopHotMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(40,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(45,59): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(50,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(54,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(58,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(62,21): error TS2551: Property '_data' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(67,19): error TS2551: Property 'content' does not exist on type 'ShopHotMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(69,18): error TS2551: Property 'content' does not exist on type 'ShopHotMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(71,21): error TS2551: Property 'content' does not exist on type 'ShopHotMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(78,14): error TS2551: Property 'sdata' does not exist on type 'ShopHotMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopHotMeta.ts(84,13): error TS2339: Property 'Cype' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(89,13): error TS2339: Property 'GetAllSorted' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(102,13): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(116,13): error TS2339: Property 'GetByTypeIndex' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(117,24): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(120,13): error TS2339: Property 'GetRandomByType' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopHotMeta.ts(121,29): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopHotMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(43,38): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(45,45): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(52,38): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(52,78): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(59,19): error TS2551: Property 'content' does not exist on type 'ShopMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopMeta.ts(62,37): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(63,42): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(65,34): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(67,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(67,88): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(69,34): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(71,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(73,34): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(75,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(77,43): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(79,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(81,43): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(83,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(85,43): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(87,49): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(87,88): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(87,128): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(88,38): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(88,85): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(89,22): error TS2551: Property 'content' does not exist on type 'ShopMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopMeta.ts(89,61): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(90,29): error TS2551: Property 'content' does not exist on type 'ShopMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopMeta.ts(92,18): error TS2551: Property 'content' does not exist on type 'ShopMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopMeta.ts(94,21): error TS2551: Property 'content' does not exist on type 'ShopMeta'. Did you mean 'Content'?
+assets/Script/game/shop/meta/ShopMeta.ts(102,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(106,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(110,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(114,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(118,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(122,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(126,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(130,21): error TS2551: Property '_data' does not exist on type 'ShopMeta'. Did you mean 'Data'?
+assets/Script/game/shop/meta/ShopMeta.ts(139,10): error TS2339: Property 'Types' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(163,10): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(177,10): error TS2339: Property 'GetByTypeIndex' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(178,19): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(179,21): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(181,10): error TS2339: Property 'GetByTypeCount' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(182,19): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(183,26): error TS2339: Property 'GetByType' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(193,10): error TS2339: Property 'GetShopIdByName' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/meta/ShopMeta.ts(204,10): error TS2339: Property 'get_buy_item_type' does not exist on type 'typeof ShopMeta'.
+assets/Script/game/shop/request/SRShop.ts(6,8): error TS2339: Property 'paySuccess' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(14,8): error TS2339: Property 'payFor' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(22,8): error TS2339: Property 'shopGetInfo' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(27,8): error TS2339: Property 'Bets' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(28,8): error TS2339: Property 'GetBet' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(29,19): error TS2339: Property 'Bets' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(29,31): error TS2339: Property 'CurIndex' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(32,8): error TS2339: Property 'BuyByShop' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(40,8): error TS2339: Property 'RefreshHot' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(47,8): error TS2339: Property 'GetCashBuyInfo' does not exist on type '{}'.
+assets/Script/game/shop/request/SRShop.ts(54,8): error TS2339: Property 'CashBuyContent' does not exist on type '{}'.
+assets/Script/game/slot/request/SRSlot.ts(4,8): error TS2339: Property 'getUserSlot' does not exist on type '{}'.
+assets/Script/game/social/meta/GiftGetMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/meta/GiftGetMeta.ts(16,21): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/meta/GiftGetMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/meta/GiftGetMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/meta/GiftGetMeta.ts(29,21): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/meta/GiftGetMeta.ts(34,21): error TS2551: Property '_data' does not exist on type 'GiftGetMeta'. Did you mean 'Data'?
+assets/Script/game/social/request/SRSocial.ts(6,10): error TS2339: Property 'getFriendsRank' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(19,10): error TS2339: Property 'getCountryRank' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(25,10): error TS2339: Property 'getGlobalRank' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(32,10): error TS2339: Property 'getGifts' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(37,10): error TS2339: Property 'giftsSpinSend' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(42,10): error TS2339: Property 'giftsCoinSend' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(47,10): error TS2339: Property 'giftsSpinCollect' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(52,10): error TS2339: Property 'giftsCoinCollect' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(57,10): error TS2339: Property 'giftsSpinAll' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(63,10): error TS2339: Property 'giftsCoinAll' does not exist on type '{}'.
+assets/Script/game/social/request/SRSocial.ts(69,10): error TS2339: Property 'giftsCardCollect' does not exist on type '{}'.
+assets/Script/game/status/meta/LevelBonusMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(35,19): error TS2551: Property 'reward' does not exist on type 'LevelBonusMeta'. Did you mean 'Reward'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(36,18): error TS2551: Property 'reward' does not exist on type 'LevelBonusMeta'. Did you mean 'Reward'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(36,56): error TS2551: Property '_data' does not exist on type 'LevelBonusMeta'. Did you mean 'Data'?
+assets/Script/game/status/meta/LevelBonusMeta.ts(38,21): error TS2551: Property 'reward' does not exist on type 'LevelBonusMeta'. Did you mean 'Reward'?
+assets/Script/game/status/request/SRStatus.ts(6,10): error TS2339: Property 'getUserStatus' does not exist on type '{}'.
+assets/Script/game/status/request/SRStatus.ts(19,10): error TS2339: Property 'getLevelBonusReward' does not exist on type '{}'.
+assets/Script/game/story/meta/MapStoryMeta.ts(14,14): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(16,18): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(21,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(25,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(29,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(33,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(37,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(41,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(45,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(49,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(62,18): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(63,18): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(65,17): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(66,25): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(68,14): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(72,22): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/story/meta/MapStoryMeta.ts(75,21): error TS2551: Property '_data' does not exist on type 'MapStoryMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(32,21): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/AdGetCoinMeta.ts(37,21): error TS2551: Property '_data' does not exist on type 'AdGetCoinMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(35,19): error TS2551: Property 'items' does not exist on type 'CashShopMeta'. Did you mean 'Item'?
+assets/Script/game/user/meta/CashShopMeta.ts(36,18): error TS2551: Property 'items' does not exist on type 'CashShopMeta'. Did you mean 'Item'?
+assets/Script/game/user/meta/CashShopMeta.ts(36,56): error TS2551: Property '_data' does not exist on type 'CashShopMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashShopMeta.ts(38,21): error TS2551: Property 'items' does not exist on type 'CashShopMeta'. Did you mean 'Item'?
+assets/Script/game/user/meta/CashTaskMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/CashTaskMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'CashTaskMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'SystemUserMeta'. Did you mean 'Data'?
+assets/Script/game/user/meta/SystemUserMeta.ts(51,16): error TS2339: Property 'CacheUser' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(62,16): error TS2339: Property 'GetUser' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(67,31): error TS2339: Property 'GetUser' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(72,16): error TS2339: Property 'uniIdStart' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(73,16): error TS2339: Property 'uniIdEnd' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(74,16): error TS2339: Property 'getRandomUsers' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(77,33): error TS2339: Property 'uniIdStart' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(77,65): error TS2339: Property 'uniIdEnd' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(87,16): error TS2339: Property 'getSeedRandomUsers' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(90,33): error TS2339: Property 'uniIdStart' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/game/user/meta/SystemUserMeta.ts(90,65): error TS2339: Property 'uniIdEnd' does not exist on type 'typeof SystemUserMeta'.
+assets/Script/GameKit/encryptCode.ts(1,8): error TS2339: Property 'encryptCode' does not exist on type 'Window & typeof globalThis'.
+assets/Script/GameKit/Logs.ts(1,5): error TS2451: Cannot redeclare block-scoped variable 'Logs'.
+assets/Script/GameKit/Logs.ts(46,12): error TS2339: Property 'Logs' does not exist on type 'typeof globalThis'.
+assets/Script/GameKit/TimeUtil.ts(45,10): error TS2339: Property 'MinuteInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(46,10): error TS2339: Property 'HourInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(46,39): error TS2339: Property 'MinuteInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(47,10): error TS2339: Property 'DayInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(47,38): error TS2339: Property 'HourInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(48,10): error TS2339: Property 'WeekInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(48,38): error TS2339: Property 'DayInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(50,10): error TS2339: Property 'TimeZoneInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(50,79): error TS2339: Property 'HourInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(51,10): error TS2339: Property 'specialUItime' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(64,10): error TS2339: Property 'FormatTime' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(66,94): error TS2339: Property 'TimeZoneInSecond' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(77,10): error TS2339: Property 'GetRemainTimeTable' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(92,10): error TS2339: Property 'FormatRemainTimeSimple' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(110,10): error TS2339: Property 'FormatPastTime' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(125,10): error TS2339: Property 'FormatSomeTime' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/TimeUtil.ts(140,10): error TS2339: Property 'FormatSecondsToText' does not exist on type '{ serverdelta: number; _getCurrentTime: () => number; getCurrentTime: () => any; UpdateServerTime: (st: any) => void; getCurrentDay: (t: any) => number; getCurrentHalfDay: (t: any) => number; getCurrentWeek: (t: any) => number; getCurrentMonth: (t: any) => number; }'.
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(47,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(51,21): error TS2551: Property '_data' does not exist on type 'WindowOrderMeta'. Did you mean 'Data'?
+assets/Script/GameKit/ui/meta/WindowOrderMeta.ts(61,17): error TS2339: Property 'Stages' does not exist on type 'typeof WindowOrderMeta'.
+assets/Script/globals.d.ts(12,15): error TS2451: Cannot redeclare block-scoped variable 'BigNumber'.
+assets/Script/globals.d.ts(19,15): error TS2451: Cannot redeclare block-scoped variable 'Logs'.
+assets/Script/globals.d.ts(22,15): error TS2451: Cannot redeclare block-scoped variable 'wxTools'.
+assets/Script/globals.d.ts(83,15): error TS2451: Cannot redeclare block-scoped variable 'fbInTools'.
+assets/Script/globals.d.ts(87,15): error TS2451: Cannot redeclare block-scoped variable 'pako'.
+assets/Script/globals.d.ts(88,15): error TS2451: Cannot redeclare block-scoped variable 'Base64'.
+assets/Script/libs/base64.ts(1,5): error TS2451: Cannot redeclare block-scoped variable 'Base64'.
+assets/Script/libs/BigNumber.ts(1,5): error TS2451: Cannot redeclare block-scoped variable 'BigNumber'.
+assets/Script/libs/BigNumber.ts(147,9): error TS2322: Type 'boolean' is not assignable to type 'number'.
+assets/Script/libs/BigNumber.ts(149,9): error TS2367: This comparison appears to be unintentional because the types 'string' and 'number' have no overlap.
+assets/Script/libs/CurrencyCodeInfo.ts(190,18): error TS2339: Property 'GetSymbol' does not exist on type '{ aed: { name: string; symbol: string; }; afn: { name: string; symbol: string; }; all: { name: string; symbol: string; }; amd: { name: string; symbol: string; }; ang: { name: string; symbol: string; }; aoa: { name: string; symbol: string; }; ... 179 more ...; zwl: { ...; }; }'.
+assets/Script/libs/CurrencyCodeInfo.ts(195,18): error TS2339: Property 'GetName' does not exist on type '{ aed: { name: string; symbol: string; }; afn: { name: string; symbol: string; }; all: { name: string; symbol: string; }; amd: { name: string; symbol: string; }; ang: { name: string; symbol: string; }; aoa: { name: string; symbol: string; }; ... 179 more ...; zwl: { ...; }; }'.
+assets/Script/libs/fbIn_lib.ts(1,5): error TS2451: Cannot redeclare block-scoped variable 'fbInTools'.
+assets/Script/libs/pako.ts(3,5): error TS2451: Cannot redeclare block-scoped variable 'pako'.
+assets/Script/libs/wx_lib.ts(1,5): error TS2451: Cannot redeclare block-scoped variable 'wxTools'.
+assets/Script/libs/wx_lib.ts(3,20): error TS2339: Property 'sys' does not exist on type 'never'.
+assets/Script/libs/wx_lib.ts(3,40): error TS2339: Property 'sys' does not exist on type 'never'.
+assets/Script/libs/yzAd.ts(11,13): error TS2794: Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?
+assets/Script/libs/yzAd.ts(105,29): error TS2503: Cannot find namespace 'FBInstant'.
+assets/Script/libs/yzAd.ts(146,27): error TS2503: Cannot find namespace 'FBInstant'.
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(16,14): error TS2551: Property '_rewardsPack' does not exist on type 'NewPassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(28,30): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(33,30): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(41,21): error TS2551: Property '_rewardsPack' does not exist on type 'NewPassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(44,21): error TS2551: Property '_rewardsPack' does not exist on type 'NewPassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(47,21): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(50,21): error TS2551: Property '_data' does not exist on type 'NewPassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(54,17): error TS2339: Property 'GetMetaByLevel' does not exist on type 'typeof NewPassPortMeta'.
+assets/Script/window/Activity/mergePassport/meta/NewPassPortMeta.ts(68,17): error TS2339: Property 'GetById' does not exist on type 'typeof NewPassPortMeta'.
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(31,38): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(35,30): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(39,46): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(43,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(48,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/mergePassport/meta/NewPassPortTaskMeta.ts(52,21): error TS2551: Property '_data' does not exist on type 'NewPassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'ActivityChoosePackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'ActivityChoosePackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'ActivityChoosePackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'ActivityChoosePackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(32,24): error TS2339: Property 'getActivityChoosePackItem' does not exist on type 'typeof ActivityChoosePackMeta'.
+assets/Script/window/Activity/optionalGiftPack/meta/ActivityChoosePackMeta.ts(36,24): error TS2339: Property 'get_buy_price_str' does not exist on type 'typeof ActivityChoosePackMeta'.
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(13,14): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(15,18): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(28,21): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(32,21): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(36,36): error TS2551: Property '_data' does not exist on type 'ChoosePackRewardPackMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/optionalGiftPack/meta/ChoosePackRewardPackMeta.ts(42,26): error TS2339: Property 'getChoosePackRewardsByLevel' does not exist on type 'typeof ChoosePackRewardPackMeta'.
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(16,14): error TS2551: Property '_rewardsPack' does not exist on type 'PassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(20,21): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(24,21): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(28,30): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(33,30): error TS2551: Property '_data' does not exist on type 'PassPortMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(41,21): error TS2551: Property '_rewardsPack' does not exist on type 'PassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(44,21): error TS2551: Property '_rewardsPack' does not exist on type 'PassPortMeta'. Did you mean 'RewardsPack'?
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(48,14): error TS2339: Property 'GetMetaByLevel' does not exist on type 'typeof PassPortMeta'.
+assets/Script/window/Activity/passport/meta/PassPortMeta.ts(62,14): error TS2339: Property 'GetById' does not exist on type 'typeof PassPortMeta'.
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(39,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(46,21): error TS2551: Property '_data' does not exist on type 'PassPortShopMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(50,18): error TS2339: Property 'GetMetasByType' does not exist on type 'typeof PassPortShopMeta'.
+assets/Script/window/Activity/passport/meta/PassPortShopMeta.ts(65,18): error TS2339: Property 'Type' does not exist on type 'typeof PassPortShopMeta'.
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(31,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(35,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(39,30): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(43,30): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(47,30): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(51,21): error TS2551: Property '_data' does not exist on type 'PassPortTaskMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/PassPortTaskMeta.ts(54,18): error TS2339: Property 'GetById' does not exist on type 'typeof PassPortTaskMeta'.
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(12,14): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(14,18): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(19,21): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(23,21): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(27,21): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(31,46): error TS2551: Property '_data' does not exist on type 'ShopRewardsMeta'. Did you mean 'Data'?
+assets/Script/window/Activity/passport/meta/ShopRewardsMeta.ts(34,17): error TS2339: Property 'GetRewardsByPackId' does not exist on type 'typeof ShopRewardsMeta'.
+assets/Script/window/Card/CardChangeWindow.ts(77,33): error TS2345: Argument of type 'Function' is not assignable to parameter of type '(index: number, id: ScrollViewItemId, node: Node) => void'.
+  Type 'Function' provides no match for the signature '(index: number, id: ScrollViewItemId, node: Node): void'.
+assets/Script/window/Quest/QuestInvitePage.ts(3,34): error TS2339: Property '_decorator' does not exist on type 'never'.
+assets/Script/window/Quest/QuestInvitePage.ts(6,49): error TS2339: Property 'Component' does not exist on type 'never'.
+assets/Script/window/Quest/QuestInvitePage.ts(11,18): error TS2339: Property 'node' does not exist on type 'QuestInvitePage'.
+assets/Script/window/Quest/QuestInvitePage.ts(18,13): error TS2794: Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?

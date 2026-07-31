@@ -1,4 +1,4 @@
-import { _decorator, instantiate, Label, Node, RichText, Sprite, SpriteFrame, sys } from 'cc';
+import { _decorator, instantiate, Label, Layout, Node, RichText, Sprite, SpriteFrame, sys, UITransform } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 
 const { ccclass, property } = _decorator;
@@ -32,11 +32,13 @@ export default class MessageMailDetailWindow extends UIWindow {
         if (!this.rewards.length || this.present.received) return this.closeAnim();
         const req = SR.SRVillage.collectPresent(this.present.id);
         req.SetCallBack(() => {
-            this.present.received = true;
+            this.markPresentReceived(this.present);
             const cache = GameKit.DataCache.GetData('UserPresentList') || {};
-            if (cache[this.present.id]) cache[this.present.id].received = true;
+            if (cache[this.present.id]) this.applyReceivedState(cache[this.present.id]);
             GameKit.DataCache.SetData('UserPresentList', cache);
             this.onPresentReceived?.(this.present);
+            this.showRewards(this.present.rewards, true);
+            this.updateClaimLabel();
             UIRoot.instance.openChildWindow('ShopBuySucessWindow', { rewards: this.rewards, nextWindow: 'none' });
         });
         req.Send();
@@ -48,9 +50,35 @@ export default class MessageMailDetailWindow extends UIWindow {
     getNodeByName(root: Node, name: string): Node | null { if (root.name === name) return root; for (const child of root.children) { const found = this.getNodeByName(child, name); if (found) return found; } return null; }
     getRewardTemplate() { return this.layout_reward?.children[0] || null; }
     clearRewardItems(itemTemplate: Node | null) { this.layout_reward?.children.slice().forEach(child => { if (child !== itemTemplate) child.destroy(); }); }
-    updateRewardLayoutCenter(_itemTemplate?: Node | null) { return; }
+    updateRewardLayoutCenter(itemTemplate?: Node | null) {
+        if (!this.layout_reward) return;
+        const layout = this.layout_reward.getComponent(Layout);
+        const transform = this.layout_reward.getComponent(UITransform);
+        if (!layout || !transform) return;
+        const children = this.layout_reward.children.filter(child => child.active && child !== itemTemplate);
+        if (children.length === 0) {
+            layout.updateLayout();
+            return;
+        }
+        const contentWidth = children.reduce((width, child, index) => {
+            const childWidth = child.getComponent(UITransform)?.contentSize.width || 0;
+            return width + childWidth * Math.abs(child.scale.x || 1) + (index > 0 ? layout.spacingX : 0);
+        }, 0);
+        const padding = Math.max(0, (transform.contentSize.width - contentWidth) / 2);
+        layout.paddingLeft = padding;
+        layout.paddingRight = padding;
+        layout.updateLayout();
+    }
     collectPresent(callback?: Function) { if (!this.present || this.present.received) return; const req = SR.SRVillage.collectPresent(this.present.id); req.SetCallBack((res: any) => { this.markPresentReceived(this.present); callback?.(res); }); req.Send(); }
-    markPresentReceived(present: any) { if (!present) return; present.received = true; this.updatePresentCache(); }
+    markPresentReceived(present: any) { if (!present) return; this.applyReceivedState(present); this.updatePresentCache(); }
+    applyReceivedState(present: any) {
+        if (!present) return;
+        present.received = true;
+        if (present.unread !== undefined) present.unread = false;
+        if (present.read !== undefined) present.read = true;
+        if (present.isRead !== undefined) present.isRead = true;
+        if (present.readed !== undefined) present.readed = true;
+    }
     updatePresentCache() { const cache = GameKit.DataCache.GetData('UserPresentList') || {}; if (this.present?.id != null) cache[this.present.id] = this.present; GameKit.DataCache.SetData('UserPresentList', cache); }
     refreshInBoxWindow() { this.onPresentReceived?.(this.present); }
     private showImage(url: string) {
@@ -74,7 +102,7 @@ export default class MessageMailDetailWindow extends UIWindow {
         this.layout_reward.active = this.rewards.length > 0;
         this.rewards.forEach(content => {
             const item = instantiate(template); item.parent = this.layout_reward; item.active = true;
-            item.getComponent('ContentModel')?.show(content);
+            (item.getComponent('ContentModel') as any)?.show(content);
             const gou = GameKit.ControllerTable.GetNode(item, 'gou'); if (gou) gou.active = !!received;
         });
         if (this.labelClaim) this.labelClaim.string = GameKit.i18n.t(this.rewards.length && !received ? 'MessageMailDetailWindow_claim' : 'MessageMailDetailWindow_confirm');

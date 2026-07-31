@@ -17,9 +17,6 @@ export class GamePlay extends Component {
     @property(Node)
     public spSlot: Node | null = null;
 
-    @property(Prefab)
-    public slotPrefab: Prefab | null = null;
-
     @property(Node)
     public spDailyBonus: Node | null = null;
 
@@ -121,14 +118,7 @@ export class GamePlay extends Component {
         if (this.spSlot) this.spSlot.active = true;
         if (this.spDailyBonus) this.spDailyBonus.active = true;
 
-        if (this.slotPrefab && this.spSlot) {
-            let sl = instantiate(this.slotPrefab);
-            sl.parent = this.spSlot;
-            sl.setPosition(0, 0);
-            this.mergeRoot = sl.getComponent('MergeRoot');
-            this.slotNode = sl.getComponent('SlotNode');
-            sl.active = true;
-        }
+        this.mergeRoot = this.spSlot?.getComponent('MergeRoot') ?? null;
 
         if (this.dailyBonusPrefab && this.spDailyBonus) {
             let db = instantiate(this.dailyBonusPrefab);

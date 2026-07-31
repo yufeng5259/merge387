@@ -1,0 +1,6270 @@
+{
+  "summary": {
+    "generatedAt": "2026-07-28T10:09:13.299Z",
+    "files": 4,
+    "sourceMethods": 80,
+    "mappedMethods": 80,
+    "missingMethods": 0,
+    "duplicateMethods": 0,
+    "methodsWithFeatureDeltas": 32
+  },
+  "report": [
+    {
+      "rel": "game/map/MapNode",
+      "sourceMethodCount": 68,
+      "targetMethodCount": 68,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": [
+        {
+          "method": "cancelBuildElementRefresh",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "cancelBuildElementRefresh",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementRefreshScheduled"
+            ],
+            "calls": [
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "597D77F0287B0880E104F4702D030E0077497493DC422FAAFA0B6E6EE524BB13"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementRefreshScheduled"
+            ],
+            "calls": [
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "597D77F0287B0880E104F4702D030E0077497493DC422FAAFA0B6E6EE524BB13"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "clearBuildLoadTimer",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "clearBuildLoadTimer",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadTimer"
+            ],
+            "calls": [
+              "clearTimeout"
+            ],
+            "events": [],
+            "timers": [
+              "clearTimeout"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2D75ADB3D716D4AEA8D3BBD0F0DF49BAB678E43831F8F57FDD13B281FBB6994B"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadTimer"
+            ],
+            "calls": [
+              "clearTimeout"
+            ],
+            "events": [],
+            "timers": [
+              "clearTimeout"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "80BC8B7E31C91FFC466063DE51B606C8CB665BAB39C678EA33CB6E50EA73E0F3"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "createBuildNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "createBuildNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Coin",
+              "String",
+              "bind",
+              "destroy",
+              "error",
+              "getBuildPrefabResName",
+              "getBuildRenderOrder",
+              "getMapElementNode",
+              "initData",
+              "instantiate",
+              "isBuildLoadVersionActive",
+              "isSupportedBuildID",
+              "prepareBuildingDisplayAnimation",
+              "refreshBuildRenderOrder",
+              "requestBuildPrefab",
+              "resolve",
+              "setPosition",
+              "then",
+              "updateOneBuildVisibility",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 14,
+              "loops": 0,
+              "returns": 15,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4373E08A19C95D5E2A0436FF82C0107E000AB2D625E9BBFA7D2ADB976B9A9903"
+          },
+          "target": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "Number",
+              "String",
+              "destroy",
+              "error",
+              "getBuildPrefabResName",
+              "getMapElementNode",
+              "initData",
+              "instantiate",
+              "isBuildLoadVersionActive",
+              "isSupportedBuildID",
+              "refreshBuildRenderOrder",
+              "requestBuildPrefab",
+              "resolve",
+              "setPosition",
+              "then",
+              "updateOneBuildVisibility",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 11,
+              "loops": 0,
+              "returns": 12,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "D3B0DDECCE77601C00913B7A77C5E1F4FED4AE8B42C08051B79CE9BC30134D66"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "Coin",
+              "bind",
+              "getBuildRenderOrder",
+              "prepareBuildingDisplayAnimation"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -3,
+              "loops": 0,
+              "returns": -3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "stateWritesAdded": [
+              "buildLayout"
+            ],
+            "callsAdded": [
+              "Number"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "fadeInBuildNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "fadeInBuildNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "callFunc",
+              "fadeTo",
+              "isValid",
+              "runAction",
+              "sequence",
+              "setTag",
+              "stopBuildFade"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "AAD5C69703B4E6FA4726F6B9E86041B2FB37540B5255A081F002FD66459C6009"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "call",
+              "getOpacity",
+              "getOrAddOpacity",
+              "isValid",
+              "setOpacity",
+              "start",
+              "stopBuildFade",
+              "to",
+              "tween"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "791AAF37F80C2BF099F95141D1364C3C59A7A0B3A4F8B51771D8B10712687FB5"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "callFunc",
+              "fadeTo",
+              "runAction",
+              "sequence",
+              "setTag"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "call",
+              "getOpacity",
+              "getOrAddOpacity",
+              "setOpacity",
+              "start",
+              "to",
+              "tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "finishProgressiveBuildLoading",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "finishProgressiveBuildLoading",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadStartTime",
+              "_buildLoadingComplete",
+              "_buildQueueLoading",
+              "_loadBuildQueueCallback",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "isBuildLoadVersionActive",
+              "log",
+              "now",
+              "unschedule",
+              "updateBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A737888EFDE06D7B8B6C0CE12C47965D87DD524C763CAF84E1E98361345B0F82"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadStartTime",
+              "_buildLoadingComplete",
+              "_buildQueueLoading",
+              "_loadBuildQueueCallback",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "isBuildLoadVersionActive",
+              "log",
+              "now",
+              "unschedule",
+              "updateBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AEAED7A2CC6F56D52289466D7E9649D1F0120ADD505ED81D266100A81D598B74"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildIDFromUnlockItem",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildIDFromUnlockItem",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "getCurrentMapID",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F1F76D24EB152CC3DC44502E0A1EEF12F0E7CFAA8D7AFE8418869287E350D48E"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "getCurrentMapID",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "279F832AFEB8BFE233BE1DC4B6E5DC1EC4D6DCD5ACCEE3D5D53FE5E97C4DCB44"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildIds",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildIds",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "Number",
+              "filter",
+              "keys",
+              "map",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 3
+            },
+            "bodySha256": "D78157BA631310AF7079A7AD0E25E2125E63A3A03E3068682511268021C09C01"
+          },
+          "target": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "Number",
+              "filter",
+              "keys",
+              "map",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 3
+            },
+            "bodySha256": "232E89099D1C4C34111CCF8CDC3B00AE1B60E8E901950F641608F6250AA8346F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildLayout",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildLayout",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapData"
+            ],
+            "calls": [
+              "Number",
+              "call",
+              "isSupportedBuildID",
+              "keys"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 2,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EDF08F7D8B3A96F1DCFAF1EACFF1BCE1E8E97D01667C6354A6EF9C9C86A1EFFB"
+          },
+          "target": {
+            "stateWrites": [
+              "mapData"
+            ],
+            "calls": [
+              "Number",
+              "assign",
+              "call",
+              "isSupportedBuildID",
+              "keys"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 2,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9005EEE775E571AD308AE2677BF21CACB646CBBEE84D047C15F04688BE1C1E1B"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "assign"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "dynamicBuilds"
+            ],
+            "calls": [
+              "getChildByName",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "60D277A50C77C964DA826069E3A93F054DB9E07562A88BDDE0CE0788F509F69F"
+          },
+          "target": {
+            "stateWrites": [
+              "dynamicBuilds"
+            ],
+            "calls": [
+              "Number",
+              "getChildByName",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3B807DC548020D4C8E038C9FC4FB1254F4C297F042D278BEDA6288ECF3AFC9EE"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "Number"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildPrefabResName",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildPrefabResName",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "88444A6D0735371AE21F995C79C1CECBD12AB0FB57AEFF76E481FB9F28D8E615"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E884A526B10408F452067147E749DFA7915AA32FA9B57DD4CBC878CC5174A03D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildRenderOrder",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildRenderOrder",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "isNaN",
+              "max",
+              "min",
+              "round"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AE7CB7A576ACCA30FB19C9EB57B82A22E349A9AAB55DF3688CF69A7977534125"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "round"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3CF272F76A39BA331A8BEFD23F97F5804468CD024B940840E37626DDCF622BCA"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "isNaN",
+              "max",
+              "min"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -5,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getBuildShadowRoot",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getBuildShadowRoot",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_shadowRoot",
+              "buildNode"
+            ],
+            "calls": [
+              "getChildByName",
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4D97EB8222314A55C28FB8934100D11BD88461E177C9F48E9C48C9F03E696961"
+          },
+          "target": {
+            "stateWrites": [
+              "_shadowRoot"
+            ],
+            "calls": [
+              "getChildByName"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F4486CF6D71736402D2D865F59702DC94002182B9DCF68551D42122545082EFC"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "buildNode"
+            ],
+            "callsMissing": [
+              "isValid"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getCurrentMapID",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getCurrentMapID",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "MapId",
+              "MergeMapId"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B5B1A0F33CD1EA625C419A78C0A76507F0E9AAB4C86D6ED2E01C6EC357E98637"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "MapId",
+              "MergeMapId"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2CC82C89CF3D7A1332B2B8E898107B7A02D3328F8992AFC551D81DFA66262202"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getEventUnlockedBuildIDs",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getEventUnlockedBuildIDs",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "call",
+              "filter",
+              "getBuildIDFromUnlockItem",
+              "indexOf",
+              "isArray",
+              "push",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 2,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "C9CCACD60D90E7C4F2E0F9C7BE691C104176DA7C8AC633318497BA025EB4044F"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "add",
+              "filter",
+              "forEach",
+              "getBuildIDFromUnlockItem",
+              "indexOf",
+              "isArray",
+              "keys",
+              "push",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 3
+            },
+            "bodySha256": "79764DED2421E1EF4D65373B3AAD09B93365495D14F01BFC4BFA7217B051AC21"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "call"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -3,
+              "loops": -2,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "add",
+              "forEach",
+              "keys"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getFirstCanLevelUpBuildContext",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getFirstCanLevelUpBuildContext",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "BuildID",
+              "GetBuildActionContext",
+              "GetMetas",
+              "MBId",
+              "MapId",
+              "MergeMapId",
+              "Number",
+              "call",
+              "initMapData",
+              "isSupportedBuildID",
+              "push",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 10,
+              "loops": 1,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "B547EBB403C298E5AD73BB269DC45DADE1D0F505475826BDB15D45D1788C1B32"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "BuildID",
+              "GetBuildActionContext",
+              "GetMetas",
+              "MBId",
+              "MapId",
+              "MergeMapId",
+              "Number",
+              "call",
+              "initMapData",
+              "isSupportedBuildID",
+              "push",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 10,
+              "loops": 1,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "BD8D8A8A57EC6E1286F3F1BF7F5EBF81F908313E4CCA1C071C39842E4489F4C1"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getFirstNewUnlockedBuildID",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getFirstNewUnlockedBuildID",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "getCurrentMapID",
+              "getEventUnlockedBuildIDs",
+              "isSupportedBuildID",
+              "isUnlockedNotBoughtBuild",
+              "push",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 2,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "51B9F001B07258BD466D6BF36B042CE91C6732D21BFCE435A912A588AB0D3940"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "filter",
+              "getCurrentMapID",
+              "getEventUnlockedBuildIDs",
+              "isArray",
+              "isSupportedBuildID",
+              "isUnlockedNotBoughtBuild",
+              "map",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 3
+            },
+            "bodySha256": "D1F95F96FEE1D87EDA63E68832CA08FEF1E3786D9E1233F30936E12AD4EC2AA2"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "push"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": -1,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "filter",
+              "isArray",
+              "map"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getMapElementNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getMapElementNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "getComponent",
+              "getComponents",
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "71596E63D4284025FFCDFCF3EEA2207017BAE1C96C5376A25B05CE7E146DF688"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getComponent",
+              "getComponents",
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "55BDDCA3AA069FFB30FD9C2FA3C9C254D0188E102E491BFD95B1E8DEA036A0CD"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getOrCreateBuildNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getOrCreateBuildNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "callback",
+              "createBuildNode",
+              "getBuildLayout",
+              "getBuildNode",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "D063F32355B62B388391D917F503BAB894159F41A7C1528ECB0A3DFCA76FBD4D"
+          },
+          "target": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "callback",
+              "createBuildNode",
+              "getBuildLayout",
+              "getBuildNode",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "D71E2DE4D267FD874ADEE1C5971DEB47388ED3CC907E051CC0A1083D21076BFC"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getPrefabBuildPositionOverrides",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getPrefabBuildPositionOverrides",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildNode"
+            ],
+            "calls": [
+              "Number",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "634171CBDF0C327A6498A8B397A82E8E75EA4E7CEC248F0972647916AF5F6094"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "17D5DE27F546891D71A55BE82E8E0CCD5F7F59419D8462FBF796F6C4C585C0C8"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "buildNode"
+            ],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getUnlockedBuildIDMap",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getUnlockedBuildIDMap",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "getCurrentMapID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "CAE947FE009C6D9B4CEA80A118A96E285D913ECF90F8906244193789EC7208C3"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "String",
+              "getCurrentMapID",
+              "isArray"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "CF9AA5D144F21A13B4D8B124C87CFB7C4E1E610ED16AAA4DC0460CF449B2FFC0"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "isArray"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "getWorldToScreenPoint",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "getWorldToScreenPoint",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "getWorldToScreenPoint",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1B66E53474EFDB6E1C0BF669C3518C09C6A7FFDEE7A11C5F138B261F687D94BF"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "clone",
+              "worldToScreen"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6B729551C3E26C015F75D5DC1EE014DE4F454E855B5A97552BCFF6F140291C66"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "getWorldToScreenPoint",
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "clone",
+              "worldToScreen"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "hasVillageBuildState",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "hasVillageBuildState",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetBuildings",
+              "GetComplete",
+              "keys"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FD20DE4F7DF93E2B676176E0CB08F9A4503F9D66941FE60C00E68256F78CAF91"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetBuildings",
+              "GetComplete",
+              "keys"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EAB2F39EDCA1683631B5D286910B3DA164F966C55680FD66DEAA78FCA818A720"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "initEvent",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "initEvent",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "GetData",
+              "GetFirstBuildID",
+              "RefreshCurrentWindow",
+              "RegisterEvent",
+              "Send",
+              "SetCallBack",
+              "bind",
+              "getComponent",
+              "getFirstNewUnlockedBuildID",
+              "getUnlockedBuildIDMap",
+              "getUserVillage",
+              "initMapData",
+              "log",
+              "lookBuild",
+              "onCanLevelUpEffect",
+              "requestBuildElementRefresh",
+              "scheduleOnce",
+              "updateBuildShadows"
+            ],
+            "events": [
+              "MapNode"
+            ],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "E1161DE2F8BD5AAB7DFD1A62619E0C4CF7E774B8E9BA2D528E4B18100C9C0782"
+          },
+          "target": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "GetData",
+              "GetFirstBuildID",
+              "RefreshCurrentWindow",
+              "RegisterEvent",
+              "Send",
+              "SetCallBack",
+              "getComponent",
+              "getFirstNewUnlockedBuildID",
+              "getUnlockedBuildIDMap",
+              "getUserVillage",
+              "initMapData",
+              "log",
+              "lookBuild",
+              "onCanLevelUpEffect",
+              "requestBuildElementRefresh",
+              "scheduleOnce",
+              "updateBuildShadows"
+            ],
+            "events": [
+              "MapNode"
+            ],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 7
+            },
+            "bodySha256": "67AD2D9825521092B3A06BC1DADBA9775CCF4C1FCD406CE9C34BE2327C2AEED8"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 5
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "initMapElements",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "initMapElements",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Coin",
+              "DispatcherEvent",
+              "prepareDefaultUnlockedBuild",
+              "restoreInitialMapView",
+              "updateBuildShadows"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2CF545AF3AFB238CF585FB845DE97EA189AFBD4EA222AAA7211E3ACE7A57919D"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Coin",
+              "DispatcherEvent",
+              "prepareDefaultUnlockedBuild",
+              "restoreInitialMapView",
+              "updateBuildShadows"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2CF545AF3AFB238CF585FB845DE97EA189AFBD4EA222AAA7211E3ACE7A57919D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isBuildLoadingComplete",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isBuildLoadingComplete",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadingComplete"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4DF3F9DD0FBF2DBD2351270E7BD4BEEF84A9F9AEB96DF312435E7B4F8CA5BE96"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadingComplete"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4DF3F9DD0FBF2DBD2351270E7BD4BEEF84A9F9AEB96DF312435E7B4F8CA5BE96"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isBuildLoadVersionActive",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isBuildLoadVersionActive",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_destroyed"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "48F0D7450A7AF98EBECB3D82603BFC24B3110BAF3BBFF471443EF2DECA65EDB6"
+          },
+          "target": {
+            "stateWrites": [
+              "_destroyed"
+            ],
+            "calls": [
+              "isValid"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A0AF2BEFAC3F6CE5A008F4591B9855C71AC51386E0EF98F7F31647A1ED616C18"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "isValid"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isBuildShadowUnlocked",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isBuildShadowUnlocked",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "IsLevelUnlocked",
+              "getCurrentMapID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A3E105A847CBC36FCF026CCD558BF7C0802876760C24A9533953E193F77212A6"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "IsLevelUnlocked",
+              "getCurrentMapID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D4A5B039DE2293D021396F2B6D38A0C6F78520F4F73268C2EAA1AD4D4E5FBF18"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isBuildVisibleInCamera",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isBuildVisibleInCamera",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "convertToWorldSpaceAR",
+              "getWorldToScreenPoint",
+              "max",
+              "min",
+              "v2"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 1,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8ECAD1C16DD917189EE5064372A33D067461167FF7D238537F5B92DE799044A7"
+          },
+          "target": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "convertToWorldSpaceAR",
+              "getComponent",
+              "getVisibleSize",
+              "max",
+              "min",
+              "worldToScreen"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 1,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B3C60C3AA9C630D9D23B4B46814A56685DB8ED3740BF38F1A295C76813AF963F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "getWorldToScreenPoint",
+              "v2"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getComponent",
+              "getVisibleSize",
+              "worldToScreen"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isNativeRuntime",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isNativeRuntime",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "IsNative"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BA5E6523C3E6844C710E4FFFD3DD4709847A78A91148E97D69E7264B6B77E760"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "IsNative"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "E454BC0711F0CC4ED64219F5C8CA01C9EB7D87FF74F01BADF22B5F04D652E117"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isSupportedBuildID",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isSupportedBuildID",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4D3680FB0092F31011D5F984FCCC2421D6D7A5B8C4D652FD4A32A3DD3307601E"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9EBCA6F9EEB29AF07249BCB6001B64F2FAA5B0C14D43796AE8A25FFFF9D89904"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "isUnlockedNotBoughtBuild",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "isUnlockedNotBoughtBuild",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "GetElementState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "3F958F48F25B77D8D8F300CCD72C7D9F903EEF06B12E2099599D06905E85A057"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetElementState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "531B9DB4A0A579ECA07C812F487B9536C98A9BAB6BDBD31D9BBE8A682949AFDA"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "loadBuilds",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "loadBuilds",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadStartTime",
+              "_buildLoadUserCoin",
+              "_buildLoadVersion",
+              "_buildLoadingComplete",
+              "_initialBuildLoading",
+              "buildCount",
+              "buildLayout",
+              "dynamicBuilds",
+              "loadingBuildPrefabPromises",
+              "loadingBuildPromises",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "Coin",
+              "bind",
+              "callback",
+              "cancelBuildElementRefresh",
+              "catch",
+              "error",
+              "filter",
+              "getBuildIds",
+              "getBuildLayout",
+              "getPrefabBuildPositionOverrides",
+              "isBuildLoadVersionActive",
+              "loadInitialBuilds",
+              "log",
+              "now",
+              "preloadBuildPrefabs",
+              "removeAllChildren",
+              "startProgressiveBuildLoading",
+              "startVisibleCheck",
+              "stopBuildSchedules",
+              "then",
+              "updateBuildVisibility",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "B7B48BE9B4DFF09AE2D3BAB9D8C481CE6A312396DE8B9137F06925F2446B5002"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadStartTime",
+              "_buildLoadVersion",
+              "_buildLoadingComplete",
+              "_initialBuildLoading",
+              "buildCount",
+              "buildLayout",
+              "dynamicBuilds",
+              "loadedBuildPrefabs",
+              "loadingBuildPrefabPromises",
+              "loadingBuildPromises",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "callback",
+              "cancelBuildElementRefresh",
+              "catch",
+              "error",
+              "filter",
+              "getBuildIds",
+              "getBuildLayout",
+              "getPrefabBuildPositionOverrides",
+              "isBuildLoadVersionActive",
+              "loadInitialBuilds",
+              "now",
+              "preloadBuildPrefabs",
+              "removeAllChildren",
+              "startProgressiveBuildLoading",
+              "startVisibleCheck",
+              "stopBuildSchedules",
+              "then",
+              "updateBuildVisibility",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 7,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 4
+            },
+            "bodySha256": "5D48366DAFAC08EA87106B4C8D820BC22C84CE5A12BE230F9B7CA40941E5A69B"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "_buildLoadUserCoin"
+            ],
+            "callsMissing": [
+              "Coin",
+              "bind",
+              "log"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": -2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "stateWritesAdded": [
+              "loadedBuildPrefabs"
+            ],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "loadInitialBuilds",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "loadInitialBuilds",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "bind",
+              "createBuildNode",
+              "isBuildLoadVersionActive",
+              "loadNext",
+              "resolve",
+              "scheduleBuildLoadTimer",
+              "then"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleBuildLoadTimer"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "591C0C03D41F1E47FF497514C5C22AF399590065BA158417FE675D315CDF0E8C"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "createBuildNode",
+              "isBuildLoadVersionActive",
+              "loadNext",
+              "resolve",
+              "scheduleBuildLoadTimer",
+              "then"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleBuildLoadTimer"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "E62C55AD1465E32560B31894955756223AB563A535BDBA477FEB3542A273B2C7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "loadNextBuildFromQueue",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "loadNextBuildFromQueue",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildQueueLoading",
+              "buildCount",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "bind",
+              "createBuildNode",
+              "finishProgressiveBuildLoading",
+              "isBuildLoadVersionActive",
+              "scheduleNextBuildLoad",
+              "shift",
+              "then"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleNextBuildLoad"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 5,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "0BA80EFB92B3833DA716C5EE640966900BE47C7A4FEFE54ADCEBF7C682A44C2D"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildQueueLoading",
+              "buildCount",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "createBuildNode",
+              "finishProgressiveBuildLoading",
+              "isBuildLoadVersionActive",
+              "scheduleNextBuildLoad",
+              "shift",
+              "shouldContinueBuildLoading",
+              "then",
+              "updateBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleNextBuildLoad"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 8,
+              "loops": 0,
+              "returns": 7,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "8E37FDC0CEEA288EDB0F6387ACCE3D317DE9BBB1CC0BC5B6388A206130792F3A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "shouldContinueBuildLoading",
+              "updateBuildVisibility"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "loadNextBuildPrefabInBackground",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "loadNextBuildPrefabInBackground",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount"
+            ],
+            "calls": [
+              "bind",
+              "isBuildLoadVersionActive",
+              "loadNextBuildPrefabInBackground",
+              "max",
+              "requestBuildPrefab",
+              "shift",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C2A2A6506C55DCCF32CC535C3A2AE26E37ADC4B24B2559970C6C859C4107F77A"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount"
+            ],
+            "calls": [
+              "isBuildLoadVersionActive",
+              "loadNextBuildPrefabInBackground",
+              "max",
+              "requestBuildPrefab",
+              "shift",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "30B0F3BBD6698BB46DC2E24919B4FC0174D5DFB393C72E6C8FAA97761FF7C056"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "lookBuild",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "lookBuild",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "bind",
+              "callback",
+              "createBuildNode",
+              "getBuildNode",
+              "lookBuildNode",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A4C9401F1803AE4A355848AD25D6049393FF1CE0899602E6FAF7E54D757F451F"
+          },
+          "target": {
+            "stateWrites": [
+              "buildLayout"
+            ],
+            "calls": [
+              "callback",
+              "createBuildNode",
+              "getBuildNode",
+              "lookBuildNode",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "A2C70BCD03F1EA52D235439F197BC84188BE96C9535F58676E47489FCA997C09"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "lookBuildNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "lookBuildNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "bind",
+              "callback",
+              "clone",
+              "getComponent",
+              "isValid",
+              "lookBuild",
+              "refreshBuildRenderOrder",
+              "scheduleOnce",
+              "stopBuildFade",
+              "updateOneBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C7591BCE56C103CBF2B19ABB85CC2D8FF13B6F9F280F49EF8322B0AD8A174C63"
+          },
+          "target": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "callback",
+              "clone",
+              "getComponent",
+              "isValid",
+              "lookBuild",
+              "scheduleOnce",
+              "setOpacity",
+              "stopBuildFade",
+              "updateOneBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "6B4989E9ACE7CA08BD938254CCC64103D259185D95C1B6FB87326F4735805D81"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind",
+              "refreshBuildRenderOrder"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setOpacity"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onCanLevelUpEffect",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onCanLevelUpEffect",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementUpdateDirty",
+              "node"
+            ],
+            "calls": [
+              "Coin",
+              "call",
+              "getMapElementNode",
+              "isValid",
+              "refreshBuildRenderOrder",
+              "updateBuildShadows",
+              "updateElement"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7FBF2B6B7B5388786CF6855A2B6D0367C53D1756833EB2B3BA4371A30467C5F9"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementUpdateDirty",
+              "node"
+            ],
+            "calls": [
+              "Coin",
+              "call",
+              "getMapElementNode",
+              "isValid",
+              "updateElement"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4006EAE71905C0D8C97AE3A669CBB2B03D476126E7DAC69EE4AF4CBD4CFA83A7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "refreshBuildRenderOrder",
+              "updateBuildShadows"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onDestroy",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onDestroy",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadVersion",
+              "_destroyed",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "UnRegisterEvent",
+              "cancelBuildElementRefresh",
+              "stopBuildSchedules"
+            ],
+            "events": [
+              "MapNode"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "FD1AEB591E83D56C5CA695F4444965295396DEA1940D0A8E998662E2AF4DC785"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadVersion",
+              "_destroyed",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "UnRegisterEvent",
+              "cancelBuildElementRefresh",
+              "stopBuildSchedules"
+            ],
+            "events": [
+              "MapNode"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6041DF5169FFFD554E44D4567B02FC45DA3CF94188A943CA1E7F86C94A06287D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onLevelNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onLevelNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "warn"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "48A68D46F94AABA47E3BD593D0CC0B8236C139AF0826689C73C893C2D41EBA23"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "GetMetaById",
+              "MergeMapId",
+              "getBuildNode",
+              "getMapElementNode",
+              "openChildWindow",
+              "playLevelUpAnimation"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [
+              "StoryWindow"
+            ],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "3A0C19934388DA0C6BE140FF338CCABF3A91CA04E74476F13C01A6664C61568A"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "warn"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "GetMetaById",
+              "MergeMapId",
+              "getBuildNode",
+              "getMapElementNode",
+              "openChildWindow",
+              "playLevelUpAnimation"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": [
+              "StoryWindow"
+            ]
+          }
+        },
+        {
+          "method": "onLevelStageNode",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onLevelStageNode",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "getBuildNode",
+              "getMapElementNode",
+              "playStageLevelUpAnimation"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "65EEBFBF673CEAE0165A8B1F12F34FB2F80756D4E330C21AF5EC722A50A4613D"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getBuildNode",
+              "getMapElementNode",
+              "playStageLevelUpAnimation"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "186A7DE069F2813520BCE6A9408685706EA6FFDCED3E98453C94B3AF76109746"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "onLoad",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "onLoad",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementRefreshDelay",
+              "_buildElementRefreshScheduled",
+              "_buildElementUpdateDirty",
+              "_buildLoadTimer",
+              "_buildLoadVersion",
+              "_buildLoadingComplete",
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue",
+              "_buildQueueLoading",
+              "_destroyed",
+              "_initialBuildLoading",
+              "_shadowRoot",
+              "buildCount",
+              "buildObj",
+              "buildPrefabPreloadConcurrency",
+              "dynamicBuilds",
+              "initialBuildLoadInterval",
+              "loadedBuildPrefabs",
+              "loadingBuildPrefabPromises",
+              "loadingBuildPromises",
+              "mapControlle",
+              "progressiveLoadInterval",
+              "visibleCheckHalfSize",
+              "visibleCheckInterval",
+              "visibleFadeDuration"
+            ],
+            "calls": [
+              "getChildrenCount",
+              "isNativeRuntime"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "06D8F6AF7F61C17FC5D5CF8502202F7A3977DEE03FCE81AB7A0222D53659FCCF"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementRefreshDelay",
+              "_buildElementRefreshScheduled",
+              "_buildElementUpdateDirty",
+              "_buildLoadStartTime",
+              "_buildLoadVersion",
+              "_buildLoadingComplete",
+              "_buildQueueLoading",
+              "_destroyed",
+              "_initialBuildLoading",
+              "buildCount",
+              "buildObj",
+              "buildPrefabPreloadConcurrency",
+              "dynamicBuilds",
+              "initialBuildLoadInterval",
+              "loadedBuildPrefabs",
+              "loadingBuildPrefabPromises",
+              "loadingBuildPromises",
+              "mapControlle",
+              "progressiveLoadInterval",
+              "visibleCheckHalfSize",
+              "visibleCheckInterval",
+              "visibleFadeDuration"
+            ],
+            "calls": [
+              "isNativeRuntime"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "34D7A6E6B09FB63FB818796336B610E4F3C192837E4A87803223D092A8EB86AA"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "_buildLoadTimer",
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue",
+              "_shadowRoot"
+            ],
+            "callsMissing": [
+              "getChildrenCount"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_buildLoadStartTime"
+            ],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "openBuildAction",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "openBuildAction",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_openBuildActionToken",
+              "mapControlle"
+            ],
+            "calls": [
+              "Number",
+              "bind",
+              "callback",
+              "getComponent",
+              "getMapElementNode",
+              "getOrCreateBuildNode",
+              "isValid",
+              "lookBuildNode",
+              "max",
+              "scheduleOnce",
+              "showLevelInfo"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 9,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1BF7329AE7D887B829D2B5D33B1A42F82E0ECC3F368F660470F00B69BFF70111"
+          },
+          "target": {
+            "stateWrites": [
+              "_openBuildActionToken",
+              "mapControlle"
+            ],
+            "calls": [
+              "Number",
+              "callback",
+              "getComponent",
+              "getMapElementNode",
+              "getOrCreateBuildNode",
+              "isValid",
+              "lookBuildNode",
+              "max",
+              "scheduleOnce",
+              "showLevelInfo"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 9,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "E976079A3E82E5F032BC1EDF16AC0054B44804602264F3DEE6C8E64B03905855"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "openCanLevelUpBuild",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "openCanLevelUpBuild",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "callback",
+              "getFirstCanLevelUpBuildContext",
+              "openBuildAction"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "00477577FC37DC17FBA1F7CCCD50ED32204CFC61D894945063E110A180840E56"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "callback",
+              "getFirstCanLevelUpBuildContext",
+              "openBuildAction"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F6136E26A51B2EE0FE9A5DCC3FC60C0E77A07B3F7DEBBA74F800158157E248F9"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "pauseProgressiveBuildLoading",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "pauseProgressiveBuildLoading",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementUpdateDirty"
+            ],
+            "calls": [
+              "cancelBuildElementRefresh"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4BB4282887066637F85BDDE7BE213BF1D99D49E221F81BC94A458D26BD4F5C0C"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementUpdateDirty",
+              "_buildQueueLoading"
+            ],
+            "calls": [
+              "cancelBuildElementRefresh",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6AC74DA90E81D6964FE508BCDE88BC00FD46473AC599D8F9C9862385B8E27121"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [
+              "_buildQueueLoading"
+            ],
+            "callsAdded": [
+              "unschedule"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [
+              "unschedule"
+            ],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "playElementLevelUpAnimation",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "playElementLevelUpAnimation",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "call",
+              "callback",
+              "getBuildNode",
+              "getMapElementNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 8,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "ABBC91C3CA4B1D4D6EA890A316F5FD0BC74621CB502300B4A20EA7F39B40AAF4"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "call",
+              "callback",
+              "getBuildNode",
+              "getMapElementNode"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 8,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "2BA5B7A6FC459921BD356886F4A12322B9D06042F30FAEBCD79D2EF9634BDF9C"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "preloadBuildPrefabs",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "preloadBuildPrefabs",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue"
+            ],
+            "calls": [
+              "loadNextBuildPrefabInBackground",
+              "slice",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "817F942591822678DDC67441F4A8963838CF5D43E114C1B536DEFF8C6A171C1A"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue"
+            ],
+            "calls": [
+              "loadNextBuildPrefabInBackground",
+              "slice",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4C778DBED7268A61BB0B1F13738CB51A94063E0F46DF34E0571A33E991F9D3BF"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "prepareDefaultUnlockedBuild",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "prepareDefaultUnlockedBuild",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "UnlockElement",
+              "hasVillageBuildState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "8F6309CE0BDA5B3DE36C37181E8E1B2AB61FB45B7971AB7B7748D16101FC7316"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "UnlockElement",
+              "hasVillageBuildState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9880E6F34FA5922A6344A126F65F51C1B784EDDA9F8C81B511945E6255008E23"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshBuildElementsIfDirty",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshBuildElementsIfDirty",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementUpdateDirty",
+              "node"
+            ],
+            "calls": [
+              "onCanLevelUpEffect"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6D5DABA74F2B86B9C817E30C7A6CFFE2DB1DBCCC1765A5368304682DA09F2401"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementUpdateDirty",
+              "node"
+            ],
+            "calls": [
+              "onCanLevelUpEffect"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6D5DABA74F2B86B9C817E30C7A6CFFE2DB1DBCCC1765A5368304682DA09F2401"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "refreshBuildRenderOrder",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "refreshBuildRenderOrder",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildLayout",
+              "buildNode"
+            ],
+            "calls": [
+              "Number",
+              "getBuildRenderOrder",
+              "getSiblingIndex",
+              "isValid",
+              "setSiblingIndex",
+              "slice",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 2,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "9B3CAE78A231158CE22FF87104D51E55CCDFF0E19E92D4112E621B51740C7259"
+          },
+          "target": {
+            "stateWrites": [
+              "buildNode"
+            ],
+            "calls": [
+              "Number",
+              "forEach",
+              "getBuildRenderOrder",
+              "setSiblingIndex",
+              "slice",
+              "sort"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "DA226834805F2E2640B4F97B518551FE31CB1EA99340F37FF378BA74819ADF8D"
+          },
+          "delta": {
+            "stateWritesMissing": [
+              "buildLayout"
+            ],
+            "callsMissing": [
+              "getSiblingIndex",
+              "isValid"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": -2,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "forEach"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "removeBuildIdFromPreloadQueue",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "removeBuildIdFromPreloadQueue",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildPrefabPreloadQueue"
+            ],
+            "calls": [
+              "splice"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6B9AF2EE014AD030A0C330554CEE9BCAFC841BB79D851A4BBBD0CCCF09329811"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildPrefabPreloadQueue"
+            ],
+            "calls": [
+              "filter"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "17781FADF0389342C579450BCE1C9D75E5289BB6764663D24C6634F9D520F276"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "splice"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -2,
+              "loops": -1,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "filter"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "requestBuildElementRefresh",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "requestBuildElementRefresh",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildElementRefreshScheduled",
+              "_buildElementUpdateDirty",
+              "_refreshBuildElementCallback",
+              "node"
+            ],
+            "calls": [
+              "bind",
+              "onCanLevelUpEffect",
+              "scheduleOnce"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "1F9311DC7FA22FE25C67E551E8E0CC229C73351F333CBE934C7A9E9369AD8910"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildElementRefreshScheduled",
+              "_buildElementUpdateDirty",
+              "_refreshBuildElementCallback",
+              "node"
+            ],
+            "calls": [
+              "onCanLevelUpEffect",
+              "scheduleOnce"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A65681A4548C1BBCF812F3CE74D09AE70B5E4B000FA5FA9EB6B8D48B7CCC8474"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "requestBuildPrefab",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "requestBuildPrefab",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "bind",
+              "error",
+              "getBuildPrefabResName",
+              "isBuildLoadVersionActive",
+              "loadRes",
+              "log",
+              "now",
+              "removeBuildIdFromPreloadQueue",
+              "resolve",
+              "then",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [
+              "MapNode load build prefab failed"
+            ],
+            "metrics": {
+              "branches": 6,
+              "loops": 0,
+              "returns": 7,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7C81494DA97E0A33ED65F2D6FC83AE4D1456DFA32BBA98926D5B73C467BBB6C8"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "error",
+              "getBuildPrefabResName",
+              "isBuildLoadVersionActive",
+              "loadRes",
+              "removeBuildIdFromPreloadQueue",
+              "resolve",
+              "then"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [
+              "MapNode load build prefab failed"
+            ],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 6,
+              "throws": 1,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "4B60C1363EF664F301F3FBA7060DC1DA2A8DC121FDE7C3F933ADA44CECF40195"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind",
+              "log",
+              "now",
+              "useCommonBuildPrefab"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": -1,
+              "throws": 1,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "restoreInitialMapView",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "restoreInitialMapView",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "GetFirstBuildID",
+              "initEvent",
+              "lookBuild",
+              "resetViewState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6D14D58D069A6A835AC92E16981DB39B382C059FDBBDC13FE32DA3CE90048D08"
+          },
+          "target": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "GetFirstBuildID",
+              "initEvent",
+              "lookBuild",
+              "resetViewState"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "36AAFCBAFEB3185708826D1A39D3E3F5C52EF4C97676FE3C43664372DD205BC7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "resumeProgressiveBuildLoading",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "resumeProgressiveBuildLoading",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadingComplete",
+              "_loadBuildQueueCallback",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "bind",
+              "isBuildLoadVersionActive",
+              "loadNextBuildFromQueue",
+              "refreshBuildElementsIfDirty",
+              "scheduleNextBuildLoad"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleNextBuildLoad"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "2D6399500AFD937CEFCA4B7FC82421DE5628C2E3616366E99632EF5CD8B0E750"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadingComplete",
+              "_loadBuildQueueCallback",
+              "pendingBuildIds"
+            ],
+            "calls": [
+              "isBuildLoadVersionActive",
+              "loadNextBuildFromQueue",
+              "refreshBuildElementsIfDirty",
+              "scheduleOnce",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleOnce",
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 5,
+              "loops": 0,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "20308ECAF4D107C088E48465F107A7123402A479F18A89E4678D0DFC10F4115C"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind",
+              "scheduleNextBuildLoad"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [
+              "scheduleNextBuildLoad"
+            ],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "scheduleOnce",
+              "unschedule"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [
+              "scheduleOnce",
+              "unschedule"
+            ],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "scheduleBuildLoadTimer",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "scheduleBuildLoadTimer",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildLoadTimer"
+            ],
+            "calls": [
+              "Number",
+              "bind",
+              "callback",
+              "clearBuildLoadTimer",
+              "isNativeRuntime",
+              "max",
+              "setTimeout",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [
+              "setTimeout"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "B82AF4A0D38838150BD27CBE8AF6AF54202491B9ACAAF7E45792CFAF312BAAA8"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildLoadTimer",
+              "_destroyed"
+            ],
+            "calls": [
+              "Number",
+              "callback",
+              "clearBuildLoadTimer",
+              "isNativeRuntime",
+              "max",
+              "setTimeout",
+              "useCommonBuildPrefab"
+            ],
+            "events": [],
+            "timers": [
+              "setTimeout"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "F92C59CF31CD5548875BBC2A367656F0BE1F5158BBB7450D316543EBD5910540"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [
+              "_destroyed"
+            ],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "scheduleNextBuildLoad",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "scheduleNextBuildLoad",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_loadBuildQueueCallback"
+            ],
+            "calls": [
+              "bind",
+              "isBuildLoadVersionActive",
+              "loadNextBuildFromQueue",
+              "scheduleBuildLoadTimer"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleBuildLoadTimer"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "DC63103F6FBFA026928AFA36114EED6564E6748C5DB3D4F069AFB717E3D4435F"
+          },
+          "target": {
+            "stateWrites": [
+              "_loadBuildQueueCallback"
+            ],
+            "calls": [
+              "isBuildLoadVersionActive",
+              "loadNextBuildFromQueue",
+              "scheduleBuildLoadTimer"
+            ],
+            "events": [],
+            "timers": [
+              "scheduleBuildLoadTimer"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AA9FC82C158D8B0611D5E8A988FA63D29B1F9638188A4442A4A00CDA7A2BB04F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "shouldContinueBuildLoading",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "shouldContinueBuildLoading",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "node"
+            ],
+            "calls": [
+              "shouldKeepVillageBuildLoadingInBackground"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "24D97BBCA43E9F4254F5AE091A4470C9FAAC7736541473CCEF0805AA0C7CCB49"
+          },
+          "target": {
+            "stateWrites": [
+              "node"
+            ],
+            "calls": [
+              "shouldKeepVillageBuildLoadingInBackground"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "68F9A64CC35D20DA1848D0A6DDC3A97D300A326145CCFA0DF8A6B2A5119E6BF9"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showAllLoadedBuilds",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showAllLoadedBuilds",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_visibleCheckCallback"
+            ],
+            "calls": [
+              "call",
+              "isValid",
+              "refreshBuildRenderOrder",
+              "stopBuildFade",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D7DBB350969CE4495F25F712B48165D7225DFBDE3EA33C90678AB425CA90D2AA"
+          },
+          "target": {
+            "stateWrites": [
+              "_visibleCheckCallback"
+            ],
+            "calls": [
+              "call",
+              "isValid",
+              "setOpacity",
+              "stopBuildFade",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 1,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "D7AB151072D707B48B65C5DFA8B2AD838EE291DA7F34DF1D4A5D8E4250DA7113"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "refreshBuildRenderOrder"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setOpacity"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "showInfo",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "showInfo",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "bind",
+              "initEvent",
+              "initMapElements",
+              "loadBuilds",
+              "log",
+              "prepareDefaultUnlockedBuild",
+              "updateBuildShadows"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "BA2B5D2484086D2ABE3B0406C3F30A9DD66E8E8B1E1161A3875A14B0D1E5B57C"
+          },
+          "target": {
+            "stateWrites": [
+              "mapControlle"
+            ],
+            "calls": [
+              "initEvent",
+              "initMapElements",
+              "loadBuilds",
+              "log",
+              "prepareDefaultUnlockedBuild"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "728AD00C1E30D071D41444557CFD63AE5927BBBE8DA480C79790D8F7A311D3E7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind",
+              "updateBuildShadows"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "startProgressiveBuildLoading",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "startProgressiveBuildLoading",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_loadBuildQueueCallback"
+            ],
+            "calls": [
+              "bind",
+              "loadNextBuildFromQueue",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "95E11D172E69CE7327073B0FE372A9EB1C2E1725F181B9941B81D60302A57CD4"
+          },
+          "target": {
+            "stateWrites": [
+              "_loadBuildQueueCallback"
+            ],
+            "calls": [
+              "loadNextBuildFromQueue",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "162B70BC733397A979B19A83B71D9A76F2916E351A3F33E6AB17F8AEC9D15016"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "startVisibleCheck",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "startVisibleCheck",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_visibleCheckCallback",
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "bind",
+              "schedule",
+              "showAllLoadedBuilds",
+              "unschedule",
+              "updateBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "schedule",
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9A1B2FAE2667881B34D26A37926D3FC966D889686F80D50B71C5B7DCA4278FB4"
+          },
+          "target": {
+            "stateWrites": [
+              "_visibleCheckCallback",
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "schedule",
+              "showAllLoadedBuilds",
+              "unschedule",
+              "updateBuildVisibility"
+            ],
+            "events": [],
+            "timers": [
+              "schedule",
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C94A2FE6D2FE5F79D9AB10F15679BD9EE6225A93E6B98B8C8AAEDDCA9BB54060"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "bind"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "stopBuildFade",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "stopBuildFade",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "isValid",
+              "stopActionByTag"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "9030A18E8D8D6D67B4FB1F6645F350B16F54F9AEFAFB508C6CDB362CE42CE367"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "getOrAddOpacity",
+              "isValid",
+              "stop",
+              "tween"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 1,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "59F29591C92D666DE4A262A39AC5E2E4421E79DAC66D2C7EFA142485E2C7BEAB"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [
+              "stopActionByTag"
+            ],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "getOrAddOpacity",
+              "stop",
+              "tween"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "stopBuildSchedules",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "stopBuildSchedules",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue",
+              "_buildQueueLoading",
+              "_initialBuildLoading",
+              "_loadBuildQueueCallback",
+              "_visibleCheckCallback"
+            ],
+            "calls": [
+              "clearBuildLoadTimer",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "00822EEC5C0082227093A94EE793FD647DFA8E4D9860D77E8C64258CF2E86A17"
+          },
+          "target": {
+            "stateWrites": [
+              "_buildPrefabPreloadActiveCount",
+              "_buildPrefabPreloadQueue",
+              "_buildQueueLoading",
+              "_initialBuildLoading",
+              "_loadBuildQueueCallback",
+              "_visibleCheckCallback"
+            ],
+            "calls": [
+              "clearBuildLoadTimer",
+              "unschedule"
+            ],
+            "events": [],
+            "timers": [
+              "unschedule"
+            ],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4351CDD961BC1AB86CA7CB8F26A6B4E3AB29BDBA995827B128AD55DE2467AF92"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateBuildShadows",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateBuildShadows",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "getBuildShadowRoot",
+              "isBuildShadowUnlocked",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 4,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "4E279F7264BBB8AA0B92F4B1E8EBF2E6CB9794E74DFDECC4B9EC633CD55C4C3F"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Number",
+              "getBuildShadowRoot",
+              "isBuildShadowUnlocked",
+              "isSupportedBuildID"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 1,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "6EBFB56B51B7BE675A25B972E6B9CE2E024215DC2BC824E72B2A52FBFE543360"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": -4,
+              "loops": 0,
+              "returns": -1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateBuildVisibility",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateBuildVisibility",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "call",
+              "showAllLoadedBuilds",
+              "updateOneBuildVisibility"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C3EC8641DF7725B7C800E175379349C2D2220352E93CA8A2C2095DEF903F5699"
+          },
+          "target": {
+            "stateWrites": [
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "call",
+              "showAllLoadedBuilds",
+              "updateOneBuildVisibility"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 2,
+              "loops": 1,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "F05FE48801067E8A3BE778BED1083976948165508445B553B41934682CB8F9A2"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "updateOneBuildVisibility",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "updateOneBuildVisibility",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "fadeInBuildNode",
+              "isBuildVisibleInCamera",
+              "isValid",
+              "stopBuildFade"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "7817450325216A65858666413DA32662FFEEFDD73D4AADBF278D0F6624D0C8BA"
+          },
+          "target": {
+            "stateWrites": [
+              "enableBuildVisibilityCulling"
+            ],
+            "calls": [
+              "fadeInBuildNode",
+              "isBuildVisibleInCamera",
+              "isValid",
+              "setOpacity",
+              "stopBuildFade"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 3,
+              "loops": 0,
+              "returns": 2,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5BDCF77F22F699653862523B76DBA035901B39C52680B9651B4845276B09DDD6"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "setOpacity"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "useCommonBuildPrefab",
+          "sourceKind": "component-object-method",
+          "targetKind": "class-method",
+          "targetMethod": "useCommonBuildPrefab",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "buildPrefab"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "DFC0F38F20E49A0C7D0476385935C5E825BED049B4C9410D4D4A5A8804DE685D"
+          },
+          "target": {
+            "stateWrites": [
+              "buildPrefab"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 1,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "DFC0F38F20E49A0C7D0476385935C5E825BED049B4C9410D4D4A5A8804DE685D"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        }
+      ]
+    },
+    {
+      "rel": "Web/IdentityTrace",
+      "sourceMethodCount": 0,
+      "targetMethodCount": 0,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": []
+    },
+    {
+      "rel": "Web/BatchRequest",
+      "sourceMethodCount": 9,
+      "targetMethodCount": 9,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": [
+        {
+          "method": "AddBeforeRequest",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "AddBeforeRequest",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "68ACCDAD813C89AEF0AE52785384B02427A4377AC03E199987D47D73A4E8BE93"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "68ACCDAD813C89AEF0AE52785384B02427A4377AC03E199987D47D73A4E8BE93"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "AddRequest",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "AddRequest",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C9864B4FD1D271B603B31770541F55EC2688289DA94C3669C1A73503ED009741"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "C9864B4FD1D271B603B31770541F55EC2688289DA94C3669C1A73503ED009741"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "okCallback",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "okCallback",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "callback",
+              "errorCallback",
+              "someoneErrorCallback"
+            ],
+            "calls": [
+              "Debug",
+              "DispatcherEvent",
+              "IsIdentityError",
+              "LogResponse",
+              "UpdateServerTime",
+              "Warning",
+              "callback",
+              "errorCallback",
+              "forEach",
+              "hasOwnProperty",
+              "logEvent",
+              "logerror",
+              "logout",
+              "muteError",
+              "okCallback",
+              "openChildWindow",
+              "push",
+              "someoneErrorCallback",
+              "stringify",
+              "t",
+              "toString"
+            ],
+            "events": [
+              "http_batch_fail"
+            ],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 22,
+              "loops": 5,
+              "returns": 6,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "6B22E5DC96BED3BDFC085DE0B6086B7625567A34A15BCC9827C7951A0C6CFE83"
+          },
+          "target": {
+            "stateWrites": [
+              "callback",
+              "errorCallback",
+              "someoneErrorCallback"
+            ],
+            "calls": [
+              "Debug",
+              "DispatcherEvent",
+              "IsIdentityError",
+              "LogResponse",
+              "UpdateServerTime",
+              "Warning",
+              "callback",
+              "errorCallback",
+              "forEach",
+              "hasOwnProperty",
+              "logEvent",
+              "logerror",
+              "logout",
+              "muteError",
+              "okCallback",
+              "openChildWindow",
+              "push",
+              "someoneErrorCallback",
+              "stringify",
+              "t",
+              "toString"
+            ],
+            "events": [
+              "http_batch_fail"
+            ],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 22,
+              "loops": 5,
+              "returns": 6,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 1
+            },
+            "bodySha256": "C64233215C95C574490F2D4AFA61090152842A5C82359AB4CAF8FD1CDAF9D1DD"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "Send",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "Send",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "callback",
+              "errorCallback",
+              "identityTrace",
+              "req",
+              "silence"
+            ],
+            "calls": [
+              "BuildTrace",
+              "Debug",
+              "Hide",
+              "LogNetFail",
+              "LogRequest",
+              "Show",
+              "arrayBufferToString",
+              "bind",
+              "callback",
+              "errorCallback",
+              "forEach",
+              "getAllResponseHeaders",
+              "gzip",
+              "logEvent",
+              "okCallback",
+              "open",
+              "parse",
+              "push",
+              "request",
+              "send",
+              "setRequestHeader",
+              "simplecode",
+              "stringToBytes",
+              "stringify",
+              "toString",
+              "ungzip"
+            ],
+            "events": [
+              "http_net_fail"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 19,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "8E3344FA0A76ED0571711090420156D3372B2796906B8A318AF9B3FABE487C58"
+          },
+          "target": {
+            "stateWrites": [
+              "callback",
+              "errorCallback",
+              "identityTrace",
+              "req",
+              "silence"
+            ],
+            "calls": [
+              "BuildTrace",
+              "Debug",
+              "Hide",
+              "LogNetFail",
+              "LogRequest",
+              "Show",
+              "TelemetryRequestSummary",
+              "arrayBufferToString",
+              "bind",
+              "callback",
+              "errorCallback",
+              "forEach",
+              "getAllResponseHeaders",
+              "gzip",
+              "logEvent",
+              "okCallback",
+              "open",
+              "parse",
+              "push",
+              "request",
+              "send",
+              "setRequestHeader",
+              "simplecode",
+              "stringToBytes",
+              "stringify",
+              "toString",
+              "ungzip"
+            ],
+            "events": [
+              "http_net_fail"
+            ],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 19,
+              "loops": 0,
+              "returns": 3,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "7140815F50133B9DF0D01FE10DA7EE0ADD42BE0DE8CDFBC7F7841148893BE20F"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "TelemetryRequestSummary"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetCallBack",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "callback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AF67FD422D703D92ACA6F36BC65AF9C2258992E767F0942366F99EC07D2A13E7"
+          },
+          "target": {
+            "stateWrites": [
+              "callback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "AF67FD422D703D92ACA6F36BC65AF9C2258992E767F0942366F99EC07D2A13E7"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetErrorCallBack",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetErrorCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "errorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "701AACCF3E508177D6E54E2926CF996DFD6D87A34C4E888F146EAE5CE4BCA159"
+          },
+          "target": {
+            "stateWrites": [
+              "errorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "701AACCF3E508177D6E54E2926CF996DFD6D87A34C4E888F146EAE5CE4BCA159"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetRequestBody",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetRequestBody",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5F3B026DDD7B25684C0DDAB6B16AB5E18031E32C5C90BD5A72C9D7E72DB12E52"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "5F3B026DDD7B25684C0DDAB6B16AB5E18031E32C5C90BD5A72C9D7E72DB12E52"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetSilence",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetSilence",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "silence"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A9D07A851D346C3EE80B483DC2A0A9004137306D30F5E4413B2F00F30C245342"
+          },
+          "target": {
+            "stateWrites": [
+              "silence"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A9D07A851D346C3EE80B483DC2A0A9004137306D30F5E4413B2F00F30C245342"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetSomeOneErrorCallBack",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetSomeOneErrorCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [
+              "someoneErrorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A328AFF60755E352A58855721751B88A46F5B57243F029B79CB4F11011AFE9ED"
+          },
+          "target": {
+            "stateWrites": [
+              "someoneErrorCallback"
+            ],
+            "calls": [],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "A328AFF60755E352A58855721751B88A46F5B57243F029B79CB4F11011AFE9ED"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        }
+      ]
+    },
+    {
+      "rel": "Web/ServerRequest",
+      "sourceMethodCount": 3,
+      "targetMethodCount": 3,
+      "sourceDuplicates": [],
+      "targetDuplicates": [],
+      "methods": [
+        {
+          "method": "okCallback",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "okCallback",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "Debug",
+              "DispatcherEvent",
+              "IsIdentityError",
+              "LogResponse",
+              "UpdateServerTime",
+              "Warning",
+              "dispatEvent",
+              "forEach",
+              "isArray",
+              "logEvent",
+              "logout",
+              "muteError",
+              "openChildWindow",
+              "stringify",
+              "t",
+              "tipError",
+              "toString",
+              "x"
+            ],
+            "events": [
+              "http_api_fail"
+            ],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 11,
+              "loops": 1,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "7AA78B74A8B7578A009E1E32F92BA7F182D508C282CB8F33BA6191F428C05ED2"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "Debug",
+              "DispatcherEvent",
+              "IsIdentityError",
+              "LogResponse",
+              "TelemetryRequestSummary",
+              "UpdateServerTime",
+              "Warning",
+              "dispatEvent",
+              "forEach",
+              "isArray",
+              "logEvent",
+              "logout",
+              "muteError",
+              "openChildWindow",
+              "stringify",
+              "t",
+              "tipError",
+              "toString",
+              "x"
+            ],
+            "events": [
+              "http_api_fail"
+            ],
+            "timers": [],
+            "resources": [
+              "DialogWindow"
+            ],
+            "metrics": {
+              "branches": 11,
+              "loops": 1,
+              "returns": 4,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 2
+            },
+            "bodySha256": "B0F93C3450D6D1DE3792E7EC65BA3F50977F68E235997A565CBB01395F80F994"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [
+              "TelemetryRequestSummary"
+            ],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetErrorCallBack",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetErrorCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "21CD61A4DCCC2B6F225B674BB457E82847D584D9E9BA5806CB4776102E58772C"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "21CD61A4DCCC2B6F225B674BB457E82847D584D9E9BA5806CB4776102E58772C"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        },
+        {
+          "method": "SetNetErrorCallBack",
+          "sourceKind": "class-method",
+          "targetKind": "class-method",
+          "targetMethod": "SetNetErrorCallBack",
+          "status": "mapped",
+          "source": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EB2CD29C761C84A7E53B70677D1051D296362DBBF699C5F03D8079254F56E958"
+          },
+          "target": {
+            "stateWrites": [],
+            "calls": [
+              "push"
+            ],
+            "events": [],
+            "timers": [],
+            "resources": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "bodySha256": "EB2CD29C761C84A7E53B70677D1051D296362DBBF699C5F03D8079254F56E958"
+          },
+          "delta": {
+            "stateWritesMissing": [],
+            "callsMissing": [],
+            "eventsMissing": [],
+            "timersMissing": [],
+            "resourcesMissing": [],
+            "metrics": {
+              "branches": 0,
+              "loops": 0,
+              "returns": 0,
+              "throws": 0,
+              "awaits": 0,
+              "callbacks": 0
+            },
+            "stateWritesAdded": [],
+            "callsAdded": [],
+            "eventsAdded": [],
+            "timersAdded": [],
+            "resourcesAdded": []
+          }
+        }
+      ]
+    }
+  ]
+}

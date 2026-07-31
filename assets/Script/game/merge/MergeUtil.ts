@@ -80,6 +80,15 @@ MergeUtil.getSize = function () {
     return Math.max(0, 44 - Math.max(0, (rootHeight - winHeight) / 2))
 }
 
+MergeUtil.updateDragGesture = function (state: any, startPoint: Vec2, currentPoint: Vec2, dragSlop: number) {
+    state = state || {}
+    const dx = currentPoint.x - startPoint.x
+    const dy = currentPoint.y - startPoint.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+    const maxDistance = Math.max(state.maxDistance || 0, distance)
+    return { dragging: !!state.dragging || maxDistance >= Math.max(0, dragSlop || 0), maxDistance }
+}
+
 MergeUtil.getWinSize = function () {
     if (UIRoot.instance && UIRoot.instance.winSize) {
         return UIRoot.instance.winSize

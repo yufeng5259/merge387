@@ -1,6 +1,7 @@
 
 import WebEvent from "./WebEvent";
 import { i18n } from "../GameKit/i18n/i18n";
+import IdentityTrace, { IdentityTraceRecord } from './IdentityTrace';
 
 type BatchRequestItem = Record<string, any> & {
     data: Record<string, any>;
@@ -18,6 +19,7 @@ export default class BatchRequest {
     someoneErrorCallback: BatchRequestCallback | null = null;
     silence: any = false;
     req: XMLHttpRequest | null = null;
+    identityTrace: IdentityTraceRecord | null = null;
 
     constructor (reqs?: BatchRequestItem[], reqs2?: BatchRequestItem[]) {
         this.url = G.GameConfig.server + "/portcol"
@@ -61,7 +63,6 @@ export default class BatchRequest {
     }
 
     Send() {
-        Logs.Debug("BatchRequest req:", this)
         if (!this.silence) LoadingWindow.Show()
         this.msgs.forEach(function(m) {
             if (m && m.localOnly) return
@@ -71,6 +72,9 @@ export default class BatchRequest {
             if (m && m.localOnly) return
             this.data.beforeMsgs.push(m.data)
         }.bind(this))
+        this.identityTrace = IdentityTrace.BuildTrace(this.url, this.data, 'batch');
+        IdentityTrace.LogRequest(this.identityTrace);
+        Logs.Debug("BatchRequest req:", IdentityTrace.TelemetryRequestSummary(this.data))
         this.beforeMsgs.forEach(function(m) {
             if (m && m.localOnly && m.localResult && m.okCallback) m.okCallback(m.localResult)
         })
@@ -101,6 +105,7 @@ export default class BatchRequest {
                     if (this.errorCallback != null) {
                         this.errorCallback(res)
                     }
+                    IdentityTrace.LogNetFail('batchWxFail', this.identityTrace, res, this.data)
                 }.bind(this),
             })
         } else {
@@ -120,7 +125,8 @@ export default class BatchRequest {
                     if (this.errorCallback != null) {
                         this.errorCallback(e)
                     }
-                    AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), header: this.req.getAllResponseHeaders(), readyState:this.req.readyState, code:this.req.status})
+                    AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), body:JSON.stringify(IdentityTrace.TelemetryRequestSummary(this.data)), readyState:this.req.readyState, code:this.req.status})
+                    IdentityTrace.LogNetFail('batchHttpStatusFail', this.identityTrace, {readyState:this.req.readyState, code:this.req.status}, this.data)
                 }
             }.bind(this)
             this.req.ontimeout = function(e) {
@@ -128,7 +134,8 @@ export default class BatchRequest {
                 if (this.errorCallback != null) {
                     this.errorCallback(e)
                 }
-                AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), code:0, msg:"ontimeout"})
+                AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), body:JSON.stringify(IdentityTrace.TelemetryRequestSummary(this.data)), code:0, msg:"ontimeout"})
+                IdentityTrace.LogNetFail('batchHttpTimeout', this.identityTrace, e, this.data)
             }.bind(this)
             this.req.onerror = function(e) {
                 e = e || {code:-1, msg:"unknown"}
@@ -136,7 +143,8 @@ export default class BatchRequest {
                 if (this.errorCallback != null) {
                     this.errorCallback(e)
                 }
-                AppKit.LogEventWrap.logEvent("http_net_fail", {url:this.url, body:JSON.stringify(this.data), header: this.req.getAllResponseHeaders(), code:e.code||-1, msg:"onerror" + e.toString()})
+                AppKit.LogEventWrap.logEvent("http_net_fail", {url:IdentityTrace.SafeUrl(this.url), body:JSON.stringify(IdentityTrace.TelemetryRequestSummary(this.data)), code:e.code||-1, stage:"onerror"})
+                IdentityTrace.LogNetFail('batchHttpError', this.identityTrace, e, this.data)
             }.bind(this)
 
             this.req.send(JSON.stringify({arr:encryptCode.stringToBytes(encryptCode.simplecode(pako.gzip(JSON.stringify(this.data), {to:"string"})))}))
@@ -144,19 +152,21 @@ export default class BatchRequest {
     }
 
     okCallback(res: any) {
-        Logs.Debug("BatchRequest resp:", res)
+        Logs.Debug("BatchRequest resp:", IdentityTrace.TelemetryResponseSummary(res))
         GameKit.TimeUtil.UpdateServerTime(res.timestamp)
         if (res.errorCode !== ErrorCode.SUCCESS) {
+            if (IdentityTrace.IsIdentityError(res.errorCode)) {
+                IdentityTrace.LogResponse('batchIdentityError', this.identityTrace, res, this.data)
+            }
             if (res.errorCode == null) res.errorCode = ErrorCode.UNKNOWN_CLIENT
             if (this.errorCallback != null) {
                 this.errorCallback(res)
             }
-            Logs.Warning("BatchRequest error " + "method:" + this.data.method + " msg:" + JSON.stringify(res.msg || "") + " code:" + res.errorCode)
-            //AppMain.instance.logerror({msg:"BatchRequest error " + JSON.stringify(res.msg || "") + " msg:" + res.errorCode, url:"", line:""})
+            Logs.Warning("BatchRequest error method:" + this.data.method + " msgLength:" + String(res.msg || "").length + " code:" + res.errorCode)
             let apis = []
             for (let i = 0; i < this.beforeMsgs.length; i++) { if (!this.beforeMsgs[i].localOnly) apis.push(this.beforeMsgs[i].data.method) }
             for (let i = 0; i < this.msgs.length; i++) { if (!this.msgs[i].localOnly) apis.push(this.msgs[i].data.method) }
-            AppKit.LogEventWrap.logEvent("http_batch_fail", {apis:JSON.stringify(apis), code:res.errorCode, msg:"BatchRequest error " + JSON.stringify(res.msg || "")})
+            AppKit.LogEventWrap.logEvent("http_batch_fail", {apis:JSON.stringify(apis), code:res.errorCode, messageLength:String(res.msg || "").length})
             if (!ErrorCode.muteError(res.errorCode)) {
                 let ErrorMsgKey = "ErrorMsg" + res.errorCode.toString()
                 let ErrorMsg = i18n.t(ErrorMsgKey)
@@ -185,6 +195,9 @@ export default class BatchRequest {
             let method = msg.data.method
             if (results.hasOwnProperty(method)) {
                 let result = results[method]
+                if (IdentityTrace.IsIdentityError(result.errorCode)) {
+                    IdentityTrace.LogResponse('batchChildIdentityError', this.identityTrace, result, msg.data)
+                }
                 if (!msg.okCallback(result)) {
                     if (this.someoneErrorCallback != null) {
                         res.method = method
@@ -208,6 +221,9 @@ export default class BatchRequest {
             let method = msg.data.method
             if (results.hasOwnProperty(method)) {
                 let result = results[method]
+                if (IdentityTrace.IsIdentityError(result.errorCode)) {
+                    IdentityTrace.LogResponse('batchChildIdentityError', this.identityTrace, result, msg.data)
+                }
                 if (!msg.okCallback(result)) {
                     if (this.someoneErrorCallback != null) {
                         res.method = method

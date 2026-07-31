@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-07-28T09:26:23.557Z",
+  "reportPath": "F:/qiguobing/git/creator/test/coinbeach2415/docs/assets-diff-report.md",
+  "sourceRoot": "F:/qiguobing/git/creator/test/coinbeach2415/assets",
+  "targetRoot": "H:/projects/test/test1/assets",
+  "reportCounts": {
+    "onlyProject": 0,
+    "onlyExternal": 0,
+    "modified": 0,
+    "total": 0
+  },
+  "fileCounts": {
+    "source": 6558,
+    "target": 6439
+  },
+  "sourcePresentTargetMissing": 128,
+  "sourceMissingTargetOnly": 9,
+  "targetOnlyActions": {
+    "delete-source-missing": 3,
+    "keep-cocos3-runtime": 2,
+    "keep-ts-migration-infrastructure": 4
+  },
+  "sourceMissingActions": {
+    "add-or-migrate": 100,
+    "skipped-list-related": 26,
+    "covered-by-legacyglobals-review": 2
+  },
+  "reportInitialActions": {},
+  "listSkipped": 26
+}
