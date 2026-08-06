@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Layout, Node, RichText, Sprite, UITransform, Vec3 } from 'cc';
+import { _decorator, Color, Component, Label, Layout, Node, RichText, Sprite, UITransform, Vec3 } from 'cc';
 import { ContentModel } from '../items/ContentModel';
 import MergeTypes from './MergeTypes';
 import { MergeBubbleDes } from './MergeBubbleDes';
@@ -54,6 +54,7 @@ export class MergeDes extends Component {
         this.mergeElementBack.active = false;
         this.contentDesNode.active = false;
         this.defaultDesNode.active = true;
+        if (this.desLabel) this.desLabel.fontColor = new Color(50, 50, 50, 255);
         if (this.cookingDes && this.cookingDes.node) this.cookingDes.node.active = false;
         if (this.bubbleDesNode && this.bubbleDesNode.node) this.bubbleDesNode.node.active = false;
         this._lastShowKey = null;
@@ -117,7 +118,10 @@ export class MergeDes extends Component {
         const levels = typeMeta ? typeMeta.Levels() : [];
         this.mergeId = meta.Id();
         if (this.nameLabel) {
-            this.nameLabel.string = levels.indexOf(meta.Id()) === -1 ? meta.Name() : meta.Name();
+            const selectIndex = levels.indexOf(meta.Id());
+            this.nameLabel.string = selectIndex === -1
+                ? meta.Name()
+                : meta.Name() + '(' + String.format(GameKit.i18n.t('Merge_Level_Name'), selectIndex + 1) + ')';
         }
 
         if (isBubble) {
@@ -244,21 +248,24 @@ export class MergeDes extends Component {
         const bgTransform = bg.getComponent(UITransform);
         if (!bgTransform) return;
         const bgAnchor = bgTransform.anchorPoint;
-        let left = bg.position.x - bgAnchor.x * bgTransform.width + 5;
-        let right = bg.position.x + (1 - bgAnchor.x) * bgTransform.width - 5;
+        const padding = 30;
+        let left = bg.position.x - bgAnchor.x * bgTransform.width + padding;
+        let right = bg.position.x + (1 - bgAnchor.x) * bgTransform.width - padding;
 
         const blockNodes = this.getDesRightBlockNodes();
         for (let i = 0; i < blockNodes.length; i++) {
             const nodeLeft = this.getNodeLeftInDesContent(blockNodes[i]);
             if (nodeLeft == null) continue;
-            right = Math.min(right, nodeLeft - 2);
+            right = Math.min(right, nodeLeft - padding);
         }
 
+        const width = Math.max(0, right - left);
         this.desLabel.node.setPosition(left, this.desLabel.node.position.y, this.desLabel.node.position.z);
         const labelTransform = this.desLabel.node.getComponent(UITransform);
         if (labelTransform) {
-            labelTransform.width = Math.max(0, right - left);
+            labelTransform.width = width;
         }
+        this.desLabel.maxWidth = width;
     }
 
     getDesRightBlockNodes () {

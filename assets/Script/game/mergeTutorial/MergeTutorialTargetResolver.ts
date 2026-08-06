@@ -368,12 +368,9 @@ MergeTutorialTargetResolver.ConvertScreenPointToUiWorldPos = function(owner, scr
         var out = new Vec3(0, 0, 0)
         var result = null
         try {
-            if (uiCamera.screenToWorld) {
+            if (typeof uiCamera.screenToWorld === 'function') {
                 result = uiCamera.screenToWorld(point, out)
                 result = result || out
-            } else if (uiCamera.screenToWorld) {
-                uiCamera.screenToWorld(point, out)
-                result = out
             }
         } catch (e) {
             result = null
@@ -654,8 +651,9 @@ MergeTutorialTargetResolver.GetOrderSubmitHighlightNode = function(owner) {
 }
 
 MergeTutorialTargetResolver.GetNodeWorldRect = function(owner, node) {
-    if (!node || !node.getBoundingBoxToWorld) return null
-    var rect = node.getBoundingBoxToWorld()
+    var transform = getUiTransform(node)
+    if (!transform) return null
+    var rect = transform.getBoundingBoxToWorld()
     if (!rect || rect.width == null || rect.height == null) return null
     return rect
 }

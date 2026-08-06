@@ -20,6 +20,7 @@ export default class LoginWindow extends UIWindow {
     @property(Node) spUpdating: Node | null = null;
     @property(Node) loginNew: Node | null = null;
     @property(Label) label_version: Label | null = null;
+    @property(Label) label_progress: Label | null = null;
     @property(HotUpdate) hotUpdate: HotUpdate | null = null;
 
     pause = false;
@@ -33,6 +34,10 @@ export default class LoginWindow extends UIWindow {
     // LIFE-CYCLE CALLBACKS:
 
     onShow () {
+        if (!(window as any).__cocosReadyNotified && AppKit.SdkManager.IsNative()) {
+            (window as any).__cocosReadyNotified = true
+            AppKit.NativeWrap.call("SDKHandleClass", "CocosReady")
+        }
         this.pause = true
         this.progress.node.parent.active = false
         //this.spUpdating.active = false
@@ -100,6 +105,9 @@ export default class LoginWindow extends UIWindow {
         p = Math.max(0, Math.min(1, p))
         if (this.progress) this.progress.progress = p
         this.setMaskWidth()
+        if (this.label_progress) {
+            this.label_progress.string = Math.floor(p * 100).toString() + "%" + (speedText ? "  " + speedText : "")
+        }
     }
     update (dt) {
         if (this.progress && this.progress.progress < 0.9 && !this.pause) {
@@ -113,10 +121,10 @@ export default class LoginWindow extends UIWindow {
             if (AppKit.SdkManager.IsAndroid()) {
                 let budleID = AppKit.NativeWrap.getBudleID();
                 if (budleID === DESIGN_APP_BUDLE_ID) {
-                    // 新游�?beachcoin
+                    // 鏂版父鎴?beachcoin
                     var version = AppKit.NativeWrap.getVersion();
                     if (GameKit.StringUtil.VersionOver(version, "0.0.0") < 0) {
-                        // 强制更新
+                        // 寮哄埗鏇存柊
                         let isForce = true;
                         if(isForce){
                             DialogWindow.Show("We have transfer to New App, please jump to Google Play to update.", () => {
@@ -397,7 +405,7 @@ export default class LoginWindow extends UIWindow {
                 this.btnGuest.active = true
                 if (AppKit.SdkManager.IsIos() && AppKit.NativeWrap.callDirect("SDKHandleClass", "loginWithAppStoreEnabled")) this.btnApple.active = true
             }else{
-                console.log("测试登录失败");
+                console.log("娴嬭瘯鐧诲綍澶辫触");
                 this.btnFB.active = true
                 this.btnGuest.active = true
                 this.btnApple.active = true
@@ -560,13 +568,14 @@ export default class LoginWindow extends UIWindow {
                 reqb.push(SR.SRItems.getUserItems())
                 reqb.push(SR.SRVillage.getUserVillage())
                 reqb.push(SR.SRMerge.getMergeMap())
+                reqb.push(SR.SRShop.GetCashBuyInfo())
                 //reqb.push(SR.SRChat.getChats())
                 reqb.push(SR.SRMergeTutorial.getData())
                 if (!CLOSE_Card) reqb.push(SR.SRCard.getUserCard())
 
                 reqb.push(SR.SRSign.getSignData())
                 reqb.push(SR.SRTask.getTaskList())
-                //通行证活动请�?
+                //閫氳璇佹椿鍔ㄨ姹?
                 reqb.push(SR.SRActivityPassport.getTaskList())
                 reqb.push(SR.SRVillage.getPresentList())
                 reqb.push(SR.SRRecord.getUserRecord())
@@ -588,18 +597,7 @@ export default class LoginWindow extends UIWindow {
                             AppGame.instance.login()
                             
                             this.unscheduleAllCallbacks()
-                            if (!Game.MergeTutorialManager.IsFinished()) {
-                                Game.SUser.data.ap = G.GameConstance.initSpin
-                                Game.SUser.data.apRecover = 0
-                                Game.SUser.data.apRecoverLast = GameKit.TimeUtil.getCurrentTime()
-                                Game.SUser.data.coin = G.GameConstance.initCoin
-                                Game.SUser.data.shield = 0
-                                if (SR && SR.SRMerge && SR.SRMerge.ApplyLatestLocalResourceShadow) {
-                                    SR.SRMerge.ApplyLatestLocalResourceShadow("tutorialInit")
-                                }
-                                Game.SUserSlot.data.realToraidUser = Game.SUserSlot.data.toraidUser
-                                Game.SUserSlot.data.toraidUser = {userId:0, name:GameKit.i18n.t("TutorialTargetName3"), avatar:GameKit.i18n.t("TutorialTargetAvatar3"), coin:210000, expire:0, isFriend:false}
-                            } else {
+                            if (Game.MergeGuideHooks.IsFinished()) {
                                 GamePlay.instance.preloadGames()
                             }
 
@@ -631,13 +629,18 @@ export default class LoginWindow extends UIWindow {
             return
         }
         this.openingVideoChecked = true
+        let self = this
 
-        if (AppKit.SdkManager.IsNative() && AppKit.SdkManager.IsAndroid()) {
+        if (AppKit.SdkManager.IsNative() && (AppKit.SdkManager.IsAndroid() || AppKit.SdkManager.IsIos())) {
             let shouldPlay = AppKit.NativeWrap.callDirect("SDKHandleClass", "ShouldPlayOpeningVideo")
             if (shouldPlay == "true" || shouldPlay === true) {
+                UIRoot.instance.preloadWindow("GeneralStotyWindow")
                 AppKit.NativeWrap.call("SDKHandleClass", "PlayOpeningVideo", null, () => {
                     enterFunc(shouldPlay)
                 })
+                self.scheduleOnce(() => {
+                    self.OpenTutorialWindow()
+                }, 0.3)
                 return
             }
         }
@@ -645,17 +648,6 @@ export default class LoginWindow extends UIWindow {
         enterFunc(false)
     }
     ShowPrivacyOrEnterGame() {
-        if (GameKit.PlayerPrefs.GetInt("privacy_read") != 1) {
-            UIRoot.instance.openChildWindow("PrivacyWindow", {
-                showCallback: (window) => {
-                    window.addOnCloseFunc(() => {
-                        this.EnterGamePlay()
-                    })
-                }
-            })
-            return
-        }
-
         this.EnterGamePlay()
     }
     EnterGamePlay() {
@@ -668,39 +660,41 @@ export default class LoginWindow extends UIWindow {
             
                 AppKit.LogEventWrap.logEvent("LoadDetail", {phase:"enterGamePlay"})
 
-                this.TryPlayOpeningVideoBeforeEnter((playVideo) => {
-                    if (playVideo) {
-                        this.OpenTutorialWindow()
-                    } else {
-                        this.GoGame()
-                    }
-                })
+                this.OpenMainMenuWindow()
             }
         }.bind(this), 0.1)
     }
     OpenTutorialWindow() {
-        UIRoot.instance.openChildWindow("GeneralStotyWindow", {
+        UIRoot.instance.openModelWindow("GeneralStotyWindow", {
             key: "Tutorial_1",
             showCallback: (wnd) => {
+                wnd.node.setSiblingIndex(999)
                 wnd.addOnCloseFunc(() => {
                     console.log("General story closed")
-                    this.OpenMainMenuWindow()
+                    AppKit.NotificationWrap.RequestAuthorization()
                 })
             }
         })
+        this.GoGame(false)
     }
-    GoGame() {
+    GoGame(requestNotificationOnShow) {
         UIRoot.instance.openWindow("GameMainWindow", {
             showCallback: function () {
                 GamePlay.instance.EnterGame()
                 AppKit.LogEventWrap.logEvent("LoadDetail", { phase: "enterMainWindow" })
+                if (requestNotificationOnShow) {
+                    AppKit.NotificationWrap.RequestAuthorization()
+                }
             }
         })
     }
     OpenMainMenuWindow() {
         this.setProgress(0.95)
-        this.TryPlayOpeningVideoBeforeEnter((playVideo) => {
-            if (!playVideo) this.GoGame()
+        let self = this
+        self.TryPlayOpeningVideoBeforeEnter((playVideo) => {
+            if (!playVideo) {
+                self.GoGame(true)
+            }
         })
     }
     RecordGame() {
@@ -749,7 +743,7 @@ export default class LoginWindow extends UIWindow {
             }
         }
     }
-    //loading界面提示文体轮播
+    //loading鐣岄潰鎻愮ず鏂囦綋杞挱
     Prompt(){        
         // this.count = 0;
         // this.callback = function () {

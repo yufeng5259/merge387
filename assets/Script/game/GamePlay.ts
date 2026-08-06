@@ -82,11 +82,7 @@ export class GamePlay extends Component {
 
     closeGamePlay() {
         this.clearTouchSwipe(UIRoot.instance.node);
-        if (this.dailyBonusNode) {
-            this.dailyBonusNode.Clear();
-            this.dailyBonusNode.node.destroy();
-            this.dailyBonusNode = null;
-        }
+        GameKit.SoundManager.setSeaWaveLoopEnabled(false);
         this.villageLoaded = false;
         this.villageProgress = 0;
         this.villageBuildLoadingStarted = false;
@@ -120,13 +116,6 @@ export class GamePlay extends Component {
 
         this.mergeRoot = this.spSlot?.getComponent('MergeRoot') ?? null;
 
-        if (this.dailyBonusPrefab && this.spDailyBonus) {
-            let db = instantiate(this.dailyBonusPrefab);
-            db.parent = this.spDailyBonus;
-            db.setPosition(0, 0);
-            this.dailyBonusNode = db.getComponent('DailyBonusNode');
-            db.active = true;
-        }
     }
 
     loadTown(info: any) {
@@ -165,6 +154,9 @@ export class GamePlay extends Component {
             return;
         }
         if (this.villageBuildLoadingStarted) {
+            if (this.mapNode.restoreInitialMapView) {
+                this.mapNode.restoreInitialMapView();
+            }
             if (this.mapNode.resumeProgressiveBuildLoading) {
                 this.mapNode.resumeProgressiveBuildLoading();
             }
@@ -215,6 +207,11 @@ export class GamePlay extends Component {
 
     preloadSubjectPrefab(prefabName: any) {
         return new Promise((res, reject) => {
+            if (Game.IsCardFeatureClosed && Game.IsCardFeatureClosed()) {
+                this.releaseSubjectPrefab();
+                res(0);
+                return;
+            }
             let resName = 'window/Card/limit/' + prefabName;
             if (this.oldSubjectResName) {
                 if (this.oldSubjectResName == resName) {
@@ -248,7 +245,6 @@ export class GamePlay extends Component {
     loadUserData() {
         this.loadTown(Game.SUserVillage);
         this.loadMergeLevelMap(1);
-        this.dailyBonusNode.onstart();
     }
 
     allLoaded() {
@@ -294,7 +290,6 @@ export class GamePlay extends Component {
             }, 5000);
             setTimeout(() => {
                 if (!this || !this.mergeRoot) return;
-                this._preload(this.dailyBonusNode.node);
                 if (AppKit.PaymentWrap.PayVisiable()) UIRoot.instance.preloadWindow('ShopWindow');
             }, 10000);
         } catch (e) {
@@ -308,14 +303,14 @@ export class GamePlay extends Component {
             this.changeScene(this.currentScene, null, true);
             AppKit.LogEventWrap.logEvent('game_start');
             AppKit.SdkManager.EnterGame();
-            this.startVillageBuildLoading();
+            this.scheduleVillageBuildLoading(0.5, 10);
             return;
         }
         this.openScene(GamePlay.Scenes.Slot);
         this.changeScene(this.currentScene, null, true);
         AppKit.LogEventWrap.logEvent('game_start');
         AppKit.SdkManager.EnterGame();
-        this.startVillageBuildLoading();
+        this.scheduleVillageBuildLoading(0.5, 10);
     }
 
     switchScene(s: any) {
@@ -334,7 +329,7 @@ export class GamePlay extends Component {
     changeScene(s: any, callback?: any, _same?: any) {
         if (!this.inGame) return;
         if (this.isChangeAnim()) return;
-        if (this.dailyBonusNode && this.dailyBonusNode.isRunning()) return;
+        if (Game.TownUpgradeFlow && Game.TownUpgradeFlow.isRunning && Game.TownUpgradeFlow.isRunning()) return;
         if (!_same && this.isMergeTutorialRunning() && s !== GamePlay.Scenes.Slot) return;
         if (!_same && this.currentScene === s) {
             if (callback) callback();
@@ -379,8 +374,9 @@ export class GamePlay extends Component {
         if (this.spVillage) this.spVillage.active = this.currentScene === GamePlay.Scenes.Village;
         if (this.spSlot) this.spSlot.active = this.currentScene === GamePlay.Scenes.Slot;
         if (this.spDailyBonus) this.spDailyBonus.active = this.currentScene === GamePlay.Scenes.DailyBonus;
+        GameKit.SoundManager.setSeaWaveLoopEnabled(this.currentScene === GamePlay.Scenes.Village);
         if (this.currentScene === GamePlay.Scenes.Village) {
-            this.startVillageBuildLoading();
+            this.startVillageBuildLoading(10);
         } else if (this.mapNode && this.mapNode.pauseProgressiveBuildLoading && !this.shouldKeepVillageBuildLoadingInBackground()) {
             this.mapNode.pauseProgressiveBuildLoading();
         }
@@ -392,12 +388,12 @@ export class GamePlay extends Component {
 
     isBusy() {
         if (this.isChangeAnim()) return true;
-        if (this.dailyBonusNode && this.dailyBonusNode.isRunning()) return true;
+        if (Game.TownUpgradeFlow && Game.TownUpgradeFlow.isRunning && Game.TownUpgradeFlow.isRunning()) return true;
         return false;
     }
 
     isMergeTutorialRunning() {
-        return !!(Game.MergeTutorialManager && !Game.MergeTutorialManager.IsFinished());
+        return !!(Game.MergeGuideHooks && !Game.MergeGuideHooks.IsFinished());
     }
 
     addTouchSwipe(t_node: Node) {
@@ -422,6 +418,7 @@ export class GamePlay extends Component {
 
     gameTouchStart(e: any) {
         if (!this.node.activeInHierarchy) return;
+        if (Game.TownUpgradeFlow && Game.TownUpgradeFlow.isRunning && Game.TownUpgradeFlow.isRunning()) return;
         if (GamePlay.Scenes.Slot == this.currentScene) return;
         this.pressed = true;
         this.pressPos = 0;
@@ -439,6 +436,7 @@ export class GamePlay extends Component {
 
     gameTouchMove(e: any) {
         if (!this.node.activeInHierarchy) return;
+        if (Game.TownUpgradeFlow && Game.TownUpgradeFlow.isRunning && Game.TownUpgradeFlow.isRunning()) return;
         if (GamePlay.Scenes.Slot == this.currentScene) return;
         this.pressPos += e.touch.getDelta().y;
         this.showCR = null;
@@ -467,13 +465,11 @@ export class GamePlay extends Component {
             if (this.pressPosStart && e.getLocation().x > this.pressPosStart.x + 100) {
                 if (this.currentScene === GamePlay.Scenes.DailyBonus) {
                     if (this.isBusy()) return;
-                    this.dailyBonusNode.changeGoldToNormal();
                     this.pressPosStart = null;
                 }
             } else if (this.pressPosStart && e.getLocation().x < this.pressPosStart.x - 100) {
                 if (this.currentScene === GamePlay.Scenes.DailyBonus) {
                     if (this.isBusy()) return;
-                    this.dailyBonusNode.changeNormalToGold();
                     this.pressPosStart = null;
                 }
             }

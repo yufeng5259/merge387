@@ -69,9 +69,9 @@ const G = {
     GameConfig: {
         //portal: "http://172.16.7.22:3005/app_info",
         // portal: "http://172.16.7.22:8080/app_info",//罗成
-        portal: "http://47.239.214.182:10002/app_info",
+        // portal: "http://47.239.214.182:10002/app_info",
         // portal: "http://172.16.9.95:10002/app_info",//李长海
-        // portal: "http://mq-mergegame.magicvision.tech/test/app_info.txt",//测试服
+        portal: "http://mq-mergegame.magicvision.tech/test/app_info.txt",//测试服
         // portal: "http://47.239.214.182:3005/app_info",//测试服
         RemoteDownloadServer: "http://mq-mergegame.magicvision.tech/test/hotupdate/",
         storyPortal:"http://mq-mergegame.magicvision.tech/test/storyData/mapstory",

@@ -2783,6 +2783,13 @@
     "_string": "<color=#00ff00>Rich</c><color=#0fffff>Text</color>",
     "_horizontalAlign": 1,
     "_fontSize": 27,
+    "_fontColor": {
+      "__type__": "cc.Color",
+      "r": 96,
+      "g": 37,
+      "b": 37,
+      "a": 255
+    },
     "_maxWidth": 0,
     "_fontFamily": "Arial",
     "_font": {
@@ -5833,6 +5840,13 @@
     "_string": "We need to <color=#FF4500>upgrade buildings</color> to attract more customers.",
     "_horizontalAlign": 1,
     "_fontSize": 27,
+    "_fontColor": {
+      "__type__": "cc.Color",
+      "r": 96,
+      "g": 37,
+      "b": 37,
+      "a": 255
+    },
     "_maxWidth": 320,
     "_fontFamily": "Arial",
     "_font": {

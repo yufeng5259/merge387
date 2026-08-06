@@ -553,11 +553,6 @@ export class MergeOrder extends Component {
         this._isClaiming = true;
 
         this.PlayCompleteBtnEffect();
-        if (Game.MergeTutorialManager && Game.MergeTutorialManager.TryClaimTutorialOrder && Game.MergeTutorialManager.TryClaimTutorialOrder(slotIndex, this)) {
-            this._isClaiming = false;
-            return;
-        }
-
         const orderId = this._orderData && this._orderData.orderId;
         const orderBeforeClaim = orderId != null && Game.SUserMerge.GetOrderDataByOrderId
             ? Game.SUserMerge.GetOrderDataByOrderId(orderId)
@@ -579,13 +574,33 @@ export class MergeOrder extends Component {
         });
 
         if (mergeUI.orderGroup && mergeUI.orderGroup.BeginClaimTransition) mergeUI.orderGroup.BeginClaimTransition();
+        if (mergeUI.BeginDelayNotesUIVisible) mergeUI.BeginDelayNotesUIVisible();
         if (mergeUI.HideOrderCompleteBtn) mergeUI.HideOrderCompleteBtn();
+
+        let claimFinished = false;
+        const claimTimeout = () => {
+            console.error('order claim animation timeout', { orderId: orderId, slotIndex: slotIndex });
+            finishClaim(false);
+        };
+        const finishClaim = (completedNormally: boolean) => {
+            if (claimFinished) return;
+            claimFinished = true;
+            this.unschedule(claimTimeout);
+            this._isClaiming = false;
+            if (mergeUI.orderGroup && mergeUI.orderGroup.EndClaimTransition) mergeUI.orderGroup.EndClaimTransition();
+            if (mergeUI.EndDelayNotesUIVisible) mergeUI.EndDelayNotesUIVisible();
+            mergeLevelNode.SetNetRunning(false);
+            if (completedNormally) {
+                mergeUI.InitOrderList();
+            } else {
+                mergeLevelNode.updateOrderStatus();
+            }
+        };
 
         const currentOrder = orderBeforeClaim || Game.SUserMerge.GetOrderDataBySlotIndex(slotIndex);
         if (!currentOrder) {
             console.error('order claim missing order data', { orderId: orderId, slotIndex: slotIndex });
-            if (mergeUI.orderGroup && mergeUI.orderGroup.EndClaimTransition) mergeUI.orderGroup.EndClaimTransition();
-            this._isClaiming = false;
+            finishClaim(false);
             return;
         }
 
@@ -605,24 +620,35 @@ export class MergeOrder extends Component {
         }
 
         mergeLevelNode.SetNetRunning(true);
+        this.scheduleOnce(claimTimeout, 5);
         mergeLevelNode.updateMergeMapEvent({ actionType: MergeTypes.MergeActionType.CLAIM_ORDER, slotIndex: slotIndex, orderId: orderId, forceServer: true }).then((result: any) => {
-            if (result && result.success && GameKit.SoundManager && GameKit.SoundManager.playOrderCompleteSound) {
-                GameKit.SoundManager.playOrderCompleteSound();
+            if (result && result.success) {
+                if (GameKit.SoundManager && GameKit.SoundManager.playOrderCompleteSound) {
+                    GameKit.SoundManager.playOrderCompleteSound();
+                }
+                const mergeGuideHooks = Game.MergeGuideHooks || Game.MergeTutorialManager;
+                if (mergeGuideHooks && mergeGuideHooks.Emit) {
+                    mergeGuideHooks.Emit('tutorial_order_submit', {
+                        slotIndex: slotIndex,
+                        orderId: orderId,
+                    });
+                }
             }
-            mergeLevelNode.ClaimOrderReward(orderData, globalPosByMergeId, storeDataStrArr, () => {
-                this.showRewardAnim(() => {
-                    mergeUI.orderGroup.PlayClaimedOrderRemoveAnim(this, () => {
-                        mergeUI.InitOrderList();
-                        mergeLevelNode.SetNetRunning(false);
-                        this._isClaiming = false;
+            try {
+                mergeLevelNode.ClaimOrderReward(orderData, globalPosByMergeId, storeDataStrArr, () => {
+                    this.showRewardAnim(() => {
+                        mergeUI.orderGroup.PlayClaimedOrderRemoveAnim(this, () => {
+                            finishClaim(true);
+                        });
                     });
                 });
-            });
+            } catch (err) {
+                console.error(err, 'order claim animation error');
+                finishClaim(false);
+            }
         }).catch((err: any) => {
             console.error(err, 'order claim error');
-            if (mergeUI.orderGroup && mergeUI.orderGroup.EndClaimTransition) mergeUI.orderGroup.EndClaimTransition();
-            mergeLevelNode.SetNetRunning(false);
-            this._isClaiming = false;
+            finishClaim(false);
         });
     }
 

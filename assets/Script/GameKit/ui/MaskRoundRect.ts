@@ -1,4 +1,4 @@
-import { _decorator, Component, Graphics, Mask, UITransform } from 'cc';
+import { _decorator, Color, Component, Graphics, Mask, UITransform } from 'cc';
 import { EDITOR } from 'cc/env';
 
 const { ccclass, executeInEditMode, menu, property } = _decorator;
@@ -22,6 +22,10 @@ export default class MaskRoundRect extends Component {
 
     public onEnable() {
         this.refreshMask();
+    }
+
+    public onDisable() {
+        this.clearMaskGraphics();
     }
 
     public update() {
@@ -66,7 +70,9 @@ export default class MaskRoundRect extends Component {
         const x = -size.width * anchor.x;
         const y = -size.height * anchor.y;
         const radius = Math.min(Math.max(this.radius, 0), size.width / 2, size.height / 2);
+        graphics.enabled = true;
         graphics.clear();
+        graphics.fillColor = Color.WHITE;
         graphics.roundRect(x, y, size.width, size.height, radius);
         graphics.fill();
         this.lastWidth = size.width;
@@ -75,6 +81,13 @@ export default class MaskRoundRect extends Component {
         this.lastAnchorY = anchor.y;
         this.lastRadius = this.radius;
         return true;
+    }
+
+    public clearMaskGraphics() {
+        const graphics = this.node.getComponent(Graphics);
+        if (!graphics) return;
+        graphics.clear();
+        graphics.enabled = false;
     }
 
     public drawRoundRectPath(graphics: Graphics, x: number, y: number, width: number, height: number, radius: number) {

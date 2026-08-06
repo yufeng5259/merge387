@@ -296,14 +296,17 @@ export class MergeItem extends Component {
                 return;
             }
             this.iconAnim.skeletonData = skeletonData;
-            this.iconAnim.node.active = true;
-            if (this.icon && this.icon.node) {
-                this.icon.node.active = false;
-            }
             this.iconAnim.clearTracks();
             this.iconAnim.setToSetupPose();
             if (this.cookingData) {
                 this.PlayIconAnim('animation', true);
+            } else {
+                // Cocos 3 does not reliably render a Spine setup pose without a track.
+                // Keep the static icon until an actual animation is requested.
+                this.iconAnim.node.active = false;
+                if (this.icon && this.icon.node) {
+                    this.icon.node.active = this.mergeId > 0 && !this.IsBubble();
+                }
             }
         });
     }
@@ -312,6 +315,10 @@ export class MergeItem extends Component {
         if (!this.iconAnim || !this.iconAnim.node || !this.iconAnim.skeletonData) return;
         this.iconAnim.clearTracks();
         this.iconAnim.setToSetupPose();
+        this.iconAnim.node.active = false;
+        if (this.icon && this.icon.node) {
+            this.icon.node.active = this.mergeId > 0 && !this.IsBubble();
+        }
     }
 
     PlayIconAnim(animName: string, loop = false) {

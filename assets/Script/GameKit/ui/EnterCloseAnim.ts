@@ -11,6 +11,7 @@ import {
     UITransform,
     Vec2,
     Vec3,
+    Tween,
     tween,
 } from 'cc';
 import { CCEaseType, GetEasing } from '../extentions/CCEaseTypes';
@@ -528,16 +529,23 @@ export class EnterCloseAnim extends Component {
     }
 
     private stopTweens() {
-        tween(this.node).stop();
-        tween(this.opacity).stop();
-        tween(this.uiTransform).stop();
+        Tween.stopAllByTarget(this.node);
+        Tween.stopAllByTarget(this.opacity);
+        Tween.stopAllByTarget(this.uiTransform);
         let sprite = this.node.getComponent(Sprite);
-        if (sprite) tween(sprite).stop();
+        if (sprite) Tween.stopAllByTarget(sprite);
     }
 
     private playEnterTweens(callback?: AnimCallback) {
         const targets = this.getEnterTweenTargets();
-        this.playTweens(targets, this.e_AnimTime, this.e_DelayTime, this.getEnterEasing(), callback);
+        if (targets.length === 0) {
+            if (callback) callback();
+            return;
+        }
+        this.playTweens(targets, this.e_AnimTime, this.e_DelayTime, this.getEnterEasing(), () => {
+            this.applyEnterEnd();
+            if (callback) callback();
+        });
     }
 
     private playCloseTweens(callback?: AnimCallback) {

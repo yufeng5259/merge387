@@ -6,7 +6,7 @@ import PlayerPrefs from "../GameKit/PlayerPrefs";
 var UserWrap: any = {}
 
 UserWrap.LoginAndGetUserInfo = function(callback) {
-    console.log("---------静默登录--------"+JSON.stringify(Game.SUser))
+    // console.log("---------静默登录--------"+JSON.stringify(Game.SUser))
     let lastSource = GameKit.PlayerPrefs.GetLastString("lastSource","")
     let lastAccountId = GameKit.PlayerPrefs.GetLastString("lastAccountId")
     var SUser = Game.SUser
@@ -175,9 +175,9 @@ UserWrap.LoginAndGetUserInfo = function(callback) {
         SUser.data["country"] = FBInstant.getLocale() || "unknown"
         if (SUser.data["country"].startsWith("zh_")) SUser.data["country"] = "zh"
     } else if (AppKit.SdkManager.IsNative()) {
-        console.log("最后登录平台",lastSource);
+        // console.log("最后登录平台",lastSource);
         if(lastSource == null || lastSource.length === 0){
-            console.log("如果最后登录平台不存在,那就是新人,直接走游客模式,静默登录");
+            // console.log("如果最后登录平台不存在,那就是新人,直接走游客模式,静默登录");
             UserWrap.NativeGuestLogin(callback) 
         }else{
             switch (lastSource) {
@@ -207,7 +207,7 @@ UserWrap.LoginAndGetUserInfo = function(callback) {
                     })
                     break;
                 case "app_google":
-                    console.log("安卓项目sdk-GGSdk===getUserInfo补全");
+                    // console.log("安卓项目sdk-GGSdk===getUserInfo补全");
                     
                     break;
                 case "app_as":
@@ -240,16 +240,15 @@ UserWrap.LoginAndGetUserInfo = function(callback) {
                     Game.SUser.from = "browser"
                     SUser.data["country"] = sys.language
                     if (SUser.data["country"].startsWith("zh_")) SUser.data["country"] = "zh"
-                    console.log("游客模式");
+                    // console.log("游客模式");
                     
                     if (callback != null) callback(true)
                     break;
             }
         }
         //测试模式
-    } else if(G.GameConfig.GAME_TEST){
-        console.log("最后登录平台",lastSource);
-        //if(lastSource == null || lastSource.length === 0)
+    } else {
+        // console.log("最后登录平台",lastSource);
         UserWrap.GameTestSDK(lastSource,function(userId){
             SUser.thirdUserInfo = true
             SUser.from = lastSource
@@ -261,35 +260,6 @@ UserWrap.LoginAndGetUserInfo = function(callback) {
             SUser.data["country"] = sys.language
             if (callback != null) callback(true)
         })
-    }else{
-        //浏览器模式
-        console.log(lastAccountId,"最后账号<  >最后平台",lastSource);
-        if (UserWrap.WaitCallBack) UserWrap.WaitCallBack();
-        let accCode = PlayerPrefs.GetString("BrowserAccount", "")
-        if(lastSource == null || lastSource.length === 0){
-            if (accCode == null || accCode.length === 0) {
-                accCode = StringUtil.getRandomString(24)
-                PlayerPrefs.SetString("BrowserAccount", accCode)
-                lastSource = "browser"
-                //lastSource = "app_google"
-                //lastSource = "app_as"
-                GameKit.PlayerPrefs.SetLastString("lastSource","browser")
-                GameKit.PlayerPrefs.SetLastString("lastAccountId",accCode)
-            }else{
-                GameKit.PlayerPrefs.SetLastString("lastSource","browser")
-                GameKit.PlayerPrefs.SetLastString("lastAccountId",accCode)
-            }
-        }else{
-            accCode = lastAccountId
-        }
-        SUser.accountId = accCode
-        SUser.thirdUserInfo = false
-        Game.SUser.from = "browser"
-        SUser.data["country"] = sys.language
-        if (SUser.data["country"].startsWith("zh_")) SUser.data["country"] = "zh"
-        console.log("最后登录平台",Game.SUser.Source(),Game.SUser.from,"平台信息",Game.SUser);
-
-        if (callback != null) callback(true)
     }
 }
 
@@ -324,7 +294,7 @@ UserWrap.NativeFBLogin = function(callback) {
         }
     })
     if(G.GameConfig.GAME_TEST){
-        console.log("测试用FB登录");
+        // console.log("测试用FB登录");
         //UserWrap.GameTestData("fb_","app_fb");
         UserWrap.GameTestSDK("app_fb",function(userId){
             SUser.from = "app_fb"
@@ -346,7 +316,7 @@ UserWrap.NativeGGLogin = function(callback) {
     //谷歌需要新增加安卓端接口,目前是测试用FB
     
     AppKit.NativeWrap.call("FBSdk", "login", null, function(info) {
-        console.log("谷歌需要新增加安卓端接口,目前是测试用FB");
+        // console.log("谷歌需要新增加安卓端接口,目前是测试用FB");
         LoadingWindow.Hide()
         SUser.from = "app_google"
         let userId = info.userId
@@ -366,11 +336,11 @@ UserWrap.NativeGGLogin = function(callback) {
 
             if (callback != null) callback(true)
         } else {
-            console.log("调用sdk失败");
+            console.warn("调用sdk失败");
         }
     })
     if(G.GameConfig.GAME_TEST){
-        console.log("测试用谷歌登录");
+        // console.log("测试用谷歌登录");
         //UserWrap.GameTestData("gg_","app_google");
         UserWrap.GameTestSDK("app_google",function(userId){
             SUser.from = "app_google"
@@ -411,7 +381,7 @@ UserWrap.NativeAppStoreLogin = function(callback) {
         }
     })
     if(G.GameConfig.GAME_TEST){
-        console.log("测试用苹果登录");
+        // console.log("测试用苹果登录");
         //UserWrap.GameTestData("as_","app_as");
 
         UserWrap.GameTestSDK("app_as",function(userId){
@@ -471,7 +441,7 @@ UserWrap.GameTestSDK = function (lastSource,callback) {
             fetch("http://172.16.7.15:2580/fb")
             .then((r) => r.json())
             .then((data) => {
-                console.log(data.id)
+                // console.log(data.id)
                 uid = data.id
                 GameKit.PlayerPrefs.SetLastString("lastSource","app_fb")
                 callback(uid)
@@ -482,7 +452,7 @@ UserWrap.GameTestSDK = function (lastSource,callback) {
             fetch("http://172.16.7.15:2580/gg")
             .then((r) => r.json())
             .then((data) => {
-                console.log(data.id)
+                // console.log(data.id)
                 uid = data.id
                 GameKit.PlayerPrefs.SetLastString("lastSource","app_google")
                 callback(uid)
@@ -493,7 +463,7 @@ UserWrap.GameTestSDK = function (lastSource,callback) {
             fetch("http://172.16.7.15:2580/as")
             .then((r) => r.json())
             .then((data) => {
-                console.log(data.id)
+                // console.log(data.id)
                 uid = data.id
                 GameKit.PlayerPrefs.SetLastString("lastSource","app_as")
                 callback(uid)

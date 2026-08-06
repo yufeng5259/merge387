@@ -98,7 +98,7 @@ export class MapControlle extends Component {
         this.clickEffectMoved = false;
         this.clickEffectMultiTouch = false;
 
-        const cameraNode = find('Canvas/Main Camera') || find('Canvas/VillageCamera');
+        const cameraNode = find('Canvas/VillageCamera');
         this.camera = cameraNode ? cameraNode.getComponent(Camera) as Camera & { zoomRatio?: number } : null;
         if (!this.camera) {
             console.log('MapControlle: camera not found');
@@ -136,7 +136,7 @@ export class MapControlle extends Component {
         let defaultScale = Number(this.defaultScale);
         if (isNaN(defaultScale) || defaultScale <= 0) defaultScale = 1;
         this.setCameraZoomRatio(defaultScale);
-        this.camera.node.setPosition(Vec3.ZERO);
+        this.camera.node.setPosition(0, 0, this.camera.node.position.z);
         this.begin = this.camera.node.position.clone();
         return true;
     }

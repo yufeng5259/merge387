@@ -58,6 +58,7 @@ export class ChangeSceneManager extends Component {
         if (GameKit.SoundManager.playSceneSwitch2Sound) GameKit.SoundManager.playSceneSwitch2Sound();
         else GameKit.SoundManager.playSound('swipe_clouds_open');
     }
+
 }
 
 global.ChangeSceneManager = ChangeSceneManager;

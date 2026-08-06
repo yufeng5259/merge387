@@ -1,4 +1,4 @@
-import { _decorator, Animation, BlockInputEvents, Color, Graphics, isValid, Label, Mask, Node, RichText, Sprite, Tween, tween, UIOpacity, UITransform, v2, Vec2, Vec3 } from 'cc';
+import { _decorator, Animation, BlockInputEvents, Color, Graphics, isValid, Label, Mask, Node, RichText, Sprite, Tween, tween, UIOpacity, UITransform, v2, Vec2, Vec3, view } from 'cc';
 import { UIWindow } from '../../GameKit/ui/UIWindow';
 import MaskRoundRect from '../../GameKit/ui/MaskRoundRect';
 import MergeEmptyTaskGuide from '../../game/merge/MergeEmptyTaskGuide';
@@ -17,7 +17,7 @@ export default class MergeTutorialWindow extends UIWindow {
     @property(Node) arrow4: Node | null = null;
     @property(Node) arrow5: Node | null = null;
     @property(Node) dialog: Node | null = null;
-    @property(Label) dialogLabel: Label | null = null;
+    @property(RichText) dialogLabel: RichText | null = null;
     @property(Node) dialog2: Node | null = null;
     @property(Label) dialog2Label: Label | null = null;
     @property(Node) dialog2Btn: Node | null = null;
@@ -49,14 +49,14 @@ export default class MergeTutorialWindow extends UIWindow {
 
     onShow() {
         Game.MergeTutorialManager.mainWindow = this;
+        this.guideInputBlockers = [];
+        if (this.dialogLabel) this.dialogLabel.fontColor = new Color(96, 37, 37, 255);
+        if (this.EmptyTaskLabel) this.EmptyTaskLabel.fontColor = new Color(96, 37, 37, 255);
         if (this.guide) {
-            CCTools.WidgetUpdateAlignment(this.guide);
             this.guidepos = this.guide.position.clone();
-            this.setNodeXY(this.guide, this.guide.position.x - 400, this.guide.position.y);
         }
         this.dragGuidePositionKey = '';
         GameKit.BackKeyManager.registerBackEvent();
-        this.refreshEmptyTaskGuide();
     }
 
     refreshEmptyTaskGuide() {
@@ -571,16 +571,15 @@ export default class MergeTutorialWindow extends UIWindow {
     }
 
     getOrderSubmitWorldPos() {
-        const mergeUI = Game.MergeTutorialManager.GetMergeUI();
-        if (!mergeUI || !mergeUI.orderGroup) return null;
-        const orders = mergeUI.orderGroup.orders || mergeUI.orderGroup.orderList || [];
-        for (let i = 0; i < orders.length; i++) {
-            const order = orders[i];
-            if (!order || !order.node || !order.GetSlotIndex) continue;
-            const data = Game.MergeTutorialManager.GetTutorialOrderBySlotIndex(order.GetSlotIndex());
-            if (data && order.completeBtn) return this.convertNodeLocalToWorld(order.completeBtn, Vec3.ZERO);
+        const node = Game.MergeTutorialManager?.GetOrderSubmitTargetNode?.();
+        if (!node) return null;
+        const transform = node.getComponent(UITransform);
+        if (!transform) return null;
+        const rect = transform.getBoundingBoxToWorld();
+        if (rect && rect.width != null && rect.height != null) {
+            return v2(rect.x + rect.width / 2, rect.y + rect.height / 2);
         }
-        return null;
+        return transform.convertToWorldSpaceAR(Vec3.ZERO);
     }
 
     convertWorldPositionToNodeParentLocal(node: Node, worldPosition: any) {
@@ -617,6 +616,9 @@ export default class MergeTutorialWindow extends UIWindow {
         const useCircle = (geometry.shape || '').toLowerCase() === 'circle';
         const mask = useCircle ? this.circleLightMask : this.highLightMask;
         if (!mask || !mask.node) return;
+        mask.inverted = true;
+        mask.type = useCircle ? Mask.Type.GRAPHICS_ELLIPSE : Mask.Type.GRAPHICS_RECT;
+        mask.enabled = true;
         if (this.highLightMask && this.highLightMask.node) {
             this.highLightMask.enabled = !useCircle;
             this.highLightMask.node.active = !useCircle;
@@ -855,11 +857,11 @@ export default class MergeTutorialWindow extends UIWindow {
         const width = dialog.getComponent(UITransform)?.contentSize.width;
         return width == null ? (this.guidepos?.x || 0) : -width / 2;
     }
-    updateDialogLabelWrap(label: Label | null, dialog: Node | null) {
+    updateDialogLabelWrap(label: Label | RichText | null, dialog: Node | null) {
         const dialogTransform = dialog?.getComponent(UITransform);
         if (!label || !dialogTransform) return;
         const width = Math.max(0, dialogTransform.contentSize.width - 60);
-        const legacyLabel = label as Label & { maxWidth?: number };
+        const legacyLabel = label as (Label | RichText) & { maxWidth?: number };
         if (legacyLabel.maxWidth != null) legacyLabel.maxWidth = width;
         const labelTransform = label.node.getComponent(UITransform);
         if (labelTransform) labelTransform.setContentSize(width, labelTransform.contentSize.height);
@@ -905,7 +907,21 @@ export default class MergeTutorialWindow extends UIWindow {
     }
     getMaskGraphics(mask: Mask | null) { return mask?.subComp || null; }
     patchRoundedRectMask(mask: Mask | null) { if (mask) this.setRoundedRectMaskEnabled(mask, true, 16); }
-    setRoundedRectMaskEnabled(mask: Mask | null, enabled: boolean, cornerRadius = 16) { if (!mask) return; let rounded = mask.node.getComponent(MaskRoundRect); if (enabled) { if (!rounded) rounded = mask.node.addComponent(MaskRoundRect); (rounded as any).radius = cornerRadius; } else if (rounded) rounded.destroy(); }
+    setRoundedRectMaskEnabled(mask: Mask | null, enabled: boolean, cornerRadius = 16) { if (!mask) return; let rounded = mask.node.getComponent(MaskRoundRect); if (enabled) { if (!rounded) rounded = mask.node.addComponent(MaskRoundRect); rounded.enabled = true; rounded.setRadius(cornerRadius); } else if (rounded) { rounded.clearMaskGraphics(); rounded.destroy(); } }
     drawRoundedRectMask(mask: Mask | null, cornerRadius = 16) { this.setRoundedRectMaskEnabled(mask, true, cornerRadius); }
-    applyRoundedRectMaskGeometry(mask: Mask | null, geometry: any, useCircle = false) { if (!mask || !geometry) return; this.setNodeSize(mask.node, geometry.width, geometry.height); this.setRoundedRectMaskEnabled(mask, !useCircle, geometry.cornerRadius || 16); }
+    applyRoundedRectMaskGeometry(mask: Mask | null, geometry: any, useCircle = false) {
+        if (!mask || !geometry) return;
+        this.setNodeSize(mask.node, geometry.width, geometry.height);
+        mask.inverted = true;
+        mask.enabled = true;
+        if (useCircle) {
+            this.setRoundedRectMaskEnabled(mask, false);
+            mask.type = Mask.Type.GRAPHICS_ELLIPSE;
+        } else if (geometry.cornerRadius) {
+            this.setRoundedRectMaskEnabled(mask, true, geometry.cornerRadius);
+        } else {
+            this.setRoundedRectMaskEnabled(mask, false);
+            mask.type = Mask.Type.GRAPHICS_RECT;
+        }
+    }
 }
