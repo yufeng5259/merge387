@@ -615,18 +615,18 @@ export default class MergeTutorialWindow extends UIWindow {
         if (!geometry) return;
         const useCircle = (geometry.shape || '').toLowerCase() === 'circle';
         const mask = useCircle ? this.circleLightMask : this.highLightMask;
-        if (!mask || !mask.node) return;
+        if (!mask || !isValid(mask) || !mask.node || !isValid(mask.node)) return;
+        const otherMask = useCircle ? this.highLightMask : this.circleLightMask;
+        if (otherMask && isValid(otherMask) && otherMask.node && isValid(otherMask.node)) {
+            otherMask.enabled = false;
+            otherMask.node.active = false;
+        }
+
+        // Mask creates its stencil state when it becomes active. Configure it only afterwards.
+        mask.node.active = true;
+        mask.enabled = true;
         mask.inverted = true;
         mask.type = useCircle ? Mask.Type.GRAPHICS_ELLIPSE : Mask.Type.GRAPHICS_RECT;
-        mask.enabled = true;
-        if (this.highLightMask && this.highLightMask.node) {
-            this.highLightMask.enabled = !useCircle;
-            this.highLightMask.node.active = !useCircle;
-        }
-        if (this.circleLightMask && this.circleLightMask.node) {
-            this.circleLightMask.enabled = !!useCircle;
-            this.circleLightMask.node.active = !!useCircle;
-        }
         if (useCircle) this.setRoundedRectMaskEnabled(this.highLightMask, false);
         this.setVisualMaskBlockInputEnabled(false);
         const center = this.convertWorldPositionToNodeParentLocal(mask.node, v2(geometry.x, geometry.y));
