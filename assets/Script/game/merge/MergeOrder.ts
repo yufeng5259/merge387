@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Node, sp, Sprite, UITransform, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, isValid, Node, sp, Sprite, UITransform, Vec3 } from 'cc';
 import { bindGuardedClick, unbindGuardedClick } from '../../GameKit/ui/TouchClickGuard';
 import ContentModel from '../items/ContentModel';
 import MergeTypes from './MergeTypes';
@@ -104,7 +104,7 @@ export class MergeOrder extends Component {
     }
 
     onDestroy () {
-        if (this.completeBtn) {
+        if (this.completeBtn && isValid(this.completeBtn, true)) {
             this.completeBtn.off(Node.EventType.TOUCH_END, this.onClickCompleteBtn, this);
             unbindGuardedClick(this.completeBtn, this);
         }
@@ -125,7 +125,9 @@ export class MergeOrder extends Component {
 
     _unbindMergeRoleCompleteClick () {
         if (!this._mergeRoleClickNode) return;
-        this._mergeRoleClickNode.off(Node.EventType.TOUCH_END, this.onClickMergeRoleCompleteArea, this);
+        if (isValid(this._mergeRoleClickNode, true)) {
+            this._mergeRoleClickNode.off(Node.EventType.TOUCH_END, this.onClickMergeRoleCompleteArea, this);
+        }
         this._mergeRoleClickNode = null;
     }
 
