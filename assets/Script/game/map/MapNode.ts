@@ -119,6 +119,7 @@ export class MapNode extends Component {
     private _buildPrefabPreloadQueue: number[] = [];
     private _buildPrefabPreloadActiveCount = 0;
     private _shadowRoot: Node | null = null;
+    private _mapLayoutLoadPromise: Promise<void> | null = null;
 
     onLoad() {
         this.buildCount = this.buildNode ? this.buildNode.children.length : 0;
@@ -281,10 +282,25 @@ export class MapNode extends Component {
         if (this.mapControlle == null) {
             this.initEvent();
         }
-        this.prepareDefaultUnlockedBuild();
-        this.loadBuilds(() => {
-            this.initMapElements();
+        this.ensureMapLayoutData().then(() => {
+            if (this._destroyed) return;
+            this.prepareDefaultUnlockedBuild();
+            this.loadBuilds(() => {
+                this.initMapElements();
+            });
         });
+    }
+
+    ensureMapLayoutData() {
+        if (this.mapData) return Promise.resolve();
+        if (this._mapLayoutLoadPromise) return this._mapLayoutLoadPromise;
+        this._mapLayoutLoadPromise = new Promise<void>((resolve) => {
+            cce.loadRes('res/village/town-layout', JsonAsset, (err: any, asset: JsonAsset | null) => {
+                if (!err && asset) this.mapData = asset;
+                resolve();
+            });
+        });
+        return this._mapLayoutLoadPromise;
     }
 
     prepareDefaultUnlockedBuild() {
@@ -422,6 +438,7 @@ export class MapNode extends Component {
 
     getPrefabBuildPositionOverrides() {
         const overrides: Record<number, { x: number; y: number }> = {};
+        if (this.hasExternalBuildLayout()) return overrides;
         for (const child of this.buildNode?.children || []) {
             const buildID = Number(child.name);
             if (this.isSupportedBuildID(buildID) && buildID <= BUILD_PREFAB_POSITION_OVERRIDE_MAX_ID) overrides[buildID] = { x: child.position.x, y: child.position.y };
@@ -429,9 +446,14 @@ export class MapNode extends Component {
         return overrides;
     }
 
+    hasExternalBuildLayout() {
+        const json = this.mapData?.json;
+        return !!(json && typeof json === 'object' && Object.keys(json).length > 0);
+    }
+
     getBuildLayout(positionOverrides?: Record<number, { x: number; y: number }>) {
         const json = this.mapData && this.mapData.json;
-        const source = (json && typeof json === 'object' && Object.keys(json).length > 0 ? json : BUILD_LAYOUT) as Record<string, BuildLayoutSourceItem>;
+        const source = (this.hasExternalBuildLayout() ? { ...BUILD_LAYOUT, ...json } : BUILD_LAYOUT) as Record<string, BuildLayoutSourceItem>;
         const layout: Record<number, BuildLayoutItem> = {};
         for (const key in source) {
             if (!Object.prototype.hasOwnProperty.call(source, key)) continue;
