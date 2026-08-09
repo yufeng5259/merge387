@@ -1,6 +1,6 @@
 // // fengyong-2019-4-1
 
-import { _decorator, Enum, Component } from 'cc';
+import { _decorator, CCBoolean, Component, Enum } from 'cc';
 const { ccclass, property, menu } = _decorator;
 
 var DoType = Enum({
@@ -59,7 +59,7 @@ var buildPos = {
 export class TReBuild extends Component {
     @property({ type:DoType })
     private doType = DoType.All
-    @property()
+    @property({ type: CCBoolean })
     private get do() { return false }
     private set do(v: boolean) {
         // CC_EDITOR && this.load_Build()

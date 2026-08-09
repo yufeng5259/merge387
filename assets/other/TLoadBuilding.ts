@@ -1,4 +1,4 @@
-import { _decorator, Enum, Component, String } from 'cc';
+import { _decorator, CCBoolean, CCString, Component, Enum } from 'cc';
 const { ccclass, property, menu } = _decorator;
 
 var DoType = Enum({
@@ -21,11 +21,11 @@ export class TLoadBuilding extends Component {
     
     @property({tooltip:"建筑物最大等级"})
     private buildMaxLevel = 5
-    @property({ type: String,tooltip:"动画文件名称,后续在完善目前没有需求" })
-    private build_anim_name_list = []
+    @property({ type: [CCString], tooltip: "动画文件名称,后续在完善目前没有需求" })
+    private build_anim_name_list: string[] = []
     @property({ type:DoType })
     private doType = DoType.Sprite
-    @property()
+    @property({ type: CCBoolean })
     private get do() { return false }
     private set do(v: boolean) {
         // CC_EDITOR && this.load_Build()
