@@ -14,23 +14,12 @@ MergeTutorialOperationGuard.NormalizeTileKey = function(owner, tileKey) {
     return tileKey
 }
 
-MergeTutorialOperationGuard.ResolveDynamicTileKey = function(owner, tileKey) {
-    tileKey = owner.NormalizeTileKey(tileKey)
-    var match = tileKey.match(/^dynamic_(claimed|board)_(\d+)$/)
-    if (!match) return tileKey
-    var state = owner.generatorGuideState || {}
-    if (String(state.mergeId || '') !== String(match[2])) return ''
-    return match[1] === 'claimed'
-        ? owner.NormalizeTileKey(state.claimedCellKey)
-        : owner.NormalizeTileKey(state.boardCellKey)
-}
-
 MergeTutorialOperationGuard.ParseMergeDragParam = function(owner, param) {
     if (!param) return null
     var parts = String(param).split('>')
     return {
-        from: owner.ResolveDynamicTileKey(parts[0] || ''),
-        to: owner.ResolveDynamicTileKey(parts[1] || ''),
+        from: owner.NormalizeTileKey(parts[0] || ''),
+        to: owner.NormalizeTileKey(parts[1] || ''),
     }
 }
 
@@ -141,32 +130,7 @@ MergeTutorialOperationGuard.MatchFlowEventParam = function(owner, completeParam,
 }
 
 MergeTutorialOperationGuard.IsBuildWindowStepMapBuildClick = function(owner, stepMeta, payload) {
-    if (!stepMeta || !stepMeta.CompleteType || stepMeta.CompleteType() !== owner.CompleteTypes.NodeClick) return false
-    payload = payload || {}
-
-    var completeParam = owner.NormalizeOrderParam(stepMeta.CompleteParam ? stepMeta.CompleteParam() : '')
-    var wantsBuyWindow = completeParam === 'building_buy_button'
-    var wantsUpgradeWindow = completeParam === 'building_upgrade_button'
-    if (!wantsBuyWindow && !wantsUpgradeWindow) return false
-
-    var nodeKey = owner.NormalizeOrderParam(payload.nodeKey || payload.targetKey || payload.key || payload.node)
-    if (!nodeKey || !owner.IsMapBuildTarget || !owner.IsMapBuildTarget(nodeKey)) return false
-
-    var clickedTarget = owner.ParseKeyValueParam(nodeKey)
-    clickedTarget.mapId = clickedTarget.mapId || clickedTarget.mapID || clickedTarget.map_id || payload.mapId || payload.mapID || payload.map_id
-    clickedTarget.buildId = clickedTarget.buildId || clickedTarget.buildID || clickedTarget.build_id || payload.buildId || payload.buildID || payload.build_id
-    if (!clickedTarget.mapId || !clickedTarget.buildId) return false
-
-    var expectedTarget = owner.GetTriggerBuildTargetParam ? owner.GetTriggerBuildTargetParam(stepMeta) : null
-    if (!expectedTarget) return false
-    if (expectedTarget.mapId && String(clickedTarget.mapId) !== String(expectedTarget.mapId)) return false
-    if (expectedTarget.buildId && String(clickedTarget.buildId) !== String(expectedTarget.buildId)) return false
-
-    if (typeof Game === 'undefined' || !Game.SUserMap || !Game.SUserMap.GetBuildActionContext) return false
-    var context = Game.SUserMap.GetBuildActionContext(clickedTarget.mapId + '_' + clickedTarget.buildId)
-    if (!context || !context.windowName) return false
-    if (wantsBuyWindow) return context.windowName === 'MapBuyBuildWindow'
-    return context.windowName === 'MapBuildUpgradeWindow' || context.windowName === 'MapBuildStageUpgradeWindow'
+    return false
 }
 
 MergeTutorialOperationGuard.IsWaitingNodeClick = function(owner, nodeKey) {
@@ -221,7 +185,6 @@ MergeTutorialOperationGuard.ShouldBlockMapControl = function(owner) {
 
 MergeTutorialOperationGuard.ShouldUseStaticMergeDragGuideTiles = function(owner) {
     var stepMeta = owner.activeTriggerStepMeta || owner.currentMeta
-    if (owner.IsP5GeneratorMergeDragStep && owner.IsP5GeneratorMergeDragStep(stepMeta)) return true
     return owner.IsMainForcedTutorialActive() &&
         owner.currentMeta &&
         owner.currentMeta.CompleteType &&
@@ -263,9 +226,7 @@ MergeTutorialOperationGuard.MatchStepComplete = function(owner, stepMeta, eventN
     }
     if (completeType === owner.CompleteTypes.GeneratorClick) {
         var gen = owner.ParseGeneratorParam(completeParam)
-        if (!gen || owner.NormalizeTileKey(payload.tile) !== gen.tile) {
-            return false
-        }
+        if (!gen || owner.NormalizeTileKey(payload.tile) !== gen.tile) return false
         var key = (progressPrefix || 'step') + '_' + stepMeta.Id() + '_' + gen.tile
         owner.generatorClickProgress[key] = (owner.generatorClickProgress[key] || 0) + 1
         return owner.generatorClickProgress[key] >= gen.count
@@ -340,9 +301,6 @@ MergeTutorialOperationGuard.CanOperateByStepMeta = function(owner, stepMeta, typ
 MergeTutorialOperationGuard.CanOperate = function(owner, type, payload) {
     if (owner.activeTriggerStepMeta && owner.activeTriggerBlockMode === owner.TriggerBlockModes.Force) {
         return owner.CanOperateByStepMeta(owner.activeTriggerStepMeta, type, payload, false)
-    }
-    if (owner.ShouldBlockForceGuideGlobalUi && owner.ShouldBlockForceGuideGlobalUi()) {
-        return false
     }
     if (owner.IsFinished()) {
         return true

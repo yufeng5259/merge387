@@ -40,18 +40,8 @@ MergeTutorialStateMachine.ResetRuntimeState = function(owner) {
     owner.triggerStateRecoverRetryCount = 0
     owner.completedTriggerReports = {}
 
-    owner.generatorGuideState = {
-        mergeId: '',
-        boardCellKey: '',
-        claimedCellKey: '',
-    }
     owner.runningActionStepId = 0
-    owner.pendingRewardReadyMergeIds = {}
-    owner.levelRewardClaimClickedForP5 = false
-    owner.townUpgradeP5PendingFlowId = null
-    owner.p5GeneratorTempRewardClaiming = false
     owner.openingTriggerBuildWindowStepId = 0
-    owner.p5TriggerStartSaveStepId = 0
     owner.pendingTriggerStartSaveTriggerId = 0
     owner.triggerStartStepOverrides = {}
 }
@@ -315,16 +305,6 @@ MergeTutorialStateMachine.IsLocalTriggerProgressUsable = function(owner, progres
     var now = this.GetNowMs()
     if (savedAt && now && owner.TriggerGuideLocalProgressTtl && now - savedAt > owner.TriggerGuideLocalProgressTtl) return false
 
-    if (triggerMeta.Id() === owner.P4TriggerId &&
-        owner.CanResumeP4SavedStep &&
-        !owner.CanResumeP4SavedStep(triggerMeta, owner.GetMeta(stepId))) {
-        return false
-    }
-    if (triggerMeta.Id() === owner.P5GeneratorTriggerId &&
-        owner.CanResumeP5GeneratorSavedStep &&
-        !owner.CanResumeP5GeneratorSavedStep(triggerMeta, owner.GetMeta(stepId))) {
-        return false
-    }
     return true
 }
 
@@ -398,12 +378,6 @@ MergeTutorialStateMachine.ResolveTriggerStartStepId = function(owner, triggerMet
     if (reportId && savedStepId >= reportId) {
         return reportId
     }
-    if (triggerMeta.Id &&
-        triggerMeta.Id() === owner.P4TriggerId &&
-        owner.ResolveP4SavedTriggerStepId) {
-        savedStepId = owner.ResolveP4SavedTriggerStepId(triggerMeta, savedStepId)
-    }
-
     var stepId = firstStepId
     var guard = 0
     while (stepId && guard++ < 100) {
@@ -438,11 +412,6 @@ MergeTutorialStateMachine.ShouldResumeSavedTriggerProgress = function(owner, tri
     }
     var savedStepMeta = this.FindTriggerStepMetaInChain(owner, triggerMeta, savedStepId)
     if (!savedStepMeta) {
-        return false
-    }
-    if (triggerMeta.Id() === owner.P5GeneratorTriggerId &&
-        owner.CanResumeP5GeneratorSavedStep &&
-        !owner.CanResumeP5GeneratorSavedStep(triggerMeta, savedStepMeta)) {
         return false
     }
     var resolvedStepId = this.ResolveTriggerStartStepId(owner, triggerMeta)
@@ -534,9 +503,6 @@ MergeTutorialStateMachine.BeginTriggerAtStep = function(owner, triggerMeta, step
     owner.activeTriggerBlockMode = triggerMeta.BlockMode ? triggerMeta.BlockMode() : owner.TriggerBlockModes.None
     owner.activeTriggerStepId = stepId
     this.SaveLocalTriggerProgress(owner, triggerMeta, stepId)
-    if (triggerMeta.Id && triggerMeta.Id() === owner.P4TriggerId && owner.SetTriggerTutorialId) {
-        owner.SetTriggerTutorialId(triggerMeta, stepId)
-    }
     if (!owner.activeTriggerStepId) {
         this.ClearActiveTriggerState(owner)
         if (owner.TryStartNextTrigger) owner.TryStartNextTrigger()
@@ -546,49 +512,7 @@ MergeTutorialStateMachine.BeginTriggerAtStep = function(owner, triggerMeta, step
 }
 
 MergeTutorialStateMachine.SaveTriggerStartStepIfNeeded = function(owner, triggerMeta, stepId) {
-    if (!owner || !triggerMeta || !triggerMeta.Id || triggerMeta.Id() !== owner.P5GeneratorTriggerId) return false
-    stepId = parseInt(stepId, 10) || 0
-    if (!stepId) return false
-    var stepMeta = owner.GetMeta ? owner.GetMeta(stepId) : null
-    if (!stepMeta || !stepMeta.SaveServer || !stepMeta.SaveServer()) return false
-    if (owner.p5TriggerStartSaveStepId === stepId) return true
-
-    var triggerId = triggerMeta.Id()
-    var groupId = owner.GetTriggerGroupId ? owner.GetTriggerGroupId(triggerMeta) : 0
-    owner.p5TriggerStartSaveStepId = stepId
-    owner.pendingTriggerStartSaveTriggerId = triggerId
-    var onSaved = function(res) {
-        if (owner.p5TriggerStartSaveStepId === stepId) {
-            owner.p5TriggerStartSaveStepId = 0
-        }
-        if (owner.pendingTriggerStartSaveTriggerId === triggerId) {
-            owner.pendingTriggerStartSaveTriggerId = 0
-        }
-        if (owner.activeTriggerMeta) {
-            if (owner.EnqueueTriggerAtStep) owner.EnqueueTriggerAtStep(triggerMeta, stepId, true)
-            return
-        }
-        if (owner.SetTriggerTutorialId) {
-            owner.SetTriggerTutorialId(triggerMeta, stepId)
-        } else if (typeof Game !== 'undefined' && Game.SUserMergeTutorial && Game.SUserMergeTutorial.SetTutorialId) {
-            Game.SUserMergeTutorial.SetTutorialId(groupId, stepId)
-        }
-        if (owner.BeginTriggerAtStep) owner.BeginTriggerAtStep(triggerMeta, stepId)
-    }
-    var onFailed = function(res) {
-        if (owner.p5TriggerStartSaveStepId === stepId) {
-            owner.p5TriggerStartSaveStepId = 0
-        }
-        if (owner.pendingTriggerStartSaveTriggerId === triggerId) {
-            owner.pendingTriggerStartSaveTriggerId = 0
-        }
-        if (owner.EnqueueTriggerAtStep) owner.EnqueueTriggerAtStep(triggerMeta, stepId, true)
-        if (owner.ScheduleTriggerStartRetry) owner.ScheduleTriggerStartRetry()
-    }
-    if (!owner.SaveServerStep || !owner.SaveServerStep(stepId, onSaved, onFailed)) {
-        onFailed({ error: 'save_unavailable' })
-    }
-    return true
+    return false
 }
 
 MergeTutorialStateMachine.ClearActiveTriggerState = function(owner) {
@@ -618,15 +542,7 @@ MergeTutorialStateMachine.StartTriggerStep = function(owner) {
         if (owner.CompleteActiveTrigger) owner.CompleteActiveTrigger()
         return
     }
-    if (owner.TryRedirectP4CompletedBuildBuyStepFromState &&
-        owner.TryRedirectP4CompletedBuildBuyStepFromState(owner.activeTriggerStepMeta)) {
-        return
-    }
     if (owner.EnsureTriggerStepStartContext && !owner.EnsureTriggerStepStartContext(owner.activeTriggerStepMeta)) {
-        return
-    }
-    if (owner.TryAdvanceP4TransientStepFromState &&
-        owner.TryAdvanceP4TransientStepFromState(owner.activeTriggerStepMeta)) {
         return
     }
     owner.activeTriggerGuideMeta = owner.GetGuideMeta ? owner.GetGuideMeta(owner.activeTriggerStepMeta.GuideId()) : null
@@ -645,16 +561,7 @@ MergeTutorialStateMachine.StartTriggerStep = function(owner) {
 }
 
 MergeTutorialStateMachine.ShouldForceSaveTriggerStep = function(owner, stepId) {
-    if (!owner) return false
-    stepId = parseInt(stepId, 10) || 0
-    if (!stepId) return false
-    if (owner.activeTriggerMeta &&
-        owner.activeTriggerMeta.Id &&
-        owner.activeTriggerMeta.Id() === owner.P5GeneratorTriggerId) {
-        var firstStepId = parseInt(owner.activeTriggerMeta.FirstStepId ? owner.activeTriggerMeta.FirstStepId() : 0, 10) || 0
-        if (firstStepId && firstStepId === stepId) return false
-    }
-    return true
+    return !!(owner && (parseInt(stepId, 10) || 0))
 }
 
 MergeTutorialStateMachine.NextTriggerStep = function(owner) {
@@ -677,8 +584,7 @@ MergeTutorialStateMachine.NextTriggerStep = function(owner) {
         : owner.activeTriggerStepMeta
     if (owner.ShouldSaveTriggerServerStep &&
         owner.ShouldSaveTriggerServerStep(owner.activeTriggerMeta, saveStepMeta, saveStepId, nextMeta)) {
-        var isP4 = owner.activeTriggerMeta && owner.activeTriggerMeta.Id && owner.activeTriggerMeta.Id() === owner.P4TriggerId
-        var saveOptions = !isP4 && this.ShouldForceSaveTriggerStep(owner, saveStepId) ? { force: true } : null
+        var saveOptions = this.ShouldForceSaveTriggerStep(owner, saveStepId) ? { force: true } : null
         if (owner.SaveServerStep) owner.SaveServerStep(saveStepId, null, null, saveOptions)
     }
     owner.activeTriggerStepId = nextId
@@ -703,11 +609,7 @@ MergeTutorialStateMachine.CompleteActiveTrigger = function(owner) {
 }
 
 MergeTutorialStateMachine.CanSkipActiveTrigger = function(owner) {
-    if (!owner || !owner.activeTriggerMeta || !owner.activeTriggerMeta.Id) return false
-    var triggerId = owner.activeTriggerMeta.Id()
-    if (triggerId !== owner.P4TriggerId && triggerId !== owner.P5GeneratorTriggerId) return false
-    if (owner.IsTriggerCompleted && owner.IsTriggerCompleted(owner.activeTriggerMeta)) return false
-    return !!(owner.activeTriggerStepId || owner.activeTriggerStepMeta)
+    return false
 }
 
 MergeTutorialStateMachine.SkipActiveTrigger = function(owner) {
@@ -784,7 +686,6 @@ MergeTutorialStateMachine.InitMainOrTrigger = function(owner) {
             owner.TryRecoverTriggerProgressFromStateWithRetry()
         }
         if (owner.TryConsumePendingRewardReadyNotifications) owner.TryConsumePendingRewardReadyNotifications()
-        if (owner.StartP5GeneratorGuideFromBoardFallback) owner.StartP5GeneratorGuideFromBoardFallback()
         if (owner.TryStartNextTrigger) owner.TryStartNextTrigger()
         return
     }
@@ -908,19 +809,6 @@ MergeTutorialStateMachine.CompleteForcedTutorial = function(owner, userTutorialD
     if (cb) {
         cb()
     }
-    var isP4Completed = owner.IsP4Completed ? owner.IsP4Completed() : true
-    if (!isP4Completed && typeof Game !== 'undefined' && Game.SUser && Game.SUser.Coin) {
-        var coin = Game.SUser.Coin()
-        if (owner.EmitTrigger) {
-            owner.EmitTrigger('coin_reach', {
-                coin: coin,
-                source: 'main_forced_finish',
-            })
-        }
-    }
-    if (owner.TryConsumePendingRewardReadyNotifications) owner.TryConsumePendingRewardReadyNotifications()
-    if (owner.StartP5GeneratorGuideFromBoardFallback) owner.StartP5GeneratorGuideFromBoardFallback()
-    if (owner.TryStartNextTrigger) owner.TryStartNextTrigger()
 }
 
 MergeTutorialStateMachine.RetryFinishForcedTutorial = function(owner, stage, error) {

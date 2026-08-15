@@ -103,10 +103,9 @@ export class UserInfoModel extends Component {
     public onLoad() {
     }
 
-    public canOperateP4GlobalUi() {
+    public canOperateGuideGlobalUi() {
         const tutorialManager = Game.MergeTutorialManager;
         if (tutorialManager?.ShouldBlockForceGuideGlobalUi?.()) return false;
-        if (tutorialManager?.ShouldBlockP4GlobalUi?.()) return false;
         return true;
     }
 
@@ -136,7 +135,7 @@ export class UserInfoModel extends Component {
 
             if (this.avatarSprite) {
                 bindGuardedClick(this.avatarSprite.node, this, () => {
-                    if (!this.canOperateP4GlobalUi()) return;
+                    if (!this.canOperateGuideGlobalUi()) return;
                     UIRoot.instance.openChildWindow('AvatarWindow', { user: this.User });
                 });
             }
@@ -249,7 +248,7 @@ export class UserInfoModel extends Component {
         }
         if (this.btnCashAdd && this.isSelf) {
             this.btnCashAdd.node.on('click', () => {
-                if (!this.canOperateP4GlobalUi()) return;
+                if (!this.canOperateGuideGlobalUi()) return;
                 if (GamePlay.instance.isBusy()) {
                     return;
                 }
@@ -457,7 +456,7 @@ export class UserInfoModel extends Component {
         }
         if (this.btnCoinAdd) {
             this.btnCoinAdd.node.on('click', () => {
-                if (!this.canOperateP4GlobalUi()) return;
+                if (!this.canOperateGuideGlobalUi()) return;
                 if (GamePlay.instance.isBusy()) {
                     return;
                 }

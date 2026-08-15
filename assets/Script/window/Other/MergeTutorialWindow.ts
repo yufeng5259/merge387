@@ -220,7 +220,6 @@ export default class MergeTutorialWindow extends UIWindow {
             return false;
         }
         Tween.stopAllByTarget(guideGen);
-        Game.MergeTutorialManager?.SetTempRewardVisibleForGuide?.(false);
         guideGen.active = true;
         guideGen.setScale(1, 1, 1);
         guideGen.setPosition(this.toVec3(from));
@@ -230,7 +229,6 @@ export default class MergeTutorialWindow extends UIWindow {
             .to(0.35, { scale: new Vec3(1.4, 1.4, 1.4) } as any).to(0.35, { scale: Vec3.ONE } as any)
             .to(0.5, { position: this.toVec3(to) } as any).call(() => {
                 guideGen.active = false;
-                Game.MergeTutorialManager?.SetTempRewardVisibleForGuide?.(true);
                 cb?.();
             }).start();
         return true;
@@ -480,24 +478,11 @@ export default class MergeTutorialWindow extends UIWindow {
     }
 
     applyTwoPointHighlight(from: any, to: any, immediate: boolean) {
-        if (this.shouldUseGeneratorMergeDragRectHighlight() && this.applyGeneratorMergeDragRectHighlight(from, to, immediate)) return;
         const geometry = Game.MergeTutorialManager && Game.MergeTutorialManager.BuildDynamicHighlightGeometry
             ? Game.MergeTutorialManager.BuildDynamicHighlightGeometry(from, to)
             : null;
         if (!geometry) return;
         this.applyDynamicHighlightGeometry(geometry, immediate !== false);
-    }
-
-    shouldUseGeneratorMergeDragRectHighlight() {
-        if (this.guideMeta?.GuideType?.() !== 'drag' || !this.meta) return false;
-        return this.meta.Id?.() === 1050040 || String(this.meta.CompleteParam?.() || '') === 'dynamic_claimed_101004>dynamic_board_101004';
-    }
-
-    applyGeneratorMergeDragRectHighlight(from: any, to: any, immediate: boolean) {
-        const geometry = Game.MergeTutorialManager?.BuildGeneratorMergeDragHighlightGeometry?.(from, to);
-        if (!geometry) return false;
-        this.applyDynamicHighlightGeometry(geometry, immediate !== false);
-        return true;
     }
 
     addFullScreenOnClick(cb: any) {

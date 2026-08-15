@@ -818,13 +818,13 @@ export default class GameMainWindow extends UIWindow {
         AppKit.LeaderBoardWrap.setScore("User_Star", star)
     }
     openFlyToSkyWindow(e,winName){
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow(winName)
     }
     //回调
     openMenu() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("MenuWindow")
     }
@@ -847,7 +847,7 @@ export default class GameMainWindow extends UIWindow {
         // AppKit.LogEventWrap.logEvent("GetInviteRewardsWindow")
     }
     openSpinShop() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (!this.canOperateMergeTutorialNodeClick('shop_entry')) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("ShopWindow")
@@ -1209,11 +1209,10 @@ export default class GameMainWindow extends UIWindow {
         const signData = GameKit.DataCache.GetData("signData")
         return !!(signData && signData.signWeekDay > signData.signWeekRewards)
     }
-    canOperateP4GlobalUi() {
+    canOperateGuideGlobalUi() {
         if (Game.TownUpgradeFlow && Game.TownUpgradeFlow.isRunning && Game.TownUpgradeFlow.isRunning()) return false
         const tutorialManager = Game.MergeGuideHooks
         if (tutorialManager?.ShouldBlockForceGuideGlobalUi?.()) return false
-        if (tutorialManager?.ShouldBlockP4GlobalUi?.()) return false
         return true
     }
     getFirstPurchaseButton() {
@@ -1224,8 +1223,6 @@ export default class GameMainWindow extends UIWindow {
     }
     canShowFirstPurchase() {
         const tutorialManager = Game.MergeGuideHooks
-        if (tutorialManager?.IsFinished?.() && tutorialManager?.GetTriggerMeta?.(tutorialManager.P4TriggerId) &&
-            tutorialManager?.IsP4Completed && !tutorialManager.IsP4Completed()) return false
         return !!(ENABLE_FIRST_PURCHASE_ENTRY && AppKit.PaymentWrap.PayVisiable() && Game.SUserStatus && !Game.SUserStatus.IsFirstPurchased())
     }
     refreshFirstPurchaseEntry() {
@@ -1237,8 +1234,6 @@ export default class GameMainWindow extends UIWindow {
         const manager = Game.MergeGuideHooks
         if (!manager) return true
         if (manager.IsFinished?.() === false) return false
-        if (manager.GetTriggerMeta?.(manager.P4TriggerId) && manager.IsP4Completed?.() === false) return false
-        if (manager.GetTriggerMeta?.(manager.P5GeneratorTriggerId) && manager.IsP5GeneratorCompleted?.() === false) return false
         return !manager.ShouldBlockForceGuideGlobalUi?.()
     }
     canShowNewPlayerPack() {
@@ -1271,7 +1266,7 @@ export default class GameMainWindow extends UIWindow {
         }
     }
     openCard(parmas) {
-        if (!this.canOperateP4GlobalUi()) return
+        if (!this.canOperateGuideGlobalUi()) return
         if (GamePlay.instance.isBusy()) return
         if (this.isCardFeatureClosed()) return
         UIRoot.instance.openChildWindow("CardAllSetWindow",parmas)
@@ -1571,7 +1566,7 @@ export default class GameMainWindow extends UIWindow {
         }
     }
     openQuestWindow() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("QuestCenterWindow")
     }
@@ -1624,7 +1619,7 @@ export default class GameMainWindow extends UIWindow {
         }
     }
     openActivityWindow(parmas) {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("ActivityCenterWindow",parmas)
     }
@@ -1661,7 +1656,7 @@ export default class GameMainWindow extends UIWindow {
         if (!this.isCardFeatureClosed()) Game.ActivityManager.checkSubjectCard()
     }
     openFirstPurchase() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (!this.canShowFirstPurchase()) {
             this.refreshFirstPurchaseEntry()
             return
@@ -1671,7 +1666,7 @@ export default class GameMainWindow extends UIWindow {
     }
     // NewPlayerPack
     openNewPlayerPack() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (!this.canShowNewPlayerPack()) {
             this.refreshNewPlayerPackEntry()
             return
@@ -1696,7 +1691,7 @@ export default class GameMainWindow extends UIWindow {
     }
     // NewPlayer Congrats
     openCongrats() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("CongratsWindow")
     }
@@ -1715,12 +1710,12 @@ export default class GameMainWindow extends UIWindow {
     }
     //Cash
     openCashWindow() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("CashTaskWindow")
     }
     openLevelBonus() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         UIRoot.instance.openChildWindow("LevelBonusWindow")
     }
@@ -1828,7 +1823,7 @@ export default class GameMainWindow extends UIWindow {
         }
     }
     OpenSuperShield() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("ShopWindow", {showShield: true})
     }
     /*openChatRoom() {
@@ -1837,7 +1832,7 @@ export default class GameMainWindow extends UIWindow {
 
     // VIP
     openVipWindow() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if (GamePlay.instance.isBusy()) return
         Game.SUserStatus.UpdateExtraTime()
         if (Game.SUserStatus.VipExtraReward() && Game.SUserStatus.VipExtraReward().length > 0) {
@@ -1900,7 +1895,7 @@ export default class GameMainWindow extends UIWindow {
         }
     }
     openLuckyDraw() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("LuckyDrawWindow")
     }
     updateLuckyDrawTimer(dt) {
@@ -2044,32 +2039,32 @@ export default class GameMainWindow extends UIWindow {
     }
     /** 点击事件： */
     event_5_news() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("VillageNewsWindow");
     }
     /** 点击事件： */
     event_6_gifts() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("GiftsWindow");
     }
     /** 点击事件： */
     event_9_leaderboard() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("LeaderboardWindow");
     }
     /** 点击事件： */
     event_10_invite() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("InviteWindow")//
     }
     /** 点击事件： */
     event_11_setting() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("SettingWindow");
     }
     /** 点击事件： */
     event_13_friends() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         if(!Game.SUser.IsGuest()){
             let req = SR.SRGuild.verificationLegion({"userId":Game.SUser.UserId()});
             req.SetCallBack(function(res) {
@@ -2100,7 +2095,7 @@ export default class GameMainWindow extends UIWindow {
     }
     /** 点击事件： */
     event_sign() {
-        if (!this.canOperateP4GlobalUi()) return false
+        if (!this.canOperateGuideGlobalUi()) return false
         UIRoot.instance.openChildWindow("SignWindow");
     }
     private getOrAddTransform(node: Node | null) {

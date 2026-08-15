@@ -89,10 +89,6 @@ MergeGuideHooks.ShouldBlockForceGuideGlobalUi = function() {
     return !!this.Call('ShouldBlockForceGuideGlobalUi')
 }
 
-MergeGuideHooks.ShouldBlockP4GlobalUi = function() {
-    return !!this.Call('ShouldBlockP4GlobalUi')
-}
-
 MergeGuideHooks.ShouldBlockMapControl = function() {
     return !!this.Call('ShouldBlockMapControl')
 }
@@ -114,10 +110,6 @@ MergeGuideHooks.ShouldShowStoreButton = function() {
 
 MergeGuideHooks.ShouldHideMainForcedTutorialControls = function() {
     return !!this.Call('ShouldHideMainForcedTutorialControls')
-}
-
-MergeGuideHooks.ShouldHideTempRewardForGuide = function() {
-    return !!this.Call('ShouldHideTempRewardForGuide')
 }
 
 MergeGuideHooks.IsWaitingNodeClick = function(nodeKey) {
@@ -144,51 +136,12 @@ MergeGuideHooks.GetMergeIdFromDataStr = function(dataStr) {
     return this.Call('GetMergeIdFromDataStr', dataStr) || ''
 }
 
-MergeGuideHooks.BeginP5GeneratorTempRewardClaim = function(reward) {
-    var result = this.Call('BeginP5GeneratorTempRewardClaim', reward)
-    return result === undefined ? true : !!result
-}
-
-MergeGuideHooks.CancelP5GeneratorTempRewardClaim = function(reward) {
-    return this.Call('CancelP5GeneratorTempRewardClaim', reward)
-}
-
-MergeGuideHooks.PrepareGeneratorMergeGuide = function(mergeId) {
-    return !!this.Call('PrepareGeneratorMergeGuide', mergeId)
-}
-
-MergeGuideHooks.OnTempRewardClaimed = function(payload) {
-    return this.Call('OnTempRewardClaimed', payload)
-}
-
-MergeGuideHooks.NotifyPendingRewardsUpdated = function(nextRewards, prevRewards) {
-    return this.Call('NotifyPendingRewardsUpdated', nextRewards, prevRewards)
-}
-
-MergeGuideHooks.ReleaseTownUpgradeP5 = function(flowId) {
-    return this.Call('ReleaseTownUpgradeP5', flowId)
-}
-
-MergeGuideHooks.LogGeneratorRewardFly = function(label, data) {
-    return this.Call('LogGeneratorRewardFly', label, data)
-}
-
 MergeGuideHooks.GetTriggerMeta = function(triggerId) {
     return this.Call('GetTriggerMeta', triggerId) || null
 }
 
 MergeGuideHooks.GetTriggerMetas = function() {
     return this.Call('GetTriggerMetas') || {}
-}
-
-MergeGuideHooks.IsP4Completed = function() {
-    var result = this.Call('IsP4Completed')
-    return result === undefined ? true : !!result
-}
-
-MergeGuideHooks.IsP5GeneratorCompleted = function() {
-    var result = this.Call('IsP5GeneratorCompleted')
-    return result === undefined ? true : !!result
 }
 
 Object.defineProperty(MergeGuideHooks, 'mainWindow', {
@@ -233,20 +186,6 @@ Object.defineProperty(MergeGuideHooks, 'EventTypes', {
             DragToBackpack: 'drag_to_backpack',
             FlowEvent: 'flow_event',
         }
-    },
-})
-
-Object.defineProperty(MergeGuideHooks, 'P4TriggerId', {
-    get: function() {
-        var manager = this.GetManager()
-        return manager ? manager.P4TriggerId : 3040010
-    },
-})
-
-Object.defineProperty(MergeGuideHooks, 'P5GeneratorTriggerId', {
-    get: function() {
-        var manager = this.GetManager()
-        return manager ? manager.P5GeneratorTriggerId : 3050010
     },
 })
 

@@ -674,8 +674,7 @@ export class MergeUI extends Component {
     refreshPendingRewardsUI () {
         if (!this.isValidNode(this.node) || !this.node.activeInHierarchy || !this.notetemp?.ShowIcon || !Game.SUserMerge?.GetLastPendingRewards) return false;
         try {
-            if (Game.MergeTutorialManager?.ShouldHideTempRewardForGuide?.()) this.notetemp.node.active = false;
-            else this.notetemp.ShowIcon(Game.SUserMerge.GetLastPendingRewards());
+            this.notetemp.ShowIcon(Game.SUserMerge.GetLastPendingRewards());
             this.UpdateNotesUIVisibleSafe();
             return true;
         } catch (_) {
@@ -978,10 +977,6 @@ export class MergeUI extends Component {
         const mergeType = this.notetemp.GetMergeType();
         const dataStr = this.notetemp.GetMergeDataStr();
         const rewardIndex = Game.SUserMerge.GetLastPendingRewardsKey(dataStr);
-        const tutorialMergeId = Game.MergeTutorialManager?.GetMergeIdFromDataStr
-            ? Game.MergeTutorialManager.GetMergeIdFromDataStr(dataStr)
-            : (dataStr ? String(Number.parseInt(String(dataStr).split('_')[0], 10) || '') : '');
-
         if (rewardIndex === undefined || rewardIndex === null) {
             this.PlayAdditionDscAnim('婵炲备鍓濆﹢浣圭▔鐎涙ɑ顦ч柡浣哄瀹撲線鏁嶇仦鑲╃憹闁煎疇濮よぐ渚€宕ｉ弽锕€顦查柡鍐煐閺嗙喖骞戦鍡欑＜');
             return false;
@@ -994,12 +989,6 @@ export class MergeUI extends Component {
             this.PlayAdditionDscAnim('濡澘妫楄ぐ鍥箣閹邦剙顫犻柨娑樺缁叉崘銇愰幘鍐差枀婵炲备鍓濆﹢渚€宕ｉ婊勬殢缂佸瞼鍎ら悧鎼佹晬瀹€鍐惧殲闁轰礁顕幃濠偽涚€ｎ剚纾搁柛姘叄閸ｅ摜鎷?');
             return false;
         }
-        if (Game.MergeTutorialManager?.BeginP5GeneratorTempRewardClaim &&
-            !Game.MergeTutorialManager.BeginP5GeneratorTempRewardClaim(dataStr)) return false;
-        const cancelP5GeneratorTempRewardClaim = () => {
-            Game.MergeTutorialManager?.CancelP5GeneratorTempRewardClaim?.(dataStr);
-        };
-        if (tutorialMergeId) Game.MergeTutorialManager?.PrepareGeneratorMergeGuide?.(tutorialMergeId);
         const opId = GameKit.StringUtil.getRandomString(16);
         const cellKey = emptyNow ? (emptyNow.x + '_' + emptyNow.y) : null;
         const requestPromise = lvl.updateMergeMapEvent({
@@ -1010,7 +999,6 @@ export class MergeUI extends Component {
             forceServer: true,
             serverErrorCallback: (err: any) => {
                 console.error(err, 'claim error');
-                cancelP5GeneratorTempRewardClaim();
                 this._finishTempNoteExtract(true);
             },
         });
@@ -1018,7 +1006,6 @@ export class MergeUI extends Component {
             if (!result || !result.success || result.opId !== opId) {
                 const msg = result && (result.errorMsg || result.errorCode) ? (result.errorMsg || result.errorCode) : 'claim reward failed';
                 console.error(result, msg);
-                cancelP5GeneratorTempRewardClaim();
                 this._finishTempNoteExtract(true);
                 return;
             }
@@ -1026,13 +1013,6 @@ export class MergeUI extends Component {
             console.log('claim reward success');
             this._finishTempNoteExtract(false);
             const claimedCellKey = result.cellKey || cellKey;
-            if (tutorialMergeId) {
-                Game.MergeTutorialManager?.OnTempRewardClaimed?.({
-                    mergeId: tutorialMergeId,
-                    cellKey: claimedCellKey,
-                    dataStr: result.pieceData || dataStr,
-                });
-            }
             const emitTempNoteClick = () => Game.MergeTutorialManager?.EmitNodeClick?.('temp_note');
             if (mergeType === 'content' || mergeType === 'pack' || mergeType === 'cardChest') {
                 emitTempNoteClick();
@@ -1045,7 +1025,6 @@ export class MergeUI extends Component {
             this.InitOrderList();
         }).catch((err) => {
             console.error(err, 'claim error');
-            cancelP5GeneratorTempRewardClaim();
             this._finishTempNoteExtract(true);
         });
 

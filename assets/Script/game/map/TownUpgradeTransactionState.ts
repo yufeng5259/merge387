@@ -5,7 +5,6 @@ export interface TownUpgradeTransactionPayload {
 
 export interface TownUpgradeTransactionSnapshot extends TownUpgradeTransactionPayload {
     flowId: number;
-    p5Eligible: boolean;
 }
 
 interface ActiveTownUpgradeTransaction extends TownUpgradeTransactionSnapshot {
@@ -20,7 +19,7 @@ export default class TownUpgradeTransactionState {
 
     start (payload: TownUpgradeTransactionPayload = {}) {
         const flowId = ++this.nextFlowId;
-        this.active = { flowId, mapID: payload.mapID, buildID: payload.buildID, phase: 'requesting', interactive: false, p5Eligible: false };
+        this.active = { flowId, mapID: payload.mapID, buildID: payload.buildID, phase: 'requesting', interactive: false };
         this.finished = null;
         return flowId;
     }
@@ -42,16 +41,10 @@ export default class TownUpgradeTransactionState {
 
     isInteractive (flowId: number) { return !!(this.isActive(flowId) && this.active!.interactive); }
 
-    markP5Eligible (flowId: number) {
-        if (!this.isActive(flowId)) return false;
-        this.active!.p5Eligible = true;
-        return true;
-    }
-
     finish (flowId: number) {
         if (!this.isActive(flowId)) return false;
         const active = this.active!;
-        this.finished = { flowId: active.flowId, mapID: active.mapID, buildID: active.buildID, p5Eligible: active.p5Eligible };
+        this.finished = { flowId: active.flowId, mapID: active.mapID, buildID: active.buildID };
         this.active = null;
         return true;
     }

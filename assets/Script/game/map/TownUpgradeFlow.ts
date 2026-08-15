@@ -30,11 +30,6 @@ TownUpgradeFlow.getPhase = function() {
         : null
 }
 
-TownUpgradeFlow.markP5Eligible = function(flowId) {
-    if (!TownUpgradeFlow._isActivePhase(flowId)) return false
-    return TownUpgradeFlow._transactionState.markP5Eligible(flowId)
-}
-
 TownUpgradeFlow._isActivePhase = function(flowId, phase) {
     if (!TownUpgradeFlow._transactionState.isActive(flowId)) return false
     return phase == null || TownUpgradeFlow._transactionState.getPhase(flowId) === phase
@@ -769,9 +764,6 @@ TownUpgradeFlow._finish = function(flowId, source) {
             buildId: buildID,
             flowId: flowId,
         })
-    }
-    if (finished.p5Eligible && Game.MergeTutorialManager && Game.MergeTutorialManager.ReleaseTownUpgradeP5) {
-        Game.MergeTutorialManager.ReleaseTownUpgradeP5(flowId)
     }
     if (Game.MergeTutorialManager && Game.MergeTutorialManager.RefreshCurrentWindow) {
         Game.MergeTutorialManager.RefreshCurrentWindow()

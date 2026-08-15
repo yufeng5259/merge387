@@ -5998,7 +5998,7 @@ async function validatePrefabAsset(args) {
 
 var BASE64_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
-function compressUuidForCocosType(uuid) {
+function compressLegacyUuidForCocos2Type(uuid) {
   var hex = String(uuid || '').replace(/-/g, '');
   if (!/^[0-9a-fA-F]{32}$/.test(hex)) return '';
   var out = hex.slice(0, 5);
@@ -6012,6 +6012,12 @@ function compressUuidForCocosType(uuid) {
     }
   }
   return out;
+}
+
+function compressUuidForCocosType(uuid) {
+  var hex = String(uuid || '').replace(/-/g, '').toLowerCase();
+  if (!/^[0-9a-f]{32}$/.test(hex)) return '';
+  return hex.slice(0, 2) + Buffer.from(hex.slice(2), 'hex').toString('base64').replace(/=+$/g, '');
 }
 
 function normalizeExpectList(value) {
@@ -9507,6 +9513,12 @@ function buildStaticAssetUuidIndex(options) {
     if (/^[0-9a-fA-F-]{36}$/.test(base)) {
       var compressed = compressUuidForCocosType(base);
       if (compressed) byCompressedType[compressed] = Object.assign({ uuid: base, compressedType: compressed }, info || {});
+      // Creator 2 projects used a five-hex-character prefix for script types.
+      // Keep those IDs readable while migration rewrites them to Creator 3 form.
+      var legacyCompressed = compressLegacyUuidForCocos2Type(base);
+      if (legacyCompressed && legacyCompressed !== compressed) {
+        byCompressedType[legacyCompressed] = Object.assign({ uuid: base, compressedType: legacyCompressed, legacy: true }, info || {});
+      }
     }
   }
   KNOWN_INTERNAL_ASSET_UUIDS.forEach(function (entry) {
@@ -14277,6 +14289,54 @@ async function refreshOfflinePrefabAsset(prefabPath) {
   return refreshed;
 }
 
+function prefabValidationDiagnosticKey(diagnostic) {
+  diagnostic = diagnostic || {};
+  return [
+    diagnostic.kind || '',
+    diagnostic.sourcePath || '',
+    diagnostic.objectIndex == null ? '' : diagnostic.objectIndex,
+    diagnostic.edgeId || '',
+    diagnostic.refPath || '',
+    diagnostic.refId == null ? '' : diagnostic.refId,
+    diagnostic.ownerComponent || '',
+    diagnostic.ownerNodePath || '',
+    diagnostic.propertyName || diagnostic.propertyPath || '',
+    diagnostic.uuid || '',
+    diagnostic.componentType || '',
+    diagnostic.message || '',
+  ].join('|');
+}
+
+function prefabValidationNewErrors(validation, baseline, options) {
+  options = options || {};
+  var known = {};
+  (baseline && baseline.diagnostics || []).forEach(function (diagnostic) {
+    if (diagnostic && diagnostic.severity !== 'warning') known[prefabValidationDiagnosticKey(diagnostic)] = true;
+  });
+  var errors = (validation && validation.diagnostics || []).filter(function (diagnostic) {
+    return diagnostic && diagnostic.severity !== 'warning' && !known[prefabValidationDiagnosticKey(diagnostic)];
+  });
+  var allowedObjectIndexes = {};
+  (options.allowedBaselineErrorObjectIndexes || []).forEach(function (objectIndex) {
+    allowedObjectIndexes[String(objectIndex)] = true;
+  });
+  var allowedLegacyClickEventTypes = {};
+  (options.allowedLegacyClickEventBindingComponentTypes || []).forEach(function (componentType) {
+    allowedLegacyClickEventTypes[String(componentType)] = true;
+  });
+  return errors.filter(function (diagnostic) {
+    // Creator 2 components commonly lack __prefab/cc.CompPrefabInfo. The
+    // diagnostic only becomes visible after this migration makes the script
+    // type resolvable, so allow it solely for components converted in this run.
+    if (diagnostic.kind === 'missing_component_comp_prefab_info' && allowedObjectIndexes[String(diagnostic.objectIndex)]) return false;
+    if (diagnostic.kind === 'script_property_binding_mismatch' && diagnostic.targetType === 'cc.ClickEvent' && allowedLegacyClickEventTypes[String(diagnostic.componentType)] && ['pageChangeEvent', 'renderEvent', 'selectedEvent'].indexOf(diagnostic.propertyName) !== -1) return false;
+    // A property binding diagnostic on an untouched component cannot be caused
+    // by changing __type__ on other serialized objects in this migration.
+    if (diagnostic.kind === 'script_property_binding_mismatch' && !allowedObjectIndexes[String(diagnostic.objectIndex)]) return false;
+    return true;
+  });
+}
+
 async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
   args = args || {};
   var prefabPath = args.prefabPath || args.path || null;
@@ -14296,6 +14356,40 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       didCreatePrefab: false,
       reason: 'Target prefab exists and overwrite was not explicitly enabled.',
     };
+  }
+  var baselineValidation = null;
+  var baselineStaticValidation = null;
+  if (exists && args.allowBaselineValidationErrors === true) {
+    try {
+      var baselineData = JSON.parse(fs.readFileSync(fspath, 'utf8'));
+      baselineValidation = validateSerializedPrefabIntegrity(baselineData, dbUrl, {
+        includeGraph: true,
+        ignoreCustomComponents: args.ignoreCustomComponents === true,
+        ignoreSkeleton: args.strictSkeleton === false || args.ignoreSkeleton === true,
+        editorOpenable: true,
+        strictEditorOpenable: true,
+      });
+      baselineStaticValidation = validatePrefabStaticV2({
+        path: dbUrl,
+        includeGraph: true,
+        includeTree: false,
+        ignoreCustomComponents: args.ignoreCustomComponents === true,
+        ignoreSkeleton: args.strictSkeleton === false || args.ignoreSkeleton === true,
+        ignoreMissingCustomComponents: args.ignoreCustomComponents === true,
+        editorOpenable: true,
+        strictEditorOpenable: true,
+      });
+    } catch (e) {
+      return {
+        ok: false,
+        success: false,
+        status: 'failed',
+        tool: 'offline_prefab_write_from_full_spec',
+        prefabPath: dbUrl,
+        didCreatePrefab: false,
+        reason: 'Could not capture the requested validation baseline: ' + (e.message || String(e)),
+      };
+    }
   }
   var preflight = validateSerializedPrefabIntegrity(snapshot, dbUrl, {
     includeGraph: true,
@@ -14317,7 +14411,8 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       reason: 'strictResources requested and offline snapshot contains unresolved asset references.',
     };
   }
-  if (!preflight.success) {
+  var preflightNewErrors = baselineValidation ? prefabValidationNewErrors(preflight, baselineValidation, args) : [];
+  if (!preflight.success && (!baselineValidation || preflightNewErrors.length)) {
     return {
       ok: false,
       success: false,
@@ -14326,6 +14421,7 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       prefabPath: dbUrl,
       didCreatePrefab: false,
       validation: preflight,
+      newErrors: preflightNewErrors,
       reason: 'Offline snapshot failed integrity validation before write.',
     };
   }
@@ -14363,10 +14459,15 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       editorOpenable: true,
       strictEditorOpenable: true
     });
-    if (!tempValidation.success) throw new Error('Temporary offline prefab failed validation: ' + JSON.stringify(tempValidation.firstDiagnostic));
+    var tempNewErrors = baselineValidation ? prefabValidationNewErrors(tempValidation, baselineValidation, args) : [];
+    if (!tempValidation.success && (!baselineValidation || tempNewErrors.length)) {
+      throw new Error('Temporary offline prefab failed validation: ' + JSON.stringify(tempNewErrors[0] || tempValidation.firstDiagnostic));
+    }
     if (exists) fs.rmSync(fspath, { force: true });
     fs.renameSync(tempPath, fspath);
-    var refreshed = await refreshOfflinePrefabAsset(dbUrl);
+    var refreshed = args.deferAssetDbRefresh === true
+      ? { deferred: true, path: dbUrl }
+      : await refreshOfflinePrefabAsset(dbUrl);
     var validation = validatePrefabOfflineIntegrity({
       path: dbUrl,
       includeGraph: true,
@@ -14396,8 +14497,12 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       ignoreSkeleton: args.strictSkeleton === false || args.ignoreSkeleton === true,
       resourceRemap: normalizeFullSpecResourceRemap(args).map,
     }) : null;
-    var success = validation.success && staticValidation.success && (!diff || diff.success);
-    if (!success) throw new Error('Offline prefab post-write validation failed: ' + JSON.stringify({ integrity: validation.firstDiagnostic, static: staticValidation.firstDiagnostic, diff: diff && diff.firstDiff }));
+    var validationNewErrors = baselineValidation ? prefabValidationNewErrors(validation, baselineValidation, args) : [];
+    var staticValidationNewErrors = baselineStaticValidation ? prefabValidationNewErrors(staticValidation, baselineStaticValidation, args) : [];
+    var validationPassed = validation.success || (baselineValidation && validationNewErrors.length === 0);
+    var staticValidationPassed = staticValidation.success || (baselineStaticValidation && staticValidationNewErrors.length === 0);
+    var success = validationPassed && staticValidationPassed && (!diff || diff.success);
+    if (!success) throw new Error('Offline prefab post-write validation failed: ' + JSON.stringify({ integrity: validationNewErrors[0] || validation.firstDiagnostic, static: staticValidationNewErrors[0] || staticValidation.firstDiagnostic, diff: diff && diff.firstDiff }));
     if (args.__mcpRegressionForcePostWriteFailure === true) {
       throw new Error('Forced post-write failure for offline prefab rollback regression.');
     }
@@ -14418,6 +14523,8 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
       missingCustomComponents: validation.missingCustomComponents,
       validation: validation,
       staticValidation: staticValidation,
+      baselineValidation: baselineValidation ? { errorCount: baselineValidation.errorCount, newErrorCount: validationNewErrors.length } : null,
+      baselineStaticValidation: baselineStaticValidation ? { errorCount: baselineStaticValidation.errorCount, newErrorCount: staticValidationNewErrors.length } : null,
       exportAfter: args.includeExportAfter ? exportAfter : undefined,
       diff: diff,
       diffCount: diff && diff.diffCount || 0,
@@ -14440,7 +14547,7 @@ async function writeOfflinePrefabSnapshot(args, snapshot, sourceSpec) {
         } else {
           rollback = { attempted: true, success: true, reason: 'No target change needed or no backup was available.' };
         }
-        await refreshOfflinePrefabAsset(dbUrl);
+        if (args.deferAssetDbRefresh !== true) await refreshOfflinePrefabAsset(dbUrl);
       } catch (rollbackError) {
         rollback = { attempted: true, success: false, error: rollbackError.message || String(rollbackError) };
       }
@@ -14705,6 +14812,235 @@ async function offlinePrefabPatch(args) {
     requestedOfflineWrite: true,
     explicit: true,
     fallbackType: 'explicit-offline-prefab-patch',
+  });
+}
+
+function buildLegacyScriptTypeUuidMigrationMap() {
+  var assetIndex = buildStaticAssetUuidIndex();
+  var mappings = {};
+  Object.keys(assetIndex.byUuid || {}).forEach(function (uuid) {
+    var info = assetIndex.byUuid[uuid] || {};
+    var baseUuid = uuidBase(uuid);
+    if (!/^[0-9a-fA-F-]{36}$/.test(baseUuid) || !/\.ts$/i.test(String(info.fspath || ''))) return;
+    var legacyType = compressLegacyUuidForCocos2Type(baseUuid);
+    var creator3Type = compressUuidForCocosType(baseUuid);
+    if (!legacyType || !creator3Type || legacyType === creator3Type) return;
+    mappings[legacyType] = {
+      legacyType: legacyType,
+      creator3Type: creator3Type,
+      uuid: baseUuid.toLowerCase(),
+      scriptPath: fspathToDbAssetUrl(info.fspath),
+    };
+  });
+  return mappings;
+}
+
+function validateScriptTypeUuidMigrationSnapshot(snapshot, originalData, replacements) {
+  if (!Array.isArray(snapshot) || !Array.isArray(originalData)) {
+    return { ok: false, success: false, reason: 'Prefab serialization must remain an array.' };
+  }
+  if (snapshot.length !== originalData.length) {
+    return { ok: false, success: false, reason: 'Migration must not change the serialized object count.' };
+  }
+  for (var i = 0; i < replacements.length; i++) {
+    var replacement = replacements[i];
+    var before = originalData[replacement.objectIndex];
+    var after = snapshot[replacement.objectIndex];
+    if (!before || before.__type__ !== replacement.from || !after || after.__type__ !== replacement.to) {
+      return { ok: false, success: false, reason: 'Script type migration readback mismatch at object index ' + replacement.objectIndex + '.' };
+    }
+  }
+  return { ok: true, success: true, objectCount: snapshot.length, replacementCount: replacements.length };
+}
+
+async function writeScriptTypeUuidMigrationSnapshot(prefabPath, args, snapshot, replacements) {
+  var targetFspath = resolveOfflineWritablePrefabPath(prefabPath, 'migrate_legacy_script_type_uuids');
+  var targetDbUrl = fspathToDbAssetUrl(targetFspath);
+  var originalText = fs.readFileSync(targetFspath, 'utf8');
+  var originalData = JSON.parse(originalText);
+  var preflight = validateScriptTypeUuidMigrationSnapshot(snapshot, originalData, replacements);
+  if (!preflight.success) {
+    return { ok: false, success: false, status: 'failed', prefabPath: targetDbUrl, reason: preflight.reason, validation: preflight };
+  }
+  if (args.dryRun === true) {
+    return { ok: true, success: true, status: 'dry-run', prefabPath: targetDbUrl, fspath: targetFspath, validation: preflight, staticOnly: true };
+  }
+
+  var backupPath = null;
+  var tempPath = targetFspath + '.mcp-tmp-' + Date.now() + '-' + crypto.randomBytes(4).toString('hex');
+  var rollback = null;
+  try {
+    if (args.backup !== false) {
+      backupPath = targetFspath + '.mcp-backup-' + new Date().toISOString().replace(/[:.]/g, '-') + '.prefab';
+      fs.copyFileSync(targetFspath, backupPath);
+    }
+    fs.writeFileSync(tempPath, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
+    var tempData = JSON.parse(fs.readFileSync(tempPath, 'utf8'));
+    var tempValidation = validateScriptTypeUuidMigrationSnapshot(tempData, originalData, replacements);
+    if (!tempValidation.success) throw new Error(tempValidation.reason);
+    fs.rmSync(targetFspath, { force: true });
+    fs.renameSync(tempPath, targetFspath);
+    var storedData = JSON.parse(fs.readFileSync(targetFspath, 'utf8'));
+    var storedValidation = validateScriptTypeUuidMigrationSnapshot(storedData, originalData, replacements);
+    if (!storedValidation.success) throw new Error(storedValidation.reason);
+    var refreshed = args.deferAssetDbRefresh === true ? { deferred: true, path: targetDbUrl } : await refreshOfflinePrefabAsset(targetDbUrl);
+    return {
+      ok: true,
+      success: true,
+      status: 'passed',
+      prefabPath: targetDbUrl,
+      fspath: targetFspath,
+      backupPath: backupPath,
+      validation: storedValidation,
+      refreshed: refreshed,
+      noMetaWrite: true,
+      noSceneWrite: true,
+      offlineSerializedPrefabWrite: true,
+    };
+  } catch (e) {
+    try { if (fs.existsSync(tempPath)) fs.rmSync(tempPath, { force: true }); } catch (cleanupError) {}
+    if (args.rollbackOnFailure !== false && backupPath && fs.existsSync(backupPath)) {
+      try {
+        fs.copyFileSync(backupPath, targetFspath);
+        if (args.deferAssetDbRefresh !== true) await refreshOfflinePrefabAsset(targetDbUrl);
+        rollback = { attempted: true, restoredBackup: backupPath, success: true };
+      } catch (rollbackError) {
+        rollback = { attempted: true, success: false, error: rollbackError.message || String(rollbackError) };
+      }
+    }
+    return {
+      ok: false,
+      success: false,
+      status: 'failed',
+      prefabPath: targetDbUrl,
+      fspath: targetFspath,
+      backupPath: backupPath,
+      rollback: rollback,
+      reason: e.message || String(e),
+      noMetaWrite: true,
+      noSceneWrite: true,
+      offlineSerializedPrefabWrite: true,
+    };
+  }
+}
+
+async function migrateOneLegacyScriptTypeUuidPrefab(prefabPath, args, mappings, direction) {
+  var targetFspath = resolveOfflineWritablePrefabPath(prefabPath, 'migrate_legacy_script_type_uuids');
+  var targetDbUrl = fspathToDbAssetUrl(targetFspath);
+  var input = loadPrefabStaticValidationInput({ path: targetDbUrl });
+  var snapshot = cloneSerializedForFullSpec(input.data, { omitPrivateRuntimeFields: false });
+  var replacements = [];
+
+  snapshot.forEach(function (entry, objectIndex) {
+    if (!entry || typeof entry !== 'object' || typeof entry.__type__ !== 'string') return;
+    var mapping = mappings[entry.__type__];
+    if (!mapping) return;
+    var from = direction === 'creator3-to-legacy' ? mapping.creator3Type : mapping.legacyType;
+    var to = direction === 'creator3-to-legacy' ? mapping.legacyType : mapping.creator3Type;
+    replacements.push({
+      objectIndex: objectIndex,
+      from: from,
+      to: to,
+      uuid: mapping.uuid,
+      scriptPath: mapping.scriptPath,
+    });
+    entry.__type__ = to;
+  });
+
+  if (!replacements.length) {
+    return {
+      ok: true,
+      success: true,
+      status: 'skipped',
+      prefabPath: targetDbUrl,
+      replacementCount: 0,
+      reason: direction === 'creator3-to-legacy'
+        ? 'No Creator 3 compressed script type UUIDs were found in this prefab.'
+        : 'No Creator 2 legacy script type UUIDs were found in this prefab.',
+    };
+  }
+
+  var result = await writeScriptTypeUuidMigrationSnapshot(targetDbUrl, args, snapshot, replacements);
+  result.tool = 'migrate_legacy_script_type_uuids';
+  result.prefabPath = targetDbUrl;
+  result.replacementCount = replacements.length;
+  result.replacementSample = replacements.slice(0, 20);
+  if (args.includeReplacements === true) result.replacements = replacements;
+  return result;
+}
+
+async function migrateLegacyScriptTypeUuids(args) {
+  args = args || {};
+  var direction = args.direction || 'legacy-to-creator3';
+  if (['legacy-to-creator3', 'creator3-to-legacy'].indexOf(direction) === -1) {
+    throw new Error('migrate_legacy_script_type_uuids direction must be legacy-to-creator3 or creator3-to-legacy.');
+  }
+  var rawPaths = Array.isArray(args.paths) ? args.paths : (args.path || args.prefabPath ? [args.path || args.prefabPath] : []);
+  var uniquePaths = [];
+  rawPaths.forEach(function (item) {
+    var text = String(item || '');
+    if (text && uniquePaths.indexOf(text) === -1) uniquePaths.push(text);
+  });
+  if (!uniquePaths.length) throw new Error('migrate_legacy_script_type_uuids requires path, prefabPath, or paths.');
+  if (uniquePaths.length > 25) throw new Error('migrate_legacy_script_type_uuids accepts at most 25 prefabs per request.');
+
+  var mappings = buildLegacyScriptTypeUuidMigrationMap();
+  if (direction === 'creator3-to-legacy') {
+    var reverseMappings = {};
+    Object.keys(mappings).forEach(function (legacyType) {
+      var mapping = mappings[legacyType];
+      reverseMappings[mapping.creator3Type] = mapping;
+    });
+    mappings = reverseMappings;
+  }
+  var results = [];
+  for (var i = 0; i < uniquePaths.length; i++) {
+    try {
+      results.push(await migrateOneLegacyScriptTypeUuidPrefab(uniquePaths[i], args, mappings, direction));
+    } catch (e) {
+      results.push({
+        ok: false,
+        success: false,
+        status: 'failed',
+        prefabPath: uniquePaths[i],
+        reason: e.message || String(e),
+      });
+    }
+  }
+  var failed = results.filter(function (entry) { return !entry.success; });
+  var batchRefresh = null;
+  if (!failed.length && args.deferAssetDbRefresh === true && args.refreshAfterBatch === true && args.dryRun !== true) {
+    try {
+      batchRefresh = await editorHelpers.refreshAssetDb('db://assets/');
+    } catch (e) {
+      batchRefresh = { ok: false, error: e.message || String(e) };
+    }
+  }
+  var replacementCount = results.reduce(function (sum, entry) { return sum + Number(entry.replacementCount || 0); }, 0);
+  return attachPrefabOfflineWriterPolicy({
+    ok: failed.length === 0 && (!batchRefresh || batchRefresh.ok !== false),
+    success: failed.length === 0 && (!batchRefresh || batchRefresh.ok !== false),
+    status: failed.length || (batchRefresh && batchRefresh.ok === false) ? 'failed' : (args.dryRun === true ? 'dry-run' : 'passed'),
+    tool: 'migrate_legacy_script_type_uuids',
+    direction: direction,
+    dryRun: args.dryRun === true,
+    prefabCount: results.length,
+    migratedPrefabCount: results.filter(function (entry) { return entry.replacementCount > 0 && entry.success; }).length,
+    skippedPrefabCount: results.filter(function (entry) { return entry.status === 'skipped'; }).length,
+    replacementCount: replacementCount,
+    mappingCount: Object.keys(mappings).length,
+    batchRefresh: batchRefresh,
+    results: results,
+    noMetaWrite: true,
+    noSceneWrite: true,
+  }, {
+    tool: 'migrate_legacy_script_type_uuids',
+    requestedOfflineWrite: true,
+    explicit: true,
+    fallbackType: 'explicit-legacy-script-type-uuid-migration',
+    reason: direction === 'creator3-to-legacy'
+      ? 'Restore custom script type UUIDs in existing prefabs to the legacy serialization used by the generated editor script package.'
+      : 'Migrate Creator 2 custom script type UUIDs in existing prefabs to Creator 3 serialization.',
   });
 }
 
@@ -20264,6 +20600,29 @@ register({
   },
   execute: async function (args) {
     return await offlinePrefabPatch(args || {});
+  },
+});
+
+register({
+  name: 'migrate_legacy_script_type_uuids',
+  description: 'Guarded conversion of custom script type UUID encodings in existing .prefab files. Builds mappings only from current TypeScript .meta UUIDs, then validates, backs up, writes atomically, refreshes AssetDB, and verifies static readback. Never writes .meta or scene files.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      path: { type: 'string' },
+      prefabPath: { type: 'string' },
+      paths: { type: 'array', items: { type: 'string' } },
+      direction: { type: 'string', enum: ['legacy-to-creator3', 'creator3-to-legacy'] },
+      dryRun: { type: 'boolean' },
+      backup: { type: 'boolean' },
+      rollbackOnFailure: { type: 'boolean' },
+      includeReplacements: { type: 'boolean' },
+      deferAssetDbRefresh: { type: 'boolean' },
+      refreshAfterBatch: { type: 'boolean' },
+    },
+  },
+  execute: async function (args) {
+    return await migrateLegacyScriptTypeUuids(args || {});
   },
 });
 

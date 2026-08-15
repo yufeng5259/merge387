@@ -54,7 +54,6 @@ MergeTutorialManager.triggerStateRecoverRetryDelay = 300
 MergeTutorialManager.triggerStateRecoverRetryCount = 0
 MergeTutorialManager.triggerStateRecoverRetryMaxCount = 20
 MergeTutorialManager.openingTriggerBuildWindowStepId = 0
-MergeTutorialManager.p5TriggerStartSaveStepId = 0
 MergeTutorialManager.pendingTriggerStartSaveTriggerId = 0
 MergeTutorialManager.triggerStartStepOverrides = {}
 MergeTutorialManager.TriggerStartBlockWindows = [
@@ -108,73 +107,7 @@ MergeTutorialManager.TriggerBlockModes = {
     Soft: 'soft',
     Force: 'force',
 }
-MergeTutorialManager.P4TriggerId = 3040010
-MergeTutorialManager.P5GeneratorTriggerId = 3050010
-MergeTutorialManager.P5GeneratorMergeId = 101004
-MergeTutorialManager.P4ReconnectDebugEnabled = true
-MergeTutorialManager.GeneratorRewardFlyScreenPreset = {
-    fromRight: 72,
-    fromBottom: 72,
-    tempLeft: 72,
-    tempTop: 315,
-}
-MergeTutorialManager.generatorGuideState = {
-    mergeId: '',
-    boardCellKey: '',
-    claimedCellKey: '',
-}
 MergeTutorialManager.runningActionStepId = 0
-MergeTutorialManager.pendingRewardReadyMergeIds = {}
-MergeTutorialManager.levelRewardClaimClickedForP5 = false
-MergeTutorialManager.townUpgradeP5PendingFlowId = null
-MergeTutorialManager.GeneratorGuideDebugEnabled = false
-
-MergeTutorialManager.DebugGeneratorGuideLog = function(label, data) {
-    if (!this.GeneratorGuideDebugEnabled) return
-    try {
-        console.log('[MergeTutorial][P5Generator]', label, data || '')
-    } catch (e) {}
-}
-
-MergeTutorialManager.LogP4Reconnect = function(label, data) {
-    if (!this.P4ReconnectDebugEnabled) return
-    var payload = data || ''
-    if (data && typeof data === 'object') {
-        try {
-            payload = JSON.stringify(data)
-        } catch (e) {
-            payload = data
-        }
-    }
-    try {
-        console.log('[MergeTutorial][P4Reconnect]', label, payload)
-    } catch (e2) {}
-}
-
-MergeTutorialManager.LogGeneratorRewardFly = function(label, data) {
-    try {
-        console.log('[MergeTutorial][P5GeneratorFly]', label, data || '')
-    } catch (e) {}
-}
-
-MergeTutorialManager.DebugP5TriggerMatchLog = function(label, triggerMeta, payload) {
-    if (!this.GeneratorGuideDebugEnabled) return
-    if (!triggerMeta || !triggerMeta.Id || triggerMeta.Id() !== this.P5GeneratorTriggerId) return
-    this.DebugGeneratorGuideLog(label, {
-        triggerId: triggerMeta.Id(),
-        triggerEvent: triggerMeta.TriggerEvent ? triggerMeta.TriggerEvent() : '',
-        triggerParam: triggerMeta.TriggerParam ? triggerMeta.TriggerParam() : '',
-        conditionType: triggerMeta.ConditionType ? triggerMeta.ConditionType() : '',
-        conditionParam: triggerMeta.ConditionParam ? triggerMeta.ConditionParam() : '',
-        firstStepId: triggerMeta.FirstStepId ? triggerMeta.FirstStepId() : 0,
-        completionReportId: triggerMeta.CompletionReportId ? triggerMeta.CompletionReportId() : 0,
-        allowDuringForced: triggerMeta.AllowDuringForced ? triggerMeta.AllowDuringForced() : false,
-        enabled: triggerMeta.Enabled ? triggerMeta.Enabled() : false,
-        mainFinished: this.IsFinished ? this.IsFinished() : false,
-        isCompleted: this.IsTriggerCompleted ? this.IsTriggerCompleted(triggerMeta) : false,
-        payload: payload,
-    })
-}
 
 MergeTutorialManager.ShouldSkipCompletedTrigger = function(triggerMeta) {
     return !!(triggerMeta &&
@@ -183,37 +116,8 @@ MergeTutorialManager.ShouldSkipCompletedTrigger = function(triggerMeta) {
         this.IsTriggerCompleted(triggerMeta))
 }
 
-MergeTutorialManager.IsP4Completed = function() {
-    var triggerMeta = this.GetTriggerMeta ? this.GetTriggerMeta(this.P4TriggerId) : null
-    if (!triggerMeta) return false
-    return this.IsTriggerCompleted(triggerMeta)
-}
-
-MergeTutorialManager.IsP5GeneratorTriggerActive = function() {
-    return !!(this.activeTriggerMeta &&
-        this.activeTriggerMeta.Id &&
-        this.activeTriggerMeta.Id() === this.P5GeneratorTriggerId)
-}
-
-MergeTutorialManager.IsP5GeneratorMergeDragStep = function(stepMeta) {
-    if (!stepMeta || !stepMeta.CompleteType || stepMeta.CompleteType() !== this.CompleteTypes.MergeDrag) return false
-    var completeParam = stepMeta.CompleteParam ? String(stepMeta.CompleteParam() || '') : ''
-    var mergeId = String(this.P5GeneratorMergeId)
-    return completeParam === 'dynamic_claimed_' + mergeId + '>dynamic_board_' + mergeId
-}
-
-MergeTutorialManager.IsP5GeneratorCompleted = function() {
-    var triggerMeta = this.GetTriggerMeta ? this.GetTriggerMeta(this.P5GeneratorTriggerId) : null
-    if (!triggerMeta) return false
-    return this.IsTriggerCompleted(triggerMeta)
-}
-
 MergeTutorialManager.CanAutoOpenSignWindow = function() {
     if (this.IsFinished && !this.IsFinished()) return false
-    var p4Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P4TriggerId) : null
-    if (p4Trigger && this.IsP4Completed && !this.IsP4Completed()) return false
-    var p5Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P5GeneratorTriggerId) : null
-    if (p5Trigger && this.IsP5GeneratorCompleted && !this.IsP5GeneratorCompleted()) return false
     if (this.ShouldBlockForceGuideGlobalUi && this.ShouldBlockForceGuideGlobalUi()) return false
     return true
 }
@@ -309,72 +213,8 @@ MergeTutorialManager.RefreshBoardBuildButtonVisibility = function() {
     return MergeTutorialBusinessAdapter.RefreshBoardBuildButtonVisibility(this)
 }
 
-MergeTutorialManager.IsP4TriggerActive = function() {
-    return !!(this.activeTriggerMeta &&
-        this.activeTriggerMeta.Id &&
-        this.activeTriggerMeta.Id() === this.P4TriggerId)
-}
-
-MergeTutorialManager.IsForceTriggerMeta = function(triggerMeta) {
-    return !!(triggerMeta &&
-        triggerMeta.BlockMode &&
-        triggerMeta.BlockMode() === this.TriggerBlockModes.Force)
-}
-
-MergeTutorialManager.ShouldBlockForceTriggerGlobalUi = function(triggerMeta) {
-    if (!this.IsForceTriggerMeta(triggerMeta)) return false
-    if (triggerMeta.CompletionReportId &&
-        this.IsTriggerCompleted &&
-        this.IsTriggerCompleted(triggerMeta)) return false
-    return true
-}
-
-MergeTutorialManager.GetUserMergePendingRewards = function() {
-    return MergeTutorialBusinessAdapter.GetUserMergePendingRewards(this)
-}
-
-MergeTutorialManager.HasPendingP5GeneratorReward = function() {
-    return MergeTutorialBusinessAdapter.HasPendingP5GeneratorReward(this)
-}
-
-MergeTutorialManager.HasPendingRewardMergeId = function(mergeId) {
-    return MergeTutorialBusinessAdapter.HasPendingRewardMergeId(this, mergeId)
-}
-
-MergeTutorialManager.ShouldBlockP5PendingRewardGlobalUi = function() {
-    if (!this.GetTriggerMeta || !this.GetTriggerMeta(this.P5GeneratorTriggerId)) return false
-    if (this.IsP5GeneratorCompleted && this.IsP5GeneratorCompleted()) return false
-    var p4Trigger = this.GetTriggerMeta(this.P4TriggerId)
-    if (p4Trigger && this.IsP4Completed && !this.IsP4Completed()) return false
-    return !!this.HasPendingP5GeneratorReward()
-}
-
 MergeTutorialManager.ShouldBlockForceGuideGlobalUi = function() {
-    if (this.ShouldBlockP5PendingRewardGlobalUi && this.ShouldBlockP5PendingRewardGlobalUi()) return true
-    if (this.ShouldBlockForceTriggerGlobalUi(this.activeTriggerMeta)) return true
-    if (!this.triggerQueue || this.triggerQueue.length === 0) return false
-    for (var i = 0; i < this.triggerQueue.length; i++) {
-        if (this.ShouldSkipQueuedTriggerGlobalBlock &&
-            this.ShouldSkipQueuedTriggerGlobalBlock(this.triggerQueue[i])) continue
-        if (this.ShouldBlockForceTriggerGlobalUi(this.triggerQueue[i])) return true
-    }
-    return false
-}
-
-MergeTutorialManager.ShouldSkipQueuedTriggerGlobalBlock = function(triggerMeta) {
-    if (!triggerMeta || !triggerMeta.Id || triggerMeta.Id() !== this.P5GeneratorTriggerId) return false
-    return !!(this.triggerStartStepOverrides && this.triggerStartStepOverrides[triggerMeta.Id()])
-}
-
-MergeTutorialManager.ShouldBlockP4GlobalUi = function() {
-    if (this.ShouldBlockForceGuideGlobalUi && this.ShouldBlockForceGuideGlobalUi()) return true
-    if (!this.IsP4TriggerActive()) return false
-    if (this.IsP4Completed && this.IsP4Completed()) return false
-    return true
-}
-
-MergeTutorialManager.ShouldShowBoardBuildButtonForP4 = function() {
-    return MergeTutorialBusinessAdapter.ShouldShowBoardBuildButtonForP4(this)
+    return this.IsMainForcedTutorialActive()
 }
 
 MergeTutorialManager.ShouldShowBoardBuildButton = function() {
@@ -667,81 +507,11 @@ MergeTutorialManager.ShouldResumeSavedTriggerProgress = function(triggerMeta) {
     return MergeTutorialStateMachine.ShouldResumeSavedTriggerProgress(this, triggerMeta)
 }
 
-MergeTutorialManager.CanResumeP4SavedStep = function(triggerMeta, savedStepMeta) {
-    return MergeTutorialBusinessAdapter.CanResumeP4SavedStep(this, triggerMeta, savedStepMeta)
-}
-
-MergeTutorialManager.IsP4TransientFlowStep = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.IsP4TransientFlowStep(this, stepMeta)
-}
-
-MergeTutorialManager.IsTownUpgradeFlowRunning = function() {
-    return MergeTutorialBusinessAdapter.IsTownUpgradeFlowRunning(this)
-}
-
-MergeTutorialManager.ShouldPersistLocalTriggerProgress = function(triggerMeta, stepId) {
-    return MergeTutorialBusinessAdapter.ShouldPersistLocalTriggerProgress(this, triggerMeta, stepId)
-}
-
-MergeTutorialManager.GetP4TriggerBuildTargetParam = function(triggerMeta) {
-    return MergeTutorialBusinessAdapter.GetP4TriggerBuildTargetParam(this, triggerMeta)
-}
-
-MergeTutorialManager.GetP4TriggerBuildContext = function(triggerMeta) {
-    return MergeTutorialBusinessAdapter.GetP4TriggerBuildContext(this, triggerMeta)
-}
-
-MergeTutorialManager.IsP4BuildStateBoughtOrFull = function(context) {
-    return MergeTutorialBusinessAdapter.IsP4BuildStateBoughtOrFull(this, context)
-}
-
-MergeTutorialManager.GetP4BuildBuyStepId = function(triggerMeta) {
-    return MergeTutorialBusinessAdapter.GetP4BuildBuyStepId(this, triggerMeta)
-}
-
-MergeTutorialManager.IsP4StepAfterBuildBuyStep = function(triggerMeta, stepMeta) {
-    return MergeTutorialBusinessAdapter.IsP4StepAfterBuildBuyStep(this, triggerMeta, stepMeta)
-}
-
-MergeTutorialManager.FindP4PostBuyMapBuildClickStepId = function(triggerMeta) {
-    return MergeTutorialBusinessAdapter.FindP4PostBuyMapBuildClickStepId(this, triggerMeta)
-}
-
-MergeTutorialManager.ResolveP4NextNonTransientStepId = function(triggerMeta, stepMeta) {
-    return MergeTutorialBusinessAdapter.ResolveP4NextNonTransientStepId(this, triggerMeta, stepMeta)
-}
-
-MergeTutorialManager.ResolveP4CompletedBuildBuyStepNextIdFromState = function(triggerMeta, stepMeta) {
-    return MergeTutorialBusinessAdapter.ResolveP4CompletedBuildBuyStepNextIdFromState(this, triggerMeta, stepMeta)
-}
-
-MergeTutorialManager.ResolveP4SavedTriggerStepId = function(triggerMeta, savedStepId) {
-    return MergeTutorialBusinessAdapter.ResolveP4SavedTriggerStepId(this, triggerMeta, savedStepId)
-}
-
-MergeTutorialManager.ResolveP4TransientStepNextIdFromState = function(triggerMeta, stepMeta) {
-    return MergeTutorialBusinessAdapter.ResolveP4TransientStepNextIdFromState(this, triggerMeta, stepMeta)
-}
-
-MergeTutorialManager.TryAdvanceP4TransientStepFromState = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.TryAdvanceP4TransientStepFromState(this, stepMeta)
-}
-
-MergeTutorialManager.TryRedirectP4CompletedBuildBuyStepFromState = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.TryRedirectP4CompletedBuildBuyStepFromState(this, stepMeta)
-}
-
 MergeTutorialManager.GetTriggerServerSaveStepId = function(triggerMeta, lastId, nextId) {
-    if (triggerMeta && triggerMeta.Id && triggerMeta.Id() === this.P4TriggerId) {
-        return parseInt(nextId, 10) || 0
-    }
     return parseInt(lastId, 10) || 0
 }
 
 MergeTutorialManager.GetTriggerServerSaveStepMeta = function(triggerMeta, lastMeta, nextMeta) {
-    if (triggerMeta && triggerMeta.Id && triggerMeta.Id() === this.P4TriggerId) {
-        return nextMeta || null
-    }
     return lastMeta || null
 }
 
@@ -759,11 +529,6 @@ MergeTutorialManager.SetTriggerTutorialId = function(triggerMeta, stepId) {
 
     var groupId = this.GetTriggerGroupId(triggerMeta)
     if (!groupId) return false
-    if (this.ShouldPersistLocalTriggerProgress &&
-        !this.ShouldPersistLocalTriggerProgress(triggerMeta, stepId)) {
-        return false
-    }
-
     var currentId = Game.SUserMergeTutorial.TutorialId
         ? parseInt(Game.SUserMergeTutorial.TutorialId(groupId), 10) || 0
         : 0
@@ -777,50 +542,8 @@ MergeTutorialManager.SetTriggerTutorialId = function(triggerMeta, stepId) {
     return true
 }
 
-MergeTutorialManager.CanResumeP5GeneratorSavedStep = function(triggerMeta, savedStepMeta) {
-    return MergeTutorialBusinessAdapter.CanResumeP5GeneratorSavedStep(this, triggerMeta, savedStepMeta)
-}
-
-MergeTutorialManager.HasSavedP5GeneratorProgress = function() {
-    return MergeTutorialBusinessAdapter.HasSavedP5GeneratorProgress(this)
-}
-
-MergeTutorialManager.ShouldRestoreP5PendingRewardFromSavedProgress = function() {
-    return MergeTutorialBusinessAdapter.ShouldRestoreP5PendingRewardFromSavedProgress(this)
-}
-
 MergeTutorialManager.TryResumeSavedTriggerProgress = function() {
-    var metas = this.GetTriggerMetas ? this.GetTriggerMetas() : {}
-    var resumed = false
-    for (var id in metas) {
-        if (!Object.prototype.hasOwnProperty.call(metas, id)) continue
-        var triggerMeta = metas[id]
-        if (this.IsTriggerCompleted && this.IsTriggerCompleted(triggerMeta)) {
-            if (this.ClearLocalTriggerProgress) this.ClearLocalTriggerProgress(triggerMeta)
-            continue
-        }
-        if (!this.ShouldResumeSavedTriggerProgress(triggerMeta)) continue
-        var enqueued = this.EnqueueTrigger(triggerMeta, true)
-        resumed = enqueued || resumed
-    }
-    if (resumed) this.TryStartNextTrigger()
-    return resumed
-}
-
-MergeTutorialManager.IsP5GeneratorStepAfterBackToBoard = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.IsP5GeneratorStepAfterBackToBoard(this, stepMeta)
-}
-
-MergeTutorialManager.EnsureP5GeneratorBoardReadyForStep = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.EnsureP5GeneratorBoardReadyForStep(this, stepMeta)
-}
-
-MergeTutorialManager.CanStartP5GeneratorBoardFallback = function() {
-    return MergeTutorialBusinessAdapter.CanStartP5GeneratorBoardFallback(this)
-}
-
-MergeTutorialManager.StartP5GeneratorGuideFromBoardFallback = function() {
-    return MergeTutorialBusinessAdapter.StartP5GeneratorGuideFromBoardFallback(this)
+    return false
 }
 
 MergeTutorialManager.IsVillageSceneActive = function() {
@@ -855,75 +578,8 @@ MergeTutorialManager.RecoverTriggerAtStep = function(triggerMeta, stepId) {
     return true
 }
 
-MergeTutorialManager.ResolveP4ReconnectStep = function(triggerMeta) {
-    return MergeTutorialBusinessAdapter.ResolveP4ReconnectStep(this, triggerMeta)
-}
-
-MergeTutorialManager.ResolveP5ReconnectStep = function(triggerMeta) {
-    if (!triggerMeta || !triggerMeta.Id || triggerMeta.Id() !== this.P5GeneratorTriggerId) return 0
-    if (this.IsP5GeneratorCompleted && this.IsP5GeneratorCompleted()) return 0
-    if (this.IsP4Completed && !this.IsP4Completed()) return 0
-    if (!this.HasPendingP5GeneratorReward || !this.HasPendingP5GeneratorReward()) return 0
-    if (!this.IsMergeBoardSceneActive || !this.IsMergeBoardSceneActive()) return 0
-    if (!this.CheckGeneratorMergeReady(this.P5GeneratorMergeId, { source: 'p5_reconnect_state' })) return 0
-
-    var animationStepId = parseInt(triggerMeta.FirstStepId ? triggerMeta.FirstStepId() : 0, 10) + 10
-    if (this.GetMeta && this.GetMeta(animationStepId)) return animationStepId
-    return parseInt(triggerMeta.FirstStepId ? triggerMeta.FirstStepId() : 0, 10) || 0
-}
-
 MergeTutorialManager.TryRecoverTriggerProgressFromState = function() {
-    if (this.activeTriggerMeta || (this.triggerQueue && this.triggerQueue.length > 0)) {
-        this.LogP4Reconnect('recover:skip:busy', {
-            activeTriggerId: this.activeTriggerMeta && this.activeTriggerMeta.Id ? this.activeTriggerMeta.Id() : 0,
-            triggerQueueLength: this.triggerQueue ? this.triggerQueue.length : 0,
-        })
-        return false
-    }
-    if (this.IsFinished && !this.IsFinished()) {
-        this.LogP4Reconnect('recover:skip:mainForcedNotFinished', {})
-        return false
-    }
-
-    var p4Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P4TriggerId) : null
-    var p4StepId = this.ResolveP4ReconnectStep ? this.ResolveP4ReconnectStep(p4Trigger) : 0
-    if (p4StepId && this.RecoverTriggerAtStep(p4Trigger, p4StepId)) {
-        this.LogP4Reconnect('recover:p4:success', {
-            triggerId: p4Trigger && p4Trigger.Id ? p4Trigger.Id() : 0,
-            stepId: p4StepId,
-            retryCount: this.triggerStateRecoverRetryCount,
-        })
-        if (this.CancelTriggerStateRecoverRetry) this.CancelTriggerStateRecoverRetry()
-        return true
-    }
-    if (p4StepId) {
-        this.LogP4Reconnect('recover:p4:recoverFailed', {
-            triggerId: p4Trigger && p4Trigger.Id ? p4Trigger.Id() : 0,
-            stepId: p4StepId,
-            activeTriggerId: this.activeTriggerMeta && this.activeTriggerMeta.Id ? this.activeTriggerMeta.Id() : 0,
-            triggerQueueLength: this.triggerQueue ? this.triggerQueue.length : 0,
-        })
-    }
-
-    var p5Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P5GeneratorTriggerId) : null
-    var p5StepId = this.ResolveP5ReconnectStep ? this.ResolveP5ReconnectStep(p5Trigger) : 0
-    if (p5StepId && this.RecoverTriggerAtStep(p5Trigger, p5StepId)) {
-        if (this.CancelTriggerStateRecoverRetry) this.CancelTriggerStateRecoverRetry()
-        return true
-    }
-
     return false
-}
-
-MergeTutorialManager.ShouldRetryP4ReconnectFromState = function() {
-    if (this.activeTriggerMeta || (this.triggerQueue && this.triggerQueue.length > 0)) return false
-    if (this.IsFinished && !this.IsFinished()) return false
-    var p4Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P4TriggerId) : null
-    if (!p4Trigger) return false
-    if (p4Trigger.Enabled && !p4Trigger.Enabled()) return false
-    if (this.IsP4Completed && this.IsP4Completed()) return false
-    if (this.IsTriggerQueued && this.IsTriggerQueued(this.P4TriggerId)) return false
-    return true
 }
 
 MergeTutorialManager.CancelTriggerStateRecoverRetry = function() {
@@ -934,56 +590,7 @@ MergeTutorialManager.CancelTriggerStateRecoverRetry = function() {
     this.triggerStateRecoverRetryCount = 0
 }
 
-MergeTutorialManager.ScheduleTriggerStateRecoverRetry = function(delay) {
-    if (this.triggerStateRecoverRetryTimer) {
-        this.LogP4Reconnect('retry:skip:timerExists', {
-            retryCount: this.triggerStateRecoverRetryCount,
-        })
-        return false
-    }
-    if (!this.ShouldRetryP4ReconnectFromState || !this.ShouldRetryP4ReconnectFromState()) {
-        this.LogP4Reconnect('retry:skip:notAllowed', {
-            retryCount: this.triggerStateRecoverRetryCount,
-            activeTriggerId: this.activeTriggerMeta && this.activeTriggerMeta.Id ? this.activeTriggerMeta.Id() : 0,
-            triggerQueueLength: this.triggerQueue ? this.triggerQueue.length : 0,
-            mainFinished: this.IsFinished ? this.IsFinished() : false,
-            p4Completed: this.IsP4Completed ? this.IsP4Completed() : false,
-            hasP4Trigger: !!(this.GetTriggerMeta && this.GetTriggerMeta(this.P4TriggerId)),
-        })
-        return false
-    }
-    var maxCount = Math.max(0, Number(this.triggerStateRecoverRetryMaxCount) || 0)
-    if (maxCount && this.triggerStateRecoverRetryCount >= maxCount) {
-        this.LogP4Reconnect('retry:stop:maxCount', {
-            retryCount: this.triggerStateRecoverRetryCount,
-            maxCount: maxCount,
-        })
-        return false
-    }
-    this.triggerStateRecoverRetryCount++
-    var retryDelay = delay == null ? this.triggerStateRecoverRetryDelay : delay
-    this.LogP4Reconnect('retry:scheduled', {
-        retryCount: this.triggerStateRecoverRetryCount,
-        maxCount: maxCount,
-        delay: Math.max(0, Number(retryDelay) || 0),
-    })
-    this.triggerStateRecoverRetryTimer = setTimeout(function() {
-        MergeTutorialManager.triggerStateRecoverRetryTimer = null
-        MergeTutorialManager.LogP4Reconnect('retry:tick', {
-            retryCount: MergeTutorialManager.triggerStateRecoverRetryCount,
-        })
-        if (MergeTutorialManager.TryRecoverTriggerProgressFromState &&
-            MergeTutorialManager.TryRecoverTriggerProgressFromState()) {
-            return
-        }
-        MergeTutorialManager.ScheduleTriggerStateRecoverRetry()
-    }, Math.max(0, Number(retryDelay) || 0))
-    return true
-}
-
 MergeTutorialManager.TryRecoverTriggerProgressFromStateWithRetry = function() {
-    if (this.TryRecoverTriggerProgressFromState && this.TryRecoverTriggerProgressFromState()) return true
-    this.ScheduleTriggerStateRecoverRetry()
     return false
 }
 
@@ -1051,31 +658,8 @@ MergeTutorialManager.EnsureTriggerStepScene = function(stepMeta) {
     return true
 }
 
-MergeTutorialManager.GetTriggerBuildTargetParam = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.GetTriggerBuildTargetParam(this, stepMeta)
-}
-
-MergeTutorialManager.IsTriggerBuildWindowStep = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.IsTriggerBuildWindowStep(this, stepMeta)
-}
-
-MergeTutorialManager.GetBuildActionContextByTarget = function(target) {
-    return MergeTutorialBusinessAdapter.GetBuildActionContextByTarget(this, target)
-}
-
-MergeTutorialManager.OpenTriggerBuildWindow = function(stepMeta, target, context) {
-    return MergeTutorialBusinessAdapter.OpenTriggerBuildWindow(this, stepMeta, target, context)
-}
-
-MergeTutorialManager.EnsureTriggerBuildWindow = function(stepMeta) {
-    return MergeTutorialBusinessAdapter.EnsureTriggerBuildWindow(this, stepMeta)
-}
-
 MergeTutorialManager.EnsureTriggerStepStartContext = function(stepMeta) {
-    if (!this.EnsureTriggerStepScene(stepMeta)) return false
-    if (!this.EnsureTriggerBuildWindow(stepMeta)) return false
-    if (!this.EnsureP5GeneratorBoardReadyForStep(stepMeta)) return false
-    return true
+    return this.EnsureTriggerStepScene(stepMeta)
 }
 
 MergeTutorialManager.GetMapNode = function() {
@@ -1154,10 +738,6 @@ MergeTutorialManager.EmitNodeClick = function(nodeKey, payload) {
     payload = payload || {}
     payload.nodeKey = nodeKey
     this.Emit(this.EventTypes.NodeClick, payload)
-    if (this.NormalizeOrderParam(nodeKey) === 'level_reward_button' &&
-        this.OnLevelRewardButtonClickedForP5) {
-        this.OnLevelRewardButtonClickedForP5(payload)
-    }
 }
 
 MergeTutorialManager.EmitFlowEvent = function(eventKey, payload) {
@@ -1213,148 +793,8 @@ MergeTutorialManager.IsTriggerCompleted = function(triggerMeta) {
     return savedId >= reportId
 }
 
-MergeTutorialManager.GetPayloadValueCandidates = function(payload) {
-    return MergeTutorialBusinessAdapter.GetPayloadValueCandidates(this, payload)
-}
-
-MergeTutorialManager.MatchTriggerParam = function(expected, payload, eventName) {
-    return MergeTutorialBusinessAdapter.MatchTriggerParam(this, expected, payload, eventName)
-}
-
-MergeTutorialManager.MatchTriggerCondition = function(conditionType, conditionParam, payload) {
-    return MergeTutorialBusinessAdapter.MatchTriggerCondition(this, conditionType, conditionParam, payload)
-}
-
-MergeTutorialManager.GetRewardPieceData = function(reward) {
-    return MergeTutorialBusinessAdapter.GetRewardPieceData(this, reward)
-}
-
-MergeTutorialManager.GetMergeIdFromDataStr = function(dataStr) {
-    return MergeTutorialBusinessAdapter.GetMergeIdFromDataStr(this, dataStr)
-}
-
-MergeTutorialManager.CountPendingRewardMergeId = function(pendingRewards, mergeId) {
-    return MergeTutorialBusinessAdapter.CountPendingRewardMergeId(this, pendingRewards, mergeId)
-}
-
-MergeTutorialManager.GetLastPendingRewardMergeId = function() {
-    return MergeTutorialBusinessAdapter.GetLastPendingRewardMergeId(this)
-}
-
-MergeTutorialManager.GetMergeMapData = function() {
-    return MergeTutorialBusinessAdapter.GetMergeMapData(this)
-}
-
-MergeTutorialManager.FindBoardCellByMergeId = function(mergeId, excludeCellKey) {
-    return MergeTutorialBusinessAdapter.FindBoardCellByMergeId(this, mergeId, excludeCellKey)
-}
-
-MergeTutorialManager.FindBoardCellsByMergeId = function(mergeId, excludeCellKey) {
-    return MergeTutorialBusinessAdapter.FindBoardCellsByMergeId(this, mergeId, excludeCellKey)
-}
-
-MergeTutorialManager.IsBoardCellMergeId = function(cellKey, mergeId) {
-    return MergeTutorialBusinessAdapter.IsBoardCellMergeId(this, cellKey, mergeId)
-}
-
-MergeTutorialManager.HasBoardEmptyTile = function() {
-    return MergeTutorialBusinessAdapter.HasBoardEmptyTile(this)
-}
-
-MergeTutorialManager.PrepareGeneratorMergeGuide = function(mergeId) {
-    return MergeTutorialBusinessAdapter.PrepareGeneratorMergeGuide(this, mergeId)
-}
-
-MergeTutorialManager.EnsureGeneratorGuideDragCells = function(mergeId) {
-    return MergeTutorialBusinessAdapter.EnsureGeneratorGuideDragCells(this, mergeId)
-}
-
-MergeTutorialManager.CheckGeneratorMergeReady = function(conditionParam, payload) {
-    return MergeTutorialBusinessAdapter.CheckGeneratorMergeReady(this, conditionParam, payload)
-}
-
-MergeTutorialManager.TryEmitPendingRewardReady = function(mergeId, extraPayload) {
-    return MergeTutorialBusinessAdapter.TryEmitPendingRewardReady(this, mergeId, extraPayload)
-}
-
-MergeTutorialManager.HasPendingLevelRewardDataForP5 = function() {
-    return MergeTutorialBusinessAdapter.HasPendingLevelRewardDataForP5(this)
-}
-
-MergeTutorialManager.IsLevelRewardWindowOpenOrLoadingForP5 = function() {
-    return MergeTutorialBusinessAdapter.IsLevelRewardWindowOpenOrLoadingForP5(this)
-}
-
-MergeTutorialManager.IsP5OnlineRewardFlowActive = function() {
-    return MergeTutorialBusinessAdapter.IsP5OnlineRewardFlowActive(this)
-}
-
-MergeTutorialManager.ShouldAcceptPendingRewardReadyUpdateForP5 = function(mergeId) {
-    return MergeTutorialBusinessAdapter.ShouldAcceptPendingRewardReadyUpdateForP5(this, mergeId)
-}
-
-MergeTutorialManager.ShouldDelayPendingRewardReadyForP5 = function(mergeId) {
-    return MergeTutorialBusinessAdapter.ShouldDelayPendingRewardReadyForP5(this, mergeId)
-}
-
-MergeTutorialManager.OnLevelRewardButtonClickedForP5 = function(payload) {
-    return MergeTutorialBusinessAdapter.OnLevelRewardButtonClickedForP5(this, payload)
-}
-
-MergeTutorialManager.ReleaseTownUpgradeP5 = function(flowId) {
-    return MergeTutorialBusinessAdapter.ReleaseTownUpgradeP5(this, flowId)
-}
-
-MergeTutorialManager.NotifyPendingRewardsUpdated = function(nextRewards, prevRewards) {
-    return MergeTutorialBusinessAdapter.NotifyPendingRewardsUpdated(this, nextRewards, prevRewards)
-}
-
-MergeTutorialManager.TryConsumePendingRewardReadyNotification = function(mergeId, emitPayload) {
-    return MergeTutorialBusinessAdapter.TryConsumePendingRewardReadyNotification(this, mergeId, emitPayload)
-}
-
-MergeTutorialManager.TryConsumePendingRewardReadyNotifications = function(emitPayload) {
-    return MergeTutorialBusinessAdapter.TryConsumePendingRewardReadyNotifications(this, emitPayload)
-}
-
-MergeTutorialManager.ShouldHideTempRewardForGuide = function() {
-    return MergeTutorialBusinessAdapter.ShouldHideTempRewardForGuide(this)
-}
-
-MergeTutorialManager.SetTempRewardVisibleForGuide = function(visible) {
-    return MergeTutorialBusinessAdapter.SetTempRewardVisibleForGuide(this, visible)
-}
-
-MergeTutorialManager.CheckBuildingCoinGate = function(conditionParam) {
-    return MergeTutorialBusinessAdapter.CheckBuildingCoinGate(this, conditionParam)
-}
-
-MergeTutorialManager.GetBuildingCoinGateDebugInfo = function(conditionParam) {
-    return MergeTutorialBusinessAdapter.GetBuildingCoinGateDebugInfo(this, conditionParam)
-}
-
-MergeTutorialManager.ParseLevelList = function(value) {
-    return MergeTutorialBusinessAdapter.ParseLevelList(this, value)
-}
-
-MergeTutorialManager.GetMapBuildLevelPrice = function(meta, level) {
-    return MergeTutorialBusinessAdapter.GetMapBuildLevelPrice(this, meta, level)
-}
-
-MergeTutorialManager.MatchTriggerSelector = function(triggerMeta, payload) {
-    return MergeTutorialBusinessAdapter.MatchTriggerSelector(this, triggerMeta, payload)
-}
-
-MergeTutorialManager.IsMergeBoardFull = function() {
-    return MergeTutorialBusinessAdapter.IsMergeBoardFull(this)
-}
-
 MergeTutorialManager.GetHighestLvNormalMergeItem = function() {
     return MergeTutorialBusinessAdapter.GetHighestLvNormalMergeItem(this)
-}
-
-MergeTutorialManager.MatchTriggerMeta = function(triggerMeta, eventName, payload) {
-    return MergeTutorialBusinessAdapter.MatchTriggerMeta(this, triggerMeta, eventName, payload)
 }
 
 MergeTutorialManager.IsTriggerQueued = function(triggerId) {
@@ -1382,35 +822,7 @@ MergeTutorialManager.EnqueueTriggerAtStep = function(triggerMeta, stepId, deferS
 }
 
 MergeTutorialManager.EmitTrigger = function(eventName, payload) {
-    var metas = this.GetTriggerMetas()
-    var matched = []
-    if (eventName === 'pending_reward_ready') {
-        var p5Trigger = this.GetTriggerMeta ? this.GetTriggerMeta(this.P5GeneratorTriggerId) : null
-        this.DebugGeneratorGuideLog('EmitTrigger:pending_reward_ready:start', {
-            eventName: eventName,
-            payload: payload,
-            triggerMetaCount: metas ? Object.keys(metas).length : 0,
-            hasP5Trigger: !!p5Trigger,
-            p5TriggerData: p5Trigger && p5Trigger.Data ? p5Trigger.Data() : null,
-            mainFinished: this.IsFinished ? this.IsFinished() : false,
-            pendingRewardReadyMergeIds: this.pendingRewardReadyMergeIds,
-        })
-    }
-    for (var id in metas) {
-        if (!Object.prototype.hasOwnProperty.call(metas, id)) continue
-        var meta = metas[id]
-        if (this.ShouldSkipCompletedTrigger(meta)) continue
-        if (this.MatchTriggerMeta(meta, eventName, payload || {})) {
-            matched.push(meta)
-        }
-    }
-    for (var i = 0; i < matched.length; i++) {
-        this.EnqueueTrigger(matched[i], true)
-    }
-    if (matched.length > 0 || (this.triggerQueue && this.triggerQueue.length > 0)) {
-        this.ScheduleTriggerStartRetry()
-    }
-    return matched.length
+    return 0
 }
 
 MergeTutorialManager.TryStartNextTrigger = function() {
@@ -1576,12 +988,12 @@ MergeTutorialManager.retryFinishForcedTutorial = function(stage, error) {
     return MergeTutorialStateMachine.RetryFinishForcedTutorial(this, stage, error)
 }
 
-MergeTutorialManager.ResolveDynamicTileKey = function(tileKey) {
-    return MergeTutorialOperationGuard.ResolveDynamicTileKey(this, tileKey)
-}
-
 MergeTutorialManager.ParseMergeDragParam = function(param) {
     return MergeTutorialOperationGuard.ParseMergeDragParam(this, param)
+}
+
+MergeTutorialManager.ParseGeneratorParam = function(param) {
+    return MergeTutorialOperationGuard.ParseGeneratorParam(this, param)
 }
 
 MergeTutorialManager.GetCurrentMergeDragParam = function(stepMeta) {
@@ -1590,36 +1002,6 @@ MergeTutorialManager.GetCurrentMergeDragParam = function(stepMeta) {
 
 MergeTutorialManager.GetCurrentDragGuideTiles = function() {
     return MergeTutorialOperationGuard.GetCurrentDragGuideTiles(this)
-}
-
-MergeTutorialManager.IsP5GeneratorTempNoteStep = function(stepMeta) {
-    stepMeta = stepMeta || this.activeTriggerStepMeta
-    return !!(this.IsP5GeneratorTriggerActive &&
-        this.IsP5GeneratorTriggerActive() &&
-        stepMeta &&
-        stepMeta.CompleteType &&
-        stepMeta.CompleteType() === this.CompleteTypes.NodeClick &&
-        this.MatchNodeClickParam(stepMeta.CompleteParam(), { nodeKey: 'temp_note' }))
-}
-
-MergeTutorialManager.GetRewardMergeId = function(reward) {
-    return MergeTutorialBusinessAdapter.GetRewardMergeId(this, reward)
-}
-
-MergeTutorialManager.BeginP5GeneratorTempRewardClaim = function(reward) {
-    return MergeTutorialBusinessAdapter.BeginP5GeneratorTempRewardClaim(this, reward)
-}
-
-MergeTutorialManager.CancelP5GeneratorTempRewardClaim = function(reward) {
-    return MergeTutorialBusinessAdapter.CancelP5GeneratorTempRewardClaim(this, reward)
-}
-
-MergeTutorialManager.RecordGeneratorGuideClaimedCell = function(mergeId, cellKey) {
-    return MergeTutorialBusinessAdapter.RecordGeneratorGuideClaimedCell(this, mergeId, cellKey)
-}
-
-MergeTutorialManager.OnTempRewardClaimed = function(payload) {
-    return MergeTutorialBusinessAdapter.OnTempRewardClaimed(this, payload)
 }
 
 MergeTutorialManager.GetSpriteFrameByMergeId = function(mergeId) {
@@ -1638,14 +1020,6 @@ MergeTutorialManager.GetUiFixedWorldPoint = function(localPos) {
     return MergeTutorialTargetResolver.GetUiFixedWorldPoint(this, localPos)
 }
 
-MergeTutorialManager.GetGeneratorRewardFlyFixedWorldPoint = function(pointType) {
-    return MergeTutorialTargetResolver.GetGeneratorRewardFlyFixedWorldPoint(this, pointType)
-}
-
-MergeTutorialManager.GetGeneratorRewardFlyPoints = function() {
-    return MergeTutorialTargetResolver.GetGeneratorRewardFlyPoints(this)
-}
-
 MergeTutorialManager.ShouldUseStaticMergeDragGuideTiles = function() {
     return MergeTutorialOperationGuard.ShouldUseStaticMergeDragGuideTiles(this)
 }
@@ -1656,10 +1030,6 @@ MergeTutorialManager.ShouldAllowMergeDragMove = function(tileKey) {
 
 MergeTutorialManager.UpdateMergeDragGuideStartTile = function(tileKey, oldTileKey) {
     return MergeTutorialOperationGuard.UpdateMergeDragGuideStartTile(this, tileKey, oldTileKey)
-}
-
-MergeTutorialManager.ParseGeneratorParam = function(param) {
-    return MergeTutorialOperationGuard.ParseGeneratorParam(this, param)
 }
 
 MergeTutorialManager.NormalizeTileKey = function(tileKey) {
